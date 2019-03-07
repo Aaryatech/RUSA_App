@@ -7,13 +7,20 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.ats.rusa_app.R;
+import com.ats.rusa_app.adapter.NewsFeedAdapter;
 import com.ats.rusa_app.adapter.TestimonialsSliderAdapter;
+import com.ats.rusa_app.constants.Constants;
+import com.ats.rusa_app.model.GallaryDetailList;
+import com.ats.rusa_app.model.NewDetail;
 import com.ats.rusa_app.model.Testimonials;
+import com.ats.rusa_app.util.CommonDialog;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
@@ -26,14 +33,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class HomeFragment extends Fragment {
 
     private SliderLayout sliderLayout;
 
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerView,new_recyclerView;
     private LinearLayoutManager linearLayoutManager;
 
     final ArrayList<Testimonials> list = new ArrayList<>();
+    ArrayList<NewDetail> newsList = new ArrayList<>();
+    ArrayList<GallaryDetailList> galleryList = new ArrayList<>();
+
 
 
     @Override
@@ -43,11 +57,14 @@ public class HomeFragment extends Fragment {
 
 
         sliderLayout = view.findViewById(R.id.slider);
-
-        imageSlider();
-        initYoutubeVideo("gG2npfpaqsY");
-
         recyclerView = view.findViewById(R.id.recyclerView);
+        new_recyclerView = view.findViewById(R.id.news_recyclerView);
+
+        getImageGallery();
+
+        getNewFeed();
+
+        initYoutubeVideo("gG2npfpaqsY");
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -83,6 +100,101 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    private void getImageGallery() {
+        if (Constants.isOnline(getContext())) {
+            final CommonDialog commonDialog = new CommonDialog(getContext(), "Loading", "Please Wait...");
+            commonDialog.show();
+
+            Call<ArrayList<GallaryDetailList>> listCall = Constants.myInterface.getImageGallery();
+            listCall.enqueue(new Callback<ArrayList<GallaryDetailList>>() {
+                @Override
+                public void onResponse(Call<ArrayList<GallaryDetailList>> call, Response<ArrayList<GallaryDetailList>> response) {
+                    try {
+                        if (response.body() != null) {
+
+                            Log.e("Gallery responce : ", " - " + response.body());
+                            galleryList.clear();
+                            galleryList=response.body();
+                            imageSlider(galleryList);
+                            commonDialog.dismiss();
+
+                        } else {
+                            commonDialog.dismiss();
+                            Log.e("Data Null : ", "-----------");
+                        }
+                    } catch (Exception e) {
+                        commonDialog.dismiss();
+                        Log.e("Exception : ", "-----------" + e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ArrayList<GallaryDetailList>> call, Throwable t) {
+                    commonDialog.dismiss();
+                    Log.e("onFailure1 : ", "-----------" + t.getMessage());
+                    t.printStackTrace();
+                }
+            });
+        } else {
+            Toast.makeText(getContext(), "No Internet Connection !", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private void getNewFeed() {
+
+        if (Constants.isOnline(getContext())) {
+            final CommonDialog commonDialog = new CommonDialog(getContext(), "Loading", "Please Wait...");
+            commonDialog.show();
+
+            Call<ArrayList<NewDetail>> listCall = Constants.myInterface.getNewsData(1);
+            listCall.enqueue(new Callback<ArrayList<NewDetail>>() {
+                @Override
+                public void onResponse(Call<ArrayList<NewDetail>> call, Response<ArrayList<NewDetail>> response) {
+                    try {
+                        if (response.body() != null) {
+
+                            Log.e("NEWS DATA : ", " - " + response.body());
+                            newsList.clear();
+                            newsList=response.body();
+                           // NewDetail newDetail=response.body();
+                            //newsList.add(newDetail);
+
+
+                           NewsFeedAdapter adapter = new NewsFeedAdapter(newsList, getContext());
+                            new_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                            new_recyclerView.setAdapter(adapter);
+
+                            //                            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+//                            recyclerView.setLayoutManager(mLayoutManager);
+//                            recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+                            commonDialog.dismiss();
+
+                        } else {
+                            commonDialog.dismiss();
+                            Log.e("Data Null : ", "-----------");
+                        }
+                    } catch (Exception e) {
+                        commonDialog.dismiss();
+                        Log.e("Exception : ", "-----------" + e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ArrayList<NewDetail>> call, Throwable t) {
+                    commonDialog.dismiss();
+                    Log.e("onFailure1 : ", "-----------" + t.getMessage());
+                    t.printStackTrace();
+                }
+            });
+        } else {
+            Toast.makeText(getContext(), "No Internet Connection !", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     private void initYoutubeVideo(final String url) {
         YouTubePlayerSupportFragment youTubePlayerFragment = YouTubePlayerSupportFragment.newInstance();
@@ -111,14 +223,17 @@ public class HomeFragment extends Fragment {
 
     }
 
-    private void imageSlider() {
+    private void imageSlider(ArrayList<GallaryDetailList> gallaryDetailLists) {
+
         HashMap<String, String> url_maps = new HashMap<String, String>();
-        url_maps.put("Hannibal", "https://images.pexels.com/photos/326055/pexels-photo-326055.jpeg?cs=srgb&dl=beautiful-blur-bright-326055.jpg&fm=jpg");
-        url_maps.put("Big Bang Theory", "https://resize.indiatvnews.com/en/resize/newbucket/715_-/2018/02/propose-1517999844.jpg");
-        url_maps.put("House of Cards", "https://cdn.pixabay.com/photo/2017/01/06/23/21/soap-bubble-1959327_960_720.jpg");
-        url_maps.put("Game of Thrones", "https://media.cntraveller.in/wp-content/uploads/2018/10/GettyImages-990972132-866x487.jpg");
+        for(int i = 0; i< gallaryDetailLists.size(); i++)
+        {
+            String image=Constants.GALLERY_URL+gallaryDetailLists.get(i).getFileName();
+            String title=gallaryDetailLists.get(i).getTitle();
+            url_maps.put(title,image);
+            Log.e("Gallery","----------"+url_maps);
 
-
+        }
         for (String name : url_maps.keySet()) {
             TextSliderView textSliderView = new TextSliderView(getActivity());
             // initialize a SliderLayout
@@ -139,6 +254,34 @@ public class HomeFragment extends Fragment {
         sliderLayout.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
         sliderLayout.setCustomAnimation(new DescriptionAnimation());
         sliderLayout.setDuration(4000);
+
+
+//        url_maps.put("Hannibal", "https://images.pexels.com/photos/326055/pexels-photo-326055.jpeg?cs=srgb&dl=beautiful-blur-bright-326055.jpg&fm=jpg");
+//        url_maps.put("Big Bang Theory", "https://resize.indiatvnews.com/en/resize/newbucket/715_-/2018/02/propose-1517999844.jpg");
+//        url_maps.put("House of Cards", "https://cdn.pixabay.com/photo/2017/01/06/23/21/soap-bubble-1959327_960_720.jpg");
+//        url_maps.put("Game of Thrones", "https://media.cntraveller.in/wp-content/uploads/2018/10/GettyImages-990972132-866x487.jpg");
+
+
+//        for (String name : url_maps.keySet()) {
+//            TextSliderView textSliderView = new TextSliderView(getActivity());
+//            // initialize a SliderLayout
+//            textSliderView
+//                    .description(name)
+//                    .image(url_maps.get(name))
+//                    .setScaleType(BaseSliderView.ScaleType.Fit);
+//            //.setOnSliderClickListener(getActivity());
+//
+//            //add your extra information
+//            textSliderView.bundle(new Bundle());
+//            textSliderView.getBundle()
+//                    .putString("extra", name);
+//
+//            sliderLayout.addSlider(textSliderView);
+//        }
+//        sliderLayout.setPresetTransformer(SliderLayout.Transformer.Accordion);
+//        sliderLayout.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+//        sliderLayout.setCustomAnimation(new DescriptionAnimation());
+//        sliderLayout.setDuration(4000);
 
     }
 

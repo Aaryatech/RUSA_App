@@ -6,4 +6,15 @@
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_english"
+        android:orderInCategory="100"
+        android:title="English"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_marathi"
+        android:orderInCategory="100"
+        android:title="Marathi"
+        app:showAsAction="never" />
 </menu>

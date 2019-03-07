@@ -12,4 +12,6 @@
 
     <string name="error_player">There was an error initializing the YouTubePlayer (%1$s)</string>
 
+    <string name="edittext_hint"><font size="14">User Name</font></string>
+
 </resources>

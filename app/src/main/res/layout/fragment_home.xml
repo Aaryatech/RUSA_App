@@ -6,17 +6,24 @@
     android:orientation="vertical"
     tools:context=".fragment.HomeFragment">
 
-    <FrameLayout
-        android:id="@+id/youtube_fragment"
-        android:name="com.google.android.youtube.player.YouTubePlayerSupportFragment"
-        android:layout_width="match_parent"
-        android:layout_height="200dp" />
-
     <com.daimajia.slider.library.SliderLayout
         android:id="@+id/slider"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/news_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <FrameLayout
+        android:id="@+id/youtube_fragment"
+        android:name="com.google.android.youtube.player.YouTubePlayerSupportFragment"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"

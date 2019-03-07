@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.LoginActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:textColor="@color/colorBlue"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="Rashtriya Uchchatar"
+            android:gravity="center"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:fontFamily="@font/open_sans_bold"
+            android:textColor="@color/colorBlue"
+            android:text="Shiksha Abhiyan"
+            android:gravity="center"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:fontFamily="@font/open_sans_bold"
+            android:textColor="@color/colorRed"
+            android:text="Goverment Of Maharashtra"
+            android:gravity="center"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:fontFamily="@font/open_sans_bold"
+            android:textColor="@color/colorBlue"
+            android:text=":LOGIN:"
+            android:layout_marginTop="20dp"
+            android:gravity="center"/>
+
+        <EditText
+            android:id="@+id/ed_userName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableRight="@drawable/ic_action_person"
+            android:fontFamily="@font/open_sans_regular"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:layout_marginTop="40dp"
+            android:inputType="text"
+            android:hint="Username"
+            android:background="@drawable/edittext_background"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"/>
+
+        <EditText
+            android:id="@+id/ed_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableRight="@drawable/ic_action_password"
+            android:drawablePadding="10dp"
+            android:padding="10dp"
+            android:fontFamily="@font/open_sans_regular"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:layout_marginTop="20dp"
+            android:inputType="textPassword"
+            android:hint="Password"
+            android:background="@drawable/edittext_background"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"/>
+
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="30dp"
+            android:padding="10dp"
+            android:background="@drawable/button_background"
+            android:textColor="@color/colorWhite"
+            android:text="LOGIN"
+            />
+
+        <TextView
+            android:id="@+id/tv_forgotPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Forgot Password?"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/colorBlack"/>
+
+        <LinearLayout
+            android:id="@+id/linearLayout_signUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Don't have an account ?"
+                android:textColor="@color/colorBlack"/>
+
+            <TextView
+                android:id="@+id/tv_signUp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text=" Sign Up Now"
+                android:textColor="@color/colorRed"/>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
