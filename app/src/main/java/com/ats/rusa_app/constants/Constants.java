@@ -21,6 +21,10 @@ public class Constants {
 
     public static final String BASE_URL = "http://ats.aaryatechindia.in:6435/atswebapi/";
 
+    public static final String PDF_URL = "http://tomcat.aaryatechindia.in:6435/media/pdf/";
+
+    public static final String GALLERY_URL = "http://tomcat.aaryatechindia.in:6435/media/gallery/";
+
     public static OkHttpClient client = new OkHttpClient.Builder()
             .addInterceptor(new Interceptor() {
                 @Override

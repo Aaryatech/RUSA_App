@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity
                                                     for (int k = 0; k < model.getSubCatList().size(); k++) {
                                                         if (model.getCategoryList().get(j).getCatId() == model.getSubCatList().get(k).getParentId()) {
                                                             // subChannelMenu = topChannelMenu.addSubMenu("" + model.getCategoryList().get(j).getCatName());
-                                                            MenuGroup childModel1 = new MenuGroup(model.getSubCatList().get(k).getSubCatName(), false, false, model.getCategoryList().get(j).getSlugName());
+                                                            MenuGroup childModel1 = new MenuGroup(model.getSubCatList().get(k).getSubCatName(), false, false, model.getSubCatList().get(k).getSubSlugName());
                                                             childModelsList.add(childModel1);
                                                         }
 

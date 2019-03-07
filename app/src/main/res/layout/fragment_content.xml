@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     android:orientation="vertical"
     tools:context=".fragment.ContentFragment">
 
@@ -11,8 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:gravity="center"
         android:textColor="@color/colorAccent"
-        android:textSize="22sp" />
+        android:textSize="20sp" />
 
     <LinearLayout
         android:id="@+id/llWebview"
@@ -21,11 +23,40 @@
         android:orientation="vertical"
         android:visibility="gone">
 
-        <WebView
-            android:id="@+id/webview"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp" />
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:visibility="gone"
+                    android:textColor="@color/colorBlack"
+                    android:id="@+id/tvHtml"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:textSize="15sp" />
+
+                <org.sufficientlysecure.htmltextview.HtmlTextView
+                    android:layout_margin="10dp"
+                    android:textSize="15sp"
+                    android:textColor="@color/colorBlack"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/tvHtmlTxt"/>
+
+                <WebView
+                    android:id="@+id/webview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </ScrollView>
 
     </LinearLayout>
 
