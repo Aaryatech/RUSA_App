@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <org.sufficientlysecure.htmltextview.HtmlTextView
+        android:id="@+id/tvQue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:drawableLeft="@drawable/ic_bullet"
+        android:textColor="@color/colorBlack"
+        android:layout_marginBottom="5dp"
+        android:textSize="16sp" />
+
+    <org.sufficientlysecure.htmltextview.HtmlTextView
+        android:id="@+id/tvAns"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:textSize="15sp" />
+
+</LinearLayout>
