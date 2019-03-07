@@ -80,6 +80,7 @@ public class ContentFragment extends Fragment implements Html.ImageGetter {
         recyclerView = view.findViewById(R.id.recyclerView);
         llWebview = view.findViewById(R.id.llWebview);
 
+
         webView = view.findViewById(R.id.webview);
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setLoadWithOverviewMode(true);
