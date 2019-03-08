@@ -25,6 +25,8 @@ public class Constants {
 
     public static final String GALLERY_URL = "http://tomcat.aaryatechindia.in:6435/media/gallery/";
 
+    public static final String BANENR_URL = "http://tomcat.aaryatechindia.in:6435/media/banenr/";
+
     public static OkHttpClient client = new OkHttpClient.Builder()
             .addInterceptor(new Interceptor() {
                 @Override

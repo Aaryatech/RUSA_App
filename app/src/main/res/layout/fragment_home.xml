@@ -11,23 +11,140 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/news_recyclerView"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-    </android.support.v7.widget.RecyclerView>
-
-    <FrameLayout
-        android:id="@+id/youtube_fragment"
-        android:name="com.google.android.youtube.player.YouTubePlayerSupportFragment"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="25dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Latest News"
+                android:layout_marginLeft="8dp"
+                android:textColor="@color/colorBlue"
+                />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/news_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+        </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout_baner"
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:layout_marginTop="20dp">
+
+            <ImageView
+                android:id="@+id/iv_baner"
+                android:layout_width="match_parent"
+                android:layout_height="170dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="30dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:textColor="@color/colorBlue"
+                android:fontFamily="@font/open_sans_bold"
+                android:layout_marginLeft="20dp"
+                android:text="Rashtriya Uchchatar"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:fontFamily="@font/open_sans_bold"
+                android:textColor="@color/colorBlue"
+                android:layout_marginLeft="20dp"
+                android:text="Shiksha Abhiyan"
+                />
+
+                <Button
+                    android:id="@+id/btn_click"
+                    android:layout_width="100dp"
+                    android:layout_height="35dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/rounded_corner_button"
+                    android:textColor="@color/colorWhite"
+                    android:text="Click here"
+                    />
+
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Videos"
+                android:layout_marginLeft="8dp"
+                android:textColor="@color/colorBlue"
+                />
+            <FrameLayout
+                android:id="@+id/youtube_fragment"
+                android:name="com.google.android.youtube.player.YouTubePlayerSupportFragment"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="10dp"/>
+
+        </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:visibility="gone"
         android:id="@+id/recyclerView"/>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Company Logo"
+                android:layout_marginLeft="8dp"
+                android:textColor="@color/colorBlue"
+                />
+            <android.support.v7.widget.RecyclerView
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:id="@+id/comp_recyclerView" />
+
+        </LinearLayout>
+    </LinearLayout>
+    </ScrollView>
 </LinearLayout>

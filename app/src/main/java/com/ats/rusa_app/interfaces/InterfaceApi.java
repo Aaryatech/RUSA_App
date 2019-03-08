@@ -1,6 +1,8 @@
 package com.ats.rusa_app.interfaces;
 
 
+import com.ats.rusa_app.model.Baner;
+import com.ats.rusa_app.model.CompanyModel;
 import com.ats.rusa_app.model.GallaryDetailList;
 import com.ats.rusa_app.model.MenuModel;
 import com.ats.rusa_app.model.NewDetail;
@@ -27,5 +29,11 @@ public interface InterfaceApi {
 
     @GET("getLastTenPhotos")
     Call<ArrayList<GallaryDetailList>> getImageGallery();
+
+    @GET("getAllImageLinkList")
+    Call<ArrayList<CompanyModel>> getCompSlider();
+
+    @GET("getLastSliderImagesByStatus")
+    Call<Baner> getBaner();
 
 }

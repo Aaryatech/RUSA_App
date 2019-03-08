@@ -1,9 +1,12 @@
 package com.ats.rusa_app.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +47,21 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.MyView
         Picasso.with(context).load(imageUri).into(myViewHolder.imageView);
         myViewHolder.tv_newsTitle.setText(model.getHeading());
         myViewHolder.tv_newsDisc.setHtml(model.getDescriptions(), new HtmlHttpImageGetter(myViewHolder.tv_newsDisc));
+        myViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(""+model.getNewsSourceUrlName()));
+                    context.startActivity(browserIntent);
+                }catch (Exception e)
+                {
+                    Log.e("Exception : ", "-----------" + e.getMessage());
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
     }
 
     @Override

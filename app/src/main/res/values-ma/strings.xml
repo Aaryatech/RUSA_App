@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">रुसा संरचना</string>
+    <string name="navigation_drawer_open">ओपन नेव्हिगेशन ड्रॉवर</string>
+    <string name="navigation_drawer_close">नेव्हिगेशन ड्रॉवर बंद करा</string>
+    <string name="nav_header_title">अँड्रॉइड स्टुडिओ</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">नॅव्हिगेशन हेडर</string>
+    <string name="action_settings">सेटिंग्ज</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">हॅलो रिक्त खंड</string>
+
+    <string name="error_player">ouTube प्लेअर (% 1 $ s) प्रारंभ करताना त्रुटी आली</string>
+
+    <string name="edittext_hint"><font size="14">वापरकर्ता नाव</font></string>
+</resources>

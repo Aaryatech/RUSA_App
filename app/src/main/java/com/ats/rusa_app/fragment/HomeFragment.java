@@ -11,12 +11,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.ats.rusa_app.R;
+import com.ats.rusa_app.adapter.CompSliderAdapter;
 import com.ats.rusa_app.adapter.NewsFeedAdapter;
 import com.ats.rusa_app.adapter.TestimonialsSliderAdapter;
 import com.ats.rusa_app.constants.Constants;
+import com.ats.rusa_app.model.Baner;
+import com.ats.rusa_app.model.CompanyModel;
 import com.ats.rusa_app.model.GallaryDetailList;
 import com.ats.rusa_app.model.NewDetail;
 import com.ats.rusa_app.model.Testimonials;
@@ -28,6 +33,7 @@ import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,13 +46,17 @@ import retrofit2.Response;
 public class HomeFragment extends Fragment {
 
     private SliderLayout sliderLayout;
+    public RelativeLayout relativeLayout_baner;
+    public ImageView iv_baner;
 
-    private RecyclerView recyclerView,new_recyclerView;
+    private RecyclerView recyclerView,new_recyclerView,comp_recyclerView;
     private LinearLayoutManager linearLayoutManager;
 
     final ArrayList<Testimonials> list = new ArrayList<>();
     ArrayList<NewDetail> newsList = new ArrayList<>();
     ArrayList<GallaryDetailList> galleryList = new ArrayList<>();
+    ArrayList<CompanyModel> companyList = new ArrayList<>();
+    ArrayList<Baner> banerList = new ArrayList<>();
 
 
 
@@ -59,11 +69,15 @@ public class HomeFragment extends Fragment {
         sliderLayout = view.findViewById(R.id.slider);
         recyclerView = view.findViewById(R.id.recyclerView);
         new_recyclerView = view.findViewById(R.id.news_recyclerView);
+        comp_recyclerView=view.findViewById(R.id.comp_recyclerView);
+        relativeLayout_baner=view.findViewById(R.id.relativeLayout_baner);
+        iv_baner=view.findViewById(R.id.iv_baner);
+
 
         getImageGallery();
-
         getNewFeed();
-
+        getCompSlider();
+        getBaner();
         initYoutubeVideo("gG2npfpaqsY");
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
@@ -98,6 +112,97 @@ public class HomeFragment extends Fragment {
 
 
         return view;
+    }
+
+    private void getBaner() {
+        if (Constants.isOnline(getContext())) {
+            final CommonDialog commonDialog = new CommonDialog(getContext(), "Loading", "Please Wait...");
+            commonDialog.show();
+
+            Call<Baner> listCall = Constants.myInterface.getBaner();
+            listCall.enqueue(new Callback<Baner>() {
+                @Override
+                public void onResponse(Call<Baner> call, Response<Baner> response) {
+                    try {
+                        if (response.body() != null) {
+
+                            Log.e("Banner responce : ", " - " + response.body());
+                            banerList.clear();
+                           // banerList=response.body();
+                            Baner baner=response.body();
+                                String imageUri =Constants.BANENR_URL +baner.getSliderImage();
+                                Log.e("URI","-----------"+imageUri);
+                                Picasso.with(getContext()).load(imageUri).into(iv_baner);
+
+
+                            commonDialog.dismiss();
+
+                        } else {
+                            commonDialog.dismiss();
+                            Log.e("Data Null : ", "-----------");
+                        }
+                    } catch (Exception e) {
+                        commonDialog.dismiss();
+                        Log.e("Exception : ", "-----------" + e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Baner> call, Throwable t) {
+                    commonDialog.dismiss();
+                    Log.e("onFailure1 : ", "-----------" + t.getMessage());
+                    t.printStackTrace();
+                }
+            });
+        } else {
+            Toast.makeText(getContext(), "No Internet Connection !", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private void getCompSlider() {
+        if (Constants.isOnline(getContext())) {
+            final CommonDialog commonDialog = new CommonDialog(getContext(), "Loading", "Please Wait...");
+            commonDialog.show();
+
+            Call<ArrayList<CompanyModel>> listCall = Constants.myInterface.getCompSlider();
+            listCall.enqueue(new Callback<ArrayList<CompanyModel>>() {
+                @Override
+                public void onResponse(Call<ArrayList<CompanyModel>> call, Response<ArrayList<CompanyModel>> response) {
+                    try {
+                        if (response.body() != null) {
+
+                            Log.e("Company responce : ", " - " + response.body());
+                            companyList.clear();
+                            companyList=response.body();
+                            CompSliderAdapter adapter = new CompSliderAdapter(companyList, getContext());
+                            comp_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                            comp_recyclerView.setAdapter(adapter);
+                            commonDialog.dismiss();
+
+                        } else {
+                            commonDialog.dismiss();
+                            Log.e("Data Null : ", "-----------");
+                        }
+                    } catch (Exception e) {
+                        commonDialog.dismiss();
+                        Log.e("Exception : ", "-----------" + e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ArrayList<CompanyModel>> call, Throwable t) {
+                    commonDialog.dismiss();
+                    Log.e("onFailure1 : ", "-----------" + t.getMessage());
+                    t.printStackTrace();
+                }
+            });
+        } else {
+            Toast.makeText(getContext(), "No Internet Connection !", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private void getImageGallery() {
@@ -230,7 +335,7 @@ public class HomeFragment extends Fragment {
         {
             String image=Constants.GALLERY_URL+gallaryDetailLists.get(i).getFileName();
             String title=gallaryDetailLists.get(i).getTitle();
-            url_maps.put(title,image);
+            url_maps.put("",image);
             Log.e("Gallery","----------"+url_maps);
 
         }

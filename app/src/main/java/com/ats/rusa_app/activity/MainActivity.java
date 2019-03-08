@@ -1,5 +1,7 @@
 package com.ats.rusa_app.activity;
 
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -26,9 +28,12 @@ import com.ats.rusa_app.model.CategoryList;
 import com.ats.rusa_app.model.MenuGroup;
 import com.ats.rusa_app.model.MenuModel;
 import com.ats.rusa_app.util.CommonDialog;
+import com.ats.rusa_app.util.Constant;
+import com.ats.rusa_app.util.CustomSharedPreference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,7 +45,9 @@ public class MainActivity extends AppCompatActivity
     //  Menu drawerMenu;
 
     boolean doubleBackToExitPressedOnce = false;
-
+    public  Locale locale;
+    public  Configuration config;
+    String language;
     ArrayList<CategoryList> menuCatList = new ArrayList<>();
 
     private ExpandableListView expandableListView;
@@ -125,7 +132,35 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_english){
+
+            language = CustomSharedPreference.LANGUAGE_ENG;
+            CustomSharedPreference.putString(MainActivity.this,CustomSharedPreference.LANGUAGE_ENG,CustomSharedPreference.LANGUAGE_ENG_ID);
+            Constant.yourLanguage(MainActivity.this, language);
+
+            Intent intent=new Intent(getApplicationContext(), MainActivity.class);
+            finish();
+            startActivity(intent);
+
+            return true;
+           
+        }else if(id==R.id.action_marathi)
+        {
+
+            language = CustomSharedPreference.LANGUAGE_MAR;
+            CustomSharedPreference.putString(MainActivity.this,CustomSharedPreference.LANGUAGE_MAR,CustomSharedPreference.LANGUAGE_MAR_ID);
+            Constant.yourLanguage(MainActivity.this, language);
+
+            Intent intent=new Intent(getApplicationContext(), MainActivity.class);
+            finish();
+            startActivity(intent);
+
+            return true;
+        }else if(id==R.id.action_contactUs)
+        {
+            Intent intent=new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+
             return true;
         }
 
@@ -133,6 +168,7 @@ public class MainActivity extends AppCompatActivity
 
 
     }
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
