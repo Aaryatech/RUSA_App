@@ -146,19 +146,16 @@ public class MainActivity extends AppCompatActivity
            
         }else if(id==R.id.action_marathi)
         {
-
             language = CustomSharedPreference.LANGUAGE_MAR;
             CustomSharedPreference.putString(MainActivity.this,CustomSharedPreference.LANGUAGE_MAR,CustomSharedPreference.LANGUAGE_MAR_ID);
             Constant.yourLanguage(MainActivity.this, language);
-
             Intent intent=new Intent(getApplicationContext(), MainActivity.class);
             finish();
             startActivity(intent);
-
             return true;
         }else if(id==R.id.action_contactUs)
         {
-            Intent intent=new Intent(getApplicationContext(), MainActivity.class);
+            Intent intent=new Intent(getApplicationContext(), ContactUsActivity.class);
             startActivity(intent);
 
             return true;
