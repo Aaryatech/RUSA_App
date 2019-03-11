@@ -1,0 +1,172 @@
+package com.ats.rusa_app.adapter;
+
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.ats.rusa_app.R;
+import com.ats.rusa_app.constants.Constants;
+import com.ats.rusa_app.model.CmsContentList;
+import com.ats.rusa_app.model.DetailNewsList;
+import com.ats.rusa_app.model.DocumentUploadList;
+import com.ats.rusa_app.model.FaqContentList;
+import com.ats.rusa_app.model.GallaryDetailList;
+import com.ats.rusa_app.model.PageData;
+
+import org.sufficientlysecure.htmltextview.HtmlHttpImageGetter;
+import org.sufficientlysecure.htmltextview.HtmlTextView;
+
+import java.util.ArrayList;
+
+public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.MyViewHolder> {
+
+    private ArrayList<PageData> dataList;
+    private Context context;
+
+    public ContentAdapter(ArrayList<PageData> dataList, Context context) {
+        this.dataList = dataList;
+        this.context = context;
+    }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        public RecyclerView cmsRecyclerView;
+        public RecyclerView faqRecyclerView;
+        public RecyclerView newsRecyclerView;
+        public RecyclerView docRecyclerView;
+        public RecyclerView testimonialRecyclerView;
+        public RecyclerView galleryRecyclerView;
+
+        public MyViewHolder(View view) {
+            super(view);
+            cmsRecyclerView = view.findViewById(R.id.cmsRecyclerView);
+            faqRecyclerView = view.findViewById(R.id.faqRecyclerView);
+            newsRecyclerView = view.findViewById(R.id.newsRecyclerView);
+            docRecyclerView = view.findViewById(R.id.docRecyclerView);
+            testimonialRecyclerView = view.findViewById(R.id.testimonialRecyclerView);
+            galleryRecyclerView = view.findViewById(R.id.galleryRecyclerView);
+
+        }
+    }
+
+    @Override
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.adapter_content, parent, false);
+
+
+        return new MyViewHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(MyViewHolder holder, int position) {
+        final PageData model = dataList.get(position);
+
+        try {
+
+            if (model.getCmsContentList() != null) {
+                holder.cmsRecyclerView.setVisibility(View.VISIBLE);
+
+                ArrayList<CmsContentList> cmsList = new ArrayList<>();
+                for (int i = 0; i < model.getCmsContentList().size(); i++) {
+                    cmsList.add(model.getCmsContentList().get(i));
+                }
+
+                CmsDataAdapter adapter = new CmsDataAdapter(cmsList, context);
+                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
+                holder.cmsRecyclerView.setLayoutManager(mLayoutManager);
+                holder.cmsRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                holder.cmsRecyclerView.setAdapter(adapter);
+            }
+
+            if (model.getFaqContentList() != null) {
+                holder.faqRecyclerView.setVisibility(View.VISIBLE);
+
+                ArrayList<FaqContentList> faqList = new ArrayList<>();
+                for (int i = 0; i < model.getFaqContentList().size(); i++) {
+                    faqList.add(model.getFaqContentList().get(i));
+                }
+
+                FaqAdapter faqAdapter = new FaqAdapter(faqList, context);
+                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
+                holder.faqRecyclerView.setLayoutManager(mLayoutManager);
+                holder.faqRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                holder.faqRecyclerView.setAdapter(faqAdapter);
+
+            }
+
+            if (model.getDocumentUploadList() != null) {
+                holder.docRecyclerView.setVisibility(View.VISIBLE);
+
+                ArrayList<DocumentUploadList> docList = new ArrayList<>();
+                for (int i = 0; i < model.getDocumentUploadList().size(); i++) {
+                    docList.add(model.getDocumentUploadList().get(i));
+                }
+
+                DownloadAdapter adapter = new DownloadAdapter(docList, context);
+                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
+                holder.docRecyclerView.setLayoutManager(mLayoutManager);
+                holder.docRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                holder.docRecyclerView.setAdapter(adapter);
+
+            }
+
+            if (model.getDetailNewsList() != null) {
+                holder.newsRecyclerView.setVisibility(View.VISIBLE);
+
+                ArrayList<DetailNewsList> newsList = new ArrayList<>();
+                for (int i = 0; i < model.getDetailNewsList().size(); i++) {
+                    newsList.add(model.getDetailNewsList().get(i));
+                }
+
+                DetailNewsAdapter adapter = new DetailNewsAdapter(newsList, context);
+                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
+                holder.newsRecyclerView.setLayoutManager(mLayoutManager);
+                holder.newsRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                holder.newsRecyclerView.setAdapter(adapter);
+
+
+            }
+
+            if (model.getTestImonialList() != null) {
+                holder.testimonialRecyclerView.setVisibility(View.VISIBLE);
+            }
+
+            if (model.getGallaryDetailList() != null) {
+                holder.galleryRecyclerView.setVisibility(View.VISIBLE);
+
+                ArrayList<GallaryDetailList> galleryList = new ArrayList<>();
+                for (int i = 0; i < model.getGallaryDetailList().size(); i++) {
+                    galleryList.add(model.getGallaryDetailList().get(i));
+                }
+
+                RvGalleryAdapter adapter = new RvGalleryAdapter(galleryList, context);
+                // RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
+                //holder.galleryRecyclerView.setLayoutManager(mLayoutManager);
+                holder.galleryRecyclerView.setLayoutManager(new GridLayoutManager(context, 2));
+                holder.galleryRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                holder.galleryRecyclerView.setAdapter(adapter);
+
+            }
+
+        } catch (Exception e) {
+        }
+
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return dataList.size();
+    }
+
+}

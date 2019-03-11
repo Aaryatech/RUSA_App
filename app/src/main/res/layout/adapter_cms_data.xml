@@ -1,23 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorWhite"
-    android:orientation="vertical"
-    tools:context=".fragment.ContentFragment">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvHeading"
+    <ImageView
+        android:id="@+id/ivImg"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="10dp"
+        android:layout_height="150dp"
         android:layout_marginBottom="10dp"
-        android:textColor="@color/colorPrimary"
-        android:textSize="21sp"
-        android:textStyle="bold" />
+        android:scaleType="fitXY"
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/llWebview"
@@ -31,6 +24,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
+            android:visibility="gone" />
+
+        <com.ats.rusa_app.util.RvWebView
+            android:id="@+id/rvWebview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:visibility="gone" />
+
+        <com.ats.rusa_app.util.TouchyWebView
+            android:id="@+id/tWebview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:visibility="visible" />
 
     </LinearLayout>
@@ -73,34 +83,16 @@
 
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:visibility="gone" />
-
-    <GridView
-        android:id="@+id/gridView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        android:horizontalSpacing="10dp"
-        android:numColumns="2"
-        android:verticalSpacing="10dp"
-        android:visibility="gone" />
-
     <TextView
-        android:id="@+id/tvNoRecord"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
         android:gravity="center"
-        android:text="No Record Found"
-        android:textAlignment="center"
-        android:textColor="@color/colorBlack"
-        android:textSize="23sp"
-        android:visibility="gone" />
-
+        android:drawablePadding="10dp"
+        android:drawableLeft="@drawable/ic_pdf"
+        android:visibility="gone"
+        android:textSize="15sp"
+        android:id="@+id/tvPdf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textColor="@android:color/holo_blue_dark" />
 
 </LinearLayout>

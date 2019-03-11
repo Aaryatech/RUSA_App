@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,10 +33,12 @@ import com.ats.rusa_app.activity.WebViewActivity;
 import com.ats.rusa_app.adapter.DetailNewsAdapter;
 import com.ats.rusa_app.adapter.DownloadAdapter;
 import com.ats.rusa_app.adapter.FaqAdapter;
+import com.ats.rusa_app.adapter.GalleryAdapter;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.DetailNewsList;
 import com.ats.rusa_app.model.DocumentUploadList;
 import com.ats.rusa_app.model.FaqContentList;
+import com.ats.rusa_app.model.GallaryDetailList;
 import com.ats.rusa_app.model.MenuGroup;
 import com.ats.rusa_app.model.MenuModel;
 import com.ats.rusa_app.model.PageData;
@@ -62,10 +65,11 @@ import static android.support.constraint.Constraints.TAG;
 
 public class ContentFragment extends Fragment implements Html.ImageGetter {
 
-    private TextView tvHeading, tvHtml;
+    private TextView tvHeading, tvHtml, tvNoRecord;
     private RecyclerView recyclerView;
-    private LinearLayout llWebview;
+    private LinearLayout llWebview,llHtml;
     private WebView webView;
+    private GridView gridView;
 
     private HtmlTextView tvHtmlTxt;
 
@@ -76,10 +80,12 @@ public class ContentFragment extends Fragment implements Html.ImageGetter {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_content, container, false);
 
+        tvNoRecord = view.findViewById(R.id.tvNoRecord);
         tvHeading = view.findViewById(R.id.tvHeading);
         recyclerView = view.findViewById(R.id.recyclerView);
         llWebview = view.findViewById(R.id.llWebview);
-
+        llHtml = view.findViewById(R.id.llHtml);
+        gridView = view.findViewById(R.id.gridView);
 
         webView = view.findViewById(R.id.webview);
         webView.getSettings().setUseWideViewPort(true);
@@ -88,9 +94,7 @@ public class ContentFragment extends Fragment implements Html.ImageGetter {
         tvHtml = view.findViewById(R.id.tvHtml);
         tvHtmlTxt = view.findViewById(R.id.tvHtmlTxt);
 
-
         //webView.setInitialScale(250);
-
 
         try {
             slugName = getArguments().getString("slugName");
@@ -128,7 +132,10 @@ public class ContentFragment extends Fragment implements Html.ImageGetter {
                                 if (model.getCmsContentList() != null) {
                                     Toast.makeText(getContext(), "CMS", Toast.LENGTH_SHORT).show();
 
-                                    llWebview.setVisibility(View.VISIBLE);
+                                    llHtml.setVisibility(View.VISIBLE);
+                                    recyclerView.setVisibility(View.GONE);
+                                    gridView.setVisibility(View.GONE);
+                                    tvNoRecord.setVisibility(View.GONE);
 
                                     final String mimeType = "text/html";
                                     final String encoding = "UTF-8";
@@ -146,7 +153,6 @@ public class ContentFragment extends Fragment implements Html.ImageGetter {
                                     }
 
                                     htmlText = htmlText +
-                                            "<p><img  src=\"http://tomcat.aaryatechindia.in:6435/media/other/2019-03-04_06:00:16_process follow.jpg\" style=\"width: 493px; height: 407px;\" /></p>" +
                                             "</body>" +
                                             "</html>";
 
@@ -162,23 +168,32 @@ public class ContentFragment extends Fragment implements Html.ImageGetter {
 
                                     tvHtmlTxt.setClickableTableSpan(new ClickableTableSpanImpl());
                                     DrawTableLinkSpan drawTableLinkSpan = new DrawTableLinkSpan();
-                                    drawTableLinkSpan.setTableLinkText("[tap for table]");
+                                    drawTableLinkSpan.setTableLinkText("View Table");
                                     tvHtmlTxt.setDrawTableLinkSpan(drawTableLinkSpan);
+
 
                                     // Best to use indentation that matches screen density.
                                     DisplayMetrics metrics = new DisplayMetrics();
                                     getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
                                     tvHtmlTxt.setListIndentPx(metrics.density * 10);
 
-                                    tvHtmlTxt.setHtml(htmlText, new HtmlHttpImageGetter(tvHtmlTxt));
+                                    try {
+                                        tvHtmlTxt.setHtml(htmlText, new HtmlHttpImageGetter(tvHtmlTxt));
+                                    } catch (Exception e) {
+                                        Log.e("Hello", "-------------Hii");
+                                        llHtml.setVisibility(View.GONE);
+                                        llWebview.setVisibility(View.VISIBLE);
+
+                                    }
 
 
                                 } else if (model.getFaqContentList() != null) {
                                     Toast.makeText(getContext(), "FAQS", Toast.LENGTH_SHORT).show();
 
-                                    llWebview.setVisibility(View.GONE);
+                                    llHtml.setVisibility(View.GONE);
                                     recyclerView.setVisibility(View.VISIBLE);
-
+                                    gridView.setVisibility(View.GONE);
+                                    tvNoRecord.setVisibility(View.GONE);
 
                                     if (model.getFaqContentList().size() > 0) {
 
@@ -198,9 +213,10 @@ public class ContentFragment extends Fragment implements Html.ImageGetter {
                                 } else if (model.getDocumentUploadList() != null) {
                                     Toast.makeText(getContext(), "DOC", Toast.LENGTH_SHORT).show();
 
-                                    llWebview.setVisibility(View.GONE);
+                                    llHtml.setVisibility(View.GONE);
                                     recyclerView.setVisibility(View.VISIBLE);
-
+                                    gridView.setVisibility(View.GONE);
+                                    tvNoRecord.setVisibility(View.GONE);
 
                                     if (model.getDocumentUploadList().size() > 0) {
 
@@ -220,8 +236,31 @@ public class ContentFragment extends Fragment implements Html.ImageGetter {
                                     Toast.makeText(getContext(), "TESTIMONIALS", Toast.LENGTH_SHORT).show();
                                 } else if (model.getGallaryDetailList() != null) {
                                     Toast.makeText(getContext(), "GALLERY", Toast.LENGTH_SHORT).show();
+
+                                    llHtml.setVisibility(View.GONE);
+                                    recyclerView.setVisibility(View.GONE);
+                                    gridView.setVisibility(View.VISIBLE);
+                                    tvNoRecord.setVisibility(View.GONE);
+
+                                    if (model.getGallaryDetailList().size() > 0) {
+
+                                        ArrayList<GallaryDetailList> galleryList = new ArrayList<>();
+                                        for (int i = 0; i < model.getGallaryDetailList().size(); i++) {
+                                            galleryList.add(model.getGallaryDetailList().get(i));
+                                        }
+
+                                        GalleryAdapter adapter = new GalleryAdapter(getContext(), galleryList);
+                                        gridView.setAdapter(adapter);
+                                    }
+
+
                                 } else if (model.getDetailNewsList() != null) {
                                     Toast.makeText(getContext(), "NEWS", Toast.LENGTH_SHORT).show();
+
+                                    llHtml.setVisibility(View.GONE);
+                                    recyclerView.setVisibility(View.VISIBLE);
+                                    gridView.setVisibility(View.GONE);
+                                    tvNoRecord.setVisibility(View.GONE);
 
                                     if (model.getDetailNewsList().size() > 0) {
 
@@ -237,6 +276,8 @@ public class ContentFragment extends Fragment implements Html.ImageGetter {
                                         recyclerView.setAdapter(adapter);
                                     }
 
+                                } else {
+                                    tvNoRecord.setVisibility(View.VISIBLE);
                                 }
                             }
 

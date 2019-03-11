@@ -105,6 +105,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             ivArrow.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_right_arrow));
         }
 
+        if (headerTitle.equalsIgnoreCase("Sign up")){
+            ivArrow.setVisibility(View.GONE);
+        }else{
+            ivArrow.setVisibility(View.VISIBLE);
+        }
+
 
         return convertView;
     }

@@ -46,9 +46,8 @@ dependencies {
     //html textview
     implementation 'org.sufficientlysecure:html-textview:3.6'
 
-    //Glide
-    implementation 'com.github.bumptech.glide:glide:4.9.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+    //Image zoom
+    implementation 'com.jsibbold:zoomage:1.2.0'
 
 }
 //AIzaSyCXE9dOasGKh3b3G9_2tcpqL6SuBGAXTOw
