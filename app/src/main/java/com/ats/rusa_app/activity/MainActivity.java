@@ -25,6 +25,7 @@ import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.fragment.ContactUsFragment;
 import com.ats.rusa_app.fragment.ContentFragment;
 import com.ats.rusa_app.fragment.HomeFragment;
+import com.ats.rusa_app.fragment.NewContentFragment;
 import com.ats.rusa_app.model.CategoryList;
 import com.ats.rusa_app.model.MenuGroup;
 import com.ats.rusa_app.model.MenuModel;
@@ -46,8 +47,8 @@ public class MainActivity extends AppCompatActivity
     //  Menu drawerMenu;
 
     boolean doubleBackToExitPressedOnce = false;
-    public  Locale locale;
-    public  Configuration config;
+    public Locale locale;
+    public Configuration config;
     String language;
     ArrayList<CategoryList> menuCatList = new ArrayList<>();
 
@@ -114,7 +115,8 @@ public class MainActivity extends AppCompatActivity
             }, 2000);
 
 
-        } else if (homeFragment instanceof ContentFragment && homeFragment.isVisible()) {
+        } else if (homeFragment instanceof ContentFragment && homeFragment.isVisible() ||
+                homeFragment instanceof NewContentFragment && homeFragment.isVisible()) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, new HomeFragment(), "Exit");
             ft.commit();
@@ -133,29 +135,27 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_english){
+        if (id == R.id.action_english) {
 
             language = CustomSharedPreference.LANGUAGE_ENG;
-            CustomSharedPreference.putString(MainActivity.this,CustomSharedPreference.LANGUAGE_ENG,CustomSharedPreference.LANGUAGE_ENG_ID);
+            CustomSharedPreference.putString(MainActivity.this, CustomSharedPreference.LANGUAGE_ENG, CustomSharedPreference.LANGUAGE_ENG_ID);
             Constant.yourLanguage(MainActivity.this, language);
 
-            Intent intent=new Intent(getApplicationContext(), MainActivity.class);
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             finish();
             startActivity(intent);
 
             return true;
-           
-        }else if(id==R.id.action_marathi)
-        {
+
+        } else if (id == R.id.action_marathi) {
             language = CustomSharedPreference.LANGUAGE_MAR;
-            CustomSharedPreference.putString(MainActivity.this,CustomSharedPreference.LANGUAGE_MAR,CustomSharedPreference.LANGUAGE_MAR_ID);
+            CustomSharedPreference.putString(MainActivity.this, CustomSharedPreference.LANGUAGE_MAR, CustomSharedPreference.LANGUAGE_MAR_ID);
             Constant.yourLanguage(MainActivity.this, language);
-            Intent intent=new Intent(getApplicationContext(), MainActivity.class);
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             finish();
             startActivity(intent);
             return true;
-        }else if(id==R.id.action_contactUs)
-        {
+        } else if (id == R.id.action_contactUs) {
 //            Intent intent=new Intent(getApplicationContext(), ContactUsActivity.class);
 //            startActivity(intent);
 
@@ -321,7 +321,7 @@ public class MainActivity extends AppCompatActivity
 //                        webView.loadUrl(model.url);
 //                        onBackPressed();
 
-                        Fragment adf = new ContentFragment();
+                        Fragment adf = new NewContentFragment();
                         Bundle args = new Bundle();
                         args.putString("slugName", model.getUrl());
                         adf.setArguments(args);
