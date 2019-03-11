@@ -6,25 +6,27 @@
     android:orientation="vertical"
     tools:context=".fragment.HomeFragment">
 
-    <com.daimajia.slider.library.SliderLayout
-        android:id="@+id/slider"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        />
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="25dp">
+
+    <com.daimajia.slider.library.SliderLayout
+        android:id="@+id/slider"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        />
+
+    <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+         android:layout_marginTop="25dp">
 
             <TextView
                 android:layout_width="match_parent"
@@ -120,7 +122,31 @@
 
         </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="25dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Testimonials"
+                android:layout_marginLeft="8dp"
+                android:textColor="@color/colorBlue"
+                />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/testominal_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+            </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+
+
+        <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:visibility="gone"

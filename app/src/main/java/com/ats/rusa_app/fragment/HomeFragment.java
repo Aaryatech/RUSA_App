@@ -2,7 +2,6 @@ package com.ats.rusa_app.fragment;
 
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,13 +17,14 @@ import android.widget.Toast;
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.adapter.CompSliderAdapter;
 import com.ats.rusa_app.adapter.NewsFeedAdapter;
-import com.ats.rusa_app.adapter.TestimonialsSliderAdapter;
+import com.ats.rusa_app.adapter.TestimonialAdapter;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.Baner;
 import com.ats.rusa_app.model.CompanyModel;
 import com.ats.rusa_app.model.GallaryDetailList;
 import com.ats.rusa_app.model.NewDetail;
 import com.ats.rusa_app.model.Testimonials;
+import com.ats.rusa_app.model.Testomonial;
 import com.ats.rusa_app.util.CommonDialog;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
@@ -37,7 +37,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,11 +48,12 @@ public class HomeFragment extends Fragment {
     public RelativeLayout relativeLayout_baner;
     public ImageView iv_baner;
 
-    private RecyclerView recyclerView,new_recyclerView,comp_recyclerView;
+    private RecyclerView testomonial_recyclerView,new_recyclerView,comp_recyclerView;
     private LinearLayoutManager linearLayoutManager;
 
     final ArrayList<Testimonials> list = new ArrayList<>();
     ArrayList<NewDetail> newsList = new ArrayList<>();
+    ArrayList<Testomonial> testimonialList = new ArrayList<>();
     ArrayList<GallaryDetailList> galleryList = new ArrayList<>();
     ArrayList<CompanyModel> companyList = new ArrayList<>();
     ArrayList<Baner> banerList = new ArrayList<>();
@@ -67,7 +67,7 @@ public class HomeFragment extends Fragment {
 
 
         sliderLayout = view.findViewById(R.id.slider);
-        recyclerView = view.findViewById(R.id.recyclerView);
+        testomonial_recyclerView = view.findViewById(R.id.testominal_recyclerView);
         new_recyclerView = view.findViewById(R.id.news_recyclerView);
         comp_recyclerView=view.findViewById(R.id.comp_recyclerView);
         relativeLayout_baner=view.findViewById(R.id.relativeLayout_baner);
@@ -79,39 +79,90 @@ public class HomeFragment extends Fragment {
         getCompSlider();
         getBaner();
         initYoutubeVideo("gG2npfpaqsY");
+        getTestimonial();
 
-        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(linearLayoutManager);
+//        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+//        recyclerView.setLayoutManager(linearLayoutManager);
+//
+//        Testimonials t1 = new Testimonials("AAA", "sdfdfgfdhgfdh");
+//        Testimonials t2 = new Testimonials("BBB", "sdfdfgfdhgfdh");
+//        Testimonials t3 = new Testimonials("CCC", "sdfdfgfdhgfdh");
+//        Testimonials t4 = new Testimonials("DDD", "sdfdfgfdhgfdh");
+//
+//        list.add(t1);
+//        list.add(t2);
+//        list.add(t3);
+//        list.add(t4);
+//
+//        TestimonialsSliderAdapter adapter = new TestimonialsSliderAdapter(list, getContext());
+//        recyclerView.setAdapter(adapter);
 
-        Testimonials t1 = new Testimonials("AAA", "sdfdfgfdhgfdh");
-        Testimonials t2 = new Testimonials("BBB", "sdfdfgfdhgfdh");
-        Testimonials t3 = new Testimonials("CCC", "sdfdfgfdhgfdh");
-        Testimonials t4 = new Testimonials("DDD", "sdfdfgfdhgfdh");
-
-        list.add(t1);
-        list.add(t2);
-        list.add(t3);
-        list.add(t4);
-
-        TestimonialsSliderAdapter adapter = new TestimonialsSliderAdapter(list, getContext());
-        recyclerView.setAdapter(adapter);
-
-       autoScroll();
+//       autoScroll();
 
 
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-        super.onScrolled(recyclerView, dx, dy);
-            int firstItemVisible = linearLayoutManager.findFirstVisibleItemPosition();
-        if (firstItemVisible != 0 && firstItemVisible % list.size() == 0) {
-                recyclerView.getLayoutManager().scrollToPosition(0);
-            }
-        }
-    });
+//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//        super.onScrolled(recyclerView, dx, dy);
+//            int firstItemVisible = linearLayoutManager.findFirstVisibleItemPosition();
+//        if (firstItemVisible != 0 && firstItemVisible % list.size() == 0) {
+//                recyclerView.getLayoutManager().scrollToPosition(0);
+//            }
+//        }
+//    });
 
 
         return view;
+    }
+
+    private void getTestimonial() {
+
+        if (Constants.isOnline(getContext())) {
+            final CommonDialog commonDialog = new CommonDialog(getContext(), "Loading", "Please Wait...");
+            commonDialog.show();
+
+            Call<ArrayList<Testomonial>> listCall = Constants.myInterface.getTestimonial();
+            listCall.enqueue(new Callback<ArrayList<Testomonial>>() {
+                @Override
+                public void onResponse(Call<ArrayList<Testomonial>> call, Response<ArrayList<Testomonial>> response) {
+                    try {
+                        if (response.body() != null) {
+
+                            Log.e("NEWS DATA : ", " - " + response.body());
+                            testimonialList.clear();
+                            testimonialList=response.body();
+                            //Testomonial testomonial=response.body();
+                            //testimonialList.add(testomonial);
+
+
+                            TestimonialAdapter adapter = new TestimonialAdapter(testimonialList, getContext());
+                            testomonial_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                            testomonial_recyclerView.setAdapter(adapter);
+
+
+                            commonDialog.dismiss();
+
+                        } else {
+                            commonDialog.dismiss();
+                            Log.e("Data Null : ", "-----------");
+                        }
+                    } catch (Exception e) {
+                        commonDialog.dismiss();
+                        Log.e("Exception : ", "-----------" + e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ArrayList<Testomonial>> call, Throwable t) {
+                    commonDialog.dismiss();
+                    Log.e("onFailure1 : ", "-----------" + t.getMessage());
+                    t.printStackTrace();
+                }
+            });
+        } else {
+            Toast.makeText(getContext(), "No Internet Connection !", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void getBaner() {
@@ -271,9 +322,6 @@ public class HomeFragment extends Fragment {
                             new_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
                             new_recyclerView.setAdapter(adapter);
 
-                            //                            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-//                            recyclerView.setLayoutManager(mLayoutManager);
-//                            recyclerView.setItemAnimator(new DefaultItemAnimator());
 
                             commonDialog.dismiss();
 
@@ -335,7 +383,7 @@ public class HomeFragment extends Fragment {
         {
             String image=Constants.GALLERY_URL+gallaryDetailLists.get(i).getFileName();
             String title=gallaryDetailLists.get(i).getTitle();
-            url_maps.put("",image);
+            url_maps.put(title,image);
             Log.e("Gallery","----------"+url_maps);
 
         }
@@ -390,45 +438,45 @@ public class HomeFragment extends Fragment {
 
     }
 
-    public void autoScroll() {
-
-        final int scrollSpeed = 100;   // Scroll Speed in Milliseconds
-        final Handler handler = new Handler();
-        final Runnable runnable = new Runnable() {
-            int x = 2;        // Pixels To Move/Scroll
-            boolean flag = true;
-            // Find Scroll Position By Accessing RecyclerView's LinearLayout's Visible Item Position
-            int scrollPosition = linearLayoutManager.findLastCompletelyVisibleItemPosition();
-            int arraySize = list.size();  // Gets RecyclerView's Adapter's Array Size
-
-            @Override
-            public void run() {
-                if (scrollPosition < arraySize) {
-                    if (scrollPosition == arraySize - 1) {
-                        flag = false;
-                    } else if (scrollPosition <= 1) {
-                        flag = true;
-                    }
-                    if (!flag) {
-                        try {
-                            // Delay in Seconds So User Can Completely Read Till Last String
-                            TimeUnit.SECONDS.sleep(1);
-                            recyclerView.scrollToPosition(0);  // Jumps Back Scroll To Start Point
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    // Know The Last Visible Item
-                    scrollPosition = linearLayoutManager.findLastCompletelyVisibleItemPosition();
-
-                    recyclerView.smoothScrollBy(x, 0);
-                    handler.postDelayed(this, scrollSpeed);
-                }
-            }
-        };
-        handler.postDelayed(runnable, scrollSpeed);
-
-    }
+//    public void autoScroll() {
+//
+//        final int scrollSpeed = 100;   // Scroll Speed in Milliseconds
+//        final Handler handler = new Handler();
+//        final Runnable runnable = new Runnable() {
+//            int x = 2;        // Pixels To Move/Scroll
+//            boolean flag = true;
+//            // Find Scroll Position By Accessing RecyclerView's LinearLayout's Visible Item Position
+//            int scrollPosition = linearLayoutManager.findLastCompletelyVisibleItemPosition();
+//            int arraySize = list.size();  // Gets RecyclerView's Adapter's Array Size
+//
+//            @Override
+//            public void run() {
+//                if (scrollPosition < arraySize) {
+//                    if (scrollPosition == arraySize - 1) {
+//                        flag = false;
+//                    } else if (scrollPosition <= 1) {
+//                        flag = true;
+//                    }
+//                    if (!flag) {
+//                        try {
+//                            // Delay in Seconds So User Can Completely Read Till Last String
+//                            TimeUnit.SECONDS.sleep(1);
+//                            recyclerView.scrollToPosition(0);  // Jumps Back Scroll To Start Point
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                    // Know The Last Visible Item
+//                    scrollPosition = linearLayoutManager.findLastCompletelyVisibleItemPosition();
+//
+//                    recyclerView.smoothScrollBy(x, 0);
+//                    handler.postDelayed(this, scrollSpeed);
+//                }
+//            }
+//        };
+//        handler.postDelayed(runnable, scrollSpeed);
+//
+//    }
 
 
 

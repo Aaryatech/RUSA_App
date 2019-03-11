@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ats.rusa_app.R;
+import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.NewDetail;
 import com.squareup.picasso.Picasso;
 
@@ -43,7 +44,7 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.MyView
     @Override
     public void onBindViewHolder(@NonNull NewsFeedAdapter.MyViewHolder myViewHolder, int i) {
         final NewDetail model = newsList.get(i);
-        String imageUri = "http://tomcat.aaryatechindia.in:6435/media/gallery/" + model.getFeaturedImage();
+        String imageUri = Constants.GALLERY_URL + model.getFeaturedImage();
         Picasso.with(context).load(imageUri).into(myViewHolder.imageView);
         myViewHolder.tv_newsTitle.setText(model.getHeading());
         myViewHolder.tv_newsDisc.setHtml(model.getDescriptions(), new HtmlHttpImageGetter(myViewHolder.tv_newsDisc));

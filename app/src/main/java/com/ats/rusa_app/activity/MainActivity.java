@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.constants.Constants;
+import com.ats.rusa_app.fragment.ContactUsFragment;
 import com.ats.rusa_app.fragment.ContentFragment;
 import com.ats.rusa_app.fragment.HomeFragment;
 import com.ats.rusa_app.model.CategoryList;
@@ -155,8 +156,12 @@ public class MainActivity extends AppCompatActivity
             return true;
         }else if(id==R.id.action_contactUs)
         {
-            Intent intent=new Intent(getApplicationContext(), ContactUsActivity.class);
-            startActivity(intent);
+//            Intent intent=new Intent(getApplicationContext(), ContactUsActivity.class);
+//            startActivity(intent);
+
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, new ContactUsFragment(), "HomeFragment");
+            ft.commit();
 
             return true;
         }

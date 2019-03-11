@@ -7,6 +7,7 @@ import com.ats.rusa_app.model.GallaryDetailList;
 import com.ats.rusa_app.model.MenuModel;
 import com.ats.rusa_app.model.NewDetail;
 import com.ats.rusa_app.model.PageData;
+import com.ats.rusa_app.model.Testomonial;
 
 import java.util.ArrayList;
 
@@ -35,5 +36,8 @@ public interface InterfaceApi {
 
     @GET("getLastSliderImagesByStatus")
     Call<Baner> getBaner();
+
+    @GET("getLastFiveTestImonials")
+    Call<ArrayList<Testomonial>> getTestimonial();
 
 }
