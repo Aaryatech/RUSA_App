@@ -13,7 +13,7 @@ import com.ats.rusa_app.R;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 public EditText ed_userName,ed_password;
 public Button btn_login;
-public TextView tv_forgotPass,tv_signUp;
+public TextView tv_forgotPass,tv_signUp,tv_skipLogin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,10 +22,12 @@ public TextView tv_forgotPass,tv_signUp;
         ed_password=(EditText)findViewById(R.id.ed_password);
         tv_forgotPass=(TextView)findViewById(R.id.tv_forgotPassword);
         tv_signUp=(TextView)findViewById(R.id.tv_signUp);
+        tv_skipLogin=(TextView)findViewById(R.id.tv_skipLogin);
         btn_login=(Button)findViewById(R.id.btn_login);
 
         tv_forgotPass.setOnClickListener(this);
         tv_signUp.setOnClickListener(this);
+        tv_skipLogin.setOnClickListener(this);
         btn_login.setOnClickListener(this);
     }
 
@@ -63,7 +65,12 @@ public TextView tv_forgotPass,tv_signUp;
         {
             Intent intent=new Intent(LoginActivity.this,RegistrationActivity.class);
             startActivity(intent);
+        }else if(v.getId()==R.id.tv_skipLogin)
+        {
+            Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+            startActivity(intent);
         }
+
 
     }
 }

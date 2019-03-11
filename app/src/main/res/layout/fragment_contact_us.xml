@@ -31,25 +31,14 @@
             android:scaleType="fitXY"
             />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18dp"
-            android:gravity="center"
-            android:layout_marginTop="20dp"
-            android:textColor="@color/colorBlue"
-            android:visibility="gone"
-            android:fontFamily="@font/open_sans_bold"
-            android:layout_marginLeft="20dp"
-            android:text="Show Location"
-            />
+
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18dp"
             android:textColor="@color/colorBlue"
-            android:fontFamily="@font/open_sans_bold"
+            android:fontFamily="@font/lato_bold"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
             android:text="Rashtriya Uchchatar Shiksha Abhiyan"
@@ -61,7 +50,7 @@
             android:textSize="12dp"
             android:layout_marginTop="10dp"
             android:textColor="@color/colorBlue"
-            android:fontFamily="@font/open_sans_regular"
+            android:fontFamily="@font/lato_regular"
             android:layout_marginLeft="20dp"
             android:text="Unit No.7, 19th floor, Center No. 1, World Trade Centre, Cuffe Parade,Colaba, Mumbai-400005."
             />
@@ -71,7 +60,7 @@
             android:layout_height="wrap_content"
             android:textSize="12dp"
             android:textColor="@color/colorBlue"
-            android:fontFamily="@font/open_sans_regular"
+            android:fontFamily="@font/lato_regular"
             android:layout_marginLeft="20dp"
             android:text="Phone: 011 - 49725600"
             />
@@ -89,7 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
             android:layout_marginTop="10dp"
-            android:fontFamily="@font/open_sans_bold"
+            android:fontFamily="@font/lato_bold"
             android:text="Your Name"
             android:textColor="@color/colorPrimary" />
 
@@ -101,6 +90,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
             android:hint="Name"
+            android:fontFamily="@font/lato_regular"
             android:background="@android:drawable/editbox_background_normal"
             android:drawablePadding="10dp"
             android:editable="false"
@@ -114,7 +104,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
             android:layout_marginTop="10dp"
-            android:fontFamily="@font/open_sans_bold"
+            android:fontFamily="@font/lato_bold"
             android:text="Your Email"
             android:textColor="@color/colorPrimary" />
 
@@ -126,6 +116,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
             android:hint="Email"
+            android:fontFamily="@font/lato_regular"
             android:background="@android:drawable/editbox_background_normal"
             android:drawablePadding="10dp"
             android:editable="false"
@@ -139,7 +130,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
             android:layout_marginTop="10dp"
-            android:fontFamily="@font/open_sans_bold"
+            android:fontFamily="@font/lato_bold"
             android:text="Phone Number"
             android:textColor="@color/colorPrimary" />
 
@@ -153,6 +144,7 @@
             android:hint="Mobile Number"
             android:background="@android:drawable/editbox_background_normal"
             android:drawablePadding="10dp"
+            android:fontFamily="@font/lato_regular"
             android:editable="false"
             android:gravity="center_vertical"
             android:inputType="number"
@@ -163,7 +155,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
             android:layout_marginTop="10dp"
-            android:fontFamily="@font/open_sans_bold"
+            android:fontFamily="@font/lato_bold"
             android:text="Your Message"
             android:textColor="@color/colorPrimary" />
 
@@ -175,6 +167,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
             android:hint="Message"
+            android:fontFamily="@font/lato_regular"
             android:background="@android:drawable/editbox_background_normal"
             android:maxLines="5"
             android:lines="5"
@@ -188,6 +181,7 @@
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
             android:layout_marginTop="10dp"
+            android:fontFamily="@font/lato_bold"
             android:background="@drawable/contact_button_background"
             android:text="Send"
             android:textColor="@color/colorWhite"

@@ -33,6 +33,7 @@
                 android:layout_height="wrap_content"
                 android:text="Latest News"
                 android:layout_marginLeft="8dp"
+                android:fontFamily="@font/lato_bold"
                 android:textColor="@color/colorBlue"
                 />
 
@@ -67,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="18dp"
                 android:textColor="@color/colorBlue"
-                android:fontFamily="@font/open_sans_bold"
+                android:fontFamily="@font/lato_bold"
                 android:layout_marginLeft="20dp"
                 android:text="Rashtriya Uchchatar"
                 />
@@ -76,7 +77,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18dp"
-                android:fontFamily="@font/open_sans_bold"
+                android:fontFamily="@font/lato_bold"
                 android:textColor="@color/colorBlue"
                 android:layout_marginLeft="20dp"
                 android:text="Shiksha Abhiyan"
@@ -89,6 +90,7 @@
                     android:layout_marginRight="20dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="20dp"
+                    android:fontFamily="@font/lato_bold"
                     android:background="@drawable/rounded_corner_button"
                     android:textColor="@color/colorWhite"
                     android:text="Click here"
@@ -110,6 +112,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Videos"
+                android:fontFamily="@font/lato_bold"
                 android:layout_marginLeft="8dp"
                 android:textColor="@color/colorBlue"
                 />
@@ -132,6 +135,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Testimonials"
+                android:fontFamily="@font/lato_bold"
                 android:layout_marginLeft="8dp"
                 android:textColor="@color/colorBlue"
                 />
@@ -162,6 +166,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Company Logo"
+                android:fontFamily="@font/lato_bold"
                 android:layout_marginLeft="8dp"
                 android:textColor="@color/colorBlue"
                 />

@@ -58,8 +58,6 @@ public class HomeFragment extends Fragment {
     ArrayList<CompanyModel> companyList = new ArrayList<>();
     ArrayList<Baner> banerList = new ArrayList<>();
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -131,14 +129,9 @@ public class HomeFragment extends Fragment {
                             Log.e("NEWS DATA : ", " - " + response.body());
                             testimonialList.clear();
                             testimonialList=response.body();
-                            //Testomonial testomonial=response.body();
-                            //testimonialList.add(testomonial);
-
-
                             TestimonialAdapter adapter = new TestimonialAdapter(testimonialList, getContext());
                             testomonial_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
                             testomonial_recyclerView.setAdapter(adapter);
-
 
                             commonDialog.dismiss();
 
@@ -391,7 +384,7 @@ public class HomeFragment extends Fragment {
             TextSliderView textSliderView = new TextSliderView(getActivity());
             // initialize a SliderLayout
             textSliderView
-                    .description(name)
+                    .description("")
                     .image(url_maps.get(name))
                     .setScaleType(BaseSliderView.ScaleType.Fit);
             //.setOnSliderClickListener(getActivity());
