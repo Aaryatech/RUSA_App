@@ -1,0 +1,84 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.LoginActivity">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:background="@drawable/login_bg">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:src="@drawable/logo_new"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/colorBlue"
+                android:fontFamily="@font/lato_bold"
+                android:text="Rashtriya Uchchatar"
+                android:gravity="center"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:fontFamily="@font/lato_bold"
+                android:textColor="@color/colorBlue"
+                android:text="Shiksha Abhiyan"
+                android:gravity="center"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:fontFamily="@font/lato_bold"
+                android:textColor="@color/colorRed"
+                android:text="Goverment Of Maharashtra"
+                android:gravity="center"
+                />
+
+            <!--android:drawableRight="@drawable/name_icon"-->
+            <EditText
+                android:id="@+id/ed_verifyOTP"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:fontFamily="@font/lato_regular"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:layout_marginTop="30dp"
+                android:inputType="number"
+                android:hint="Enter OTP"
+                android:background="@drawable/edittext_background"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"/>
+
+
+            <Button
+                android:id="@+id/btn_submit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="30dp"
+                android:padding="10dp"
+                android:textSize="18dp"
+                android:fontFamily="@font/lato_bold"
+                android:background="@drawable/button_background"
+                android:textColor="@color/colorWhite"
+                android:text="Submit"
+                />
+        </LinearLayout>
+</RelativeLayout>

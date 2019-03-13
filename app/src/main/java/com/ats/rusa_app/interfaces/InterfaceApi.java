@@ -7,11 +7,13 @@ import com.ats.rusa_app.model.GallaryDetailList;
 import com.ats.rusa_app.model.MenuModel;
 import com.ats.rusa_app.model.NewDetail;
 import com.ats.rusa_app.model.PageData;
+import com.ats.rusa_app.model.Registration;
 import com.ats.rusa_app.model.Testomonial;
 
 import java.util.ArrayList;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -40,4 +42,7 @@ public interface InterfaceApi {
     @GET("getLastFiveTestImonials")
     Call<ArrayList<Testomonial>> getTestimonial();
 
+    @POST("saveReg")
+    Call<Registration> saveRegistration(@Body Registration registration);
+    //saveRegistration
 }
