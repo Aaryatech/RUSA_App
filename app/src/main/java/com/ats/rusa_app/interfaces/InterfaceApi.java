@@ -6,6 +6,7 @@ import com.ats.rusa_app.model.CompanyModel;
 import com.ats.rusa_app.model.GallaryDetailList;
 import com.ats.rusa_app.model.MenuModel;
 import com.ats.rusa_app.model.NewDetail;
+import com.ats.rusa_app.model.OTPVerification;
 import com.ats.rusa_app.model.PageData;
 import com.ats.rusa_app.model.Registration;
 import com.ats.rusa_app.model.Testomonial;
@@ -45,4 +46,7 @@ public interface InterfaceApi {
     @POST("saveReg")
     Call<Registration> saveRegistration(@Body Registration registration);
     //saveRegistration
+
+    @POST("verifyOtpResponse")
+    Call<OTPVerification> verifyOtpResponse(@Query("userOtp") String userOtp,@Query("uuid") String uuid);
 }

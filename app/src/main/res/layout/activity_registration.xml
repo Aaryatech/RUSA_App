@@ -215,6 +215,22 @@
             android:layout_marginRight="20dp"/>
 
         <EditText
+            android:id="@+id/ed_mobileNo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:fontFamily="@font/lato_regular"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:visibility="gone"
+            android:layout_marginTop="20dp"
+            android:inputType="number"
+            android:hint="Mobile Number*"
+            android:background="@drawable/edittext_background"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"/>
+
+        <EditText
             android:id="@+id/ed_DOB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

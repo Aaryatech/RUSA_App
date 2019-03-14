@@ -80,5 +80,20 @@
                 android:textColor="@color/colorWhite"
                 android:text="Submit"
                 />
+
+            <Button
+                android:id="@+id/btn_resend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="30dp"
+                android:padding="10dp"
+                android:textSize="18dp"
+                android:fontFamily="@font/lato_bold"
+                android:background="@drawable/button_background"
+                android:textColor="@color/colorWhite"
+                android:text="Resend OTP"
+                />
         </LinearLayout>
 </RelativeLayout>
