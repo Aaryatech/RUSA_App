@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="180dp"
-    android:layout_height="120dp"
-    android:layout_margin="2dp"
+    android:layout_width="@dimen/youtube_card_width"
+    android:layout_height="@dimen/youtube_card_height"
+    android:layout_margin="@dimen/margin_tiny"
     app:cardUseCompatPadding="true"
     app:cardElevation="3dp">
 

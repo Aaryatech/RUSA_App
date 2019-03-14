@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
+    android:layout_margin="@dimen/margin_tiny"
     android:background="@color/colorWhite"
     app:cardElevation="3dp">
 
@@ -16,7 +16,7 @@
         <ImageView
             android:id="@+id/ivImg"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="@dimen/img_height"
             android:layout_marginBottom="5dp"
             android:scaleType="fitXY" />
 
@@ -24,16 +24,17 @@
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:textColor="@color/colorBlack"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+            android:layout_margin="@dimen/margin_tiny"
+            android:fontFamily="@font/lato_bold"
+            android:textColor="@color/colorOrange"
+            android:textSize="@dimen/text_medium" />
 
         <org.sufficientlysecure.htmltextview.HtmlTextView
             android:id="@+id/tvDesc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="@dimen/margin_tiny"
+            android:fontFamily="@font/lato_regular"
             android:maxLines="3" />
 
     </LinearLayout>

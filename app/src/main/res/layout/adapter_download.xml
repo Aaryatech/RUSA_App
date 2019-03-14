@@ -3,24 +3,25 @@
     android:id="@+id/llFile"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="10dp"
+    android:layout_marginTop="@dimen/margin_small"
+    android:layout_marginBottom="@dimen/margin_small"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/margin_small"
         android:scaleType="fitXY"
         android:src="@drawable/ic_file" />
 
     <TextView
+        android:fontFamily="@font/lato_regular"
         android:id="@+id/tvName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
+        android:layout_marginRight="@dimen/margin_small"
         android:textColor="@color/colorBlack"
-        android:textSize="15sp" />
+        android:textSize="@dimen/text_medium" />
 
 </LinearLayout>
