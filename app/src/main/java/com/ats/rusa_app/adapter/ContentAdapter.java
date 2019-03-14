@@ -22,6 +22,7 @@ import com.ats.rusa_app.model.DocumentUploadList;
 import com.ats.rusa_app.model.FaqContentList;
 import com.ats.rusa_app.model.GallaryDetailList;
 import com.ats.rusa_app.model.PageData;
+import com.ats.rusa_app.model.TestImonialList;
 
 import org.sufficientlysecure.htmltextview.HtmlHttpImageGetter;
 import org.sufficientlysecure.htmltextview.HtmlTextView;
@@ -139,6 +140,17 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.MyViewHo
 
             if (model.getTestImonialList() != null) {
                 holder.testimonialRecyclerView.setVisibility(View.VISIBLE);
+
+                ArrayList<TestImonialList> testimonialList = new ArrayList<>();
+                for (int i = 0; i < model.getTestImonialList().size(); i++) {
+                    testimonialList.add(model.getTestImonialList().get(i));
+                }
+
+                TestimonialDataAdapter adapter = new TestimonialDataAdapter(testimonialList, context);
+                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
+                holder.testimonialRecyclerView.setLayoutManager(mLayoutManager);
+                holder.testimonialRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                holder.testimonialRecyclerView.setAdapter(adapter);
             }
 
             if (model.getGallaryDetailList() != null) {

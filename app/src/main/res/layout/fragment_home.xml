@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,172 +11,264 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <LinearLayout
-         android:layout_width="match_parent"
-         android:layout_height="match_parent"
-         android:orientation="vertical">
-
-
-    <com.daimajia.slider.library.SliderLayout
-        android:id="@+id/slider"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        />
-
-    <LinearLayout
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:orientation="vertical"
-         android:layout_marginTop="25dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Latest News"
-                android:layout_marginLeft="8dp"
-                android:fontFamily="@font/lato_bold"
-                android:textColor="@color/colorBlue"
-                />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/news_recyclerView"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        </android.support.v7.widget.RecyclerView>
-        </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/relativeLayout_baner"
-            android:layout_width="match_parent"
-            android:layout_height="170dp"
-            android:layout_marginTop="20dp">
-
-            <ImageView
-                android:id="@+id/iv_baner"
+            <com.daimajia.slider.library.SliderLayout
+                android:id="@+id/slider"
                 android:layout_width="match_parent"
-                android:layout_height="170dp" />
+                android:layout_height="@dimen/home_gallery_height" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="30dp">
+                android:layout_marginTop="@dimen/home_label_top_margin"
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="18dp"
-                android:textColor="@color/colorBlue"
-                android:fontFamily="@font/lato_bold"
-                android:layout_marginLeft="20dp"
-                android:text="Rashtriya Uchchatar"
-                />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="18dp"
-                android:fontFamily="@font/lato_bold"
-                android:textColor="@color/colorBlue"
-                android:layout_marginLeft="20dp"
-                android:text="Shiksha Abhiyan"
-                />
-
-                <Button
-                    android:id="@+id/btn_click"
-                    android:layout_width="100dp"
-                    android:layout_height="35dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="20dp"
+                <TextView
+                    android:textSize="@dimen/text_medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_medium"
                     android:fontFamily="@font/lato_bold"
-                    android:background="@drawable/rounded_corner_button"
-                    android:textColor="@color/colorWhite"
-                    android:text="Click here"
-                    />
+                    android:text="Latest News"
+                    android:textColor="@color/colorBlue" />
 
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/news_recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_medium">
+
+                </android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout_baner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/home_banner_height"
+                android:layout_marginTop="@dimen/home_label_top_margin">
+
+                <ImageView
+                    android:id="@+id/iv_baner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <LinearLayout
+                    android:layout_centerInParent="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_large"
+                        android:fontFamily="@font/lato_bold"
+                        android:text="Rashtriya Uchchatar"
+                        android:textColor="@color/colorBlue"
+                        android:textSize="@dimen/text_large" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_large"
+                        android:fontFamily="@font/lato_bold"
+                        android:text="Shiksha Abhiyan"
+                        android:textColor="@color/colorBlue"
+                        android:textSize="@dimen/text_large" />
+
+                    <Button
+                        android:textSize="@dimen/text_small"
+                        android:id="@+id/btn_click"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_large"
+                        android:background="@drawable/rounded_corner_button"
+                        android:fontFamily="@font/lato_bold"
+                        android:text="  Click here  "
+                        android:textColor="@color/colorWhite" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/home_label_top_margin"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_medium"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="Videos"
+                    android:textSize="@dimen/text_medium"
+                    android:textColor="@color/colorBlue" />
+
+                <FrameLayout
+                    android:visibility="gone"
+                    android:id="@+id/youtube_fragment"
+                    android:name="com.google.android.youtube.player.YouTubePlayerSupportFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="10dp" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/videos_recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_medium"/>
 
             </LinearLayout>
 
-        </RelativeLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="20dp">
-
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Videos"
-                android:fontFamily="@font/lato_bold"
-                android:layout_marginLeft="8dp"
-                android:textColor="@color/colorBlue"
-                />
-            <FrameLayout
-                android:id="@+id/youtube_fragment"
-                android:name="com.google.android.youtube.player.YouTubePlayerSupportFragment"
+                android:layout_marginTop="@dimen/home_label_top_margin"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_medium"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="Testimonials"
+                    android:textSize="@dimen/text_medium"
+                    android:textColor="@color/colorBlue" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/testominal_recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_medium">
+
+                </android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_marginTop="10dp"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="25dp">
+                android:visibility="gone" />
 
             <TextView
+                android:layout_marginTop="@dimen/home_label_top_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Testimonials"
+                android:layout_marginLeft="@dimen/margin_medium"
                 android:fontFamily="@font/lato_bold"
-                android:layout_marginLeft="8dp"
-                android:textColor="@color/colorBlue"
-                />
+                android:text="Twitter"
+                android:textSize="@dimen/text_medium"
+                android:textColor="@color/colorBlue" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/testominal_recyclerView"
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginLeft="@dimen/margin_xx_large"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginRight="@dimen/margin_xx_large"
+                app:cardElevation="3dp"
+                app:cardUseCompatPadding="true">
 
-            </android.support.v7.widget.RecyclerView>
-        </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/social_media_height">
 
+                    <com.ats.rusa_app.util.TouchyWebView
+                        android:id="@+id/wvTwitter"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true" />
 
-        <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:visibility="gone"
-        android:id="@+id/recyclerView"/>
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/fabTwitter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_margin="@dimen/fab_margin"
+                        android:backgroundTint="@color/twitterColor"
+                        android:src="@drawable/twitter" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="20dp">
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
 
             <TextView
+                android:layout_marginTop="@dimen/home_label_top_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Company Logo"
+                android:layout_marginLeft="@dimen/margin_medium"
                 android:fontFamily="@font/lato_bold"
-                android:layout_marginLeft="8dp"
-                android:textColor="@color/colorBlue"
-                />
-            <android.support.v7.widget.RecyclerView
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:id="@+id/comp_recyclerView" />
+                android:text="Facebook"
+                android:textSize="@dimen/text_medium"
+                android:textColor="@color/colorBlue" />
 
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_xx_large"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginRight="@dimen/margin_xx_large"
+                app:cardElevation="3dp"
+                app:cardUseCompatPadding="true">
+
+                <RelativeLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/social_media_height">
+
+                    <com.ats.rusa_app.util.TouchyWebView
+                        android:id="@+id/wvFb"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true" />
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/fabFb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_margin="@dimen/fab_margin"
+                        android:backgroundTint="@color/fbColor"
+                        android:src="@drawable/fb" />
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/home_label_top_margin"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_medium"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="Company Logo"
+                    android:textSize="@dimen/text_medium"
+                    android:textColor="@color/colorBlue" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_marginTop="@dimen/margin_medium"
+                    android:id="@+id/comp_recyclerView"
+                    android:layout_marginBottom="@dimen/margin_large"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
     </ScrollView>
 </LinearLayout>

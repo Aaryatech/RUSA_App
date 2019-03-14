@@ -20,16 +20,11 @@ public class CustomSharedPreference
     public static String LANGUAGE_MAR = "ma";
     public static String LANGUAGE_ENG_ID = "1"; //--- for english
     public static String LANGUAGE_MAR_ID = "2"; //--- for marathi
+    public static String LANGUAGE_SELECTED = "1"; //--- for marathi
 
     private static String PREFERENCE_NAME = "UserInfo";
-    public static String KEY_APPLICANT_DATA = "ApplicantData";
-    public static String KEY_SAAT_BARA_DATA = "SaatBaraData";
-    public static String KEY_ENTRANCE_BOOKING = "EntranceBooking";
-    public static String KEY_VEHICLE_LIST = "VehicleList";
-    public static String KEY_PARKING_TOTAL = "ParkingTotal";
-    public static String KEY_MINI_TRAIN_BOOKING = "MiniTrainBooking";
-    public static String KEY_SAFARI_TOUR = "SafariTour";
-    public static String KEY_SGNP_APPLICANT_DETAIL = "SGNPApplicantDetail";
+    public static String PREFERENCE_TOKEN = "appToken";
+
 
     public static List<String> lstAppData = new ArrayList<>();
 

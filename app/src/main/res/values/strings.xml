@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RUSA Structure</string>
+    <string name="app_name">RUSA</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -13,5 +13,17 @@
     <string name="error_player">There was an error initializing the YouTubePlayer (%1$s)</string>
 
     <string name="edittext_hint"><font size="14">User Name</font></string>
+
+    <string name="strLanguageChoose">Select language</string>
+    <string name="strMenuLanguage">Language</string>
+    <string-array name="lauguage">
+        <item>English</item>
+        <item>मराठी</item>
+    </string-array>
+
+    <string name="str_settings">Settings</string>
+    <string name="str_login">Login</string>
+    <string name="str_notification">Notification</string>
+
 
 </resources>

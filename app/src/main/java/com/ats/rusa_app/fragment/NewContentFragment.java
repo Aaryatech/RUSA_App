@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ats.rusa_app.R;
+import com.ats.rusa_app.activity.MainActivity;
 import com.ats.rusa_app.adapter.ContentAdapter;
 import com.ats.rusa_app.adapter.DetailNewsAdapter;
 import com.ats.rusa_app.adapter.DownloadAdapter;
@@ -29,6 +30,7 @@ import com.ats.rusa_app.model.FaqContentList;
 import com.ats.rusa_app.model.GallaryDetailList;
 import com.ats.rusa_app.model.PageData;
 import com.ats.rusa_app.util.CommonDialog;
+import com.ats.rusa_app.util.CustomSharedPreference;
 
 import org.sufficientlysecure.htmltextview.DrawTableLinkSpan;
 import org.sufficientlysecure.htmltextview.HtmlHttpImageGetter;
@@ -45,6 +47,7 @@ public class NewContentFragment extends Fragment {
     private TextView tvHeading, tvNoRecord;
 
     private String slugName;
+    int languageId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,9 +58,16 @@ public class NewContentFragment extends Fragment {
         tvNoRecord = view.findViewById(R.id.tvNoRecord);
         recyclerView = view.findViewById(R.id.recyclerView);
 
+        String langId = CustomSharedPreference.getString(getActivity(), CustomSharedPreference.LANGUAGE_SELECTED);
+        try {
+            languageId = Integer.parseInt(langId);
+        } catch (Exception e) {
+            languageId = 1;
+        }
+
         try {
             slugName = getArguments().getString("slugName");
-            getPageData(slugName);
+            getPageData(slugName, languageId);
         } catch (Exception e) {
             Log.e("ContentFrag : ", " ----------- " + e.getMessage());
             e.printStackTrace();
@@ -67,13 +77,13 @@ public class NewContentFragment extends Fragment {
     }
 
 
-    public void getPageData(final String slugName) {
+    public void getPageData(final String slugName, int langId) {
 
         if (Constants.isOnline(getContext())) {
             final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<PageData> listCall = Constants.myInterface.getPageData(slugName, 1);
+            Call<PageData> listCall = Constants.myInterface.getPageData(slugName, langId);
             listCall.enqueue(new Callback<PageData>() {
                 @Override
                 public void onResponse(Call<PageData> call, Response<PageData> response) {
@@ -91,9 +101,57 @@ public class NewContentFragment extends Fragment {
                                 tvHeading.setText("" + model.getPageName());
                                 getActivity().setTitle("" + model.getPageName());
 
+                                boolean flag = false;
+
                                 if (model.getCmsContentList() == null && model.getGallaryDetailList() == null && model.getTestImonialList() == null && model.getDetailNewsList() == null && model.getDocumentUploadList() == null && model.getFaqContentList() == null) {
                                     tvNoRecord.setVisibility(View.VISIBLE);
-                                } else {
+                                } else if (model.getCmsContentList() != null) {
+                                    if (model.getCmsContentList().size() == 0) {
+                                        tvNoRecord.setVisibility(View.VISIBLE);
+                                        flag = false;
+                                    } else {
+                                        flag = true;
+                                    }
+                                } else if (model.getGallaryDetailList() != null) {
+                                    if (model.getGallaryDetailList().size() == 0) {
+                                        tvNoRecord.setVisibility(View.VISIBLE);
+                                        flag = false;
+                                    } else {
+                                        flag = true;
+                                    }
+
+                                } else if (model.getTestImonialList() != null) {
+                                    if (model.getTestImonialList().size() == 0) {
+                                        tvNoRecord.setVisibility(View.VISIBLE);
+                                        flag = false;
+                                    } else {
+                                        flag = true;
+                                    }
+                                } else if (model.getFaqContentList() != null) {
+                                    if (model.getFaqContentList().size() == 0) {
+                                        tvNoRecord.setVisibility(View.VISIBLE);
+                                        flag = false;
+                                    } else {
+                                        flag = true;
+                                    }
+                                } else if (model.getDocumentUploadList() != null) {
+                                    if (model.getDocumentUploadList().size() == 0) {
+                                        tvNoRecord.setVisibility(View.VISIBLE);
+                                        flag = false;
+                                    } else {
+                                        flag = true;
+                                    }
+                                } else if (model.getDetailNewsList() != null) {
+                                    if (model.getDetailNewsList().size() == 0) {
+                                        tvNoRecord.setVisibility(View.VISIBLE);
+                                        flag = false;
+                                    } else {
+                                        flag = true;
+                                    }
+                                }
+
+                                if (flag) {
+                                    tvNoRecord.setVisibility(View.GONE);
 
                                     ContentAdapter adapter = new ContentAdapter(dataList, getContext());
                                     RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
