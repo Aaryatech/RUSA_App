@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "977834557595",
+    "firebase_url": "https://rusaapp-bf138.firebaseio.com",
+    "project_id": "rusaapp-bf138",
+    "storage_bucket": "rusaapp-bf138.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:977834557595:android:af5a72676d2c4fe8",
+        "android_client_info": {
+          "package_name": "com.ats.rusa_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "977834557595-e6u2rmi4385bc1aie2afg1bb7ldiv8eq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ats.rusa_app",
+            "certificate_hash": "37ec8d8f30b65dc2723d50b8b7da23408690dbb7"
+          }
+        },
+        {
+          "client_id": "977834557595-qfrn8360g0jk4u5e2rbcehuagfaont78.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYbSZtWX-OZC_3QByy-SEzXoatZw1fb8I"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "977834557595-qfrn8360g0jk4u5e2rbcehuagfaont78.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
