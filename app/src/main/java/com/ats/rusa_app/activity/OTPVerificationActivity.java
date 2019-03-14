@@ -82,7 +82,7 @@ Registration registrationModel;
                             Intent intent=new Intent(OTPVerificationActivity.this,LoginActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
-                            finish();
+                           // finish();
 
                             commonDialog.dismiss();
 
