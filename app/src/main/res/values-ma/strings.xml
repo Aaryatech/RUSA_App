@@ -22,4 +22,9 @@
     <string name="str_login">लॉग इन</string>
     <string name="str_notification">अधिसूचना</string>
 
+    <string name="str_latest_news">ताजी बातमी</string>
+    <string name="str_videos">व्हिडिओ</string>
+    <string name="str_testimonial">प्रशंसापत्रे</string>
+    <string name="str_company">कंपनी</string>
+
 </resources>

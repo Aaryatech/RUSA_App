@@ -5,44 +5,44 @@
     android:orientation="vertical">
 
     <android.support.v7.widget.RecyclerView
-        android:visibility="gone"
         android:id="@+id/cmsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:visibility="gone" />
 
     <android.support.v7.widget.RecyclerView
-        android:visibility="gone"
         android:id="@+id/faqRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:visibility="gone" />
 
     <android.support.v7.widget.RecyclerView
-        android:visibility="gone"
         android:id="@+id/docRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:visibility="gone" />
 
     <android.support.v7.widget.RecyclerView
-        android:visibility="gone"
         android:id="@+id/newsRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
     <android.support.v7.widget.RecyclerView
-        android:visibility="gone"
         android:id="@+id/testimonialRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:visibility="gone" />
 
     <android.support.v7.widget.RecyclerView
-        android:visibility="gone"
         android:id="@+id/galleryRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:visibility="gone" />
 
 </LinearLayout>

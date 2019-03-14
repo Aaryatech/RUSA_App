@@ -1,6 +1,9 @@
 package com.ats.rusa_app.fragment;
 
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -58,7 +61,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private FloatingActionButton fabTwitter, fabFb;
 
-    private RecyclerView testomonial_recyclerView, new_recyclerView, comp_recyclerView,video_recyclerView;
+    private RecyclerView testomonial_recyclerView, new_recyclerView, comp_recyclerView, video_recyclerView;
     private LinearLayoutManager linearLayoutManager;
 
     final ArrayList<Testimonials> list = new ArrayList<>();
@@ -75,7 +78,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-
         sliderLayout = view.findViewById(R.id.slider);
         testomonial_recyclerView = view.findViewById(R.id.testominal_recyclerView);
         new_recyclerView = view.findViewById(R.id.news_recyclerView);
@@ -88,6 +90,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         fabTwitter = view.findViewById(R.id.fabTwitter);
         fabFb = view.findViewById(R.id.fabFb);
+        fabTwitter.setOnClickListener(this);
+        fabFb.setOnClickListener(this);
 
         String langId = CustomSharedPreference.getString(getActivity(), CustomSharedPreference.LANGUAGE_SELECTED);
         try {
@@ -114,6 +118,33 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         wvTwitter.setHorizontalScrollBarEnabled(false);
         wvTwitter.getSettings().setDomStorageEnabled(true);
         wvTwitter.getSettings().setJavaScriptEnabled(true);
+
+        wvTwitter.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                return (event.getAction() == MotionEvent.ACTION_MOVE);
+            }
+        });
+
+        wvTwitter.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
+
+        wvFb.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                return (event.getAction() == MotionEvent.ACTION_MOVE);
+            }
+        });
+
+        wvFb.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
+
         wvTwitter.loadDataWithBaseURL("http://twitter.com", widgetInfo, "text/html", "UTF-8", null);
 
         String widgetInfo1 = "<div class=\"fb-page\" data-href=\"https://www.facebook.com/HRDMinistry\" data-tabs=\"timeline\" data-small-header=\"false\" data-adapt-container-width=\"true\" data-hide-cover=\"false\" data-show-facepile=\"true\"><blockquote cite=\"https://www.facebook.com/HRDMinistry\" class=\"fb-xfbml-parse-ignore\"><a href=\"https://www.facebook.com/HRDMinistry\">Ministry of Human Resource Development, Government of India</a></blockquote></div>" + "<script async defer crossorigin=\"anonymous\" src=\"https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v3.2\"></script>";
@@ -283,7 +314,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             commonDialog.dismiss();
 
 
-
                         } else {
                             commonDialog.dismiss();
                             Log.e("Data Null : ", "-----------");
@@ -404,7 +434,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-
     private void initYoutubeVideo(final String url) {
         YouTubePlayerSupportFragment youTubePlayerFragment = YouTubePlayerSupportFragment.newInstance();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
@@ -496,51 +525,32 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.fabTwitter) {
+            Intent intent = null;
+            try {
+                // get the Twitter app if possible
+                getActivity().getPackageManager().getPackageInfo("com.twitter.android", 0);
+                intent = new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?user_id=HRDMinistry"));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            } catch (Exception e) {
+                // no Twitter app, revert to browser
+                intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/HRDMinistry"));
+            }
+            this.startActivity(intent);
 
         } else if (v.getId() == R.id.fabFb) {
+            Uri uri = Uri.parse("https://www.facebook.com/HRDMinistry/?ref=bookmarks");
+            Intent likeIng = new Intent(Intent.ACTION_VIEW, uri);
 
+            likeIng.setPackage("com.facebook.katana");
+
+            try {
+                startActivity(likeIng);
+            } catch (ActivityNotFoundException e) {
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("https://www.facebook.com/HRDMinistry/?ref=bookmarks")));
+            }
         }
     }
-
-//    public void autoScroll() {
-//
-//        final int scrollSpeed = 100;   // Scroll Speed in Milliseconds
-//        final Handler handler = new Handler();
-//        final Runnable runnable = new Runnable() {
-//            int x = 2;        // Pixels To Move/Scroll
-//            boolean flag = true;
-//            // Find Scroll Position By Accessing RecyclerView's LinearLayout's Visible Item Position
-//            int scrollPosition = linearLayoutManager.findLastCompletelyVisibleItemPosition();
-//            int arraySize = list.size();  // Gets RecyclerView's Adapter's Array Size
-//
-//            @Override
-//            public void run() {
-//                if (scrollPosition < arraySize) {
-//                    if (scrollPosition == arraySize - 1) {
-//                        flag = false;
-//                    } else if (scrollPosition <= 1) {
-//                        flag = true;
-//                    }
-//                    if (!flag) {
-//                        try {
-//                            // Delay in Seconds So User Can Completely Read Till Last String
-//                            TimeUnit.SECONDS.sleep(1);
-//                            recyclerView.scrollToPosition(0);  // Jumps Back Scroll To Start Point
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                    // Know The Last Visible Item
-//                    scrollPosition = linearLayoutManager.findLastCompletelyVisibleItemPosition();
-//
-//                    recyclerView.smoothScrollBy(x, 0);
-//                    handler.postDelayed(this, scrollSpeed);
-//                }
-//            }
-//        };
-//        handler.postDelayed(runnable, scrollSpeed);
-//
-//    }
 
 
 }

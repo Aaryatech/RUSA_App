@@ -6,24 +6,24 @@
     tools:context=".fragment.NewContentFragment">
 
     <TextView
+        android:fontFamily="@font/lato_bold"
         android:id="@+id/tvHeading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginRight="@dimen/margin_small"
+        android:layout_marginBottom="@dimen/margin_small"
         android:textColor="@color/colorPrimary"
-        android:textSize="21sp"
-        android:textStyle="bold" />
+        android:textSize="@dimen/text_large" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/tvHeading"
-        android:layout_margin="10dp" />
+        android:layout_margin="@dimen/margin_small" />
 
     <TextView
         android:id="@+id/tvNoRecord"
@@ -34,8 +34,8 @@
         android:gravity="center"
         android:text="No Record Found"
         android:textAlignment="center"
-        android:textColor="@color/colorBlack"
-        android:textSize="23sp"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/text_large"
         android:visibility="gone" />
 
 </RelativeLayout>

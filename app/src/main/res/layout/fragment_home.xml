@@ -29,13 +29,13 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:textSize="@dimen/text_medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_medium"
                     android:fontFamily="@font/lato_bold"
-                    android:text="Latest News"
-                    android:textColor="@color/colorBlue" />
+                    android:text="@string/str_latest_news"
+                    android:textColor="@color/colorBlue"
+                    android:textSize="@dimen/text_medium" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/news_recyclerView"
@@ -47,6 +47,7 @@
             </LinearLayout>
 
             <RelativeLayout
+                android:padding="@dimen/margin_medium"
                 android:id="@+id/relativeLayout_baner"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/home_banner_height"
@@ -58,9 +59,10 @@
                     android:layout_height="match_parent" />
 
                 <LinearLayout
-                    android:layout_centerInParent="true"
+                    android:padding="@dimen/margin_medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
                     android:orientation="vertical">
 
                     <TextView
@@ -82,7 +84,6 @@
                         android:textSize="@dimen/text_large" />
 
                     <Button
-                        android:textSize="@dimen/text_small"
                         android:id="@+id/btn_click"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -90,12 +91,45 @@
                         android:background="@drawable/rounded_corner_button"
                         android:fontFamily="@font/lato_bold"
                         android:text="  Click here  "
-                        android:textColor="@color/colorWhite" />
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/text_small" />
 
                 </LinearLayout>
 
             </RelativeLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/home_label_top_margin"
+                    android:background="@color/colorWhite"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_marginTop="@dimen/margin_large"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_medium"
+                        android:fontFamily="@font/lato_bold"
+                        android:text="@string/str_videos"
+                        android:textColor="@color/colorBlue"
+                        android:textSize="@dimen/text_medium" />
+
+                    <FrameLayout
+                        android:id="@+id/youtube_fragment"
+                        android:name="com.google.android.youtube.player.YouTubePlayerSupportFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginTop="10dp"
+                        android:visibility="gone" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/videos_recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_large" />
+
+                </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -108,40 +142,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_medium"
                     android:fontFamily="@font/lato_bold"
-                    android:text="Videos"
-                    android:textSize="@dimen/text_medium"
-                    android:textColor="@color/colorBlue" />
-
-                <FrameLayout
-                    android:visibility="gone"
-                    android:id="@+id/youtube_fragment"
-                    android:name="com.google.android.youtube.player.YouTubePlayerSupportFragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_marginTop="10dp" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/videos_recyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_medium"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/home_label_top_margin"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_medium"
-                    android:fontFamily="@font/lato_bold"
-                    android:text="Testimonials"
-                    android:textSize="@dimen/text_medium"
-                    android:textColor="@color/colorBlue" />
+                    android:text="@string/str_testimonial"
+                    android:textColor="@color/colorBlue"
+                    android:textSize="@dimen/text_medium" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/testominal_recyclerView"
@@ -160,14 +163,14 @@
                 android:visibility="gone" />
 
             <TextView
-                android:layout_marginTop="@dimen/home_label_top_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_medium"
+                android:layout_marginTop="@dimen/home_label_top_margin"
                 android:fontFamily="@font/lato_bold"
                 android:text="Twitter"
-                android:textSize="@dimen/text_medium"
-                android:textColor="@color/colorBlue" />
+                android:textColor="@color/colorBlue"
+                android:textSize="@dimen/text_medium" />
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
@@ -202,14 +205,14 @@
             </android.support.v7.widget.CardView>
 
             <TextView
-                android:layout_marginTop="@dimen/home_label_top_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_medium"
+                android:layout_marginTop="@dimen/home_label_top_margin"
                 android:fontFamily="@font/lato_bold"
                 android:text="Facebook"
-                android:textSize="@dimen/text_medium"
-                android:textColor="@color/colorBlue" />
+                android:textColor="@color/colorBlue"
+                android:textSize="@dimen/text_medium" />
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
@@ -257,16 +260,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_medium"
                     android:fontFamily="@font/lato_bold"
-                    android:text="Company Logo"
-                    android:textSize="@dimen/text_medium"
-                    android:textColor="@color/colorBlue" />
+                    android:text="@string/str_company"
+                    android:textColor="@color/colorBlue"
+                    android:textSize="@dimen/text_medium" />
 
                 <android.support.v7.widget.RecyclerView
-                    android:layout_marginTop="@dimen/margin_medium"
                     android:id="@+id/comp_recyclerView"
-                    android:layout_marginBottom="@dimen/margin_large"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    android:layout_marginBottom="@dimen/margin_large" />
 
             </LinearLayout>
         </LinearLayout>

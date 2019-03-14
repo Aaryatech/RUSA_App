@@ -7,8 +7,8 @@
     <ImageView
         android:id="@+id/ivImg"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_marginBottom="10dp"
+        android:layout_height="@dimen/home_gallery_height"
+        android:layout_marginBottom="@dimen/margin_small"
         android:scaleType="fitXY"
         android:visibility="gone" />
 
@@ -23,24 +23,24 @@
             android:id="@+id/webview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
+            android:layout_margin="@dimen/margin_small"
             android:visibility="gone" />
 
         <com.ats.rusa_app.util.RvWebView
             android:id="@+id/rvWebview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
+            android:layout_margin="@dimen/margin_small"
             android:visibility="gone" />
 
         <com.ats.rusa_app.util.TouchyWebView
             android:id="@+id/tWebview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginRight="@dimen/margin_medium"
             android:visibility="visible" />
 
     </LinearLayout>
@@ -65,18 +65,20 @@
                     android:id="@+id/tvHtml"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="10dp"
+                    android:layout_margin="@dimen/margin_small"
                     android:textColor="@color/colorBlack"
-                    android:textSize="15sp"
+                    android:fontFamily="@font/lato_regular"
+                    android:textSize="@dimen/text_medium"
                     android:visibility="gone" />
 
                 <org.sufficientlysecure.htmltextview.HtmlTextView
                     android:id="@+id/tvHtmlTxt"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="10dp"
+                    android:layout_margin="@dimen/margin_small"
                     android:textColor="@color/colorBlack"
-                    android:textSize="15sp" />
+                    android:fontFamily="@font/lato_regular"
+                    android:textSize="@dimen/text_medium" />
 
             </LinearLayout>
         </ScrollView>
