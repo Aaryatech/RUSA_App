@@ -3,9 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
+    android:padding="4dp"
     android:orientation="horizontal">
 
+    <ImageView
+        android:visibility="gone"
+        android:src="@drawable/ic_file"
+        android:layout_marginLeft="2dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:id="@+id/ivIcon"/>
+
     <TextView
+        android:layout_marginLeft="2dp"
+        android:fontFamily="@font/lato_regular"
         android:id="@+id/tvHeader"
         android:layout_width="match_parent"
         android:layout_height="?attr/listPreferredItemHeightSmall"

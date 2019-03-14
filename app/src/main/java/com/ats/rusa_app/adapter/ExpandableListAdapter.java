@@ -1,7 +1,6 @@
 package com.ats.rusa_app.adapter;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,10 +93,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         TextView lblListHeader = convertView.findViewById(R.id.tvHeader);
-        lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
 
         ImageView ivArrow=convertView.findViewById(R.id.ivArrow);
+
 
         if (isExpanded){
             ivArrow.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_bottom_arrow));
@@ -106,6 +105,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         if (headerTitle.equalsIgnoreCase("Sign up")){
+            ivArrow.setVisibility(View.GONE);
+        }else{
+            ivArrow.setVisibility(View.VISIBLE);
+        }
+
+        if (!getGroup(groupPosition).hasChildren){
             ivArrow.setVisibility(View.GONE);
         }else{
             ivArrow.setVisibility(View.VISIBLE);

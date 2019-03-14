@@ -2,22 +2,27 @@ package com.ats.rusa_app.fragment;
 
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.ats.rusa_app.R;
+import com.ats.rusa_app.activity.MainActivity;
 import com.ats.rusa_app.adapter.CompSliderAdapter;
 import com.ats.rusa_app.adapter.NewsFeedAdapter;
 import com.ats.rusa_app.adapter.TestimonialAdapter;
+import com.ats.rusa_app.adapter.YoutubeVideosAdapter;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.Baner;
 import com.ats.rusa_app.model.CompanyModel;
@@ -26,6 +31,8 @@ import com.ats.rusa_app.model.NewDetail;
 import com.ats.rusa_app.model.Testimonials;
 import com.ats.rusa_app.model.Testomonial;
 import com.ats.rusa_app.util.CommonDialog;
+import com.ats.rusa_app.util.CustomSharedPreference;
+import com.ats.rusa_app.util.TouchyWebView;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
@@ -42,13 +49,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private SliderLayout sliderLayout;
     public RelativeLayout relativeLayout_baner;
     public ImageView iv_baner;
+    private TouchyWebView wvTwitter, wvFb;
 
-    private RecyclerView testomonial_recyclerView,new_recyclerView,comp_recyclerView;
+    private FloatingActionButton fabTwitter, fabFb;
+
+    private RecyclerView testomonial_recyclerView, new_recyclerView, comp_recyclerView,video_recyclerView;
     private LinearLayoutManager linearLayoutManager;
 
     final ArrayList<Testimonials> list = new ArrayList<>();
@@ -57,6 +67,8 @@ public class HomeFragment extends Fragment {
     ArrayList<GallaryDetailList> galleryList = new ArrayList<>();
     ArrayList<CompanyModel> companyList = new ArrayList<>();
     ArrayList<Baner> banerList = new ArrayList<>();
+
+    int languageId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,47 +79,50 @@ public class HomeFragment extends Fragment {
         sliderLayout = view.findViewById(R.id.slider);
         testomonial_recyclerView = view.findViewById(R.id.testominal_recyclerView);
         new_recyclerView = view.findViewById(R.id.news_recyclerView);
-        comp_recyclerView=view.findViewById(R.id.comp_recyclerView);
-        relativeLayout_baner=view.findViewById(R.id.relativeLayout_baner);
-        iv_baner=view.findViewById(R.id.iv_baner);
+        comp_recyclerView = view.findViewById(R.id.comp_recyclerView);
+        relativeLayout_baner = view.findViewById(R.id.relativeLayout_baner);
+        iv_baner = view.findViewById(R.id.iv_baner);
+        wvTwitter = view.findViewById(R.id.wvTwitter);
+        wvFb = view.findViewById(R.id.wvFb);
+        video_recyclerView = view.findViewById(R.id.videos_recyclerView);
 
+        fabTwitter = view.findViewById(R.id.fabTwitter);
+        fabFb = view.findViewById(R.id.fabFb);
+
+        String langId = CustomSharedPreference.getString(getActivity(), CustomSharedPreference.LANGUAGE_SELECTED);
+        try {
+            languageId = Integer.parseInt(langId);
+        } catch (Exception e) {
+            languageId = 1;
+        }
 
         getImageGallery();
-        getNewFeed();
+        getNewFeed(languageId);
         getCompSlider();
         getBaner();
         initYoutubeVideo("gG2npfpaqsY");
         getTestimonial();
-
-//        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-//        recyclerView.setLayoutManager(linearLayoutManager);
-//
-//        Testimonials t1 = new Testimonials("AAA", "sdfdfgfdhgfdh");
-//        Testimonials t2 = new Testimonials("BBB", "sdfdfgfdhgfdh");
-//        Testimonials t3 = new Testimonials("CCC", "sdfdfgfdhgfdh");
-//        Testimonials t4 = new Testimonials("DDD", "sdfdfgfdhgfdh");
-//
-//        list.add(t1);
-//        list.add(t2);
-//        list.add(t3);
-//        list.add(t4);
-//
-//        TestimonialsSliderAdapter adapter = new TestimonialsSliderAdapter(list, getContext());
-//        recyclerView.setAdapter(adapter);
-
-//       autoScroll();
+        getVideoGallery();
 
 
-//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//        super.onScrolled(recyclerView, dx, dy);
-//            int firstItemVisible = linearLayoutManager.findFirstVisibleItemPosition();
-//        if (firstItemVisible != 0 && firstItemVisible % list.size() == 0) {
-//                recyclerView.getLayoutManager().scrollToPosition(0);
-//            }
-//        }
-//    });
+        String widgetInfo = "<a class=\"twitter-timeline\" href=\"http://twitter.com/HRDMinistry\"</a> " +
+                "<div id=\"fb-root\"></div>" +
+                "<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+\"://platform.twitter.com/widgets.js\";fjs.parentNode.insertBefore(js,fjs);}}(document,\"script\",\"twitter-wjs\");</script>";
+
+
+        wvTwitter.setVerticalScrollBarEnabled(false);
+        wvTwitter.setHorizontalScrollBarEnabled(false);
+        wvTwitter.getSettings().setDomStorageEnabled(true);
+        wvTwitter.getSettings().setJavaScriptEnabled(true);
+        wvTwitter.loadDataWithBaseURL("http://twitter.com", widgetInfo, "text/html", "UTF-8", null);
+
+        String widgetInfo1 = "<div class=\"fb-page\" data-href=\"https://www.facebook.com/HRDMinistry\" data-tabs=\"timeline\" data-small-header=\"false\" data-adapt-container-width=\"true\" data-hide-cover=\"false\" data-show-facepile=\"true\"><blockquote cite=\"https://www.facebook.com/HRDMinistry\" class=\"fb-xfbml-parse-ignore\"><a href=\"https://www.facebook.com/HRDMinistry\">Ministry of Human Resource Development, Government of India</a></blockquote></div>" + "<script async defer crossorigin=\"anonymous\" src=\"https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v3.2\"></script>";
+
+        wvFb.setVerticalScrollBarEnabled(false);
+        wvFb.setHorizontalScrollBarEnabled(false);
+        wvFb.getSettings().setDomStorageEnabled(true);
+        wvFb.getSettings().setJavaScriptEnabled(true);
+        wvFb.loadDataWithBaseURL("https://www.facebook.com", widgetInfo1, "text/html", "UTF-8", null);
 
 
         return view;
@@ -128,7 +143,7 @@ public class HomeFragment extends Fragment {
 
                             Log.e("NEWS DATA : ", " - " + response.body());
                             testimonialList.clear();
-                            testimonialList=response.body();
+                            testimonialList = response.body();
                             TestimonialAdapter adapter = new TestimonialAdapter(testimonialList, getContext());
                             testomonial_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
                             testomonial_recyclerView.setAdapter(adapter);
@@ -172,11 +187,11 @@ public class HomeFragment extends Fragment {
 
                             Log.e("Banner responce : ", " - " + response.body());
                             banerList.clear();
-                           // banerList=response.body();
-                            Baner baner=response.body();
-                                String imageUri =Constants.BANENR_URL +baner.getSliderImage();
-                                Log.e("URI","-----------"+imageUri);
-                                Picasso.with(getContext()).load(imageUri).into(iv_baner);
+                            // banerList=response.body();
+                            Baner baner = response.body();
+                            String imageUri = Constants.BANENR_URL + baner.getSliderImage();
+                            Log.e("URI", "-----------" + imageUri);
+                            Picasso.with(getContext()).load(imageUri).into(iv_baner);
 
 
                             commonDialog.dismiss();
@@ -219,7 +234,7 @@ public class HomeFragment extends Fragment {
 
                             Log.e("Company responce : ", " - " + response.body());
                             companyList.clear();
-                            companyList=response.body();
+                            companyList = response.body();
                             CompSliderAdapter adapter = new CompSliderAdapter(companyList, getContext());
                             comp_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
                             comp_recyclerView.setAdapter(adapter);
@@ -263,8 +278,56 @@ public class HomeFragment extends Fragment {
 
                             Log.e("Gallery responce : ", " - " + response.body());
                             galleryList.clear();
-                            galleryList=response.body();
+                            galleryList = response.body();
                             imageSlider(galleryList);
+                            commonDialog.dismiss();
+
+
+
+                        } else {
+                            commonDialog.dismiss();
+                            Log.e("Data Null : ", "-----------");
+                        }
+                    } catch (Exception e) {
+                        commonDialog.dismiss();
+                        Log.e("Exception : ", "-----------" + e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ArrayList<GallaryDetailList>> call, Throwable t) {
+                    commonDialog.dismiss();
+                    Log.e("onFailure1 : ", "-----------" + t.getMessage());
+                    t.printStackTrace();
+                }
+            });
+        } else {
+            Toast.makeText(getContext(), "No Internet Connection !", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private void getVideoGallery() {
+        if (Constants.isOnline(getContext())) {
+            final CommonDialog commonDialog = new CommonDialog(getContext(), "Loading", "Please Wait...");
+            commonDialog.show();
+
+            Call<ArrayList<GallaryDetailList>> listCall = Constants.myInterface.getVideoGallery();
+            listCall.enqueue(new Callback<ArrayList<GallaryDetailList>>() {
+                @Override
+                public void onResponse(Call<ArrayList<GallaryDetailList>> call, Response<ArrayList<GallaryDetailList>> response) {
+                    try {
+                        if (response.body() != null) {
+
+                            Log.e("Video responce : ", " - " + response.body());
+
+
+                            YoutubeVideosAdapter adapter = new YoutubeVideosAdapter(response.body(), getContext());
+                            video_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                            video_recyclerView.setAdapter(adapter);
+
+
                             commonDialog.dismiss();
 
                         } else {
@@ -291,13 +354,13 @@ public class HomeFragment extends Fragment {
 
     }
 
-    private void getNewFeed() {
+    private void getNewFeed(int langId) {
 
         if (Constants.isOnline(getContext())) {
             final CommonDialog commonDialog = new CommonDialog(getContext(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<ArrayList<NewDetail>> listCall = Constants.myInterface.getNewsData(1);
+            Call<ArrayList<NewDetail>> listCall = Constants.myInterface.getNewsData(langId);
             listCall.enqueue(new Callback<ArrayList<NewDetail>>() {
                 @Override
                 public void onResponse(Call<ArrayList<NewDetail>> call, Response<ArrayList<NewDetail>> response) {
@@ -306,12 +369,12 @@ public class HomeFragment extends Fragment {
 
                             Log.e("NEWS DATA : ", " - " + response.body());
                             newsList.clear();
-                            newsList=response.body();
-                           // NewDetail newDetail=response.body();
+                            newsList = response.body();
+                            // NewDetail newDetail=response.body();
                             //newsList.add(newDetail);
 
 
-                           NewsFeedAdapter adapter = new NewsFeedAdapter(newsList, getContext());
+                            NewsFeedAdapter adapter = new NewsFeedAdapter(newsList, getContext());
                             new_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
                             new_recyclerView.setAdapter(adapter);
 
@@ -372,12 +435,11 @@ public class HomeFragment extends Fragment {
     private void imageSlider(ArrayList<GallaryDetailList> gallaryDetailLists) {
 
         HashMap<String, String> url_maps = new HashMap<String, String>();
-        for(int i = 0; i< gallaryDetailLists.size(); i++)
-        {
-            String image=Constants.GALLERY_URL+gallaryDetailLists.get(i).getFileName();
-            String title=gallaryDetailLists.get(i).getTitle();
-            url_maps.put(title,image);
-            Log.e("Gallery","----------"+url_maps);
+        for (int i = 0; i < gallaryDetailLists.size(); i++) {
+            String image = Constants.GALLERY_URL + gallaryDetailLists.get(i).getFileName();
+            String title = gallaryDetailLists.get(i).getTitle();
+            url_maps.put(title, image);
+            Log.e("Gallery", "----------" + url_maps);
 
         }
         for (String name : url_maps.keySet()) {
@@ -431,6 +493,15 @@ public class HomeFragment extends Fragment {
 
     }
 
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.fabTwitter) {
+
+        } else if (v.getId() == R.id.fabFb) {
+
+        }
+    }
+
 //    public void autoScroll() {
 //
 //        final int scrollSpeed = 100;   // Scroll Speed in Milliseconds
@@ -470,7 +541,6 @@ public class HomeFragment extends Fragment {
 //        handler.postDelayed(runnable, scrollSpeed);
 //
 //    }
-
 
 
 }

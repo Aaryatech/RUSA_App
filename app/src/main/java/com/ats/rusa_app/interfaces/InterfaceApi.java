@@ -1,12 +1,12 @@
 package com.ats.rusa_app.interfaces;
 
 
+import com.ats.rusa_app.model.AppToken;
 import com.ats.rusa_app.model.Baner;
 import com.ats.rusa_app.model.CompanyModel;
 import com.ats.rusa_app.model.GallaryDetailList;
 import com.ats.rusa_app.model.MenuModel;
 import com.ats.rusa_app.model.NewDetail;
-import com.ats.rusa_app.model.OTPVerification;
 import com.ats.rusa_app.model.PageData;
 import com.ats.rusa_app.model.Registration;
 import com.ats.rusa_app.model.Testomonial;
@@ -21,7 +21,6 @@ import retrofit2.http.Query;
 
 public interface InterfaceApi {
 
-
     @POST("getTopMenuList")
     Call<MenuModel> getMenuData(@Query("langId") int langId);
 
@@ -30,6 +29,9 @@ public interface InterfaceApi {
 
     @POST("getLastFourNewsByLangId")
     Call<ArrayList<NewDetail>> getNewsData(@Query("langId") int langId);
+
+    @GET("getLastTenVideos")
+    Call<ArrayList<GallaryDetailList>> getVideoGallery();
 
     @GET("getLastTenPhotos")
     Call<ArrayList<GallaryDetailList>> getImageGallery();
@@ -47,6 +49,6 @@ public interface InterfaceApi {
     Call<Registration> saveRegistration(@Body Registration registration);
     //saveRegistration
 
-    @POST("verifyOtpResponse")
-    Call<OTPVerification> verifyOtpResponse(@Query("userOtp") String userOtp,@Query("uuid") String uuid);
+    @POST("saveAppTokens")
+    Call<AppToken> saveAppToken(@Body AppToken appToken);
 }

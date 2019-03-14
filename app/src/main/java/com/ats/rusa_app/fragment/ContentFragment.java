@@ -43,6 +43,7 @@ import com.ats.rusa_app.model.MenuGroup;
 import com.ats.rusa_app.model.MenuModel;
 import com.ats.rusa_app.model.PageData;
 import com.ats.rusa_app.util.CommonDialog;
+import com.ats.rusa_app.util.CustomSharedPreference;
 
 import org.sufficientlysecure.htmltextview.ClickableTableSpan;
 import org.sufficientlysecure.htmltextview.DrawTableLinkSpan;
@@ -74,6 +75,7 @@ public class ContentFragment extends Fragment implements Html.ImageGetter {
     private HtmlTextView tvHtmlTxt;
 
     String slugName;
+    int languageId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -95,10 +97,16 @@ public class ContentFragment extends Fragment implements Html.ImageGetter {
         tvHtmlTxt = view.findViewById(R.id.tvHtmlTxt);
 
         //webView.setInitialScale(250);
+        String langId = CustomSharedPreference.getString(getActivity(), CustomSharedPreference.LANGUAGE_SELECTED);
+        try {
+            languageId = Integer.parseInt(langId);
+        } catch (Exception e) {
+            languageId = 1;
+        }
 
         try {
             slugName = getArguments().getString("slugName");
-            getPageData(slugName);
+            getPageData(slugName,languageId);
         } catch (Exception e) {
             Log.e("ContentFrag : ", " ----------- " + e.getMessage());
             e.printStackTrace();
@@ -107,13 +115,13 @@ public class ContentFragment extends Fragment implements Html.ImageGetter {
         return view;
     }
 
-    public void getPageData(final String slugName) {
+    public void getPageData(final String slugName,int langId) {
 
         if (Constants.isOnline(getContext())) {
             final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<PageData> listCall = Constants.myInterface.getPageData(slugName, 1);
+            Call<PageData> listCall = Constants.myInterface.getPageData(slugName, langId);
             listCall.enqueue(new Callback<PageData>() {
                 @Override
                 public void onResponse(Call<PageData> call, Response<PageData> response) {

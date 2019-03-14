@@ -23,7 +23,7 @@ import org.sufficientlysecure.htmltextview.HtmlTextView;
 
 import java.util.ArrayList;
 
-public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.MyViewHolder>{
+public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.MyViewHolder> {
     private ArrayList<NewDetail> newsList;
     private Context context;
 
@@ -52,10 +52,9 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.MyView
             @Override
             public void onClick(View v) {
                 try {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(""+model.getNewsSourceUrlName()));
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("" + model.getNewsSourceUrlName()));
                     context.startActivity(browserIntent);
-                }catch (Exception e)
-                {
+                } catch (Exception e) {
                     Log.e("Exception : ", "-----------" + e.getMessage());
                     e.printStackTrace();
                 }
@@ -75,12 +74,13 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.MyView
         public TextView tv_newsTitle;
         public HtmlTextView tv_newsDisc;
         public CardView cardView;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageView=(ImageView)itemView.findViewById(R.id.iv_news);
-            tv_newsTitle=(TextView)itemView.findViewById(R.id.tv_newsTitle);
-            tv_newsDisc=(HtmlTextView)itemView.findViewById(R.id.tv_newsDiscription);
-            cardView=(CardView)itemView.findViewById(R.id.cardView);
+            imageView = (ImageView) itemView.findViewById(R.id.iv_news);
+            tv_newsTitle = (TextView) itemView.findViewById(R.id.tv_newsTitle);
+            tv_newsDisc = (HtmlTextView) itemView.findViewById(R.id.tv_newsDiscription);
+            cardView = (CardView) itemView.findViewById(R.id.cardView);
         }
     }
 }

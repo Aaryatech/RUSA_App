@@ -68,7 +68,7 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
         private LinearLayout llWebview, llHtml;
         private WebView webView;
         private HtmlTextView tvHtmlTxt;
-        private TextView tvHtml,tvPdf;
+        private TextView tvHtml, tvPdf;
         private RvWebView rvWebview;
         private ImageView ivImg;
         private TouchyWebView tWebview;
@@ -101,18 +101,18 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         final CmsContentList model = cmsList.get(position);
-        Log.e("CMS","------------------------ "+model);
+        Log.e("CMS", "------------------------ " + model);
 
         holder.llHtml.setVisibility(View.VISIBLE);
 
-        holder.tvPdf.setPaintFlags(holder.tvPdf.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
+        holder.tvPdf.setPaintFlags(holder.tvPdf.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         WebSettings webSettings = holder.tWebview.getSettings();
         webSettings.setJavaScriptEnabled(true);
-       // holder.tWebview.setWebChromeClient(new WebChromeClient());
-       // holder.tWebview.setWebViewClient(new WebViewClient());
-       // webSettings.setUseWideViewPort(true);
-       // webSettings.setLoadWithOverviewMode(true);
+        // holder.tWebview.setWebChromeClient(new WebChromeClient());
+        // holder.tWebview.setWebViewClient(new WebViewClient());
+        // webSettings.setUseWideViewPort(true);
+        // webSettings.setLoadWithOverviewMode(true);
 
         if (model.getFeaturedImage() != null) {
             if (model.getFeaturedImage().equals("")) {
@@ -126,19 +126,19 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
             }
         }
 
-        if (model.getDownloadPdf()!=null){
-            if (model.getDownloadPdf().equals("")){
+        if (model.getDownloadPdf() != null) {
+            if (model.getDownloadPdf().equals("")) {
                 holder.tvPdf.setVisibility(View.GONE);
-            }else{
+            } else {
                 holder.tvPdf.setVisibility(View.VISIBLE);
-                holder.tvPdf.setText(""+model.getDownloadPdf());
+                holder.tvPdf.setText("" + model.getDownloadPdf());
             }
         }
 
         holder.tvPdf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(""+Constants.PDF_URL+model.getDownloadPdf()));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("" + Constants.PDF_URL + model.getDownloadPdf()));
                 context.startActivity(browserIntent);
             }
         });
@@ -161,16 +161,6 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
 
         //webView.loadDataWithBaseURL("", htmlText, mimeType, encoding, "");
 
-        Pattern p = Pattern.compile("<iframe src");
-        Matcher m = p.matcher(htmlText);
-        while (m.find())
-            htmlText= m.replaceAll("<a href");
-
-//Closing tag
-        p = Pattern.compile("frameborder=.*</iframe>");
-        m = p.matcher(htmlText);
-        while (m.find())
-            htmlText= m.replaceAll(">CLICK TO WATCH</a>");
 
         //htmlText.replaceAll("<iframe\\s+.*?\\s+src=(\".*?\").*?<\\/iframe>", "<a href=$1>CLICK TO WATCH</a>");
 
@@ -205,9 +195,7 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
 
         }
 
-        if (htmlText.contains("iframe")){
-
-
+        if (htmlText.contains("iframe")) {
 
             holder.llHtml.setVisibility(View.GONE);
             holder.llWebview.setVisibility(View.VISIBLE);
