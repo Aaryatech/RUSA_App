@@ -16,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -58,6 +59,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public RelativeLayout relativeLayout_baner;
     public ImageView iv_baner;
     private TouchyWebView wvTwitter, wvFb;
+    private Button btn_click;
 
     private FloatingActionButton fabTwitter, fabFb;
 
@@ -87,11 +89,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         wvTwitter = view.findViewById(R.id.wvTwitter);
         wvFb = view.findViewById(R.id.wvFb);
         video_recyclerView = view.findViewById(R.id.videos_recyclerView);
+        btn_click = view.findViewById(R.id.btn_click);
 
         fabTwitter = view.findViewById(R.id.fabTwitter);
         fabFb = view.findViewById(R.id.fabFb);
         fabTwitter.setOnClickListener(this);
         fabFb.setOnClickListener(this);
+        btn_click.setOnClickListener(this);
 
         String langId = CustomSharedPreference.getString(getActivity(), CustomSharedPreference.LANGUAGE_SELECTED);
         try {
@@ -106,8 +110,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         getBaner();
         initYoutubeVideo("gG2npfpaqsY");
         getTestimonial();
-        getVideoGallery();
+        // getVideoGallery();
 
+        GallaryDetailList video1 = new GallaryDetailList(1, 1, 1, 1, "1", "video 1", "aa", "", "", 1, "", "", 1, 1, 1, 1, 1, 1, "H-1HFRhqhUI", "");
+        GallaryDetailList video2 = new GallaryDetailList(1, 1, 1, 1, "1", "video 2", "aa", "", "", 1, "", "", 1, 1, 1, 1, 1, 1, "Hl5y81RlASg", "");
+        GallaryDetailList video3 = new GallaryDetailList(1, 1, 1, 1, "1", "video 3", "aa", "", "", 1, "", "", 1, 1, 1, 1, 1, 1, "BUsiRIymzbQ", "");
+
+        ArrayList<GallaryDetailList> videoList = new ArrayList<>();
+        videoList.add(video1);
+        videoList.add(video2);
+        videoList.add(video3);
+
+        YoutubeVideosAdapter adapter = new YoutubeVideosAdapter(videoList, getContext());
+        video_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        video_recyclerView.setAdapter(adapter);
 
         String widgetInfo = "<a class=\"twitter-timeline\" href=\"http://twitter.com/HRDMinistry\"</a> " +
                 "<div id=\"fb-root\"></div>" +
@@ -350,7 +366,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     try {
                         if (response.body() != null) {
 
-                            Log.e("Video responce : ", " - " + response.body());
+                            Log.e("Video responce : ", " -------------------------------------------------- " + response.body());
 
 
                             YoutubeVideosAdapter adapter = new YoutubeVideosAdapter(response.body(), getContext());
@@ -549,6 +565,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 startActivity(new Intent(Intent.ACTION_VIEW,
                         Uri.parse("https://www.facebook.com/HRDMinistry/?ref=bookmarks")));
             }
+        } else if (v.getId() == R.id.btn_click) {
+            Fragment adf = new NewContentFragment();
+            Bundle args = new Bundle();
+            args.putString("slugName", "about-rusa9");
+            adf.setArguments(args);
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
         }
     }
 

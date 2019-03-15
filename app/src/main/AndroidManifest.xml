@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.NotificationActivity"></activity>
+        <activity android:name=".activity.NewsActivity"></activity>
+        <activity android:name=".activity.NotificationActivity" />
         <activity
             android:name=".activity.YoutubePlayerActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />

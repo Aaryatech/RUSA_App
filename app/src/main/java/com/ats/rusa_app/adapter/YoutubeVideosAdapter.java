@@ -54,7 +54,7 @@ public class YoutubeVideosAdapter extends RecyclerView.Adapter<YoutubeVideosAdap
         holder.ytThumb.initialize(Config.DEVELOPER_KEY, new YouTubeThumbnailView.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, final YouTubeThumbnailLoader youTubeThumbnailLoader) {
-                youTubeThumbnailLoader.setVideo("gG2npfpaqsY");
+                youTubeThumbnailLoader.setVideo(model.getExVar1());
                 youTubeThumbnailLoader.setOnThumbnailLoadedListener(new YouTubeThumbnailLoader.OnThumbnailLoadedListener() {
                     @Override
                     public void onThumbnailLoaded(YouTubeThumbnailView youTubeThumbnailView, String s) {
@@ -78,7 +78,9 @@ public class YoutubeVideosAdapter extends RecyclerView.Adapter<YoutubeVideosAdap
         holder.ytThumb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                context.startActivity(new Intent(context, YoutubePlayerActivity.class));
+                Intent intent=new Intent(context,YoutubePlayerActivity.class);
+                intent.putExtra("video",model.getExVar1());
+                context.startActivity(intent);
             }
         });
 

@@ -16,8 +16,9 @@ import com.google.android.youtube.player.YouTubePlayerView;
 public class YoutubePlayerActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
 
     private YouTubePlayerView ytPlayer;
-    public static final String VIDEO_ID = "gG2npfpaqsY";
+    //public static final String VIDEO_ID = "gG2npfpaqsY";
 
+    String VIDEO_ID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,8 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements YouTub
 
         ytPlayer = findViewById(R.id.ytPlayer);
         ytPlayer.initialize(Config.DEVELOPER_KEY, this);
+
+        VIDEO_ID=getIntent().getStringExtra("video");
 
     }
 

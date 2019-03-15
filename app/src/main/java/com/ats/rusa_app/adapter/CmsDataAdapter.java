@@ -15,9 +15,11 @@ import android.text.Html;
 import android.text.Spanned;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -34,12 +36,12 @@ import com.ats.rusa_app.fragment.ContentFragment;
 import com.ats.rusa_app.model.CmsContentList;
 import com.ats.rusa_app.model.DetailNewsList;
 import com.ats.rusa_app.util.ClickableTableSpanImpl;
+import com.ats.rusa_app.util.HtmlHttpImageGetter;
 import com.ats.rusa_app.util.RvWebView;
 import com.ats.rusa_app.util.TouchyWebView;
 import com.squareup.picasso.Picasso;
 
 import org.sufficientlysecure.htmltextview.DrawTableLinkSpan;
-import org.sufficientlysecure.htmltextview.HtmlHttpImageGetter;
 import org.sufficientlysecure.htmltextview.HtmlTextView;
 
 import java.io.FileNotFoundException;
@@ -150,7 +152,7 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
                 "<head>" +
                 "<meta name='viewport' content='width=640, initial-scale=1'/>" +
                 "</head>" +
-                "<body style=\"margin: 0px;\">";
+                "<body>";
 
         htmlText = htmlText + "\n\n" + model.getPageDesc();
 
@@ -164,6 +166,14 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
 
         //htmlText.replaceAll("<iframe\\s+.*?\\s+src=(\".*?\").*?<\\/iframe>", "<a href=$1>CLICK TO WATCH</a>");
 
+        holder.webView.setWebChromeClient(new WebChromeClient());
+        holder.webView.setWebViewClient(new WebViewClient());
+        holder.webView.getSettings().setAppCacheEnabled(true);
+        holder.webView.getSettings().setJavaScriptEnabled(true);
+        holder.webView.getSettings().setLoadWithOverviewMode(true);
+        holder.webView.getSettings().setUseWideViewPort(true);
+        holder.webView.setInitialScale(0);
+
         holder.webView.loadData(htmlText, "text/html", "utf-8");
         holder.rvWebview.loadData(htmlText, "text/html", "utf-8");
         holder.tWebview.loadData(htmlText, "text/html", "utf-8");
@@ -175,7 +185,7 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
 
         holder.tvHtmlTxt.setClickableTableSpan(new ClickableTableSpanImpl(context));
         DrawTableLinkSpan drawTableLinkSpan = new DrawTableLinkSpan();
-        drawTableLinkSpan.setTableLinkText("View Table");
+        drawTableLinkSpan.setTableLinkText("\n\n\nView Table");
         holder.tvHtmlTxt.setDrawTableLinkSpan(drawTableLinkSpan);
 
 
@@ -195,6 +205,7 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
 
         }
 
+
         if (htmlText.contains("iframe")) {
 
             holder.llHtml.setVisibility(View.GONE);
@@ -203,6 +214,8 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
 
 
     }
+
+
 
     @Override
     public int getItemCount() {

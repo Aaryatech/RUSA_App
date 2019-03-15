@@ -1,9 +1,11 @@
 package com.ats.rusa_app.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +13,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ats.rusa_app.R;
+import com.ats.rusa_app.activity.NewsActivity;
+import com.ats.rusa_app.activity.TestimonialWebviewActivity;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.Testomonial;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import org.sufficientlysecure.htmltextview.HtmlHttpImageGetter;
@@ -42,9 +47,31 @@ public class TestimonialAdapter extends RecyclerView.Adapter<TestimonialAdapter.
     public void onBindViewHolder(@NonNull TestimonialAdapter.MyViewHolder myViewHolder, int i) {
         final Testomonial model = TestimonalList.get(i);
         String imageUri = Constants.GALLERY_URL + model.getImageName();
-        Picasso.with(context).load(imageUri).into(myViewHolder.imageView);
+        Picasso.with(context).load(imageUri).placeholder(context.getResources().getDrawable(R.drawable.img_placeholder)).into(myViewHolder.imageView);
         myViewHolder.tv_Title.setText(model.getFromName());
         myViewHolder.tv_Disc.setHtml(model.getMessage(), new HtmlHttpImageGetter(myViewHolder.tv_Disc));
+
+        myViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+
+                    Gson gson=new Gson();
+                    String str=gson.toJson(model);
+
+                    Intent intent=new Intent(context, TestimonialWebviewActivity.class);
+                    intent.putExtra("model",str);
+                    context.startActivity(intent);
+//                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("" + model.getNewsSourceUrlName()));
+//                    context.startActivity(browserIntent);
+                } catch (Exception e) {
+                    Log.e("Exception : ", "-----------" + e.getMessage());
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
     }
 
     @Override

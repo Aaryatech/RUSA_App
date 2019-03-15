@@ -23,6 +23,28 @@ public class GallaryDetailList {
     private String exVar1;
     private String exVar2;
 
+    public GallaryDetailList(int galleryDetailsId, int galleryCatId, int pageId, int sectionId, String typeVideoImage, String title, String fileName, String fileType, String fileSize, int sortNo, String addDate, String editDate, int addedByUserId, int editByUserId, int isActive, int delStatus, int exInt1, int exInt2, String exVar1, String exVar2) {
+        this.galleryDetailsId = galleryDetailsId;
+        this.galleryCatId = galleryCatId;
+        this.pageId = pageId;
+        this.sectionId = sectionId;
+        this.typeVideoImage = typeVideoImage;
+        this.title = title;
+        this.fileName = fileName;
+        this.fileType = fileType;
+        this.fileSize = fileSize;
+        this.sortNo = sortNo;
+        this.addDate = addDate;
+        this.editDate = editDate;
+        this.addedByUserId = addedByUserId;
+        this.editByUserId = editByUserId;
+        this.isActive = isActive;
+        this.delStatus = delStatus;
+        this.exInt1 = exInt1;
+        this.exInt2 = exInt2;
+        this.exVar1 = exVar1;
+        this.exVar2 = exVar2;
+    }
 
     public int getGalleryDetailsId() {
         return galleryDetailsId;

@@ -68,6 +68,7 @@ public TextView tv_forgotPass,tv_signUp,tv_skipLogin;
         }else if(v.getId()==R.id.tv_skipLogin)
         {
             Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
 

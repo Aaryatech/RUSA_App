@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">रुसा</string>
+    <string name="str_title">राष्ट्रीय उच्चतर शिक्षा अभियान (रूसा)</string>
     <string name="navigation_drawer_open">ओपन नेव्हिगेशन ड्रॉवर</string>
     <string name="navigation_drawer_close">नेव्हिगेशन ड्रॉवर बंद करा</string>
     <string name="nav_header_title">अँड्रॉइड स्टुडिओ</string>
@@ -25,6 +26,14 @@
     <string name="str_latest_news">ताजी बातमी</string>
     <string name="str_videos">व्हिडिओ</string>
     <string name="str_testimonial">प्रशंसापत्रे</string>
-    <string name="str_company">कंपनी</string>
+    <string name="str_company">महत्वपूर्ण लिंक</string>
+    <string name="str_twitter">ट्विटर</string>
+    <string name="str_facebook">फेसबुक</string>
+
+    <string name="str_home">होम</string>
+    <string name="str_about_us">आमच्याबद्दल</string>
+    <string name="str_gallery">गॅलरी</string>
+    <string name="str_news">बातम्या</string>
+    <string name="str_contact">संपर्क</string>
 
 </resources>
