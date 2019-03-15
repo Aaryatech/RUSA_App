@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">RUSA</string>
+    <string name="str_title">Rashtriya Uchchatar Shiksha Abhiyan (RUSA)</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -28,6 +29,14 @@
     <string name="str_latest_news">Latest News</string>
     <string name="str_videos">Videos</string>
     <string name="str_testimonial">Testimonials</string>
-    <string name="str_company">Testimonials</string>
+    <string name="str_company">Important Links</string>
+    <string name="str_twitter">Twitter</string>
+    <string name="str_facebook">Facebook</string>
+
+    <string name="str_home">Home</string>
+    <string name="str_about_us">About Us</string>
+    <string name="str_gallery">Gallery</string>
+    <string name="str_news">News</string>
+    <string name="str_contact">Contact</string>
 
 </resources>

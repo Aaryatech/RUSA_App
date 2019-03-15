@@ -16,13 +16,13 @@
 
     <TextView
         android:layout_marginLeft="2dp"
-        android:fontFamily="@font/lato_regular"
+        android:fontFamily="@font/lato_bold"
         android:id="@+id/tvHeader"
         android:layout_width="match_parent"
         android:layout_height="?attr/listPreferredItemHeightSmall"
         android:layout_weight="1"
         android:gravity="center_vertical"
-        android:paddingLeft="10dp"
+        android:paddingLeft="@dimen/margin_small"
         android:paddingRight="?attr/listPreferredItemPaddingRight" />
 
     <ImageView

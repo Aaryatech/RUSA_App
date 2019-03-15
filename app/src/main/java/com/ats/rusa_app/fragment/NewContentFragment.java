@@ -99,7 +99,7 @@ public class NewContentFragment extends Fragment {
                             if (model.getPageId() > 0) {
 
                                 tvHeading.setText("" + model.getPageName());
-                                getActivity().setTitle("" + model.getPageName());
+                               // getActivity().setTitle("" + model.getPageName());
 
                                 boolean flag = false;
 

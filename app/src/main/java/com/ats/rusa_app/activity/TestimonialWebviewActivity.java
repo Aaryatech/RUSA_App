@@ -48,11 +48,11 @@ public class TestimonialWebviewActivity extends AppCompatActivity {
 
         if (model != null) {
 
-            setTitle("" + model.getFromName());
+            setTitle("Testimonials");
             tvTitle.setText("" + model.getFromName());
 
             try {
-                Picasso.with(this).load(Constants.GALLERY_URL + model.getImageName()).placeholder(R.drawable.rusa_logo).into(ivImg);
+                Picasso.with(this).load(Constants.GALLERY_URL + model.getImageName()).placeholder(R.drawable.img_placeholder).into(ivImg);
             } catch (Exception e) {
             }
 

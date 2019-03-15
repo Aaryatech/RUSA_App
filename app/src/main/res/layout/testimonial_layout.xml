@@ -17,8 +17,7 @@
         <ImageView
             android:id="@+id/iv_testominal"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/img_height"
-            android:scaleType="fitXY" />
+            android:layout_height="@dimen/img_height" />
 
         <TextView
             android:id="@+id/tv_Title"

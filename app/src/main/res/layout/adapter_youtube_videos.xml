@@ -4,8 +4,8 @@
     android:layout_width="@dimen/youtube_card_width"
     android:layout_height="@dimen/youtube_card_height"
     android:layout_margin="@dimen/margin_tiny"
-    app:cardUseCompatPadding="true"
-    app:cardElevation="3dp">
+    app:cardElevation="3dp"
+    app:cardUseCompatPadding="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,10 +13,10 @@
         android:orientation="vertical">
 
         <com.google.android.youtube.player.YouTubeThumbnailView
-            android:scaleType="fitXY"
             android:id="@+id/ytThumb"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:scaleType="fitXY" />
 
     </LinearLayout>
 

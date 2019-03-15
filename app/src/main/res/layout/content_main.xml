@@ -11,134 +11,149 @@
     <FrameLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
-        android:layout_above="@+id/linearLayout"
-        android:layout_height="match_parent" ></FrameLayout>
+        android:layout_height="match_parent"
+        android:layout_above="@+id/linearLayout" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <LinearLayout
             android:id="@+id/linearLayout_home"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:orientation="vertical">
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_small">
 
             <ImageView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_action_home"
-                />
+                android:src="@drawable/ic_action_home" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Home"
+                android:layout_margin="2dp"
                 android:fontFamily="@font/lato_regular"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/str_home"
                 android:textColor="@color/colorPrimaryDark"
-                android:gravity="center"/>
-
+                android:textSize="@dimen/text_tiny" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout_aboutUs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:orientation="vertical">
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_small">
 
             <ImageView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_action_about_us"/>
+                android:src="@drawable/ic_action_about_us" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="About Us"
+                android:layout_margin="2dp"
                 android:fontFamily="@font/lato_regular"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/str_about_us"
                 android:textColor="@color/colorPrimaryDark"
-                android:gravity="center"/>
+                android:textSize="@dimen/text_tiny" />
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout_gallery"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:orientation="vertical">
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_small">
 
             <ImageView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_action_gallery"
-                />
+                android:src="@drawable/ic_action_gallery" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Gallery"
+                android:layout_margin="2dp"
                 android:fontFamily="@font/lato_regular"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/str_gallery"
                 android:textColor="@color/colorPrimaryDark"
-                android:gravity="center"/>
+                android:textSize="@dimen/text_tiny" />
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout_news"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:orientation="vertical">
+            android:gravity="center"
+            android:visibility="gone"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_small">
 
             <ImageView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_action_home"/>
+                android:src="@drawable/ic_news" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="News"
+                android:layout_margin="2dp"
                 android:fontFamily="@font/lato_regular"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/str_news"
                 android:textColor="@color/colorPrimaryDark"
-                android:gravity="center"/>
+                android:textSize="@dimen/text_tiny" />
 
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/linearLayout_contact"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:orientation="vertical">
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_small">
 
             <ImageView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_action_phone"/>
+                android:src="@drawable/ic_action_phone" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Contact"
+                android:layout_margin="2dp"
                 android:fontFamily="@font/lato_regular"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/str_contact"
                 android:textColor="@color/colorPrimaryDark"
-                android:gravity="center"/>
+                android:textSize="@dimen/text_tiny" />
 
         </LinearLayout>
 

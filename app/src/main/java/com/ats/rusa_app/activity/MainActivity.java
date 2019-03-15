@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -13,16 +14,21 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ats.rusa_app.R;
@@ -32,6 +38,7 @@ import com.ats.rusa_app.fragment.ContactUsFragment;
 import com.ats.rusa_app.fragment.ContentFragment;
 import com.ats.rusa_app.fragment.HomeFragment;
 import com.ats.rusa_app.fragment.NewContentFragment;
+import com.ats.rusa_app.fragment.VideoFragment;
 import com.ats.rusa_app.fragment.YoutubeThmbFragment;
 import com.ats.rusa_app.model.AppToken;
 import com.ats.rusa_app.model.CategoryList;
@@ -54,7 +61,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     //  Menu drawerMenu;
 
@@ -72,6 +79,8 @@ public class MainActivity extends AppCompatActivity
 
     int languageId;
 
+    private LinearLayout linearLayout_home, linearLayout_aboutUs, linearLayout_gallery, linearLayout_news, linearLayout_contact;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,12 +88,27 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        setTitle(""+getResources().getString(R.string.app_name));
+
         String langId = CustomSharedPreference.getString(MainActivity.this, CustomSharedPreference.LANGUAGE_SELECTED);
         try {
             languageId = Integer.parseInt(langId);
         } catch (Exception e) {
             languageId = 1;
         }
+
+        linearLayout_home = findViewById(R.id.linearLayout_home);
+        linearLayout_aboutUs = findViewById(R.id.linearLayout_aboutUs);
+        linearLayout_gallery = findViewById(R.id.linearLayout_gallery);
+        linearLayout_news = findViewById(R.id.linearLayout_news);
+        linearLayout_contact = findViewById(R.id.linearLayout_contact);
+
+        linearLayout_home.setOnClickListener(this);
+        linearLayout_aboutUs.setOnClickListener(this);
+        linearLayout_gallery.setOnClickListener(this);
+        linearLayout_news.setOnClickListener(this);
+        linearLayout_contact.setOnClickListener(this);
+
 
         String token = SharedPrefManager.getmInstance(MainActivity.this).getDeviceToken();
         Log.e("Token : ", "---------" + token);
@@ -96,7 +120,7 @@ public class MainActivity extends AppCompatActivity
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-        if (appToken != null) {
+       /* if (appToken != null) {
             if (appToken.getApptokenId() > 0) {
                 appToken.setToken(token);
                 saveToken(appToken);
@@ -104,7 +128,7 @@ public class MainActivity extends AppCompatActivity
         } else {
             AppToken appToken1 = new AppToken(0, "android", getMacAddress(), token, 0, sdf.format(Calendar.getInstance().getTimeInMillis()));
             saveToken(appToken1);
-        }
+        }*/
 
 
         Log.e("MAC", "---------------- " + getMacAddress());
@@ -129,9 +153,7 @@ public class MainActivity extends AppCompatActivity
         ft.replace(R.id.content_frame, new HomeFragment(), "Exit");
         ft.commit();
 
-
         getMenuData(languageId);
-
 
     }
 
@@ -165,7 +187,8 @@ public class MainActivity extends AppCompatActivity
 
         } else if (homeFragment instanceof ContentFragment && homeFragment.isVisible() ||
                 homeFragment instanceof NewContentFragment && homeFragment.isVisible() ||
-                homeFragment instanceof ContactUsFragment && homeFragment.isVisible()) {
+                homeFragment instanceof ContactUsFragment && homeFragment.isVisible() ||
+                homeFragment instanceof VideoFragment && homeFragment.isVisible()) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, new HomeFragment(), "Exit");
             ft.commit();
@@ -218,8 +241,8 @@ public class MainActivity extends AppCompatActivity
             ft.commit();
 
             return true;
-        }else if (id == R.id.action_notification) {
-            Intent intent=new Intent(getApplicationContext(), NotificationActivity.class);
+        } else if (id == R.id.action_notification) {
+            Intent intent = new Intent(getApplicationContext(), NotificationActivity.class);
             startActivity(intent);
 
             return true;
@@ -323,15 +346,15 @@ public class MainActivity extends AppCompatActivity
                                 }
                             }
 
-                            MenuGroup menuGroup1 = new MenuGroup(""+getResources().getString(R.string.str_login), false, false, "login");
+                            MenuGroup menuGroup1 = new MenuGroup("" + getResources().getString(R.string.str_login), false, false, "login");
                             headerList.add(menuGroup1);
 
-                            MenuGroup menuGroup2 = new MenuGroup(""+getResources().getString(R.string.str_settings), true, true, "login");
+                            MenuGroup menuGroup2 = new MenuGroup("" + getResources().getString(R.string.str_settings), true, true, "login");
                             headerList.add(menuGroup2);
 
                             ArrayList<MenuGroup> childModelsList = new ArrayList<>();
 
-                            MenuGroup childModel1 = new MenuGroup(""+getResources().getString(R.string.strMenuLanguage), false, false, "lang");
+                            MenuGroup childModel1 = new MenuGroup("" + getResources().getString(R.string.strMenuLanguage), false, false, "lang");
                             childModelsList.add(childModel1);
 
                             childList.put(menuGroup2, childModelsList);
@@ -384,12 +407,13 @@ public class MainActivity extends AppCompatActivity
 
                     String url = headerList.get(groupPosition).getUrl();
 
-                    if (url.equalsIgnoreCase("contact-us8")) {
+                    if (url.equalsIgnoreCase("ContactUs")) {
                         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                         ft.replace(R.id.content_frame, new ContactUsFragment(), "HomeFragment");
                         ft.commit();
 
                     }
+
                     if (url.equalsIgnoreCase("login")) {
                         startActivity(new Intent(MainActivity.this, LoginActivity.class));
 
@@ -402,7 +426,7 @@ public class MainActivity extends AppCompatActivity
                         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
                     }
 
-                    Toast.makeText(MainActivity.this, "" + url, Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(MainActivity.this, "" + url, Toast.LENGTH_SHORT).show();
 
                     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                     drawer.closeDrawer(GravityCompat.START);
@@ -445,7 +469,15 @@ public class MainActivity extends AppCompatActivity
                         builder.create();
                         builder.show();
 
-                    } else {
+                    } else if (model.getUrl().equalsIgnoreCase("videos19")){
+                            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                            ft.replace(R.id.content_frame, new VideoFragment(), "HomeFragment");
+                            ft.commit();
+
+                        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                        drawer.closeDrawer(GravityCompat.START);
+
+                    }else {
 //                        WebView webView = findViewById(R.id.webView);
 //                        webView.loadUrl(model.url);
 //                        onBackPressed();
@@ -456,7 +488,7 @@ public class MainActivity extends AppCompatActivity
                         adf.setArguments(args);
                         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
 
-                        Toast.makeText(MainActivity.this, "" + model.getUrl(), Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(MainActivity.this, "" + model.getUrl(), Toast.LENGTH_SHORT).show();
 
                         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                         drawer.closeDrawer(GravityCompat.START);
@@ -517,5 +549,37 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.linearLayout_home) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, new HomeFragment(), "Exit");
+            ft.commit();
+        } else if (v.getId() == R.id.linearLayout_aboutUs) {
+            Fragment adf = new NewContentFragment();
+            Bundle args = new Bundle();
+            args.putString("slugName", "about-rusa9");
+            adf.setArguments(args);
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
 
+        } else if (v.getId() == R.id.linearLayout_gallery) {
+            Fragment adf = new NewContentFragment();
+            Bundle args = new Bundle();
+            args.putString("slugName", "rusa-photo-gallery17");
+            adf.setArguments(args);
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+
+        } else if (v.getId() == R.id.linearLayout_news) {
+//            Fragment adf = new NewContentFragment();
+//            Bundle args = new Bundle();
+//            args.putString("slugName", model.getUrl());
+//            adf.setArguments(args);
+//            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+
+        } else if (v.getId() == R.id.linearLayout_contact) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, new ContactUsFragment(), "HomeFragment");
+            ft.commit();
+        }
+    }
 }
