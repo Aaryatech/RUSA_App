@@ -15,14 +15,13 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ats.rusa_app.R;
-import com.ats.rusa_app.activity.MainActivity;
 import com.ats.rusa_app.adapter.CompSliderAdapter;
 import com.ats.rusa_app.adapter.NewsFeedAdapter;
 import com.ats.rusa_app.adapter.TestimonialAdapter;
@@ -30,10 +29,10 @@ import com.ats.rusa_app.adapter.YoutubeVideosAdapter;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.Baner;
 import com.ats.rusa_app.model.CompanyModel;
+import com.ats.rusa_app.model.Detail;
 import com.ats.rusa_app.model.GallaryDetailList;
 import com.ats.rusa_app.model.NewDetail;
 import com.ats.rusa_app.model.Testimonials;
-import com.ats.rusa_app.model.Testomonial;
 import com.ats.rusa_app.util.CommonDialog;
 import com.ats.rusa_app.util.CustomSharedPreference;
 import com.ats.rusa_app.util.TouchyWebView;
@@ -60,6 +59,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public ImageView iv_baner;
     private TouchyWebView wvTwitter, wvFb;
     private Button btn_click;
+    public TextView tv_banerName;
 
     private FloatingActionButton fabTwitter, fabFb;
 
@@ -68,10 +68,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     final ArrayList<Testimonials> list = new ArrayList<>();
     ArrayList<NewDetail> newsList = new ArrayList<>();
-    ArrayList<Testomonial> testimonialList = new ArrayList<>();
-    ArrayList<GallaryDetailList> galleryList = new ArrayList<>();
+    ArrayList<Detail> testimonialList = new ArrayList<>();
+    ArrayList<Detail> galleryList = new ArrayList<>();
     ArrayList<CompanyModel> companyList = new ArrayList<>();
     ArrayList<Baner> banerList = new ArrayList<>();
+    ArrayList<Detail> homeList = new ArrayList<>();
+    ArrayList<Detail> homeVideoList = new ArrayList<>();
 
     int languageId;
 
@@ -90,6 +92,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         wvFb = view.findViewById(R.id.wvFb);
         video_recyclerView = view.findViewById(R.id.videos_recyclerView);
         btn_click = view.findViewById(R.id.btn_click);
+        tv_banerName=view.findViewById(R.id.baner_name);
 
         fabTwitter = view.findViewById(R.id.fabTwitter);
         fabFb = view.findViewById(R.id.fabFb);
@@ -110,7 +113,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         getBaner();
         initYoutubeVideo("gG2npfpaqsY");
         getTestimonial();
-        // getVideoGallery();
+       // getAllHomeData(1);
+         //getVideoGallery();
 
         GallaryDetailList video1 = new GallaryDetailList(1, 1, 1, 1, "1", "video 1", "aa", "", "", 1, "", "", 1, 1, 1, 1, 1, 1, "H-1HFRhqhUI", "");
         GallaryDetailList video2 = new GallaryDetailList(1, 1, 1, 1, "1", "video 2", "aa", "", "", 1, "", "", 1, 1, 1, 1, 1, 1, "Hl5y81RlASg", "");
@@ -170,9 +174,49 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         wvFb.getSettings().setDomStorageEnabled(true);
         wvFb.getSettings().setJavaScriptEnabled(true);
         wvFb.loadDataWithBaseURL("https://www.facebook.com", widgetInfo1, "text/html", "UTF-8", null);
-
-
         return view;
+    }
+
+    private void getAllHomeData(int langId) {
+        if (Constants.isOnline(getContext())) {
+            final CommonDialog commonDialog = new CommonDialog(getContext(), "Loading", "Please Wait...");
+            commonDialog.show();
+
+            Call<Detail> listCall = Constants.myInterface.getAllHomeData(langId);
+            listCall.enqueue(new Callback<Detail>() {
+                @Override
+                public void onResponse(Call<Detail> call, Response<Detail> response) {
+                    try {
+                        if (response.body() != null) {
+
+                            Log.e("HOME DATA : ", " - " + response.body());
+                            homeList.clear();
+                            Detail detail=response.body();
+                           // homeList = response.body();
+                         Log.e("HOME LIST","-------------------"+detail);
+                            commonDialog.dismiss();
+
+                        } else {
+                            commonDialog.dismiss();
+                            Log.e("Data Null : ", "-----------");
+                        }
+                    } catch (Exception e) {
+                        commonDialog.dismiss();
+                        Log.e("Exception : ", "-----------" + e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Detail> call, Throwable t) {
+                    commonDialog.dismiss();
+                    Log.e("onFailure1 : ", "-----------" + t.getMessage());
+                    t.printStackTrace();
+                }
+            });
+        } else {
+            Toast.makeText(getContext(), "No Internet Connection !", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void getTestimonial() {
@@ -181,16 +225,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             final CommonDialog commonDialog = new CommonDialog(getContext(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<ArrayList<Testomonial>> listCall = Constants.myInterface.getTestimonial();
-            listCall.enqueue(new Callback<ArrayList<Testomonial>>() {
+            Call<Detail> listCall = Constants.myInterface.getAllHomeData(1);
+            listCall.enqueue(new Callback<Detail>() {
                 @Override
-                public void onResponse(Call<ArrayList<Testomonial>> call, Response<ArrayList<Testomonial>> response) {
+                public void onResponse(Call<Detail> call, Response<Detail> response) {
                     try {
                         if (response.body() != null) {
 
-                            Log.e("NEWS DATA : ", " - " + response.body());
+                            Log.e("Testimonial: ", " - " + response.body());
                             testimonialList.clear();
-                            testimonialList = response.body();
+                            Detail detail=response.body();
+                            testimonialList.add(detail);
+                            Log.e("Testimonial List: ", " - " +detail.getTestimonialList());
                             TestimonialAdapter adapter = new TestimonialAdapter(testimonialList, getContext());
                             testomonial_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
                             testomonial_recyclerView.setAdapter(adapter);
@@ -209,7 +255,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 }
 
                 @Override
-                public void onFailure(Call<ArrayList<Testomonial>> call, Throwable t) {
+                public void onFailure(Call<Detail> call, Throwable t) {
                     commonDialog.dismiss();
                     Log.e("onFailure1 : ", "-----------" + t.getMessage());
                     t.printStackTrace();
@@ -225,22 +271,21 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             final CommonDialog commonDialog = new CommonDialog(getContext(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<Baner> listCall = Constants.myInterface.getBaner();
-            listCall.enqueue(new Callback<Baner>() {
+            Call<Detail> listCall = Constants.myInterface.getAllHomeData(1);
+            listCall.enqueue(new Callback<Detail>() {
                 @Override
-                public void onResponse(Call<Baner> call, Response<Baner> response) {
+                public void onResponse(Call<Detail> call, Response<Detail> response) {
                     try {
                         if (response.body() != null) {
 
                             Log.e("Banner responce : ", " - " + response.body());
                             banerList.clear();
                             // banerList=response.body();
-                            Baner baner = response.body();
-                            String imageUri = Constants.BANENR_URL + baner.getSliderImage();
+                            Detail baner = response.body();
+                            String imageUri = Constants.BANENR_URL + baner.getBaner().getSliderImage();
                             Log.e("URI", "-----------" + imageUri);
                             Picasso.with(getContext()).load(imageUri).into(iv_baner);
-
-
+                            tv_banerName.setText(baner.getBaner().getSliderName());
                             commonDialog.dismiss();
 
                         } else {
@@ -255,7 +300,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 }
 
                 @Override
-                public void onFailure(Call<Baner> call, Throwable t) {
+                public void onFailure(Call<Detail> call, Throwable t) {
                     commonDialog.dismiss();
                     Log.e("onFailure1 : ", "-----------" + t.getMessage());
                     t.printStackTrace();
@@ -316,17 +361,19 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             final CommonDialog commonDialog = new CommonDialog(getContext(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<ArrayList<GallaryDetailList>> listCall = Constants.myInterface.getImageGallery();
-            listCall.enqueue(new Callback<ArrayList<GallaryDetailList>>() {
+            Call<Detail> listCall = Constants.myInterface.getAllHomeData(1);
+            listCall.enqueue(new Callback<Detail>() {
                 @Override
-                public void onResponse(Call<ArrayList<GallaryDetailList>> call, Response<ArrayList<GallaryDetailList>> response) {
+                public void onResponse(Call<Detail> call, Response<Detail> response) {
                     try {
                         if (response.body() != null) {
 
                             Log.e("Gallery responce : ", " - " + response.body());
                             galleryList.clear();
-                            galleryList = response.body();
-                            imageSlider(galleryList);
+
+                            Detail galleryDetail=response.body();
+                            galleryList.add(galleryDetail);
+                            imageSlider(galleryDetail);
                             commonDialog.dismiss();
 
 
@@ -342,7 +389,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 }
 
                 @Override
-                public void onFailure(Call<ArrayList<GallaryDetailList>> call, Throwable t) {
+                public void onFailure(Call<Detail> call, Throwable t) {
                     commonDialog.dismiss();
                     Log.e("onFailure1 : ", "-----------" + t.getMessage());
                     t.printStackTrace();
@@ -353,6 +400,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
 
     }
+
+
 
     private void getVideoGallery() {
         if (Constants.isOnline(getContext())) {
@@ -477,12 +526,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    private void imageSlider(ArrayList<GallaryDetailList> gallaryDetailLists) {
+    private void imageSlider(Detail gallaryDetailLists) {
 
         HashMap<String, String> url_maps = new HashMap<String, String>();
-        for (int i = 0; i < gallaryDetailLists.size(); i++) {
-            String image = Constants.GALLERY_URL + gallaryDetailLists.get(i).getFileName();
-            String title = gallaryDetailLists.get(i).getTitle();
+        for (int i = 0; i < gallaryDetailLists.getPhotoList().size(); i++) {
+            String image = Constants.GALLERY_URL + gallaryDetailLists.getPhotoList().get(i).getFileName();
+            String title = gallaryDetailLists.getPhotoList().get(i).getTitle();
+            //String title = gallaryDetailLists.get(i).getTitle();
             url_maps.put(title, image);
             Log.e("Gallery", "----------" + url_maps);
 

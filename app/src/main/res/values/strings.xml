@@ -39,4 +39,37 @@
     <string name="str_news">News</string>
     <string name="str_contact">Contact</string>
 
+
+    <string name="str_rashtriya_uchchatar">Rashtriya Uchchatar</string>
+    <string name="str_shiksha_abhiyan">Shiksha Abhiyan</string>
+    <string name="str_goverment_of_maharashtra">Goverment Of Maharashtra</string>
+    <string name="str_login_page">:LOGIN:</string>
+    <string name="str_username">Username</string>
+    <string name="str_password">Password</string>
+    <string name="str_forgot_password">Forgot Password?</string>
+    <string name="str_don_t_have_an_account">Don\'t have an account ?</string>
+    <string name="str_sign_up_now">Sign Up Now</string>
+    <string name="str_skip_login">Skip Login</string>
+    <string name="str_registration">:REGISTRATION:</string>
+    <string name="str_name">Name*</string>
+    <string name="str_aishe_code">AISHE Code</string>
+    <string name="str_college_name">College Name*</string>
+    <string name="str_university_affiliated">University Affiliated*</string>
+    <string name="str_designation_of_the_authorized_person">Designation of the authorized Person*</string>
+    <string name="str_name_of_department">Name of Department*</string>
+    <string name="str_name_of_the_authorized_person">Name of the authorized person*</string>
+    <string name="str_mobile_number">Mobile Number*</string>
+    <string name="str_date_of_birth">Date Of Birth*</string>
+    <string name="str_email">Email*</string>
+    <string name="str_alternet_email">Alternet Email</string>
+    <string name="str_create_an_account">Create an account</string>
+    <string name="str_already_a_user">Already a user ?</string>
+    <string name="str_sign_in_now">Sign In Now</string>
+    <string name="str_enter_otp">Enter OTP</string>
+    <string name="str_submit">Submit</string>
+    <string name="str_resend_otp">Resend OTP</string>
+    <string name="str_full_name">Full Name*</string>
+    <string name="str_institute_name">Institute Name*</string>
+    <string name="str_university_name">University Name*</string>
+
 </resources>

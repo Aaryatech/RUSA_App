@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.constants.Constants;
-import com.ats.rusa_app.model.Registration;
+import com.ats.rusa_app.model.Reg;
 import com.ats.rusa_app.util.CommonDialog;
 import com.google.gson.Gson;
 
@@ -73,7 +73,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         typeNameArray.add("Colleges");
         typeNameArray.add("University");
 
-        final ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, typeNameArray);
+        final ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getApplicationContext(),R.layout.spinner_item, typeNameArray);
+        spinnerAdapter.setDropDownViewResource(R.layout.spinner_item);
+       // android.R.layout.simple_spinner_dropdown_item
         spType.setAdapter(spinnerAdapter);
 
         spType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -83,7 +85,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 if(spinnerPosition.equals("Individual"))
                 {
                     ed_Name.setVisibility(View.VISIBLE);
-                    ed_Name.setHint("Full Name*");
+                    ed_Name.setHint(getString(R.string.str_full_name));
                     ed_email.setVisibility(View.VISIBLE);
                     ed_alterEmail.setVisibility(View.VISIBLE);
                     ed_clgName.setVisibility(View.VISIBLE);
@@ -97,7 +99,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 }else if(spinnerPosition.equals("Colleges"))
                 {
                     ed_Name.setVisibility(View.VISIBLE);
-                    ed_Name.setHint("Institute Name*");
+                    ed_Name.setHint(getString(R.string.str_institute_name));
                     ed_email.setVisibility(View.VISIBLE);
                     ed_alterEmail.setVisibility(View.VISIBLE);
                     ed_clgName.setVisibility(View.GONE);
@@ -111,7 +113,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 }else if(spinnerPosition.equals("University"))
                 {
                     ed_Name.setVisibility(View.VISIBLE);
-                    ed_Name.setHint("University Name*");
+                    ed_Name.setHint(getString(R.string.str_university_name));
                     ed_email.setVisibility(View.VISIBLE);
                     ed_alterEmail.setVisibility(View.VISIBLE);
                     ed_clgName.setVisibility(View.GONE);
@@ -131,8 +133,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             }
         });
 
-
-
     }
 
     @Override
@@ -142,7 +142,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             if(spinnerPosition.equals("Individual"))
                 {
                     Log.e("SpinnerInd","-----------------"+spinnerPosition);
-                    boolean isValidEmail = false, isValidClgName = false,isValidUniverAff = false,isValidName = false,  isValidNameDept = false, isValidNameAuthPer = false, isValidDob = false;
+                    boolean isValidEmail = false, isValidClgName = false,isValidUniverAff = false,isValidName = false,  isValidNameDept = false, isValidNameAuthPer = false, isValidDob = false,isValidMob=false;
                     String email,alt_email,fullName,clgName,univercityAff,nameDept,nameAuthPer,dob,mob;
                     fullName = ed_Name.getText().toString().trim();
                     email = ed_email.getText().toString().trim();
@@ -163,6 +163,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     Log.e("nameDept","----------------------"+nameDept);
                     Log.e("nameAuthPer","----------------------"+nameAuthPer);
                     Log.e("uniqueId","----------------------"+uniqueId);
+
 
                     if (fullName.isEmpty()) {
                         ed_Name.setError("required");
@@ -210,10 +211,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         ed_mobile.setError("required");
                     }  else {
                         ed_mobile.setError(null);
+                        isValidMob = true;
 
                     }
 
-                   // if (isValidName && isValidEmail  && isValidNameDept && isValidNameAuthPer && isValidClgName && isValidUniverAff && isValidDob ) {
+
+
+                         if (isValidName && isValidEmail  && isValidNameDept && isValidNameAuthPer && isValidClgName && isValidUniverAff && isValidDob && isValidMob ) {
                         SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd");
                         SimpleDateFormat formatter1 = new SimpleDateFormat("dd-MM-yyyy");
 
@@ -224,29 +228,36 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
-                        String DOB = formatter2.format(ToDOB);
+                        String DOB = null;
+                        try {
+                            DOB = formatter2.format(ToDOB);
+                        } catch (Exception e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
 
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-                        Registration registration = new Registration(0, uniqueId, 1,email,alt_email,"",fullName,"",clgName,univercityAff,"",nameDept,mob,nameAuthPer,DOB,"","","Android",1,1,sdf.format(System.currentTimeMillis()),sdf.format(System.currentTimeMillis()),0,0,0,"","","",0,"",0,0);
-                        Log.e("Registration","--------------"+registration);
+                        Reg registration = new Reg(0, uniqueId, 1, email, alt_email, "", fullName, "", clgName, univercityAff, "", nameDept, mob, nameAuthPer, DOB, "", "", "Android", 1, 1, sdf.format(System.currentTimeMillis()), sdf.format(System.currentTimeMillis()), 0, 0, 0, "", "", "", 0, "", 0, 0);
+                        Log.e("Registration", "--------------" + registration);
                         getRegistration(registration);
 
-                    ed_Name.setText("");
-                    ed_email.setText("");
-                    ed_alterEmail.setText("");
-                    ed_clgName.setText("");
-                    ed_univercityAff.setText("");
-                    ed_nameDept.setText("");
-                    ed_DOB.setText("");
-                    ed_mobile.setText("");
-                    ed_nameAuthePerson.setText("");
-                   // }
+                        ed_Name.setText("");
+                        ed_email.setText("");
+                        ed_alterEmail.setText("");
+                        ed_clgName.setText("");
+                        ed_univercityAff.setText("");
+                        ed_nameDept.setText("");
+                        ed_DOB.setText("");
+                        ed_mobile.setText("");
+                        ed_nameAuthePerson.setText("");
+                         }
+
                 }
                 if(spinnerPosition.equals("Colleges"))
                 {
                     Log.e("Spinnerclg","-----------------"+spinnerPosition);
-                    boolean isValidEmail = false,isValidUniverAff = false,isValidName = false, isValidDesigPerson = false, isValidNameDept = false, isValidNameAuthPer = false;
+                    boolean isValidEmail = false,isValidUniverAff = false,isValidName = false, isValidDesigPerson = false, isValidNameDept = false, isValidNameAuthPer = false,isValidMob=false;
                     String email,alt_email,institudeName,univercityAff,nameDept,nameAuthPer,designPerName,AISHECode,mob;
                     institudeName = ed_Name.getText().toString().trim();
                     email = ed_email.getText().toString().trim();
@@ -298,12 +309,12 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         ed_mobile.setError("required");
                     }  else {
                         ed_mobile.setError(null);
-
+                        isValidMob=true;
                     }
-                   // if (isValidName && isValidEmail  && isValidNameDept && isValidNameAuthPer  && isValidUniverAff && isValidDesigPerson ) {
+                    if (isValidName && isValidEmail  && isValidNameDept && isValidNameAuthPer  && isValidUniverAff && isValidDesigPerson && isValidMob ) {
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-                        Registration registration = new Registration(0, uniqueId, 2,email,alt_email,"",institudeName,AISHECode,"",univercityAff,"",nameDept,mob,nameAuthPer,null,"","","Android",1,1,sdf.format(System.currentTimeMillis()),null,0,0,0,"","","",0,"",0,0);
+                    Reg registration = new Reg(0, uniqueId, 2,email,alt_email,"",institudeName,AISHECode,"",univercityAff,"",nameDept,mob,nameAuthPer,null,"","","Android",1,1,sdf.format(System.currentTimeMillis()),null,0,0,0,"","","",0,"",0,0);
                         getRegistration(registration);
 
                         ed_Name.setText("");
@@ -315,12 +326,12 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         ed_aisheCode.setText("");
                         ed_mobile.setText("");
                         ed_nameAuthePerson.setText("");
-                   // }
+                    }
                 }
                 if(spinnerPosition.equals("University"))
                 {
                     Log.e("SpinnerUni","-----------------"+spinnerPosition);
-                    boolean isValidEmail = false,isValidName = false, isValidDesigPerson = false, isValidNameDept = false, isValidNameAuthPer = false;
+                    boolean isValidEmail = false,isValidName = false, isValidDesigPerson = false, isValidNameDept = false, isValidNameAuthPer = false,isValidMob=false;
                     String email,alt_email,UnivercityName,nameDept,nameAuthPer,designPerName,AISHECode,mob;
                     UnivercityName = ed_Name.getText().toString().trim();
                     email = ed_email.getText().toString().trim();
@@ -367,11 +378,11 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         ed_mobile.setError("required");
                     }  else {
                         ed_mobile.setError(null);
-
+                        isValidMob=true;
                     }
-                  //  if (isValidName && isValidEmail  && isValidNameDept && isValidNameAuthPer   && isValidDesigPerson ) {
+                    if (isValidName && isValidEmail  && isValidNameDept && isValidNameAuthPer   && isValidDesigPerson && isValidMob) {
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                        Registration registration = new Registration(0, uniqueId, 3,email,alt_email,"",UnivercityName,AISHECode,"","","",nameDept,mob,nameAuthPer,null,"","","Android",1,1,sdf.format(System.currentTimeMillis()),null,0,0,0,"","","",0,"",0,0);
+                    Reg registration = new Reg(0, uniqueId, 3,email,alt_email,"",UnivercityName,AISHECode,"","","",nameDept,mob,nameAuthPer,null,"","","Android",1,1,sdf.format(System.currentTimeMillis()),null,0,0,0,"","","",0,"",0,0);
                         getRegistration(registration);
 
                         ed_Name.setText("");
@@ -382,7 +393,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         ed_mobile.setText("");
                         ed_aisheCode.setText("");
                         ed_nameAuthePerson.setText("");
-                  //  }
+                    }
             }
         }else if(v.getId()==R.id.tv_signIn)
         {
@@ -427,7 +438,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             dateMillis = calendar.getTimeInMillis();
         }
     };
-    private void getRegistration(Registration registration) {
+    private void getRegistration(Reg registration) {
 
         if (Constants.isOnline(getApplicationContext())) {
             Log.e("PARAMETER : ", "---------------- REGISTRATION : " + registration);
@@ -435,18 +446,19 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             final CommonDialog commonDialog = new CommonDialog(RegistrationActivity.this, "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<Registration> listCall = Constants.myInterface.saveRegistration(registration);
-            listCall.enqueue(new Callback<Registration>() {
+            Call<Reg> listCall = Constants.myInterface.saveRegistration(registration);
+            listCall.enqueue(new Callback<Reg>() {
                 @Override
-                public void onResponse(Call<Registration> call, Response<Registration> response) {
+                public void onResponse(Call<Reg> call, Response<Reg> response) {
                     try {
                         if (response.body() != null) {
-                            Registration model=response.body();
+                            Reg model=response.body();
                             String smsCode=model.getSmsCode();
                             Gson gson = new Gson();
                             String json = gson.toJson(model);
 
                             Log.e("SAVE REGISTRATION","-----------------------------"+response.body());
+                            Log.e("SAVE REGISTRATION MODEL","-----------------------------"+model);
                             Intent intent=new Intent(RegistrationActivity.this,OTPVerificationActivity.class);
                             intent.putExtra("code", smsCode);
                             Bundle args = new Bundle();
@@ -468,7 +480,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 }
 
                 @Override
-                public void onFailure(Call<Registration> call, Throwable t) {
+                public void onFailure(Call<Reg> call, Throwable t) {
                     commonDialog.dismiss();
                     Log.e("onFailure : ", "-----------" + t.getMessage());
                     t.printStackTrace();

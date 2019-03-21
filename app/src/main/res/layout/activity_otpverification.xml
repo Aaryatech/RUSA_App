@@ -22,30 +22,30 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:layout_marginTop="10dp"
+                android:textSize="@dimen/text_large"
+                android:layout_marginTop="@dimen/margin_small"
                 android:textColor="@color/colorBlue"
                 android:fontFamily="@font/lato_bold"
-                android:text="Rashtriya Uchchatar"
+                android:text="@string/str_rashtriya_uchchatar"
                 android:gravity="center"
                 />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
+                android:textSize="@dimen/text_large"
                 android:fontFamily="@font/lato_bold"
                 android:textColor="@color/colorBlue"
-                android:text="Shiksha Abhiyan"
+                android:text="@string/str_shiksha_abhiyan"
                 android:gravity="center"
                 />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="14dp"
+                android:textSize="@dimen/text_medium"
                 android:fontFamily="@font/lato_bold"
                 android:textColor="@color/colorRed"
-                android:text="Goverment Of Maharashtra"
+                android:text="@string/str_goverment_of_maharashtra"
                 android:gravity="center"
                 />
 
@@ -54,46 +54,45 @@
                 android:id="@+id/ed_verifyOTP"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
+                android:padding="@dimen/margin_medium"
                 android:fontFamily="@font/lato_regular"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="@dimen/margin_xx_large"
                 android:inputType="number"
-                android:hint="Enter OTP"
+                android:hint="@string/str_enter_otp"
                 android:background="@drawable/edittext_background"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"/>
-
+                android:layout_marginLeft="@dimen/margin_large"
+                android:layout_marginRight="@dimen/margin_large"/>
 
             <Button
                 android:id="@+id/btn_submit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="30dp"
-                android:padding="10dp"
-                android:textSize="18dp"
+                android:layout_marginRight="@dimen/margin_large"
+                android:layout_marginLeft="@dimen/margin_large"
+                android:layout_marginTop="@dimen/margin_xx_large"
+                android:padding="@dimen/margin_small"
+                android:textSize="@dimen/text_large"
                 android:fontFamily="@font/lato_bold"
                 android:background="@drawable/button_background"
                 android:textColor="@color/colorWhite"
-                android:text="Submit"
+                android:text="@string/str_submit"
                 />
 
             <Button
                 android:id="@+id/btn_resend"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="30dp"
-                android:padding="10dp"
-                android:textSize="18dp"
+                android:layout_marginRight="@dimen/margin_large"
+                android:layout_marginLeft="@dimen/margin_large"
+                android:layout_marginTop="@dimen/margin_xx_large"
+                android:padding="@dimen/margin_small"
+                android:textSize="@dimen/text_large"
                 android:fontFamily="@font/lato_bold"
                 android:background="@drawable/button_background"
                 android:textColor="@color/colorWhite"
-                android:text="Resend OTP"
+                android:text="@string/str_resend_otp"
                 />
         </LinearLayout>
 </RelativeLayout>

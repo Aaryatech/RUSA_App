@@ -15,16 +15,13 @@ import android.text.Html;
 import android.text.Spanned;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -32,9 +29,7 @@ import android.widget.TextView;
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.activity.MainActivity;
 import com.ats.rusa_app.constants.Constants;
-import com.ats.rusa_app.fragment.ContentFragment;
 import com.ats.rusa_app.model.CmsContentList;
-import com.ats.rusa_app.model.DetailNewsList;
 import com.ats.rusa_app.util.ClickableTableSpanImpl;
 import com.ats.rusa_app.util.HtmlHttpImageGetter;
 import com.ats.rusa_app.util.RvWebView;
@@ -50,8 +45,6 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static android.support.constraint.Constraints.TAG;
 
@@ -119,10 +112,12 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
         if (model.getFeaturedImage() != null) {
             if (model.getFeaturedImage().equals("")) {
                 holder.ivImg.setVisibility(View.GONE);
+
             } else {
                 try {
                     holder.ivImg.setVisibility(View.VISIBLE);
                     Picasso.with(context).load(Constants.GALLERY_URL + model.getFeaturedImage()).placeholder(R.drawable.img_placeholder).into(holder.ivImg);
+                    Log.e("ImageStruct","-------------------"+Constants.GALLERY_URL +model.getFeaturedImage());
                 } catch (Exception e) {
                 }
             }
@@ -196,15 +191,21 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
         activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
         holder.tvHtmlTxt.setListIndentPx(metrics.density * 10);
 
+        if(htmlText.contains("src"))
+        {
+            Log.e("Hiii","--------------");
+        }
+
         try {
             holder.tvHtmlTxt.setHtml(htmlText, new HtmlHttpImageGetter(holder.tvHtmlTxt));
+
+            Log.e("html Text","---------------------"+htmlText);
         } catch (Exception e) {
             Log.e("Hello", "-------------Hii");
             holder.llHtml.setVisibility(View.GONE);
             holder.llWebview.setVisibility(View.VISIBLE);
 
         }
-
 
         if (htmlText.contains("iframe")) {
 
@@ -214,8 +215,6 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
 
 
     }
-
-
 
     @Override
     public int getItemCount() {

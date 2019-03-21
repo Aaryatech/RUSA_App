@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.NewsActivity"></activity>
+        <activity android:name=".activity.ForgotPasswordActivity"></activity>
+        <activity android:name=".activity.NewsActivity" />
         <activity android:name=".activity.NotificationActivity" />
         <activity
             android:name=".activity.YoutubePlayerActivity"
@@ -27,6 +28,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.OTPVerificationActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.SplashActivity"

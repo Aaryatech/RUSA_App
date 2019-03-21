@@ -3,8 +3,7 @@ package com.ats.rusa_app.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Reg {
-
+public class Login {
     @SerializedName("regId")
     @Expose
     private Integer regId;
@@ -49,13 +48,13 @@ public class Reg {
     private String authorizedPerson;
     @SerializedName("dob")
     @Expose
-    private String dob;
+    private Object dob;
     @SerializedName("imageName")
     @Expose
-    private String imageName;
+    private Object imageName;
     @SerializedName("tokenId")
     @Expose
-    private String tokenId;
+    private Object tokenId;
     @SerializedName("registerVia")
     @Expose
     private String registerVia;
@@ -82,64 +81,31 @@ public class Reg {
     private Integer exInt2;
     @SerializedName("exVar1")
     @Expose
-    private String exVar1;
+    private Object exVar1;
     @SerializedName("exVar2")
     @Expose
-    private String exVar2;
+    private Object exVar2;
     @SerializedName("emailCode")
     @Expose
-    private String emailCode;
+    private Object emailCode;
     @SerializedName("emailVerified")
     @Expose
     private Integer emailVerified;
     @SerializedName("smsCode")
     @Expose
-    private String smsCode;
+    private Object smsCode;
     @SerializedName("smsVerified")
     @Expose
     private Integer smsVerified;
     @SerializedName("editByAdminuserId")
     @Expose
-    private int editByAdminuserId;
-
-
-    public Reg(int regId, String userUuid, int userType, String emails, String alternateEmail, String userPassword, String name, String aisheCode, String collegeName, String unversityName, String designationName, String departmentName, String mobileNumber, String authorizedPerson, String dob, String imageName, String tokenId, String registerVia, int isActive, int delStatus, String addDate, String editDate, int editByUserId, int exInt1, int exInt2, String exVar1, String exVar2, String emailCode, int emailVerified, String smsCode, int smsVerified, int editByAdminuserId) {
-        this.regId = regId;
-        this.userUuid = userUuid;
-        this.userType = userType;
-        this.emails = emails;
-        this.alternateEmail = alternateEmail;
-        this.userPassword = userPassword;
-        this.name = name;
-        this.aisheCode = aisheCode;
-        this.collegeName = collegeName;
-        this.unversityName = unversityName;
-        this.designationName = designationName;
-        this.departmentName = departmentName;
-        this.mobileNumber = mobileNumber;
-        this.authorizedPerson = authorizedPerson;
-        this.dob = dob;
-        this.imageName = imageName;
-        this.tokenId = tokenId;
-        this.registerVia = registerVia;
-        this.isActive = isActive;
-        this.delStatus = delStatus;
-        this.addDate = addDate;
-        this.editDate = editDate;
-        this.editByUserId = editByUserId;
-        this.exInt1 = exInt1;
-        this.exInt2 = exInt2;
-        this.exVar1 = exVar1;
-        this.exVar2 = exVar2;
-        this.emailCode = emailCode;
-        this.emailVerified = emailVerified;
-        this.smsCode = smsCode;
-        this.smsVerified = smsVerified;
-        this.editByAdminuserId = editByAdminuserId;
-    }
-
-
-
+    private Integer editByAdminuserId;
+    @SerializedName("msg")
+    @Expose
+    private String msg;
+    @SerializedName("error")
+    @Expose
+    private Boolean error;
 
     public Integer getRegId() {
         return regId;
@@ -253,27 +219,27 @@ public class Reg {
         this.authorizedPerson = authorizedPerson;
     }
 
-    public String getDob() {
+    public Object getDob() {
         return dob;
     }
 
-    public void setDob(String dob) {
+    public void setDob(Object dob) {
         this.dob = dob;
     }
 
-    public String getImageName() {
+    public Object getImageName() {
         return imageName;
     }
 
-    public void setImageName(String imageName) {
+    public void setImageName(Object imageName) {
         this.imageName = imageName;
     }
 
-    public String getTokenId() {
+    public Object getTokenId() {
         return tokenId;
     }
 
-    public void setTokenId(String tokenId) {
+    public void setTokenId(Object tokenId) {
         this.tokenId = tokenId;
     }
 
@@ -341,27 +307,27 @@ public class Reg {
         this.exInt2 = exInt2;
     }
 
-    public String getExVar1() {
+    public Object getExVar1() {
         return exVar1;
     }
 
-    public void setExVar1(String exVar1) {
+    public void setExVar1(Object exVar1) {
         this.exVar1 = exVar1;
     }
 
-    public String getExVar2() {
+    public Object getExVar2() {
         return exVar2;
     }
 
-    public void setExVar2(String exVar2) {
+    public void setExVar2(Object exVar2) {
         this.exVar2 = exVar2;
     }
 
-    public String getEmailCode() {
+    public Object getEmailCode() {
         return emailCode;
     }
 
-    public void setEmailCode(String emailCode) {
+    public void setEmailCode(Object emailCode) {
         this.emailCode = emailCode;
     }
 
@@ -373,11 +339,11 @@ public class Reg {
         this.emailVerified = emailVerified;
     }
 
-    public String getSmsCode() {
+    public Object getSmsCode() {
         return smsCode;
     }
 
-    public void setSmsCode(String smsCode) {
+    public void setSmsCode(Object smsCode) {
         this.smsCode = smsCode;
     }
 
@@ -389,17 +355,33 @@ public class Reg {
         this.smsVerified = smsVerified;
     }
 
-    public int getEditByAdminuserId() {
+    public Integer getEditByAdminuserId() {
         return editByAdminuserId;
     }
 
-    public void setEditByAdminuserId(int editByAdminuserId) {
+    public void setEditByAdminuserId(Integer editByAdminuserId) {
         this.editByAdminuserId = editByAdminuserId;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public Boolean getError() {
+        return error;
+    }
+
+    public void setError(Boolean error) {
+        this.error = error;
     }
 
     @Override
     public String toString() {
-        return "Reg{" +
+        return "Login{" +
                 "regId=" + regId +
                 ", userUuid='" + userUuid + '\'' +
                 ", userType=" + userType +
@@ -414,9 +396,9 @@ public class Reg {
                 ", departmentName='" + departmentName + '\'' +
                 ", mobileNumber='" + mobileNumber + '\'' +
                 ", authorizedPerson='" + authorizedPerson + '\'' +
-                ", dob='" + dob + '\'' +
-                ", imageName='" + imageName + '\'' +
-                ", tokenId='" + tokenId + '\'' +
+                ", dob=" + dob +
+                ", imageName=" + imageName +
+                ", tokenId=" + tokenId +
                 ", registerVia='" + registerVia + '\'' +
                 ", isActive=" + isActive +
                 ", delStatus=" + delStatus +
@@ -425,13 +407,15 @@ public class Reg {
                 ", editByUserId=" + editByUserId +
                 ", exInt1=" + exInt1 +
                 ", exInt2=" + exInt2 +
-                ", exVar1='" + exVar1 + '\'' +
-                ", exVar2='" + exVar2 + '\'' +
-                ", emailCode='" + emailCode + '\'' +
+                ", exVar1=" + exVar1 +
+                ", exVar2=" + exVar2 +
+                ", emailCode=" + emailCode +
                 ", emailVerified=" + emailVerified +
-                ", smsCode='" + smsCode + '\'' +
+                ", smsCode=" + smsCode +
                 ", smsVerified=" + smsVerified +
                 ", editByAdminuserId=" + editByAdminuserId +
+                ", msg='" + msg + '\'' +
+                ", error=" + error +
                 '}';
     }
 }

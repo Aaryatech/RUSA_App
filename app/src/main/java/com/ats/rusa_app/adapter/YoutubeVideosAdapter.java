@@ -3,10 +3,10 @@ package com.ats.rusa_app.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.activity.YoutubePlayerActivity;
@@ -15,7 +15,6 @@ import com.ats.rusa_app.util.Config;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeThumbnailLoader;
 import com.google.android.youtube.player.YouTubeThumbnailView;
-
 
 import java.util.ArrayList;
 
@@ -48,13 +47,16 @@ public class YoutubeVideosAdapter extends RecyclerView.Adapter<YoutubeVideosAdap
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final GallaryDetailList model = videoList.get(position);
 
         holder.ytThumb.initialize(Config.DEVELOPER_KEY, new YouTubeThumbnailView.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, final YouTubeThumbnailLoader youTubeThumbnailLoader) {
                 youTubeThumbnailLoader.setVideo(model.getExVar1());
+
+                Log.e("Vedio model","----------------"+model.getFileName());
+                //model.getExVar1()
                 youTubeThumbnailLoader.setOnThumbnailLoadedListener(new YouTubeThumbnailLoader.OnThumbnailLoadedListener() {
                     @Override
                     public void onThumbnailLoaded(YouTubeThumbnailView youTubeThumbnailView, String s) {

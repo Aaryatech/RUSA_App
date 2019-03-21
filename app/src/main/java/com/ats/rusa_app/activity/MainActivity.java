@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -14,21 +13,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ats.rusa_app.R;
@@ -36,15 +31,14 @@ import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.fcm.SharedPrefManager;
 import com.ats.rusa_app.fragment.ContactUsFragment;
 import com.ats.rusa_app.fragment.ContentFragment;
+import com.ats.rusa_app.fragment.EventFragment;
 import com.ats.rusa_app.fragment.HomeFragment;
 import com.ats.rusa_app.fragment.NewContentFragment;
 import com.ats.rusa_app.fragment.VideoFragment;
-import com.ats.rusa_app.fragment.YoutubeThmbFragment;
 import com.ats.rusa_app.model.AppToken;
 import com.ats.rusa_app.model.CategoryList;
 import com.ats.rusa_app.model.MenuGroup;
 import com.ats.rusa_app.model.MenuModel;
-import com.ats.rusa_app.model.TestImonialList;
 import com.ats.rusa_app.util.CommonDialog;
 import com.ats.rusa_app.util.Constant;
 import com.ats.rusa_app.util.CustomSharedPreference;
@@ -52,7 +46,6 @@ import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -346,6 +339,9 @@ public class MainActivity extends AppCompatActivity
                                 }
                             }
 
+                            MenuGroup menuGroup = new MenuGroup("Event and Workshop" , false, false, "Event");
+                            headerList.add(menuGroup);
+
                             MenuGroup menuGroup1 = new MenuGroup("" + getResources().getString(R.string.str_login), false, false, "login");
                             headerList.add(menuGroup1);
 
@@ -412,12 +408,17 @@ public class MainActivity extends AppCompatActivity
                         ft.replace(R.id.content_frame, new ContactUsFragment(), "HomeFragment");
                         ft.commit();
 
-                    }
-
-                    if (url.equalsIgnoreCase("login")) {
+                    }else if (url.equalsIgnoreCase("login")) {
                         startActivity(new Intent(MainActivity.this, LoginActivity.class));
 
-                    } else {
+                    }else  if (url.equalsIgnoreCase("Event")) {
+                        Fragment adf = new EventFragment();
+                        Bundle args = new Bundle();
+                        args.putString("slugName", url);
+                        adf.setArguments(args);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+                    }
+                    else {
 
                         Fragment adf = new NewContentFragment();
                         Bundle args = new Bundle();
@@ -468,16 +469,17 @@ public class MainActivity extends AppCompatActivity
                                 });
                         builder.create();
                         builder.show();
-
-                    } else if (model.getUrl().equalsIgnoreCase("videos19")){
-                            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                            ft.replace(R.id.content_frame, new VideoFragment(), "HomeFragment");
-                            ft.commit();
-
-                        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-                        drawer.closeDrawer(GravityCompat.START);
-
-                    }else {
+                    }
+//                    } else if (model.getUrl().equalsIgnoreCase("videos19")){
+//                            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//                            ft.replace(R.id.content_frame, new VideoFragment(), "HomeFragment");
+//                            ft.commit();
+//
+//                        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//                        drawer.closeDrawer(GravityCompat.START);
+//
+//                    }
+                    else {
 //                        WebView webView = findViewById(R.id.webView);
 //                        webView.loadUrl(model.url);
 //                        onBackPressed();

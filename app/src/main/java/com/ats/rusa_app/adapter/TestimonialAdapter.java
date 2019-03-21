@@ -13,10 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ats.rusa_app.R;
-import com.ats.rusa_app.activity.NewsActivity;
 import com.ats.rusa_app.activity.TestimonialWebviewActivity;
 import com.ats.rusa_app.constants.Constants;
-import com.ats.rusa_app.model.Testomonial;
+import com.ats.rusa_app.model.Detail;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
@@ -26,10 +25,10 @@ import org.sufficientlysecure.htmltextview.HtmlTextView;
 import java.util.ArrayList;
 
 public class TestimonialAdapter extends RecyclerView.Adapter<TestimonialAdapter.MyViewHolder> {
-    private ArrayList<Testomonial> TestimonalList;
+    private ArrayList<Detail> TestimonalList;
     private Context context;
 
-    public TestimonialAdapter(ArrayList<Testomonial> testimonalList, Context context) {
+    public TestimonialAdapter(ArrayList<Detail> testimonalList, Context context) {
         TestimonalList = testimonalList;
         this.context = context;
     }
@@ -45,11 +44,12 @@ public class TestimonialAdapter extends RecyclerView.Adapter<TestimonialAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull TestimonialAdapter.MyViewHolder myViewHolder, int i) {
-        final Testomonial model = TestimonalList.get(i);
-        String imageUri = Constants.GALLERY_URL + model.getImageName();
+        final Detail model = TestimonalList.get(i);
+        Log.e("Model Testimonial","----------------"+model);
+        String imageUri = Constants.GALLERY_URL + model.getTestimonialList().get(i).getImageName();
         Picasso.with(context).load(imageUri).placeholder(context.getResources().getDrawable(R.drawable.img_placeholder)).into(myViewHolder.imageView);
-        myViewHolder.tv_Title.setText(model.getFromName());
-        myViewHolder.tv_Disc.setHtml(model.getMessage(), new HtmlHttpImageGetter(myViewHolder.tv_Disc));
+        myViewHolder.tv_Title.setText(model.getTestimonialList().get(i).getFromName());
+        myViewHolder.tv_Disc.setHtml(model.getTestimonialList().get(i).getMessage(), new HtmlHttpImageGetter(myViewHolder.tv_Disc));
 
         myViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override

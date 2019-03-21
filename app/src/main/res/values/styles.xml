@@ -22,5 +22,7 @@
         <item name="android:background">@color/colorWhite</item>
         <item name="android:textColorPrimary">@color/colorBlack</item>
     </style>
-
+    <style name="Normal_Drawable">
+        <item name="android:textSize">12sp</item>
+    </style>
 </resources>

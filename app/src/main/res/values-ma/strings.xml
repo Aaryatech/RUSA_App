@@ -36,4 +36,36 @@
     <string name="str_news">बातम्या</string>
     <string name="str_contact">संपर्क</string>
 
+
+    <string name="str_rashtriya_uchchatar">राष्ट्रीय उंचादर</string>
+    <string name="str_shiksha_abhiyan">शिक्षण अभियान</string>
+    <string name="str_goverment_of_maharashtra">महाराष्ट्र शासन</string>
+    <string name="str_login_page">:लॉग इन:</string>
+    <string name="str_username">वापरकर्तानाव</string>
+    <string name="str_password">पासवर्ड</string>
+    <string name="str_forgot_password">पासवर्ड विसरलात?</string>
+    <string name="str_don_t_have_an_account">आपल्याकडे एखादे खाते नाही?</string>
+    <string name="str_sign_up_now">आत्ताच नोंदणी करा</string>
+    <string name="str_skip_login">लॉग इन वगळा</string>
+    <string name="str_registration">:नोंदणी:</string>
+    <string name="str_name">नाव*</string>
+    <string name="str_aishe_code">AISHE कोड</string>
+    <string name="str_college_name">कॉलेजचे नाव *</string>
+    <string name="str_university_affiliated">विद्यापीठ संबद्ध *</string>
+    <string name="str_designation_of_the_authorized_person">अधिकृत व्यक्तीचे पदनाम *</string>
+    <string name="str_name_of_department">विभागाचे नांव *</string>
+    <string name="str_name_of_the_authorized_person">अधिकृत व्यक्तीचे नाव *</string>
+    <string name="str_mobile_number">मोबाइल नंबर *</string>
+    <string name="str_date_of_birth">जन्मतारीख *</string>
+    <string name="str_email">ईमेल *</string>
+    <string name="str_alternet_email">वैकल्पिक ईमेल</string>
+    <string name="str_create_an_account">एक खाते तयार करा</string>
+    <string name="str_already_a_user">आधीच एक वापरकर्ता आहे?</string>
+    <string name="str_sign_in_now">आता साइन इन करा</string>
+    <string name="str_enter_otp">ओटीपी प्रविष्ट करा</string>
+    <string name="str_submit">सबमिट करा</string>
+    <string name="str_resend_otp">ओटीपी पुन्हा पाठवा</string>
+    <string name="str_full_name">Full Name*</string>
+    <string name="str_institute_name">Institute Name*</string>
+    <string name="str_university_name">University Name*</string>
 </resources>

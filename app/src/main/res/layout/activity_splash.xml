@@ -12,43 +12,48 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+       android:gravity="center">
+
         <ImageView
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_gravity="center"
-            android:layout_marginTop="200dp"
             android:src="@drawable/logo"
             />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="22dp"
+            android:textSize="@dimen/text_large"
             android:layout_marginTop="10dp"
             android:textColor="@color/colorBlue"
             android:fontFamily="@font/lato_bold"
-            android:text="Rashtriya Uchchatar"
+            android:text="@string/str_rashtriya_uchchatar"
            android:gravity="center"
             />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="22dp"
+            android:textSize="@dimen/text_large"
             android:fontFamily="@font/lato_bold"
             android:textColor="@color/colorBlue"
-            android:text="Shiksha Abhiyan"
+            android:text="@string/str_shiksha_abhiyan"
             android:gravity="center"
             />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16dp"
+            android:textSize="@dimen/text_medium"
             android:fontFamily="@font/lato_bold"
             android:textColor="@color/colorRed"
-            android:text="Goverment Of Maharashtra"
+            android:text="@string/str_goverment_of_maharashtra"
             android:gravity="center"
             />
-
+    </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>
