@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".activity.LoginActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_large"
+                android:fontFamily="@font/lato_bold"
+                android:textColor="@color/colorBlue"
+                android:text="Edit Profile"
+                android:layout_marginTop="@dimen/margin_x_large"
+                android:gravity="center"/>
+
+            <Spinner
+                android:id="@+id/spType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_x_large"
+                android:layout_marginTop="@dimen/margin_xx_large"
+                android:visibility="gone"
+                android:background="@drawable/spinner_bg"
+                android:layout_marginRight="@dimen/margin_x_large" />
+            <!--android:drawableRight="@drawable/name_icon"-->
+
+            <EditText
+                android:id="@+id/ed_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:fontFamily="@font/lato_regular"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:layout_marginTop="@dimen/margin_x_large"
+                android:inputType="text"
+                android:hint="Type"
+                android:background="@drawable/edittext_background"
+                android:layout_marginLeft="@dimen/margin_x_large"
+                android:layout_marginRight="@dimen/margin_x_large"/>
+
+            <EditText
+                android:id="@+id/ed_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:fontFamily="@font/lato_regular"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/margin_x_large"
+                android:inputType="text"
+                android:hint="@string/str_name"
+                android:background="@drawable/edittext_background"
+                android:layout_marginLeft="@dimen/margin_x_large"
+                android:layout_marginRight="@dimen/margin_x_large"/>
+
+            <EditText
+                android:id="@+id/ed_AISHE_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/margin_medium"
+                android:fontFamily="@font/lato_regular"
+                android:maxLines="1"
+                android:visibility="gone"
+                android:singleLine="true"
+                android:layout_marginTop="@dimen/margin_x_large"
+                android:inputType="text"
+                android:hint="@string/str_aishe_code"
+                android:background="@drawable/edittext_background"
+                android:layout_marginLeft="@dimen/margin_x_large"
+                android:layout_marginRight="@dimen/margin_x_large"/>
+
+            <EditText
+                android:id="@+id/ed_clgName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/margin_medium"
+                android:fontFamily="@font/lato_regular"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/margin_x_large"
+                android:inputType="text"
+                android:hint="@string/str_college_name"
+                android:background="@drawable/edittext_background"
+                android:layout_marginLeft="@dimen/margin_x_large"
+                android:layout_marginRight="@dimen/margin_x_large"/>
+
+            <EditText
+                android:id="@+id/ed_univercityAffil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/margin_medium"
+                android:fontFamily="@font/lato_regular"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:layout_marginTop="@dimen/margin_x_large"
+                android:visibility="gone"
+                android:inputType="text"
+                android:hint="@string/str_university_affiliated"
+                android:background="@drawable/edittext_background"
+                android:layout_marginLeft="@dimen/margin_x_large"
+                android:layout_marginRight="@dimen/margin_x_large"/>
+
+            <EditText
+                android:id="@+id/ed_designationPerson"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/margin_medium"
+                android:fontFamily="@font/lato_regular"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/margin_x_large"
+                android:inputType="text"
+                android:hint="@string/str_designation_of_the_authorized_person"
+                android:background="@drawable/edittext_background"
+                android:layout_marginLeft="@dimen/margin_x_large"
+                android:layout_marginRight="@dimen/margin_x_large"/>
+
+            <EditText
+                android:id="@+id/ed_nameDept"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/margin_medium"
+                android:fontFamily="@font/lato_regular"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/margin_x_large"
+                android:inputType="text"
+                android:hint="@string/str_name_of_department"
+                android:background="@drawable/edittext_background"
+                android:layout_marginLeft="@dimen/margin_x_large"
+                android:layout_marginRight="@dimen/margin_x_large"/>
+
+            <EditText
+                android:id="@+id/ed_nameAuthPerson"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/margin_medium"
+                android:fontFamily="@font/lato_regular"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/margin_x_large"
+                android:inputType="text"
+                android:hint="@string/str_name_of_the_authorized_person"
+                android:background="@drawable/edittext_background"
+                android:layout_marginLeft="@dimen/margin_x_large"
+                android:layout_marginRight="@dimen/margin_x_large"/>
+
+            <EditText
+                android:id="@+id/ed_mobileNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/margin_medium"
+                android:fontFamily="@font/lato_regular"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/margin_x_large"
+                android:inputType="number"
+                android:hint="@string/str_mobile_number"
+                android:background="@drawable/edittext_background"
+                android:layout_marginLeft="@dimen/margin_x_large"
+                android:layout_marginRight="@dimen/margin_x_large"/>
+
+            <EditText
+                android:id="@+id/ed_DOB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/margin_medium"
+                android:fontFamily="@font/lato_regular"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:visibility="gone"
+                android:inputType="none"
+                android:layout_marginTop="@dimen/margin_x_large"
+                android:hint="@string/str_date_of_birth"
+                android:background="@drawable/edittext_background"
+                android:layout_marginLeft="@dimen/margin_x_large"
+                android:layout_marginRight="@dimen/margin_x_large"/>
+
+            <EditText
+                android:id="@+id/ed_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/margin_medium"
+                android:fontFamily="@font/lato_regular"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/margin_x_large"
+                android:inputType="textEmailAddress"
+                android:hint="@string/str_email"
+                android:background="@drawable/edittext_background"
+                android:layout_marginLeft="@dimen/margin_x_large"
+                android:layout_marginRight="@dimen/margin_x_large"/>
+
+            <EditText
+                android:id="@+id/ed_alterEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/margin_medium"
+                android:fontFamily="@font/lato_regular"
+                android:maxLines="1"
+                android:visibility="gone"
+                android:singleLine="true"
+                android:layout_marginTop="@dimen/margin_x_large"
+                android:inputType="textEmailAddress"
+                android:hint="@string/str_alternet_email"
+                android:background="@drawable/edittext_background"
+                android:layout_marginLeft="@dimen/margin_x_large"
+                android:layout_marginRight="@dimen/margin_x_large"/>
+
+            <Button
+                android:id="@+id/btn_registration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margin_x_large"
+                android:layout_marginLeft="@dimen/margin_x_large"
+                android:layout_marginTop="@dimen/margin_xx_large"
+                android:padding="@dimen/margin_small"
+                android:textSize="@dimen/text_medium"
+                android:fontFamily="@font/lato_bold"
+                android:background="@drawable/contact_button_background"
+                android:textColor="@color/colorWhite"
+                android:text="Edit Profile"
+                />
+
+
+
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

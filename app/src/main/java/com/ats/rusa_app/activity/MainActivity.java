@@ -24,19 +24,25 @@ import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.fcm.SharedPrefManager;
+import com.ats.rusa_app.fragment.ChangePasswordFragment;
 import com.ats.rusa_app.fragment.ContactUsFragment;
 import com.ats.rusa_app.fragment.ContentFragment;
+import com.ats.rusa_app.fragment.EditProfileFragment;
 import com.ats.rusa_app.fragment.EventFragment;
 import com.ats.rusa_app.fragment.HomeFragment;
 import com.ats.rusa_app.fragment.NewContentFragment;
+import com.ats.rusa_app.fragment.UpcomingEventDetailFragment;
+import com.ats.rusa_app.fragment.UpcomingEventFragment;
 import com.ats.rusa_app.fragment.VideoFragment;
 import com.ats.rusa_app.model.AppToken;
 import com.ats.rusa_app.model.CategoryList;
+import com.ats.rusa_app.model.Login;
 import com.ats.rusa_app.model.MenuGroup;
 import com.ats.rusa_app.model.MenuModel;
 import com.ats.rusa_app.util.CommonDialog;
@@ -62,6 +68,9 @@ public class MainActivity extends AppCompatActivity
     public Locale locale;
     public Configuration config;
     String language;
+    TextView tv_loginUserName;
+    Login loginUser;
+    public CommonDialog commonDialog;
     ArrayList<CategoryList> menuCatList = new ArrayList<>();
 
     private ExpandableListView expandableListView;
@@ -78,6 +87,8 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -96,20 +107,31 @@ public class MainActivity extends AppCompatActivity
         linearLayout_news = findViewById(R.id.linearLayout_news);
         linearLayout_contact = findViewById(R.id.linearLayout_contact);
 
+
         linearLayout_home.setOnClickListener(this);
         linearLayout_aboutUs.setOnClickListener(this);
         linearLayout_gallery.setOnClickListener(this);
         linearLayout_news.setOnClickListener(this);
         linearLayout_contact.setOnClickListener(this);
 
+        String userStr = CustomSharedPreference.getString(getApplicationContext(), CustomSharedPreference.KEY_USER);
+        Gson gson = new Gson();
+         loginUser = gson.fromJson(userStr, Login.class);
+        Log.e("HOME_ACTIVITY : ", "--------USER-------" + loginUser);
 
-        String token = SharedPrefManager.getmInstance(MainActivity.this).getDeviceToken();
-        Log.e("Token : ", "---------" + token);
+        try {
+            String token = SharedPrefManager.getmInstance(MainActivity.this).getDeviceToken();
+            Log.e("Token : ", "---------" + token);
 
-        String str = CustomSharedPreference.getString(MainActivity.this, CustomSharedPreference.PREFERENCE_TOKEN);
-        Gson gson2 = new Gson();
-        AppToken appToken = gson2.fromJson(str, AppToken.class);
-        Log.e("APP TOKEN", "-------------- " + appToken);
+            String str = CustomSharedPreference.getString(MainActivity.this, CustomSharedPreference.PREFERENCE_TOKEN);
+            Gson gson2 = new Gson();
+            AppToken appToken = gson2.fromJson(str, AppToken.class);
+            Log.e("APP TOKEN", "-------------- " + appToken);
+
+        }catch (Exception e)
+        {
+            Log.e("Exception  : ", "-----------" + e.getMessage());
+        }
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -140,6 +162,35 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        View header = navigationView.getHeaderView(0);
+        tv_loginUserName =header.findViewById(R.id.loginUserName);
+
+//        try {
+//            if(loginUser==null)
+//            {
+//                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+//                finish();
+//            }
+//        }catch (Exception e)
+//        {
+//
+//        }
+
+
+        try {
+            if(loginUser!=null)
+            {
+                tv_loginUserName.setText(loginUser.getName());
+            }else{
+                tv_loginUserName.setText("User is not logged in");
+              // startActivity(new Intent(MainActivity.this, LoginActivity.class));
+               // finish();
+            }
+
+        }catch (Exception e){
+            Log.e("Exception User : ", "-----------" + e.getMessage());
+        }
+
         // drawerMenu = navigationView.getMenu();
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -155,7 +206,8 @@ public class MainActivity extends AppCompatActivity
 
         Fragment exit = getSupportFragmentManager().findFragmentByTag("Exit");
         Fragment homeFragment = getSupportFragmentManager().findFragmentByTag("HomeFragment");
-
+        Fragment upcomingEventFragment = getSupportFragmentManager().findFragmentByTag("UpcomingEventFragment");
+        Fragment eventFragment = getSupportFragmentManager().findFragmentByTag("EventFragment");
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -181,11 +233,19 @@ public class MainActivity extends AppCompatActivity
         } else if (homeFragment instanceof ContentFragment && homeFragment.isVisible() ||
                 homeFragment instanceof NewContentFragment && homeFragment.isVisible() ||
                 homeFragment instanceof ContactUsFragment && homeFragment.isVisible() ||
+                homeFragment instanceof UpcomingEventFragment && homeFragment.isVisible() ||
+                homeFragment instanceof UpcomingEventDetailFragment && homeFragment.isVisible() ||
+                homeFragment instanceof EventFragment && homeFragment.isVisible() ||
                 homeFragment instanceof VideoFragment && homeFragment.isVisible()) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, new HomeFragment(), "Exit");
             ft.commit();
-        } else {
+        }else if (eventFragment instanceof UpcomingEventDetailFragment && eventFragment.isVisible()) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, new EventFragment(), "HomeFragment");
+            ft.commit();
+        }
+        else {
             super.onBackPressed();
         }
     }
@@ -268,10 +328,10 @@ public class MainActivity extends AppCompatActivity
     private void getMenuData(int lnagId) {
 
         if (Constants.isOnline(this)) {
-            final CommonDialog commonDialog = new CommonDialog(MainActivity.this, "Loading", "Please Wait...");
-            commonDialog.show();
+           commonDialog = new CommonDialog(MainActivity.this, "Loading", "Please Wait...");
+           commonDialog.show();
 
-            Call<MenuModel> listCall = Constants.myInterface.getMenuData(lnagId);
+           Call<MenuModel> listCall = Constants.myInterface.getMenuData(lnagId,1);
             listCall.enqueue(new Callback<MenuModel>() {
                 @Override
                 public void onResponse(Call<MenuModel> call, Response<MenuModel> response) {
@@ -342,11 +402,24 @@ public class MainActivity extends AppCompatActivity
                             MenuGroup menuGroup = new MenuGroup("Event and Workshop" , false, false, "Event");
                             headerList.add(menuGroup);
 
+                            if(loginUser!=null) {
+
+                                MenuGroup menuGroup0 = new MenuGroup("Edit Profile", false, false, "Profile");
+                                headerList.add(menuGroup0);
+
+                                MenuGroup menuGroup4 = new MenuGroup("Change Password", false, false, "changPass");
+                                headerList.add(menuGroup4);
+
+                            }
+
                             MenuGroup menuGroup1 = new MenuGroup("" + getResources().getString(R.string.str_login), false, false, "login");
                             headerList.add(menuGroup1);
 
                             MenuGroup menuGroup2 = new MenuGroup("" + getResources().getString(R.string.str_settings), true, true, "login");
                             headerList.add(menuGroup2);
+
+                            MenuGroup menuGroup3 = new MenuGroup("Logout", false, false, "logout");
+                            headerList.add(menuGroup3);
 
                             ArrayList<MenuGroup> childModelsList = new ArrayList<>();
 
@@ -411,15 +484,52 @@ public class MainActivity extends AppCompatActivity
                     }else if (url.equalsIgnoreCase("login")) {
                         startActivity(new Intent(MainActivity.this, LoginActivity.class));
 
-                    }else  if (url.equalsIgnoreCase("Event")) {
+                    }else if(url.equalsIgnoreCase("logout")){
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialogTheme);
+                        builder.setTitle("Logout");
+                        builder.setMessage("Are you sure you want to logout?");
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                CustomSharedPreference.deletePreference(MainActivity.this);
+                                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                finish();
+
+                            }
+                        });
+                        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+
+
+                    } else  if (url.equalsIgnoreCase("Event")) {
                         Fragment adf = new EventFragment();
+                        Bundle args = new Bundle();
+                        args.putString("slugName", url);
+                        adf.setArguments(args);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+                    }else if(url.equalsIgnoreCase("Profile")) {
+                        Fragment adf = new EditProfileFragment();
+                        Bundle args = new Bundle();
+                        args.putString("slugName", url);
+                        adf.setArguments(args);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+                    }else if(url.equalsIgnoreCase("changPass")) {
+                        Fragment adf = new ChangePasswordFragment();
                         Bundle args = new Bundle();
                         args.putString("slugName", url);
                         adf.setArguments(args);
                         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
                     }
                     else {
-
                         Fragment adf = new NewContentFragment();
                         Bundle args = new Bundle();
                         args.putString("slugName", url);
@@ -508,6 +618,7 @@ public class MainActivity extends AppCompatActivity
         return wInfo.getMacAddress();
     }
 
+
     private void saveToken(AppToken appToken) {
 
         if (Constants.isOnline(this)) {
@@ -582,6 +693,14 @@ public class MainActivity extends AppCompatActivity
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, new ContactUsFragment(), "HomeFragment");
             ft.commit();
+        }
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if ( commonDialog!=null)
+        {
+            commonDialog.dismiss();
         }
     }
 }

@@ -17,6 +17,7 @@ import com.ats.rusa_app.adapter.UpcominEventAdapter;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.UpcomingEvent;
 import com.ats.rusa_app.util.CommonDialog;
+import com.ats.rusa_app.util.CustomSharedPreference;
 
 import java.util.ArrayList;
 
@@ -29,6 +30,8 @@ import retrofit2.Response;
  */
 public class UpcomingEventFragment extends Fragment {
 public RecyclerView recyclerView;
+int languageId;
+
     ArrayList<UpcomingEvent> upcomingEventList = new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,17 +39,25 @@ public RecyclerView recyclerView;
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_upcoming_event, container, false);
         recyclerView=(RecyclerView)view.findViewById(R.id.recyclerView);
-        getUpcomingEvent();
+
+        String langId = CustomSharedPreference.getString(getActivity(), CustomSharedPreference.LANGUAGE_SELECTED);
+        try {
+            languageId = Integer.parseInt(langId);
+        } catch (Exception e) {
+            languageId = 1;
+        }
+
+        getUpcomingEvent(languageId);
         return view;
     }
 
-    private void getUpcomingEvent() {
+    private void getUpcomingEvent(int languageId) {
 
         if (Constants.isOnline(getContext())) {
             final CommonDialog commonDialog = new CommonDialog(getContext(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<ArrayList<UpcomingEvent>> listCall = Constants.myInterface.getUpcomingEvent(2);
+            Call<ArrayList<UpcomingEvent>> listCall = Constants.myInterface.getUpcomingEvent(languageId);
             listCall.enqueue(new Callback<ArrayList<UpcomingEvent>>() {
                 @Override
                 public void onResponse(Call<ArrayList<UpcomingEvent>> call, Response<ArrayList<UpcomingEvent>> response) {

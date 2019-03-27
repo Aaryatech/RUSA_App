@@ -68,11 +68,7 @@ TextView tv_backToLogin;
             {
                 getForgotPassword(email,mob);
             }
-
-
         }
-
-
     }
 
     private void getForgotPassword(String email, String mob) {
@@ -91,6 +87,7 @@ TextView tv_backToLogin;
                             Login resendOTP=response.body();
                             Log.e("FORGOT PASS : ", " - " + resendOTP);
                             Intent intent=new Intent(ForgotPasswordActivity.this,LoginActivity.class);
+                            startActivity(intent);
                             commonDialog.dismiss();
 
                         } else {

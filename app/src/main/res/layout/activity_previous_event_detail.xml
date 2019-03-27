@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/RelativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    app:cardBackgroundColor="@color/colorWhite"
+    app:cardUseCompatPadding="true">
+
+
+    <ImageView
+        android:id="@+id/iv_baner"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/slider"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Event Name :"
+            android:fontFamily="@font/lato_bold"
+            android:layout_weight="2.2"
+            android:textSize="16sp"
+            android:textColor="@color/colorPrimary"/>
+
+        <TextView
+            android:id="@+id/tvEventName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="gsdgs nsbfshf bhsbf"
+            android:fontFamily="@font/lato_regular"
+            android:layout_weight="1"
+            android:textSize="16sp"
+            android:textColor="@color/colorPrimary"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Venu :"
+            android:fontFamily="@font/lato_bold"
+            android:textColor="@color/colorPrimary"
+            android:layout_weight="3"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvEventVenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/lato_regular"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginLeft="10dp"
+            android:textSize="16sp"
+            android:layout_marginRight="10dp"
+            android:text="Nashik Maharashtra"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Date :"
+            android:textSize="16sp"
+            android:textColor="@color/colorPrimary"
+            android:layout_weight="3"
+            android:fontFamily="@font/lato_bold"
+            android:layout_marginRight="10dp"
+            />
+
+        <TextView
+            android:id="@+id/tvEventDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="16sp"
+            android:fontFamily="@font/lato_regular"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="12 May 2019"
+            />
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

@@ -28,6 +28,7 @@ public class CommonDialog {
             hud.show();
         } catch (Exception e) {
             e.printStackTrace();
+
         }
     }
 

@@ -5,7 +5,10 @@ import com.ats.rusa_app.model.AppToken;
 import com.ats.rusa_app.model.Baner;
 import com.ats.rusa_app.model.CompanyModel;
 import com.ats.rusa_app.model.Detail;
+import com.ats.rusa_app.model.EventRegCheck;
+import com.ats.rusa_app.model.EventRegistration;
 import com.ats.rusa_app.model.GallaryDetailList;
+import com.ats.rusa_app.model.Info;
 import com.ats.rusa_app.model.Login;
 import com.ats.rusa_app.model.MenuModel;
 import com.ats.rusa_app.model.NewDetail;
@@ -28,7 +31,7 @@ import retrofit2.http.Query;
 public interface InterfaceApi {
 
     @POST("getTopMenuList")
-    Call<MenuModel> getMenuData(@Query("langId") int langId);
+    Call<MenuModel> getMenuData(@Query("langId") int langId,@Query("type") int type);
 
     @POST("getDataBySlugName")
     Call<PageData> getPageData(@Query("slugName") String slugName,@Query("langId") int langId);
@@ -79,5 +82,12 @@ public interface InterfaceApi {
     @POST("getAllPreviousEvents")
     Call<ArrayList<PreviousEvent>> getPreviousEvent(@Query("langId") int langId);
 
+    @POST("saveEventRegister")
+    Call<EventRegistration> saveEventRegister(@Body EventRegistration eventRegistration);
 
+    @POST("getAppliedEvents")
+    Call<ArrayList<EventRegCheck>> getAppliedEvents(@Query("newsblogsId") int newsblogsId,@Query("userId") int userId);
+
+    @POST("changePassword")
+    Call<Info> changePassword(@Query("regId") int regId,@Query("password") String password);
 }

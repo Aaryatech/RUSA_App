@@ -111,7 +111,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         getNewFeed(languageId);
         getCompSlider();
         getBaner();
-        initYoutubeVideo("gG2npfpaqsY");
+       // initYoutubeVideo("gG2npfpaqsY");
         getTestimonial();
        // getAllHomeData(1);
          //getVideoGallery();

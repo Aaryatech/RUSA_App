@@ -14,6 +14,8 @@ import com.ats.rusa_app.R;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.Login;
 import com.ats.rusa_app.util.CommonDialog;
+import com.ats.rusa_app.util.CustomSharedPreference;
+import com.google.gson.Gson;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -77,10 +79,9 @@ public TextView tv_forgotPass,tv_signUp,tv_skipLogin;
         }else if(v.getId()==R.id.tv_skipLogin)
         {
             Intent intent=new Intent(LoginActivity.this,MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+           // intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
-
 
     }
 
@@ -97,8 +98,13 @@ public TextView tv_forgotPass,tv_signUp,tv_skipLogin;
                         if (response.body() != null) {
 
                             // Log.e("RESEND VERIFY : ", " - " + response.body().toString());
-                            Login resendOTP=response.body();
-                            Log.e("LOGIN RESPONCE : ", " - " + resendOTP);
+                            Login userDetail=response.body();
+                            Log.e("LOGIN RESPONCE : ", " - " + userDetail);
+
+                            Gson gson = new Gson();
+                            String json = gson.toJson(userDetail);
+                            CustomSharedPreference.putString(LoginActivity.this, CustomSharedPreference.KEY_USER, json);
+
                             Intent intent=new Intent(LoginActivity.this,MainActivity.class);
                             startActivity(intent);
                             // finish();

@@ -21,6 +21,7 @@ public class CustomSharedPreference
     public static String LANGUAGE_ENG_ID = "1"; //--- for english
     public static String LANGUAGE_MAR_ID = "2"; //--- for marathi
     public static String LANGUAGE_SELECTED = "1"; //--- for marathi
+    public static String KEY_USER = "User";
 
     private static String PREFERENCE_NAME = "UserInfo";
     public static String PREFERENCE_TOKEN = "appToken";
