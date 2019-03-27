@@ -30,6 +30,7 @@ import com.ats.rusa_app.util.CustomSharedPreference;
 import com.ats.rusa_app.util.FilePath;
 import com.ats.rusa_app.util.PermissionsUtil;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import java.io.FileDescriptor;
 import java.io.IOException;
@@ -88,10 +89,15 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
         tv_eventName.setText(upcomingEvent.getHeading());
         tv_eventVenu.setText("" + upcomingEvent.getEventLocation());
         tv_eventDate.setText("" + upcomingEvent.getEventDateFrom());
-        //        String imageUri =""+upcomingEvent.getFeaturedImage();
-//        Log.e("URI", "-----------" + imageUri);
-//        Picasso.with(getContext()).load(imageUri).into(imageView);
 
+        try {
+            String imageUri = "" + upcomingEvent.getFeaturedImage();
+            Log.e("URI", "-----------" + imageUri);
+            Picasso.with(getApplicationContext()).load(imageUri).placeholder(R.drawable.slider).into(imageView);
+        }catch(Exception e)
+        {
+            Log.e("Exception User : ", "-----------" + e.getMessage());
+        }
 //        try {
 //            if (loginUser.getIsActive() == 1 && loginUser.getDelStatus() == 1 && loginUser.getEmailVerified() == 1) {
 //                btn_upload.setVisibility(View.VISIBLE);
@@ -164,7 +170,7 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
                 @Override
                 public void onResponse(Call<ArrayList<EventRegCheck>> call, Response<ArrayList<EventRegCheck>> response) {
                     try {
-                        if (response.body() == null && response.body().isEmpty()) {
+                        if (response.body().isEmpty()) {
 
                             Log.e("APPLIED EVENT LIST : ", " - " + response.body());
 
@@ -174,10 +180,11 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
 
                             commonDialog.dismiss();
 
-                        } else {
+                        } else if(response.body()!=null){
                             commonDialog.dismiss();
                             Log.e("APPLIED EVENT LIST1 : ", " - " + response.body());
                             Toast.makeText(EventDetailListActivity.this, "Already Applied For This Event", Toast.LENGTH_SHORT).show();
+                            finish();
 //                            Intent intent=new Intent(EventDetailListActivity.this, MainActivity.class);
 //                            startActivity(intent);
 
@@ -221,6 +228,8 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
                             Log.e("EVENT REG MODEL","-----------------------------"+model);
 
                             Toast.makeText(EventDetailListActivity.this, "Applied for this Event", Toast.LENGTH_SHORT).show();
+                            commonDialog.dismiss();
+                            finish();
 //                            FragmentTransaction ft =getSupportFragmentManager().beginTransaction();
 //                            ft.replace(R.id.content_frame, new UpcomingEventFragment(), "HomeFragment");
 //                            ft.commit();
