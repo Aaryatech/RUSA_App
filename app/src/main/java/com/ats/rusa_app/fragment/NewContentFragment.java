@@ -103,7 +103,7 @@ public class NewContentFragment extends Fragment {
 
                                 boolean flag = false;
 
-                                if (model.getCmsContentList() == null && model.getGallaryDetailList() == null && model.getTestImonialList() == null && model.getDetailNewsList() == null && model.getDocumentUploadList() == null && model.getFaqContentList() == null) {
+                                if (model.getCmsContentList() == null && model.getGallaryDetailList() == null && model.getTestImonialList() == null && model.getDetailNewsList() == null && model.getDocumentUploadList() == null && model.getFaqContentList() == null && model.getTeamList() == null) {
                                     tvNoRecord.setVisibility(View.VISIBLE);
                                 } else if (model.getCmsContentList() != null) {
                                     if (model.getCmsContentList().size() == 0) {
@@ -143,6 +143,14 @@ public class NewContentFragment extends Fragment {
                                     }
                                 } else if (model.getDetailNewsList() != null) {
                                     if (model.getDetailNewsList().size() == 0) {
+                                        tvNoRecord.setVisibility(View.VISIBLE);
+                                        flag = false;
+                                    } else {
+                                        flag = true;
+                                    }
+                                }else if (model.getTeamList() != null) {
+                                    Log.e("NEW CONTENT FRG","------------------ TEAM");
+                                    if (model.getTeamList().size() == 0) {
                                         tvNoRecord.setVisibility(View.VISIBLE);
                                         flag = false;
                                     } else {

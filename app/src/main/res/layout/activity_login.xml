@@ -153,6 +153,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/margin_xx_large"
             android:text="@string/str_skip_login"
+            android:padding="10dp"
             android:fontFamily="@font/lato_bold"
             android:textSize="@dimen/text_medium"
             android:textColor="@color/colorRed"/>

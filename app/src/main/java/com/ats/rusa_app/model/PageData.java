@@ -14,6 +14,7 @@ public class PageData {
     private List<TestImonialList> testImonialList;
     private List<GallaryDetailList> gallaryDetailList;
     private List<DetailNewsList> detailNewsList;
+    private List<TeamList> teamList;
 
     public Integer getPageId() {
         return pageId;
@@ -95,6 +96,14 @@ public class PageData {
         this.detailNewsList = detailNewsList;
     }
 
+    public List<TeamList> getTeamList() {
+        return teamList;
+    }
+
+    public void setTeamList(List<TeamList> teamList) {
+        this.teamList = teamList;
+    }
+
     @Override
     public String toString() {
         return "PageData{" +
@@ -108,6 +117,7 @@ public class PageData {
                 ", testImonialList=" + testImonialList +
                 ", gallaryDetailList=" + gallaryDetailList +
                 ", detailNewsList=" + detailNewsList +
+                ", teamList=" + teamList +
                 '}';
     }
 }

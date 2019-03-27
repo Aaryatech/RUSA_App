@@ -7,6 +7,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import com.ats.rusa_app.model.DocumentUploadList;
 import com.ats.rusa_app.model.FaqContentList;
 import com.ats.rusa_app.model.GallaryDetailList;
 import com.ats.rusa_app.model.PageData;
+import com.ats.rusa_app.model.TeamList;
 import com.ats.rusa_app.model.TestImonialList;
 
 import org.sufficientlysecure.htmltextview.HtmlHttpImageGetter;
@@ -46,6 +48,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.MyViewHo
         public RecyclerView docRecyclerView;
         public RecyclerView testimonialRecyclerView;
         public RecyclerView galleryRecyclerView;
+        public RecyclerView teamRecyclerView;
 
         public MyViewHolder(View view) {
             super(view);
@@ -55,6 +58,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.MyViewHo
             docRecyclerView = view.findViewById(R.id.docRecyclerView);
             testimonialRecyclerView = view.findViewById(R.id.testimonialRecyclerView);
             galleryRecyclerView = view.findViewById(R.id.galleryRecyclerView);
+            teamRecyclerView = view.findViewById(R.id.teamRecyclerView);
 
         }
     }
@@ -167,6 +171,24 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.MyViewHo
                 holder.galleryRecyclerView.setLayoutManager(new GridLayoutManager(context, 2));
                 holder.galleryRecyclerView.setItemAnimator(new DefaultItemAnimator());
                 holder.galleryRecyclerView.setAdapter(adapter);
+
+            }
+
+            if (model.getTeamList() != null) {
+                holder.teamRecyclerView.setVisibility(View.VISIBLE);
+
+                ArrayList<TeamList> teamList = new ArrayList<>();
+                for (int i = 0; i < model.getTeamList().size(); i++) {
+                    teamList.add(model.getTeamList().get(i));
+                }
+
+                Log.e("TEAM LIST","-------------------- "+teamList);
+
+                RvTeamListAdapter adapter = new RvTeamListAdapter(teamList, context);
+                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
+                holder.teamRecyclerView.setLayoutManager(mLayoutManager);
+                holder.teamRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                holder.teamRecyclerView.setAdapter(adapter);
 
             }
 
