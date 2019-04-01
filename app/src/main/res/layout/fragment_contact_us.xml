@@ -31,8 +31,6 @@
             android:scaleType="fitXY"
             />
 
-
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -73,6 +71,54 @@
         android:orientation="vertical"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp">
+
+        <RadioGroup
+            android:id="@+id/rg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rbQuery"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1"
+                android:textColor="@color/colorPrimaryDark"
+                android:buttonTint="@color/colorPrimaryDark"
+                android:fontFamily="@font/lato_regular"
+                android:text="Query" />
+
+            <RadioButton
+                android:id="@+id/rbFeedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_weight="1"
+                android:buttonTint="@color/colorPrimaryDark"
+                android:fontFamily="@font/lato_regular"
+                android:text="Feedback" />
+
+            <RadioButton
+                android:id="@+id/rbMsg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1"
+                android:textColor="@color/colorPrimaryDark"
+                android:buttonTint="@color/colorPrimaryDark"
+                android:fontFamily="@font/lato_regular"
+                android:text="Message" />
+
+        </RadioGroup>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -135,7 +181,7 @@
             android:textColor="@color/colorPrimary" />
 
         <EditText
-            android:id="@+id/ed_phoneNo"
+            android:id="@+id/edPhoneNo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -160,7 +206,7 @@
             android:textColor="@color/colorPrimary" />
 
         <EditText
-            android:id="@+id/ed_msg"
+            android:id="@+id/edMsg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"

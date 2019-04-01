@@ -171,12 +171,22 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         ed_Name.setError(null);
                         isValidName = true;
                     }
-                    if (email.isEmpty()) {
-                        ed_email.setError("required");
-                    }  else {
-                        ed_email.setError(null);
+                    if (!email.isEmpty()) {
+                        if (!isValidEmailAddress(email)) {
+                            ed_email.setError("invalid email");
+                        } else {
+                            ed_email.setError(null);
+                            isValidEmail = true;
+                        }
+                    } else {
                         isValidEmail = true;
                     }
+//                    if (email.isEmpty()) {
+//                        ed_email.setError("required");
+//                    }  else {
+//                        ed_email.setError(null);
+//                        isValidEmail = true;
+//                    }
                     if (clgName.isEmpty()) {
                         ed_clgName.setError("required");
                     }  else {
@@ -215,9 +225,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                     }
 
-
-
-                         if (isValidName && isValidEmail  && isValidNameDept && isValidNameAuthPer && isValidClgName && isValidUniverAff && isValidDob && isValidMob ) {
+                    if (isValidName && isValidEmail  && isValidNameDept && isValidNameAuthPer && isValidClgName && isValidUniverAff && isValidDob && isValidMob ) {
                         SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd");
                         SimpleDateFormat formatter1 = new SimpleDateFormat("dd-MM-yyyy");
 
@@ -275,12 +283,22 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         ed_Name.setError(null);
                         isValidName = true;
                     }
-                    if (email.isEmpty()) {
-                        ed_email.setError("required");
-                    }  else {
-                        ed_email.setError(null);
+                    if (!email.isEmpty()) {
+                        if (!isValidEmailAddress(email)) {
+                            ed_email.setError("invalid email");
+                        } else {
+                            ed_email.setError(null);
+                            isValidEmail = true;
+                        }
+                    } else {
                         isValidEmail = true;
                     }
+//                    if (email.isEmpty()) {
+//                        ed_email.setError("required");
+//                    }  else {
+//                        ed_email.setError(null);
+//                        isValidEmail = true;
+//                    }
                     if (univercityAff.isEmpty()) {
                         ed_univercityAff.setError("required");
                     }  else {
@@ -349,12 +367,22 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         ed_Name.setError(null);
                         isValidName = true;
                     }
-                    if (email.isEmpty()) {
-                        ed_email.setError("required");
-                    }  else {
-                        ed_email.setError(null);
+                    if (!email.isEmpty()) {
+                        if (!isValidEmailAddress(email)) {
+                            ed_email.setError("invalid email");
+                        } else {
+                            ed_email.setError(null);
+                            isValidEmail = true;
+                        }
+                    } else {
                         isValidEmail = true;
                     }
+//                    if (email.isEmpty()) {
+//                        ed_email.setError("required");
+//                    }  else {
+//                        ed_email.setError(null);
+//                        isValidEmail = true;
+//                    }
 
                     if (designPerName.isEmpty()) {
                         ed_designationPerson.setError("required");
@@ -419,7 +447,12 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
             }
     }
-
+    public boolean isValidEmailAddress(String email) {
+        String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+        java.util.regex.Matcher m = p.matcher(email);
+        return m.matches();
+    }
     DatePickerDialog.OnDateSetListener dateListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {

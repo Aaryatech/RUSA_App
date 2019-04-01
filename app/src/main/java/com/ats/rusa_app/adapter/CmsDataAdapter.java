@@ -89,7 +89,6 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.adapter_cms_data, parent, false);
 
-
         return new MyViewHolder(itemView);
     }
 
@@ -158,7 +157,6 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
 
         //webView.loadDataWithBaseURL("", htmlText, mimeType, encoding, "");
 
-
         //htmlText.replaceAll("<iframe\\s+.*?\\s+src=(\".*?\").*?<\\/iframe>", "<a href=$1>CLICK TO WATCH</a>");
 
         holder.webView.setWebChromeClient(new WebChromeClient());
@@ -177,12 +175,10 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
         holder.tvHtml.setText(spanned);
         //tvHtml.setText(Html.fromHtml(htmlText));
 
-
         holder.tvHtmlTxt.setClickableTableSpan(new ClickableTableSpanImpl(context));
         DrawTableLinkSpan drawTableLinkSpan = new DrawTableLinkSpan();
         drawTableLinkSpan.setTableLinkText("\n\n\nView Table");
         holder.tvHtmlTxt.setDrawTableLinkSpan(drawTableLinkSpan);
-
 
         // Best to use indentation that matches screen density.
         DisplayMetrics metrics = new DisplayMetrics();

@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity
     Login loginUser;
     public CommonDialog commonDialog;
     ArrayList<CategoryList> menuCatList = new ArrayList<>();
-
+    Intent intent;
     private ExpandableListView expandableListView;
     ExpandableListAdapter expandableListAdapter;
 
@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity
 
         }catch (Exception e)
         {
-            Log.e("Exception  : ", "-----------" + e.getMessage());
+            Log.e("Exception : ", "-----------" + e.getMessage());
         }
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -148,7 +148,6 @@ public class MainActivity extends AppCompatActivity
 
         Log.e("MAC", "---------------- " + getMacAddress());
 
-
         // Toast.makeText(this, "" + languageId, Toast.LENGTH_SHORT).show();
 
         expandableListView = findViewById(R.id.expandableListView);
@@ -165,17 +164,26 @@ public class MainActivity extends AppCompatActivity
         View header = navigationView.getHeaderView(0);
         tv_loginUserName =header.findViewById(R.id.loginUserName);
 
-//        try {
-//            if(loginUser==null)
-//            {
-//                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-//                finish();
-//            }
-//        }catch (Exception e)
-//        {
-//
-//        }
+        try {
+            intent = getIntent();
+            final String skipLogin = intent.getStringExtra("code");
+            Log.e("Skip", "-----------" + skipLogin);
+            if (skipLogin==(null)) {
+                if (loginUser == null) {
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                    finish();
+                }
+           }else if(loginUser==null)
+            {
+                if(!skipLogin.equals("SkipLogin"))
+                {
+                    Log.e("Skip","");
+                }
+            }
+        }catch (Exception e)
+        {
 
+        }
 
         try {
             if(loginUser!=null)
@@ -184,7 +192,7 @@ public class MainActivity extends AppCompatActivity
             }else{
                 tv_loginUserName.setText("User is not logged in");
               // startActivity(new Intent(MainActivity.this, LoginActivity.class));
-               // finish();
+              // finish();
             }
 
         }catch (Exception e){
@@ -236,6 +244,8 @@ public class MainActivity extends AppCompatActivity
                 homeFragment instanceof UpcomingEventFragment && homeFragment.isVisible() ||
                 homeFragment instanceof UpcomingEventDetailFragment && homeFragment.isVisible() ||
                 homeFragment instanceof EventFragment && homeFragment.isVisible() ||
+                homeFragment instanceof EditProfileFragment && homeFragment.isVisible() ||
+                homeFragment instanceof ChangePasswordFragment && homeFragment.isVisible() ||
                 homeFragment instanceof VideoFragment && homeFragment.isVisible()) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, new HomeFragment(), "Exit");
@@ -407,8 +417,12 @@ public class MainActivity extends AppCompatActivity
                                 MenuGroup menuGroup0 = new MenuGroup("Edit Profile", false, false, "Profile");
                                 headerList.add(menuGroup0);
 
-                                MenuGroup menuGroup4 = new MenuGroup("Change Password", false, false, "changPass");
-                                headerList.add(menuGroup4);
+//                                if(loginUser.getExInt1()!=1) {
+//                                    MenuGroup menuGroup4 = new MenuGroup("Change Password", false, false, "changPass");
+//                                    headerList.add(menuGroup4);
+//                                }
+                                MenuGroup menuGroup3 = new MenuGroup("Logout", false, false, "logout");
+                                headerList.add(menuGroup3);
 
                             }
 
@@ -418,8 +432,11 @@ public class MainActivity extends AppCompatActivity
                             MenuGroup menuGroup2 = new MenuGroup("" + getResources().getString(R.string.str_settings), true, true, "login");
                             headerList.add(menuGroup2);
 
-                            MenuGroup menuGroup3 = new MenuGroup("Logout", false, false, "logout");
-                            headerList.add(menuGroup3);
+//                            if(loginUser!=null) {
+//
+//                                MenuGroup menuGroup3 = new MenuGroup("Logout", false, false, "logout");
+//                                headerList.add(menuGroup3);
+//                            }
 
                             ArrayList<MenuGroup> childModelsList = new ArrayList<>();
 
@@ -522,13 +539,14 @@ public class MainActivity extends AppCompatActivity
                         args.putString("slugName", url);
                         adf.setArguments(args);
                         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
-                    }else if(url.equalsIgnoreCase("changPass")) {
-                        Fragment adf = new ChangePasswordFragment();
-                        Bundle args = new Bundle();
-                        args.putString("slugName", url);
-                        adf.setArguments(args);
-                        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
                     }
+//                    else if(url.equalsIgnoreCase("changPass")) {
+//                        Fragment adf = new ChangePasswordFragment();
+//                        Bundle args = new Bundle();
+//                        args.putString("slugName", url);
+//                        adf.setArguments(args);
+//                        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+//                    }
                     else {
                         Fragment adf = new NewContentFragment();
                         Bundle args = new Bundle();

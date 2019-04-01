@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.model.PreviousEvent;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 public class PreviousEventDetailActivity extends AppCompatActivity {
     ImageView imageView;
@@ -31,8 +32,14 @@ public class PreviousEventDetailActivity extends AppCompatActivity {
         tv_eventName.setText(previousEvent.getHeading());
         tv_eventVenu.setText("" + previousEvent.getEventLocation());
         tv_eventDate.setText("" + previousEvent.getEventDateFrom());
-//        String imageUri =""+previousEvent.getFeaturedImage();
-//        Log.e("URI", "-----------" + imageUri);
-//        Picasso.with(getContext()).load(imageUri).into(imageView);
+        try {
+            String imageUri =""+previousEvent.getFeaturedImage();
+            Log.e("URI", "-----------" + imageUri);
+            Picasso.with(getApplicationContext()).load(imageUri).placeholder(getResources().getDrawable(R.drawable.img_placeholder)).into(imageView);
+        }catch (Exception e)
+        {
+            Log.e("Exception User : ", "-----------" + e.getMessage());
+        }
+
     }
 }

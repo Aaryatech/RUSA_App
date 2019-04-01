@@ -416,8 +416,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         if (response.body() != null) {
 
                             Log.e("Video responce : ", " -------------------------------------------------- " + response.body());
-
-
                             YoutubeVideosAdapter adapter = new YoutubeVideosAdapter(response.body(), getContext());
                             video_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
                             video_recyclerView.setAdapter(adapter);

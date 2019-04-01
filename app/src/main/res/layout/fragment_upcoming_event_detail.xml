@@ -19,6 +19,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:scaleType="fitXY"
+        android:src="@drawable/slider"
         />
 
     <LinearLayout
@@ -52,36 +53,36 @@
 
 
     <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="10dp"
+    android:orientation="horizontal">
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
+        android:text="Venu :"
+        android:fontFamily="@font/lato_bold"
+        android:textColor="@color/colorPrimary"
+        android:layout_weight="3"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tvEventVenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:fontFamily="@font/lato_regular"
+        android:textColor="@color/colorPrimary"
         android:layout_marginLeft="10dp"
-        android:orientation="horizontal">
+        android:textSize="16sp"
+        android:layout_marginRight="10dp"
+        android:text="Nashik Maharashtra"
+        />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Venu :"
-            android:fontFamily="@font/lato_bold"
-            android:textColor="@color/colorPrimary"
-            android:layout_weight="3"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/tvEventVenu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/lato_regular"
-            android:textColor="@color/colorPrimary"
-            android:layout_marginLeft="10dp"
-            android:textSize="16sp"
-            android:layout_marginRight="10dp"
-            android:text="Nashik Maharashtra"
-            />
-
-    </LinearLayout>
+</LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -115,9 +116,31 @@
             android:text="12 May 2019"
             />
 
+
     </LinearLayout>
+<Button
+    android:id="@+id/btn_apply"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Apply"
+    android:background="@drawable/contact_button_background"
+    android:textColor="@color/colorWhite"
+    android:fontFamily="@font/lato_bold"
+    android:layout_marginTop="20dp"
+    android:layout_marginRight="30dp"
+    android:layout_marginLeft="30dp"/>
 
-
+    <Button
+        android:id="@+id/btn_upload"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Upload"
+        android:background="@drawable/contact_button_background"
+        android:textColor="@color/colorWhite"
+        android:fontFamily="@font/lato_bold"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"/>
 
 
 </LinearLayout>

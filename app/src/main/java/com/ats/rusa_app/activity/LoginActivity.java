@@ -79,6 +79,7 @@ public TextView tv_forgotPass,tv_signUp,tv_skipLogin;
         }else if(v.getId()==R.id.tv_skipLogin)
         {
             Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+            intent.putExtra("code", "SkipLogin");
            // intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
@@ -101,15 +102,20 @@ public TextView tv_forgotPass,tv_signUp,tv_skipLogin;
                             Login userDetail=response.body();
                             Log.e("LOGIN RESPONCE : ", " - " + userDetail);
 
-                            Gson gson = new Gson();
-                            String json = gson.toJson(userDetail);
-                            CustomSharedPreference.putString(LoginActivity.this, CustomSharedPreference.KEY_USER, json);
-
-                            Intent intent=new Intent(LoginActivity.this,MainActivity.class);
-                            startActivity(intent);
-                            // finish();
-                            commonDialog.dismiss();
-
+                            if(userDetail.getExInt1()!=1) {
+                                Intent intent1 = new Intent(LoginActivity.this, ChangePasswordActivity.class);
+                                intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent1);
+                                commonDialog.dismiss();
+                            }else {
+                                Gson gson = new Gson();
+                                String json = gson.toJson(userDetail);
+                                CustomSharedPreference.putString(LoginActivity.this, CustomSharedPreference.KEY_USER, json);
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                // finish();
+                                commonDialog.dismiss();
+                            }
                         } else {
                             commonDialog.dismiss();
                             Toast.makeText(LoginActivity.this, "Invalid Email and Password", Toast.LENGTH_SHORT).show();

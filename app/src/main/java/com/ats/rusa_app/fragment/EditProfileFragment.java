@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.activity.MainActivity;
+import com.ats.rusa_app.activity.OTPVerificationActivity;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.Login;
 import com.ats.rusa_app.model.Reg;
@@ -324,7 +325,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-                    Reg registration = new Reg(loginUser.getRegId(), loginUser.getUserUuid(), loginUser.getUserType(), email, alt_email, "", fullName, "", clgName, univercityAff, "", nameDept, mob, nameAuthPer, DOB, "", "", loginUser.getRegisterVia(), loginUser.getIsActive(), loginUser.getDelStatus(), sdf.format(System.currentTimeMillis()), null, loginUser.getEditByUserId(), loginUser.getExInt1(), loginUser.getExInt2(), "", "", "", loginUser.getEmailVerified(), "", loginUser.getSmsVerified(), loginUser.getEditByAdminuserId());
+                    Reg registration = new Reg(loginUser.getRegId(), loginUser.getUserUuid(), loginUser.getUserType(), loginUser.getEmails(), alt_email, loginUser.getUserPassword(), fullName, "", clgName, univercityAff, "", nameDept, loginUser.getMobileNumber(), nameAuthPer, DOB, "", "", loginUser.getRegisterVia(), loginUser.getIsActive(), loginUser.getDelStatus(), loginUser.getAddDate(), sdf.format(System.currentTimeMillis()), loginUser.getEditByUserId(), loginUser.getExInt1(), loginUser.getExInt2(), email, mob, "", loginUser.getEmailVerified(), "", loginUser.getSmsVerified(), loginUser.getEditByAdminuserId());
                     Log.e("Registration", "--------------" + registration);
                     getRegistration(registration);
 
@@ -400,9 +401,10 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                 if (isValidName && isValidEmail  && isValidNameDept && isValidNameAuthPer  && isValidUniverAff && isValidDesigPerson && isValidMob ) {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-                    Reg registration = new Reg(loginUser.getRegId(), loginUser.getUserUuid(), loginUser.getUserType(),email,alt_email,"",institudeName,AISHECode,"",univercityAff,"",nameDept,mob,nameAuthPer,null,"","",loginUser.getRegisterVia(),loginUser.getIsActive(),loginUser.getDelStatus(),sdf.format(System.currentTimeMillis()),null,loginUser.getEditByUserId(),loginUser.getExInt1(),loginUser.getExInt2(),"","","",loginUser.getEmailVerified(),"",loginUser.getSmsVerified(),loginUser.getEditByAdminuserId());
-                    getRegistration(registration);
-
+                    if(!loginUser.getMobileNumber().equals(mob) && !loginUser.getEmails().equals(email)) {
+                        Reg registration = new Reg(loginUser.getRegId(), loginUser.getUserUuid(), loginUser.getUserType(), loginUser.getEmails(), alt_email, loginUser.getUserPassword(), institudeName, AISHECode, "", univercityAff, "", nameDept, loginUser.getMobileNumber(), nameAuthPer, null, "", "", loginUser.getRegisterVia(), loginUser.getIsActive(), loginUser.getDelStatus(), loginUser.getAddDate(),  sdf.format(System.currentTimeMillis()), loginUser.getEditByUserId(), loginUser.getExInt1(), loginUser.getExInt2(), email, mob, "", loginUser.getEmailVerified(), "", loginUser.getSmsVerified(), loginUser.getEditByAdminuserId());
+                        getRegistration(registration);
+                    }
                     ed_Name.setText("");
                     ed_email.setText("");
                     ed_alterEmail.setText("");
@@ -468,7 +470,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                 }
                 if (isValidName && isValidEmail  && isValidNameDept && isValidNameAuthPer   && isValidDesigPerson && isValidMob) {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    Reg registration = new Reg(loginUser.getRegId(), loginUser.getUserUuid(), loginUser.getUserType(),email,alt_email,"",UnivercityName,AISHECode,"","","",nameDept,mob,nameAuthPer,null,"","",loginUser.getRegisterVia(),loginUser.getIsActive(),loginUser.getDelStatus(),sdf.format(System.currentTimeMillis()),null,loginUser.getEditByUserId(),loginUser.getExInt1(),loginUser.getExInt2(),"","","",loginUser.getEmailVerified(),"",loginUser.getSmsVerified(),loginUser.getEditByAdminuserId());
+                    Reg registration = new Reg(loginUser.getRegId(), loginUser.getUserUuid(), loginUser.getUserType(),loginUser.getEmails(),alt_email,loginUser.getUserPassword(),UnivercityName,AISHECode,"","","",nameDept,loginUser.getMobileNumber(),nameAuthPer,null,"","",loginUser.getRegisterVia(),loginUser.getIsActive(),loginUser.getDelStatus(),loginUser.getAddDate(), sdf.format(System.currentTimeMillis()),loginUser.getEditByUserId(),loginUser.getExInt1(),loginUser.getExInt2(),email,mob,"",loginUser.getEmailVerified(),"",loginUser.getSmsVerified(),loginUser.getEditByAdminuserId());
                     getRegistration(registration);
 
                     ed_Name.setText("");
@@ -529,7 +531,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
             final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<Reg> listCall = Constants.myInterface.saveRegistration(registration);
+            Call<Reg> listCall = Constants.myInterface.editProfile(registration);
             listCall.enqueue(new Callback<Reg>() {
                 @Override
                 public void onResponse(Call<Reg> call, Response<Reg> response) {
@@ -542,14 +544,22 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
                             Log.e("Edit Profile","-----------------------------"+response.body());
                             Log.e("Edit Profile","-----------------------------"+model);
-                            Intent intent=new Intent(getActivity(), MainActivity.class);
-                            intent.putExtra("code", smsCode);
-                            Bundle args = new Bundle();
-                            args.putString("model", json);
-                            intent.putExtra("model", json);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(intent);
-                            commonDialog.dismiss();
+
+                            if(!model.getMobileNumber().equals(model.getExVar2()))
+                            {
+                                Intent intent1=new Intent(getActivity(), OTPVerificationActivity.class);
+                                startActivity(intent1);
+                                commonDialog.dismiss();
+                            }else {
+                                Intent intent = new Intent(getActivity(), MainActivity.class);
+                                intent.putExtra("code", smsCode);
+                                Bundle args = new Bundle();
+                                args.putString("model", json);
+                                intent.putExtra("model", json);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                commonDialog.dismiss();
+                            }
 
                         } else {
                             commonDialog.dismiss();

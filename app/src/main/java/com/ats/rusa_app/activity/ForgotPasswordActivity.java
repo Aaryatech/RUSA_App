@@ -51,16 +51,27 @@ TextView tv_backToLogin;
             email = ed_email.getText().toString().trim();
             mob = ed_phoneNo.getText().toString().trim();
 
-
-            if (email.isEmpty()) {
-                ed_email.setError("required");
-            }  else {
+            if (!email.isEmpty()) {
+                if (!isValidEmailAddress(email)) {
+                    ed_email.setError("invalid email");
+                } else {
+                    ed_email.setError(null);
+                    isValidEmail = true;
+                }
+            } else {
                 isValidEmail = true;
-                ed_email.setError(null);
             }
+
+//            if (email.isEmpty()) {
+//                ed_email.setError("required");
+//            }  else {
+//                isValidEmail = true;
+//                ed_email.setError(null);
+//            }
             if (mob.isEmpty()) {
                 ed_phoneNo.setError("required");
-            }  else {
+            }
+            else {
                 ed_phoneNo.setError(null);
                 isValidPhone = true;
             }
@@ -70,7 +81,12 @@ TextView tv_backToLogin;
             }
         }
     }
-
+    public boolean isValidEmailAddress(String email) {
+        String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+        java.util.regex.Matcher m = p.matcher(email);
+        return m.matches();
+    }
     private void getForgotPassword(String email, String mob) {
         if (Constants.isOnline(getApplicationContext())) {
             final CommonDialog commonDialog = new CommonDialog(ForgotPasswordActivity.this, "Loading", "Please Wait...");

@@ -4,6 +4,7 @@ package com.ats.rusa_app.interfaces;
 import com.ats.rusa_app.model.AppToken;
 import com.ats.rusa_app.model.Baner;
 import com.ats.rusa_app.model.CompanyModel;
+import com.ats.rusa_app.model.ContactUs;
 import com.ats.rusa_app.model.Detail;
 import com.ats.rusa_app.model.EventRegCheck;
 import com.ats.rusa_app.model.EventRegistration;
@@ -56,6 +57,9 @@ public interface InterfaceApi {
 
     @POST("saveReg")
     Call<Reg> saveRegistration(@Body Reg registration);
+
+    @POST("saveRegistration")
+    Call<Reg> editProfile(@Body Reg registration);
     //saveRegistration
 
     @POST("saveAppTokens")
@@ -90,4 +94,7 @@ public interface InterfaceApi {
 
     @POST("changePassword")
     Call<Info> changePassword(@Query("regId") int regId,@Query("password") String password);
+
+    @POST("saveContactUs")
+    Call<ContactUs> saveContactUs(@Body ContactUs contactUs);
 }

@@ -32,6 +32,7 @@ import com.ats.rusa_app.util.PermissionsUtil;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.io.FileDescriptor;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -76,7 +77,6 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
 
         if (PermissionsUtil.checkAndRequestPermissions(EventDetailListActivity.this)) {
         }
-
         String upcomingStr = getIntent().getStringExtra("model");
         Gson gson = new Gson();
         upcomingEvent = gson.fromJson(upcomingStr, UpcomingEvent.class);
@@ -93,27 +93,25 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
         try {
             String imageUri = "" + upcomingEvent.getFeaturedImage();
             Log.e("URI", "-----------" + imageUri);
-            Picasso.with(getApplicationContext()).load(imageUri).placeholder(R.drawable.slider).into(imageView);
+            Picasso.with(getApplicationContext()).load(imageUri).placeholder(getResources().getDrawable(R.drawable.img_placeholder)).into(imageView);
         }catch(Exception e)
         {
             Log.e("Exception User : ", "-----------" + e.getMessage());
         }
-//        try {
-//            if (loginUser.getIsActive() == 1 && loginUser.getDelStatus() == 1 && loginUser.getEmailVerified() == 1) {
-//                btn_upload.setVisibility(View.VISIBLE);
-//                tv_uploadText.setVisibility(View.VISIBLE);
-//            }
-//
-//        }catch (Exception e){
-//            Log.e("Exception User : ", "-----------" + e.getMessage());
-//        }
+        try {
+           // if (loginUser.getIsActive() == 1 && loginUser.getDelStatus() == 1 && loginUser.getEmailVerified() == 1) {
+            if(loginUser.getExInt2()==1)
+            {
+                btn_upload.setVisibility(View.VISIBLE);
+                tv_uploadText.setVisibility(View.VISIBLE);
+            }
+
+        }catch (Exception e){
+            Log.e("Exception User : ", "-----------" + e.getMessage());
+        }
 
     }
-    /**
-     * Called when a view has been clicked.
-     *
-     * @param v The view that was clicked.
-     */
+
     @Override
     public void onClick(View v) {
         if(v.getId()==R.id.btn_apply)
@@ -127,11 +125,15 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
 
                 } else {
                     Toast.makeText(EventDetailListActivity.this, "Not Apply For This Event", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(this,LoginActivity.class);
+                    startActivity(intent);
                 }
             }catch (Exception e)
             {
                 Log.e("Exception User : ", "-----------" + e.getMessage());
                 Toast.makeText(EventDetailListActivity.this, "Not Apply For This Event", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this,LoginActivity.class);
+                startActivity(intent);
             }
         }else if(v.getId()==R.id.btn_upload)
         {
@@ -271,12 +273,13 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
                     //no data present
                     return;
                 }
-
                 Uri selectedFileUri = data.getData();
+                Log.e("UriPath","----------"+selectedFileUri.getPath());
                 selectedFilePath = FilePath.getPath(this,selectedFileUri);
                 Log.i("TAG","Selected File Path:" + selectedFilePath);
 
                 if(selectedFilePath != null && !selectedFilePath.equals("")){
+                    savePath(selectedFilePath);
                     tv_uploadText.setText(selectedFilePath);
                 }else{
                     Toast.makeText(this,"Cannot upload file to server",Toast.LENGTH_SHORT).show();
@@ -284,6 +287,22 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
             }
         }
     }
+
+    private void savePath(String selectedFilePath) {
+
+        if (selectedFilePath != null) {
+            // pathArray.add(imagePath1);
+            File imgFile1 = new File(selectedFilePath);
+            int pos = imgFile1.getName().lastIndexOf(".");
+            String ext = imgFile1.getName().substring(pos + 1);
+           String photo1 = System.currentTimeMillis() + "_p1." + ext;
+           // fileNameArray.add(photo1);
+            Log.e("SelectFilePath","-----------"+selectedFilePath);
+            Log.e("photo1","-----------"+photo1);
+        }
+    }
+
+
 //
 //    public static String getPath(Context context, Uri uri ) {
 //        String result = null;
