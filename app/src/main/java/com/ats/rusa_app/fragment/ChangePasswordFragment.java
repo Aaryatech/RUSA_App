@@ -1,6 +1,7 @@
 package com.ats.rusa_app.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ats.rusa_app.R;
+import com.ats.rusa_app.activity.LoginActivity;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.Info;
 import com.ats.rusa_app.model.Login;
@@ -45,6 +47,11 @@ public class ChangePasswordFragment extends Fragment implements View.OnClickList
         Gson gson = new Gson();
         loginUser = gson.fromJson(userStr, Login.class);
         Log.e("LOGIN_ACTIVITY : ", "--------USER-------" + loginUser);
+
+        if (loginUser == null) {
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+            getActivity().finish();
+        }
 
         btnChangePass.setOnClickListener(this);
         return view;
@@ -96,7 +103,10 @@ public class ChangePasswordFragment extends Fragment implements View.OnClickList
                 public void onResponse(Call<Info> call, Response<Info> response) {
                     try {
                         if (response.body() != null) {
+
                             Toast.makeText(getActivity(), "Update Password", Toast.LENGTH_SHORT).show();
+                            Intent intent=new Intent(getActivity(), LoginActivity.class);
+                            startActivity(intent);
                             commonDialog.dismiss();
                         }else {
                             commonDialog.dismiss();
