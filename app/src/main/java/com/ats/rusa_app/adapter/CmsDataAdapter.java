@@ -2,6 +2,7 @@ package com.ats.rusa_app.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Paint;
@@ -25,6 +26,7 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.activity.MainActivity;
@@ -32,6 +34,7 @@ import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.CmsContentList;
 import com.ats.rusa_app.util.ClickableTableSpanImpl;
 import com.ats.rusa_app.util.HtmlHttpImageGetter;
+import com.ats.rusa_app.util.HtmlHttpImageGetterNew;
 import com.ats.rusa_app.util.RvWebView;
 import com.ats.rusa_app.util.TouchyWebView;
 import com.squareup.picasso.Picasso;
@@ -51,11 +54,13 @@ import static android.support.constraint.Constraints.TAG;
 public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHolder> implements Html.ImageGetter {
 
     private ArrayList<CmsContentList> cmsList;
+    private String slugName;
     private Context context;
 
-    public CmsDataAdapter(ArrayList<CmsContentList> cmsList, Context context) {
+    public CmsDataAdapter(ArrayList<CmsContentList> cmsList, Context context, String slugName) {
         this.cmsList = cmsList;
         this.context = context;
+        this.slugName = slugName;
     }
 
 
@@ -116,7 +121,7 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
                 try {
                     holder.ivImg.setVisibility(View.VISIBLE);
                     Picasso.with(context).load(Constants.GALLERY_URL + model.getFeaturedImage()).placeholder(R.drawable.img_placeholder).into(holder.ivImg);
-                    Log.e("ImageStruct","-------------------"+Constants.GALLERY_URL +model.getFeaturedImage());
+                    Log.e("ImageStruct", "-------------------" + Constants.GALLERY_URL + model.getFeaturedImage());
                 } catch (Exception e) {
                 }
             }
@@ -150,9 +155,12 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
 
         htmlText = htmlText + "\n\n" + model.getPageDesc();
 
-        htmlText = htmlText +
-                "</body>" +
-                "</html>";
+        // htmlText=htmlText+"\n\n\n\n\n\n\n\n\n\n\n\n";
+
+
+//        htmlText = htmlText +
+//                "</body>" +
+//                "</html>";
 
 
         //webView.loadDataWithBaseURL("", htmlText, mimeType, encoding, "");
@@ -187,26 +195,111 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
         activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
         holder.tvHtmlTxt.setListIndentPx(metrics.density * 10);
 
-        if(htmlText.contains("src"))
-        {
-            Log.e("Hiii","--------------");
+        if (htmlText.contains("src")) {
+            Log.e("Hiii", "--------------");
         }
 
         try {
-            holder.tvHtmlTxt.setHtml(htmlText, new HtmlHttpImageGetter(holder.tvHtmlTxt));
 
-            Log.e("html Text","---------------------"+htmlText);
+            int height = metrics.heightPixels;
+            int width = metrics.widthPixels;
+
+            Toast.makeText(context, "" + width + " x " + height, Toast.LENGTH_SHORT).show();
+
+         /*   String temp;
+
+            if (height > 2000) {
+                temp = htmlText.replaceAll("<br></br>", "<br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>");
+
+            } else {
+                temp = htmlText.replaceAll("<br></br>", "<br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>");
+
+            }
+
+            temp = temp + "&nbsp" +
+                    "</body>" +
+                    "</html>";*/
+
+//            temp = temp +"<font color=\"White\">.</font>"+
+//                    "</body>" +
+//                    "</html>";
+
+            DisplayMetrics metrics1 = new DisplayMetrics();
+            activity.getWindowManager().getDefaultDisplay().getMetrics(metrics1);
+
+            int widthPixels = metrics1.widthPixels;
+            int heightPixels = metrics1.heightPixels;
+
+            float scaleFactor = metrics1.density;
+
+            float widthDp = widthPixels / scaleFactor;
+            float heightDp = heightPixels / scaleFactor;
+
+            float smallestWidth = Math.min(widthDp, heightDp);
+
+            Log.e("CMS DATA ADPT ", "----------------- WIDTH  = " + smallestWidth);
+
+            if (smallestWidth > 600) {
+                //Device is a 7" tablet
+                Log.e("CMS DATA ADPT", "-------------------------------- 7 inch");
+
+                String temp = htmlText;
+
+                temp = temp + "&nbsp" +
+                        "</body>" +
+                        "</html>";
+
+                holder.tvHtmlTxt.setHtml(temp, new HtmlHttpImageGetter(holder.tvHtmlTxt));
+                Log.e("html Text", "---------------------" + temp);
+
+            } else {
+
+                if (slugName.equalsIgnoreCase("downloads31")) {
+                    String temp = htmlText;
+
+                    temp = temp + "&nbsp" +
+                            "</body>" +
+                            "</html>";
+
+                    holder.tvHtmlTxt.setHtml(temp, new HtmlHttpImageGetter(holder.tvHtmlTxt));
+                    Log.e("html Text", "---------------------" + temp);
+
+                } else {
+
+                    String temp;
+                    if (height > 2000) {
+                        temp = htmlText.replaceAll("<br></br>", "<br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>");
+
+                    } else {
+                        temp = htmlText.replaceAll("<br></br>", "<br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>");
+
+                    }
+
+                    temp = temp + "&nbsp" +
+                            "</body>" +
+                            "</html>";
+
+                    holder.tvHtmlTxt.setHtml(temp, new HtmlHttpImageGetterNew(holder.tvHtmlTxt));
+                    Log.e("html Text", "---------------------" + temp);
+                }
+
+            }
+
+
         } catch (Exception e) {
             Log.e("Hello", "-------------Hii");
             holder.llHtml.setVisibility(View.GONE);
             holder.llWebview.setVisibility(View.VISIBLE);
 
+            e.printStackTrace();
+
         }
 
         if (htmlText.contains("iframe")) {
-
+            Log.e("CMS DATA ADPT ","*****************************************  IFRAME");
             holder.llHtml.setVisibility(View.GONE);
             holder.llWebview.setVisibility(View.VISIBLE);
+
         }
 
 

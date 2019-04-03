@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        setTitle(""+getResources().getString(R.string.app_name));
+        setTitle("" + getResources().getString(R.string.app_name));
 
         String langId = CustomSharedPreference.getString(MainActivity.this, CustomSharedPreference.LANGUAGE_SELECTED);
         try {
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity
 
         String userStr = CustomSharedPreference.getString(getApplicationContext(), CustomSharedPreference.KEY_USER);
         Gson gson = new Gson();
-         loginUser = gson.fromJson(userStr, Login.class);
+        loginUser = gson.fromJson(userStr, Login.class);
         Log.e("HOME_ACTIVITY : ", "--------USER-------" + loginUser);
 
         try {
@@ -128,8 +128,7 @@ public class MainActivity extends AppCompatActivity
             AppToken appToken = gson2.fromJson(str, AppToken.class);
             Log.e("APP TOKEN", "-------------- " + appToken);
 
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.e("Exception : ", "-----------" + e.getMessage());
         }
 
@@ -162,40 +161,37 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         View header = navigationView.getHeaderView(0);
-        tv_loginUserName =header.findViewById(R.id.loginUserName);
+        tv_loginUserName = header.findViewById(R.id.loginUserName);
 
         try {
             intent = getIntent();
             final String skipLogin = intent.getStringExtra("code");
             Log.e("Skip", "-----------" + skipLogin);
-            if (skipLogin==(null)) {
+            if (skipLogin == (null)) {
                 if (loginUser == null) {
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     finish();
                 }
-           }else if(loginUser==null)
-            {
-                if(!skipLogin.equals("SkipLogin"))
-                {
-                    Log.e("Skip","");
+            } else if (loginUser == null) {
+                if (!skipLogin.equals("SkipLogin")) {
+                    Log.e("Skip", "");
                 }
             }
-        }catch (Exception e)
-        {
-
+        } catch (Exception e) {
+            Log.e("MAIN ACT ", "------------ EXCEPTION----------------- " + e.getMessage());
+            e.printStackTrace();
         }
 
         try {
-            if(loginUser!=null)
-            {
+            if (loginUser != null) {
                 tv_loginUserName.setText(loginUser.getName());
-            }else{
+            } else {
                 tv_loginUserName.setText("User is not logged in");
-              // startActivity(new Intent(MainActivity.this, LoginActivity.class));
-              // finish();
+                // startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                // finish();
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.e("Exception User : ", "-----------" + e.getMessage());
         }
 
@@ -250,12 +246,11 @@ public class MainActivity extends AppCompatActivity
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, new HomeFragment(), "Exit");
             ft.commit();
-        }else if (eventFragment instanceof UpcomingEventDetailFragment && eventFragment.isVisible()) {
+        } else if (eventFragment instanceof UpcomingEventDetailFragment && eventFragment.isVisible()) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, new EventFragment(), "HomeFragment");
             ft.commit();
-        }
-        else {
+        } else {
             super.onBackPressed();
         }
     }
@@ -338,10 +333,10 @@ public class MainActivity extends AppCompatActivity
     private void getMenuData(int lnagId) {
 
         if (Constants.isOnline(this)) {
-           commonDialog = new CommonDialog(MainActivity.this, "Loading", "Please Wait...");
-           commonDialog.show();
+            commonDialog = new CommonDialog(MainActivity.this, "Loading", "Please Wait...");
+            commonDialog.show();
 
-           Call<MenuModel> listCall = Constants.myInterface.getMenuData(lnagId,1);
+            Call<MenuModel> listCall = Constants.myInterface.getMenuData(lnagId, 1);
             listCall.enqueue(new Callback<MenuModel>() {
                 @Override
                 public void onResponse(Call<MenuModel> call, Response<MenuModel> response) {
@@ -409,10 +404,10 @@ public class MainActivity extends AppCompatActivity
                                 }
                             }
 
-                            MenuGroup menuGroup = new MenuGroup("Event and Workshop" , false, false, "Event");
+                            MenuGroup menuGroup = new MenuGroup("Event and Workshop", false, false, "Event");
                             headerList.add(menuGroup);
 
-                            if(loginUser!=null) {
+                            if (loginUser != null) {
 
                                 MenuGroup menuGroup0 = new MenuGroup("Edit Profile", false, false, "Profile");
                                 headerList.add(menuGroup0);
@@ -498,10 +493,10 @@ public class MainActivity extends AppCompatActivity
                         ft.replace(R.id.content_frame, new ContactUsFragment(), "HomeFragment");
                         ft.commit();
 
-                    }else if (url.equalsIgnoreCase("login")) {
+                    } else if (url.equalsIgnoreCase("login")) {
                         startActivity(new Intent(MainActivity.this, LoginActivity.class));
 
-                    }else if(url.equalsIgnoreCase("logout")){
+                    } else if (url.equalsIgnoreCase("logout")) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialogTheme);
                         builder.setTitle("Logout");
                         builder.setMessage("Are you sure you want to logout?");
@@ -527,13 +522,13 @@ public class MainActivity extends AppCompatActivity
                         dialog.show();
 
 
-                    } else  if (url.equalsIgnoreCase("Event")) {
+                    } else if (url.equalsIgnoreCase("Event")) {
                         Fragment adf = new EventFragment();
                         Bundle args = new Bundle();
                         args.putString("slugName", url);
                         adf.setArguments(args);
                         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
-                    }else if(url.equalsIgnoreCase("Profile")) {
+                    } else if (url.equalsIgnoreCase("Profile")) {
                         Fragment adf = new EditProfileFragment();
                         Bundle args = new Bundle();
                         args.putString("slugName", url);
@@ -597,17 +592,16 @@ public class MainActivity extends AppCompatActivity
                                 });
                         builder.create();
                         builder.show();
-                    }
-//                    } else if (model.getUrl().equalsIgnoreCase("videos19")){
-//                            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//                            ft.replace(R.id.content_frame, new VideoFragment(), "HomeFragment");
-//                            ft.commit();
-//
-//                        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//                        drawer.closeDrawer(GravityCompat.START);
-//
-//                    }
-                    else {
+
+                    } else if (model.getUrl().equalsIgnoreCase("videos19")) {
+                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        ft.replace(R.id.content_frame, new VideoFragment(), "HomeFragment");
+                        ft.commit();
+
+                        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                        drawer.closeDrawer(GravityCompat.START);
+
+                    } else {
 //                        WebView webView = findViewById(R.id.webView);
 //                        webView.loadUrl(model.url);
 //                        onBackPressed();
@@ -713,11 +707,11 @@ public class MainActivity extends AppCompatActivity
             ft.commit();
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if ( commonDialog!=null)
-        {
+        if (commonDialog != null) {
             commonDialog.dismiss();
         }
     }

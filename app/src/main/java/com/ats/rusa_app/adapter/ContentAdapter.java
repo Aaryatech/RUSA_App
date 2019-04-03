@@ -86,7 +86,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.MyViewHo
                     cmsList.add(model.getCmsContentList().get(i));
                 }
 
-                CmsDataAdapter adapter = new CmsDataAdapter(cmsList, context);
+                CmsDataAdapter adapter = new CmsDataAdapter(cmsList, context,model.getSlugName());
                 RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
                 holder.cmsRecyclerView.setLayoutManager(mLayoutManager);
                 holder.cmsRecyclerView.setItemAnimator(new DefaultItemAnimator());

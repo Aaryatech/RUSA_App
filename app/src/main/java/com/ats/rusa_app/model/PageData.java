@@ -6,7 +6,7 @@ public class PageData {
 
     private Integer pageId;
     private String pageName;
-    private Object slugName;
+    private String slugName;
     private Integer sectioinId;
     private List<CmsContentList> cmsContentList;
     private List<FaqContentList> faqContentList;
@@ -32,11 +32,11 @@ public class PageData {
         this.pageName = pageName;
     }
 
-    public Object getSlugName() {
+    public String getSlugName() {
         return slugName;
     }
 
-    public void setSlugName(Object slugName) {
+    public void setSlugName(String slugName) {
         this.slugName = slugName;
     }
 

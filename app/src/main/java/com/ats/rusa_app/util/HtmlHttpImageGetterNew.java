@@ -16,7 +16,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.ats.rusa_app.activity.MainActivity;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -26,15 +25,7 @@ import java.lang.ref.WeakReference;
 import java.net.URI;
 import java.net.URL;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.ref.WeakReference;
-import java.net.URI;
-import java.net.URL;
-
-public class HtmlHttpImageGetter implements ImageGetter {
+public class HtmlHttpImageGetterNew  implements ImageGetter {
     TextView container;
     URI baseUri;
     boolean matchParentWidth;
@@ -42,19 +33,19 @@ public class HtmlHttpImageGetter implements ImageGetter {
     private boolean compressImage = false;
     private int qualityImage = 50;
 
-    public HtmlHttpImageGetter(TextView textView) {
+    public HtmlHttpImageGetterNew(TextView textView) {
         this.container = textView;
         this.matchParentWidth = false;
     }
 
-    public HtmlHttpImageGetter(TextView textView, String baseUrl) {
+    public HtmlHttpImageGetterNew(TextView textView, String baseUrl) {
         this.container = textView;
         if (baseUrl != null) {
             this.baseUri = URI.create(baseUrl);
         }
     }
 
-    public HtmlHttpImageGetter(TextView textView, String baseUrl, boolean matchParentWidth) {
+    public HtmlHttpImageGetterNew(TextView textView, String baseUrl, boolean matchParentWidth) {
         this.container = textView;
         this.matchParentWidth = matchParentWidth;
         if (baseUrl != null) {
@@ -72,10 +63,10 @@ public class HtmlHttpImageGetter implements ImageGetter {
     }
 
     public Drawable getDrawable(String source) {
-        HtmlHttpImageGetter.UrlDrawable urlDrawable = new HtmlHttpImageGetter.UrlDrawable();
+        HtmlHttpImageGetterNew.UrlDrawable urlDrawable = new HtmlHttpImageGetterNew.UrlDrawable();
 
         // get the actual source
-        HtmlHttpImageGetter.ImageGetterAsyncTask asyncTask = new HtmlHttpImageGetter.ImageGetterAsyncTask(urlDrawable, this, container,
+        HtmlHttpImageGetterNew.ImageGetterAsyncTask asyncTask = new HtmlHttpImageGetterNew.ImageGetterAsyncTask(urlDrawable, this, container,
                 matchParentWidth, compressImage, qualityImage);
 
         asyncTask.execute(source);
@@ -92,8 +83,8 @@ public class HtmlHttpImageGetter implements ImageGetter {
      * we won't leak the UrlDrawable or the HtmlRemoteImageGetter.
      */
     private static class ImageGetterAsyncTask extends AsyncTask<String, Void, Drawable> {
-        private final WeakReference<HtmlHttpImageGetter.UrlDrawable> drawableReference;
-        private final WeakReference<HtmlHttpImageGetter> imageGetterReference;
+        private final WeakReference<HtmlHttpImageGetterNew.UrlDrawable> drawableReference;
+        private final WeakReference<HtmlHttpImageGetterNew> imageGetterReference;
         private final WeakReference<View> containerReference;
         private final WeakReference<Resources> resources;
         private String source;
@@ -103,7 +94,7 @@ public class HtmlHttpImageGetter implements ImageGetter {
         private boolean compressImage = false;
         private int qualityImage = 50;
 
-        public ImageGetterAsyncTask(HtmlHttpImageGetter.UrlDrawable d, HtmlHttpImageGetter imageGetter, View container,
+        public ImageGetterAsyncTask(HtmlHttpImageGetterNew.UrlDrawable d, HtmlHttpImageGetterNew imageGetter, View container,
                                     boolean matchParentWidth, boolean compressImage, int qualityImage) {
             this.drawableReference = new WeakReference<>(d);
             this.imageGetterReference = new WeakReference<>(imageGetter);
@@ -135,7 +126,7 @@ public class HtmlHttpImageGetter implements ImageGetter {
                 Log.w("HTMLIMAGEGETTER", "Drawable result is null! (source: " + source + ")");
                 return;
             }
-            final HtmlHttpImageGetter.UrlDrawable urlDrawable = drawableReference.get();
+            final HtmlHttpImageGetterNew.UrlDrawable urlDrawable = drawableReference.get();
             if (urlDrawable == null) {
                 return;
             }
@@ -146,7 +137,7 @@ public class HtmlHttpImageGetter implements ImageGetter {
             urlDrawable.drawable = result;
 
 
-            final HtmlHttpImageGetter imageGetter = imageGetterReference.get();
+            final HtmlHttpImageGetterNew imageGetter = imageGetterReference.get();
             if (imageGetter == null) {
                 return;
             }
@@ -170,16 +161,16 @@ public class HtmlHttpImageGetter implements ImageGetter {
                 Log.e("WIDTH", "--------*******************----------" + (int) (drawable.getIntrinsicWidth() * scale));
                 Log.e("HEIGHT", "--------******************----------" + (int) (drawable.getIntrinsicHeight() * scale));
 
-                ((BitmapDrawable) drawable).setGravity(Gravity.CENTER);
+               // drawable.setBounds(0, 0, (int) (drawable.getIntrinsicWidth() * scale), (int) (drawable.getIntrinsicHeight() * scale));
 
-                drawable.setBounds(0, 0, (int) (drawable.getIntrinsicWidth() * scale), (int) (drawable.getIntrinsicHeight() * scale));
+                float multiplier = (float) 1000 / (float) drawable.getIntrinsicWidth();
+                int width = (int) (drawable.getIntrinsicWidth() * multiplier);
+                int height = (int) (drawable.getIntrinsicHeight() * multiplier);
 
+              //  ((BitmapDrawable) drawable).setGravity(Gravity.CENTER_HORIZONTAL);
 
-//                float multiplier = (float) 1000 / (float) drawable.getIntrinsicWidth();
-//                int width = (int) (drawable.getIntrinsicWidth() * multiplier);
-//                int height = (int) (drawable.getIntrinsicHeight() * multiplier);
-//                drawable.setBounds(0, 0, width, height);
-
+               // drawable.setBounds(0, 0, (width-80), (height-50));
+                drawable.setBounds(0, 0, width, height);
 
                 return drawable;
             } catch (Exception e) {
@@ -243,7 +234,7 @@ public class HtmlHttpImageGetter implements ImageGetter {
 
         private InputStream fetch(String urlString) throws IOException {
             URL url;
-            final HtmlHttpImageGetter imageGetter = imageGetterReference.get();
+            final HtmlHttpImageGetterNew imageGetter = imageGetterReference.get();
             if (imageGetter == null) {
                 return null;
             }

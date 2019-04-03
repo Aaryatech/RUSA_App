@@ -16,6 +16,7 @@ import com.ats.rusa_app.R;
 import com.ats.rusa_app.activity.TestimonialWebviewActivity;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.Detail;
+import com.ats.rusa_app.model.TestImonialList;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
@@ -25,10 +26,10 @@ import org.sufficientlysecure.htmltextview.HtmlTextView;
 import java.util.ArrayList;
 
 public class TestimonialAdapter extends RecyclerView.Adapter<TestimonialAdapter.MyViewHolder> {
-    private ArrayList<Detail> TestimonalList;
+    private ArrayList<TestImonialList> TestimonalList;
     private Context context;
 
-    public TestimonialAdapter(ArrayList<Detail> testimonalList, Context context) {
+    public TestimonialAdapter(ArrayList<TestImonialList> testimonalList, Context context) {
         TestimonalList = testimonalList;
         this.context = context;
     }
@@ -44,23 +45,26 @@ public class TestimonialAdapter extends RecyclerView.Adapter<TestimonialAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull TestimonialAdapter.MyViewHolder myViewHolder, int i) {
-        final Detail model = TestimonalList.get(i);
-        Log.e("Model Testimonial","----------------"+model);
-        String imageUri = Constants.GALLERY_URL + model.getTestimonialList().get(i).getImageName();
-        Picasso.with(context).load(imageUri).placeholder(context.getResources().getDrawable(R.drawable.img_placeholder)).into(myViewHolder.imageView);
-        myViewHolder.tv_Title.setText(model.getTestimonialList().get(i).getFromName());
-        myViewHolder.tv_Disc.setHtml(model.getTestimonialList().get(i).getMessage(), new HtmlHttpImageGetter(myViewHolder.tv_Disc));
+        final TestImonialList model = TestimonalList.get(i);
+        Log.e("Model Testimonial", "-------****************************---------" + model);
+        String imageUri = Constants.GALLERY_URL + model.getImageName();
+        try {
+            Picasso.with(context).load(imageUri).placeholder(context.getResources().getDrawable(R.drawable.profile_img)).into(myViewHolder.imageView);
+        } catch (Exception e) {
+        }
+        myViewHolder.tv_Title.setText(model.getFromName());
+        myViewHolder.tv_Disc.setHtml(model.getMessage(), new HtmlHttpImageGetter(myViewHolder.tv_Disc));
 
         myViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
 
-                    Gson gson=new Gson();
-                    String str=gson.toJson(model);
+                    Gson gson = new Gson();
+                    String str = gson.toJson(model);
 
-                    Intent intent=new Intent(context, TestimonialWebviewActivity.class);
-                    intent.putExtra("model",str);
+                    Intent intent = new Intent(context, TestimonialWebviewActivity.class);
+                    intent.putExtra("model", str);
                     context.startActivity(intent);
 //                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("" + model.getNewsSourceUrlName()));
 //                    context.startActivity(browserIntent);
@@ -84,12 +88,13 @@ public class TestimonialAdapter extends RecyclerView.Adapter<TestimonialAdapter.
         public TextView tv_Title;
         public HtmlTextView tv_Disc;
         public CardView cardView;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageView=(ImageView)itemView.findViewById(R.id.iv_testominal);
-            tv_Title=(TextView)itemView.findViewById(R.id.tv_Title);
-            tv_Disc=(HtmlTextView)itemView.findViewById(R.id.tv_Discription);
-            cardView=(CardView)itemView.findViewById(R.id.cardView);
+            imageView = (ImageView) itemView.findViewById(R.id.iv_testominal);
+            tv_Title = (TextView) itemView.findViewById(R.id.tv_Title);
+            tv_Disc = (HtmlTextView) itemView.findViewById(R.id.tv_Discription);
+            cardView = (CardView) itemView.findViewById(R.id.cardView);
         }
     }
 }

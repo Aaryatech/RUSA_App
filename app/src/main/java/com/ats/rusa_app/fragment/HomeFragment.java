@@ -32,7 +32,9 @@ import com.ats.rusa_app.model.CompanyModel;
 import com.ats.rusa_app.model.Detail;
 import com.ats.rusa_app.model.GallaryDetailList;
 import com.ats.rusa_app.model.NewDetail;
+import com.ats.rusa_app.model.TestImonialList;
 import com.ats.rusa_app.model.Testimonials;
+import com.ats.rusa_app.model.VideoList;
 import com.ats.rusa_app.util.CommonDialog;
 import com.ats.rusa_app.util.CustomSharedPreference;
 import com.ats.rusa_app.util.TouchyWebView;
@@ -47,6 +49,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -68,7 +72,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     final ArrayList<Testimonials> list = new ArrayList<>();
     ArrayList<NewDetail> newsList = new ArrayList<>();
-    ArrayList<Detail> testimonialList = new ArrayList<>();
+    ArrayList<TestImonialList> testimonialList = new ArrayList<>();
     ArrayList<Detail> galleryList = new ArrayList<>();
     ArrayList<CompanyModel> companyList = new ArrayList<>();
     ArrayList<Baner> banerList = new ArrayList<>();
@@ -92,7 +96,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         wvFb = view.findViewById(R.id.wvFb);
         video_recyclerView = view.findViewById(R.id.videos_recyclerView);
         btn_click = view.findViewById(R.id.btn_click);
-        tv_banerName=view.findViewById(R.id.baner_name);
+        tv_banerName = view.findViewById(R.id.baner_name);
 
         fabTwitter = view.findViewById(R.id.fabTwitter);
         fabFb = view.findViewById(R.id.fabFb);
@@ -111,10 +115,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         getNewFeed(languageId);
         getCompSlider();
         getBaner();
-       // initYoutubeVideo("gG2npfpaqsY");
-        getTestimonial();
-       // getAllHomeData(1);
-         //getVideoGallery();
+        // initYoutubeVideo("gG2npfpaqsY");
+        //getTestimonial();
+        getAllHomeData(1);
+        //getVideoGallery();
 
         GallaryDetailList video1 = new GallaryDetailList(1, 1, 1, 1, "1", "video 1", "aa", "", "", 1, "", "", 1, 1, 1, 1, 1, 1, "H-1HFRhqhUI", "");
         GallaryDetailList video2 = new GallaryDetailList(1, 1, 1, 1, "1", "video 2", "aa", "", "", 1, "", "", 1, 1, 1, 1, 1, 1, "Hl5y81RlASg", "");
@@ -127,7 +131,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         YoutubeVideosAdapter adapter = new YoutubeVideosAdapter(videoList, getContext());
         video_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        video_recyclerView.setAdapter(adapter);
+        // video_recyclerView.setAdapter(adapter);
 
         String widgetInfo = "<a class=\"twitter-timeline\" href=\"http://twitter.com/HRDMinistry\"</a> " +
                 "<div id=\"fb-root\"></div>" +
@@ -191,9 +195,58 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
                             Log.e("HOME DATA : ", " - " + response.body());
                             homeList.clear();
-                            Detail detail=response.body();
-                           // homeList = response.body();
-                         Log.e("HOME LIST","-------------------"+detail);
+                            Detail detail = response.body();
+
+                            ArrayList<GallaryDetailList> videoList = new ArrayList<>();
+
+                            for (int i = 0; i < detail.getVideoList().size(); i++) {
+
+                                VideoList video = detail.getVideoList().get(i);
+
+                                String iframeStr = video.getFileName();
+                                Log.e("STRING ", "---------- " + iframeStr);
+
+                                int index = (iframeStr.lastIndexOf("src"));
+                                Log.e("FIRST INDEX : ", "-------------------- " + index);
+                                int firstIndex = (iframeStr.indexOf('"', index)) + 1;
+                                Log.e("LAST INDEX : ", "-------------------- " + firstIndex);
+                                int lastIndex = iframeStr.indexOf('"', firstIndex);
+
+
+                                Log.e("VIDEO URL : ", "------------------------ " + iframeStr.substring(firstIndex, lastIndex));
+
+                                String code = extractYTId(iframeStr.substring(firstIndex, lastIndex)).replace("\\", "");
+
+                                Log.e("VIDEO CODE : ", "------------------------ " + code);
+
+                                GallaryDetailList videoModel = new GallaryDetailList(1, 1, 1, 1, "1", "video 1", "aa", "", "", 1, "", "", 1, 1, 1, 1, 1, 1, "" + code, "");
+                                videoList.add(videoModel);
+                            }
+
+                            YoutubeVideosAdapter adapter = new YoutubeVideosAdapter(videoList, getContext());
+                            video_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                            video_recyclerView.setAdapter(adapter);
+
+
+                            //Testimonials---------------------------
+
+                            testimonialList.clear();
+
+                            if (detail.getTestimonialList().size()>0){
+                                for (int i=0;i<detail.getTestimonialList().size();i++){
+                                    testimonialList.add(detail.getTestimonialList().get(i));
+                                }
+                            }
+
+                            Log.e("Testimonial List: ", " -**************************************** " + detail.getTestimonialList());
+                            TestimonialAdapter tAdapter = new TestimonialAdapter(testimonialList, getContext());
+                            testomonial_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                            testomonial_recyclerView.setAdapter(tAdapter);
+
+
+
+                            // homeList = response.body();
+                            Log.e("HOME LIST", "-------------------" + detail);
                             commonDialog.dismiss();
 
                         } else {
@@ -219,13 +272,26 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void getTestimonial() {
+    public static String extractYTId(String ytUrl) {
+        String vId = null;
+        Pattern pattern = Pattern.compile(
+                "^https?://.*(?:youtu.be/|v/|u/\\w/|embed/|watch?v=)([^#&?]*).*$",
+                Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(ytUrl);
+        if (matcher.matches()) {
+            vId = matcher.group(1);
+        }
+        return vId;
+    }
+
+
+    /*private void getTestimonial() {
 
         if (Constants.isOnline(getContext())) {
             final CommonDialog commonDialog = new CommonDialog(getContext(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<Detail> listCall = Constants.myInterface.getAllHomeData(1);
+            Call<Detail> listCall = Constants.myInterface.getTestimonial(1);
             listCall.enqueue(new Callback<Detail>() {
                 @Override
                 public void onResponse(Call<Detail> call, Response<Detail> response) {
@@ -234,9 +300,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
                             Log.e("Testimonial: ", " - " + response.body());
                             testimonialList.clear();
-                            Detail detail=response.body();
+                            Detail detail = response.body();
                             testimonialList.add(detail);
-                            Log.e("Testimonial List: ", " - " +detail.getTestimonialList());
+                            Log.e("Testimonial List: ", " - " + detail.getTestimonialList());
                             TestimonialAdapter adapter = new TestimonialAdapter(testimonialList, getContext());
                             testomonial_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
                             testomonial_recyclerView.setAdapter(adapter);
@@ -264,7 +330,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         } else {
             Toast.makeText(getContext(), "No Internet Connection !", Toast.LENGTH_SHORT).show();
         }
-    }
+    }*/
 
     private void getBaner() {
         if (Constants.isOnline(getContext())) {
@@ -371,7 +437,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             Log.e("Gallery responce : ", " - " + response.body());
                             galleryList.clear();
 
-                            Detail galleryDetail=response.body();
+                            Detail galleryDetail = response.body();
                             galleryList.add(galleryDetail);
                             imageSlider(galleryDetail);
                             commonDialog.dismiss();
@@ -400,7 +466,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
 
     }
-
 
 
     private void getVideoGallery() {

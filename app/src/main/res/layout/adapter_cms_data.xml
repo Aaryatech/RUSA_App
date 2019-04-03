@@ -37,10 +37,10 @@
             android:id="@+id/tWebview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginBottom="@dimen/margin_small"
             android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginTop="@dimen/margin_small"
             android:layout_marginRight="@dimen/margin_medium"
+            android:layout_marginBottom="@dimen/margin_small"
             android:visibility="visible" />
 
     </LinearLayout>
@@ -66,8 +66,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="@dimen/margin_small"
-                    android:textColor="@color/colorBlack"
                     android:fontFamily="@font/lato_regular"
+                    android:textColor="@color/colorBlack"
                     android:textSize="@dimen/text_medium"
                     android:visibility="gone" />
 
@@ -76,8 +76,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="@dimen/margin_small"
-                    android:textColor="@color/colorBlack"
                     android:fontFamily="@font/lato_regular"
+                    android:textColor="@color/colorBlack"
                     android:textSize="@dimen/text_medium" />
 
             </LinearLayout>
@@ -86,15 +86,15 @@
     </LinearLayout>
 
     <TextView
-        android:gravity="center"
-        android:drawablePadding="10dp"
-        android:drawableLeft="@drawable/ic_pdf"
-        android:visibility="gone"
-        android:textSize="15sp"
         android:id="@+id/tvPdf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:textColor="@android:color/holo_blue_dark" />
+        android:drawableLeft="@drawable/ic_pdf"
+        android:drawablePadding="10dp"
+        android:gravity="center"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="15sp"
+        android:visibility="gone" />
 
 </LinearLayout>

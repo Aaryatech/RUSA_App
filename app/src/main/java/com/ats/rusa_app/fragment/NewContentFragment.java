@@ -93,6 +93,7 @@ public class NewContentFragment extends Fragment {
                             Log.e("PAGE DATA : ", " - " + response.body());
 
                             PageData model = response.body();
+                            model.setSlugName(slugName);
                             ArrayList<PageData> dataList = new ArrayList<>();
                             dataList.add(model);
 
