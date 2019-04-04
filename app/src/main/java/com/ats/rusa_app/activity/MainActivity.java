@@ -35,8 +35,11 @@ import com.ats.rusa_app.fragment.ContactUsFragment;
 import com.ats.rusa_app.fragment.ContentFragment;
 import com.ats.rusa_app.fragment.EditProfileFragment;
 import com.ats.rusa_app.fragment.EventFragment;
+import com.ats.rusa_app.fragment.GalleryDisplayFragment;
+import com.ats.rusa_app.fragment.GalleryEventDetailsFragment;
 import com.ats.rusa_app.fragment.HomeFragment;
 import com.ats.rusa_app.fragment.NewContentFragment;
+import com.ats.rusa_app.fragment.PhotoGalleryFragment;
 import com.ats.rusa_app.fragment.UpcomingEventDetailFragment;
 import com.ats.rusa_app.fragment.UpcomingEventFragment;
 import com.ats.rusa_app.fragment.VideoFragment;
@@ -212,6 +215,10 @@ public class MainActivity extends AppCompatActivity
         Fragment homeFragment = getSupportFragmentManager().findFragmentByTag("HomeFragment");
         Fragment upcomingEventFragment = getSupportFragmentManager().findFragmentByTag("UpcomingEventFragment");
         Fragment eventFragment = getSupportFragmentManager().findFragmentByTag("EventFragment");
+        Fragment photoGalleryFragment = getSupportFragmentManager().findFragmentByTag("PhotoGalleryFragment");
+        Fragment galleryEventDetailFragment = getSupportFragmentManager().findFragmentByTag("GalleryEventDetailFragment");
+
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -242,13 +249,22 @@ public class MainActivity extends AppCompatActivity
                 homeFragment instanceof EventFragment && homeFragment.isVisible() ||
                 homeFragment instanceof EditProfileFragment && homeFragment.isVisible() ||
                 homeFragment instanceof ChangePasswordFragment && homeFragment.isVisible() ||
-                homeFragment instanceof VideoFragment && homeFragment.isVisible()) {
+                homeFragment instanceof VideoFragment && homeFragment.isVisible() ||
+                homeFragment instanceof PhotoGalleryFragment && homeFragment.isVisible()) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, new HomeFragment(), "Exit");
             ft.commit();
         } else if (eventFragment instanceof UpcomingEventDetailFragment && eventFragment.isVisible()) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, new EventFragment(), "HomeFragment");
+            ft.commit();
+        } else if (photoGalleryFragment instanceof GalleryEventDetailsFragment && photoGalleryFragment.isVisible()) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, new PhotoGalleryFragment(), "HomeFragment");
+            ft.commit();
+        } else if (galleryEventDetailFragment instanceof GalleryDisplayFragment && galleryEventDetailFragment.isVisible()) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, new GalleryEventDetailsFragment(), "PhotoGalleryFragment");
             ft.commit();
         } else {
             super.onBackPressed();
@@ -359,12 +375,16 @@ public class MainActivity extends AppCompatActivity
 
                                     if (model.getCategoryList().size() > 0) {
                                         //   Menu topChannelMenu = drawerMenu.addSubMenu("" + model.getSectionlist().get(i).getSectionName());
-                                        MenuGroup menuGroup;
+                                        MenuGroup menuGroup = null;
                                         if (model.getSectionlist().get(i).getCatCount() == 0) {
-                                            menuGroup = new MenuGroup(model.getSectionlist().get(i).getSectionName(), false, false, "" + model.getSectionlist().get(i).getSectionSlugname());
+                                            if (model.getSectionlist().get(i).getExternalUrl() != null) {
+                                                menuGroup = new MenuGroup(model.getSectionlist().get(i).getSectionName(), false, false, true, "" + model.getSectionlist().get(i).getExternalUrl());
+                                            } else {
+                                                menuGroup = new MenuGroup(model.getSectionlist().get(i).getSectionName(), false, false, false, "" + model.getSectionlist().get(i).getSectionSlugname());
+                                            }
                                             headerList.add(menuGroup);
                                         } else {
-                                            menuGroup = new MenuGroup(model.getSectionlist().get(i).getSectionName(), true, true, "");
+                                            menuGroup = new MenuGroup(model.getSectionlist().get(i).getSectionName(), true, true, false, "");
                                             headerList.add(menuGroup);
                                         }
                                        /* if (!menuGroup.hasChildren) {
@@ -378,16 +398,28 @@ public class MainActivity extends AppCompatActivity
                                             if (model.getSectionlist().get(i).getSectionId() == model.getCategoryList().get(j).getSectionId()) {
                                                 // topChannelMenu.add("" + model.getCategoryList().get(j).getCatName());
 
-                                                MenuGroup childModel = new MenuGroup(model.getCategoryList().get(j).getCatName(), false, false, model.getCategoryList().get(j).getSlugName());
-                                                childModelsList.add(childModel);
+                                                if (model.getCategoryList().get(j).getExternalUrl() != null) {
+                                                    MenuGroup childModel = new MenuGroup(model.getCategoryList().get(j).getCatName(), false, false, true, model.getCategoryList().get(j).getExternalUrl());
+                                                    childModelsList.add(childModel);
+                                                } else {
+                                                    MenuGroup childModel = new MenuGroup(model.getCategoryList().get(j).getCatName(), false, false, false, model.getCategoryList().get(j).getSlugName());
+                                                    childModelsList.add(childModel);
+                                                }
+
 
                                                 if (model.getSubCatList().size() > 0) {
                                                     // SubMenu subChannelMenu;
                                                     for (int k = 0; k < model.getSubCatList().size(); k++) {
                                                         if (model.getCategoryList().get(j).getCatId() == model.getSubCatList().get(k).getParentId()) {
                                                             // subChannelMenu = topChannelMenu.addSubMenu("" + model.getCategoryList().get(j).getCatName());
-                                                            MenuGroup childModel1 = new MenuGroup(model.getSubCatList().get(k).getSubCatName(), false, false, model.getSubCatList().get(k).getSubSlugName());
-                                                            childModelsList.add(childModel1);
+                                                            if (model.getSubCatList().get(k).getExternalUrl() != null) {
+                                                                MenuGroup childModel1 = new MenuGroup(model.getSubCatList().get(k).getSubCatName(), false, false, true, model.getSubCatList().get(k).getExternalUrl());
+                                                                childModelsList.add(childModel1);
+                                                            } else {
+                                                                MenuGroup childModel1 = new MenuGroup(model.getSubCatList().get(k).getSubCatName(), false, false, false, model.getSubCatList().get(k).getSubSlugName());
+                                                                childModelsList.add(childModel1);
+                                                            }
+
                                                         }
 
                                                     }
@@ -404,28 +436,40 @@ public class MainActivity extends AppCompatActivity
                                 }
                             }
 
-                            MenuGroup menuGroup = new MenuGroup("Event and Workshop", false, false, "Event");
+                            MenuGroup menuGroup = new MenuGroup("Event and Workshop", false, false, false, "Event");
                             headerList.add(menuGroup);
 
                             if (loginUser != null) {
 
-                                MenuGroup menuGroup0 = new MenuGroup("Edit Profile", false, false, "Profile");
+                                MenuGroup menuGroup0 = new MenuGroup("Edit Profile", false, false, false, "Profile");
                                 headerList.add(menuGroup0);
 
-                                MenuGroup menuGroup3 = new MenuGroup("Logout", false, false, "logout");
+//                                if(loginUser.getExInt1()!=1) {
+//                                    MenuGroup menuGroup4 = new MenuGroup("Change Password", false, false, "changPass");
+//                                    headerList.add(menuGroup4);
+//                                }
+                                MenuGroup menuGroup3 = new MenuGroup("Logout", false, false, false, "logout");
                                 headerList.add(menuGroup3);
 
                             }
 
-                            MenuGroup menuGroup1 = new MenuGroup("" + getResources().getString(R.string.str_login), false, false, "login");
-                            headerList.add(menuGroup1);
+                            if (loginUser == null) {
+                                MenuGroup menuGroup1 = new MenuGroup("" + getResources().getString(R.string.str_login), false, false, false, "login");
+                                headerList.add(menuGroup1);
+                            }
 
-                            MenuGroup menuGroup2 = new MenuGroup("" + getResources().getString(R.string.str_settings), true, true, "login");
+                            MenuGroup menuGroup2 = new MenuGroup("" + getResources().getString(R.string.str_settings), true, true, false, "Settings");
                             headerList.add(menuGroup2);
+
+//                            if(loginUser!=null) {
+//
+//                                MenuGroup menuGroup3 = new MenuGroup("Logout", false, false, "logout");
+//                                headerList.add(menuGroup3);
+//                            }
 
                             ArrayList<MenuGroup> childModelsList = new ArrayList<>();
 
-                            MenuGroup childModel1 = new MenuGroup("" + getResources().getString(R.string.strMenuLanguage), false, false, "lang");
+                            MenuGroup childModel1 = new MenuGroup("" + getResources().getString(R.string.strMenuLanguage), false, false, false, "lang");
                             childModelsList.add(childModel1);
 
                             childList.put(menuGroup2, childModelsList);
@@ -481,6 +525,12 @@ public class MainActivity extends AppCompatActivity
                     if (url.equalsIgnoreCase("ContactUs")) {
                         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                         ft.replace(R.id.content_frame, new ContactUsFragment(), "HomeFragment");
+                        ft.commit();
+
+                    } else if (url.equalsIgnoreCase("imgGallary")) {
+                        Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
+                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        ft.replace(R.id.content_frame, new PhotoGalleryFragment(), "HomeFragment");
                         ft.commit();
 
                     } else if (url.equalsIgnoreCase("login")) {
@@ -586,6 +636,14 @@ public class MainActivity extends AppCompatActivity
                     } else if (model.getUrl().equalsIgnoreCase("videos19")) {
                         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                         ft.replace(R.id.content_frame, new VideoFragment(), "HomeFragment");
+                        ft.commit();
+
+                        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                        drawer.closeDrawer(GravityCompat.START);
+
+                    } else if (model.getUrl().equalsIgnoreCase("imgGallary")) {
+                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        ft.replace(R.id.content_frame, new PhotoGalleryFragment(), "HomeFragment");
                         ft.commit();
 
                         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

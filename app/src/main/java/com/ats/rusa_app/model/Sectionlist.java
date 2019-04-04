@@ -1,5 +1,7 @@
 package com.ats.rusa_app.model;
 
+import java.util.List;
+
 public class Sectionlist {
 
     private Integer sectionId;
@@ -9,9 +11,9 @@ public class Sectionlist {
     private Integer pageId;
     private Integer secSortNo;
     private Integer catCount;
-    private Object externalUrl;
-    private Object externalUrlTarget;
-    private Object catList;
+    private String externalUrl;
+    private String externalUrlTarget;
+    private List<CategoryList> catList;
 
     public Integer getSectionId() {
         return sectionId;
@@ -69,27 +71,27 @@ public class Sectionlist {
         this.catCount = catCount;
     }
 
-    public Object getExternalUrl() {
+    public String getExternalUrl() {
         return externalUrl;
     }
 
-    public void setExternalUrl(Object externalUrl) {
+    public void setExternalUrl(String externalUrl) {
         this.externalUrl = externalUrl;
     }
 
-    public Object getExternalUrlTarget() {
+    public String getExternalUrlTarget() {
         return externalUrlTarget;
     }
 
-    public void setExternalUrlTarget(Object externalUrlTarget) {
+    public void setExternalUrlTarget(String externalUrlTarget) {
         this.externalUrlTarget = externalUrlTarget;
     }
 
-    public Object getCatList() {
+    public List<CategoryList> getCatList() {
         return catList;
     }
 
-    public void setCatList(Object catList) {
+    public void setCatList(List<CategoryList> catList) {
         this.catList = catList;
     }
 
@@ -103,8 +105,8 @@ public class Sectionlist {
                 ", pageId=" + pageId +
                 ", secSortNo=" + secSortNo +
                 ", catCount=" + catCount +
-                ", externalUrl=" + externalUrl +
-                ", externalUrlTarget=" + externalUrlTarget +
+                ", externalUrl='" + externalUrl + '\'' +
+                ", externalUrlTarget='" + externalUrlTarget + '\'' +
                 ", catList=" + catList +
                 '}';
     }

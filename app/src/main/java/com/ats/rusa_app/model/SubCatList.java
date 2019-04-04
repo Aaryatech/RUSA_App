@@ -10,8 +10,8 @@ public class SubCatList {
     private Integer parentId;
     private Integer sectionId;
     private Integer subSortNo;
-    private Object externalUrl;
-    private Object externalUrlTarget;
+    private String externalUrl;
+    private String externalUrlTarget;
 
     public Integer getSubCatId() {
         return subCatId;
@@ -77,19 +77,19 @@ public class SubCatList {
         this.subSortNo = subSortNo;
     }
 
-    public Object getExternalUrl() {
+    public String getExternalUrl() {
         return externalUrl;
     }
 
-    public void setExternalUrl(Object externalUrl) {
+    public void setExternalUrl(String externalUrl) {
         this.externalUrl = externalUrl;
     }
 
-    public Object getExternalUrlTarget() {
+    public String getExternalUrlTarget() {
         return externalUrlTarget;
     }
 
-    public void setExternalUrlTarget(Object externalUrlTarget) {
+    public void setExternalUrlTarget(String externalUrlTarget) {
         this.externalUrlTarget = externalUrlTarget;
     }
 

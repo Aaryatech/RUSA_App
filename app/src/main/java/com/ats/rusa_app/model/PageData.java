@@ -15,6 +15,9 @@ public class PageData {
     private List<GallaryDetailList> gallaryDetailList;
     private List<DetailNewsList> detailNewsList;
     private List<TeamList> teamList;
+    private List<SuccessList> successList;
+    private List<ImageListByCategory> imageListByCategory;
+    private List<VideoList> videoList;
 
     public Integer getPageId() {
         return pageId;
@@ -104,12 +107,37 @@ public class PageData {
         this.teamList = teamList;
     }
 
+    public List<SuccessList> getSuccessList() {
+        return successList;
+    }
+
+    public void setSuccessList(List<SuccessList> successList) {
+        this.successList = successList;
+    }
+
+    public List<ImageListByCategory> getImageListByCategory() {
+        return imageListByCategory;
+    }
+
+    public void setImageListByCategory(List<ImageListByCategory> imageListByCategory) {
+        this.imageListByCategory = imageListByCategory;
+    }
+
+    public List<VideoList> getVideoList() {
+        return videoList;
+    }
+
+    public void setVideoList(List<VideoList> videoList) {
+        this.videoList = videoList;
+    }
+
+
     @Override
     public String toString() {
         return "PageData{" +
                 "pageId=" + pageId +
                 ", pageName='" + pageName + '\'' +
-                ", slugName=" + slugName +
+                ", slugName='" + slugName + '\'' +
                 ", sectioinId=" + sectioinId +
                 ", cmsContentList=" + cmsContentList +
                 ", faqContentList=" + faqContentList +
@@ -118,6 +146,9 @@ public class PageData {
                 ", gallaryDetailList=" + gallaryDetailList +
                 ", detailNewsList=" + detailNewsList +
                 ", teamList=" + teamList +
+                ", successList=" + successList +
+                ", imageListByCategory=" + imageListByCategory +
+                ", videoList=" + videoList +
                 '}';
     }
 }

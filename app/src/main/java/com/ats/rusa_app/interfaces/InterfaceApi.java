@@ -9,6 +9,7 @@ import com.ats.rusa_app.model.Detail;
 import com.ats.rusa_app.model.EventRegCheck;
 import com.ats.rusa_app.model.EventRegistration;
 import com.ats.rusa_app.model.GallaryDetailList;
+import com.ats.rusa_app.model.GetGalleryCategory;
 import com.ats.rusa_app.model.Info;
 import com.ats.rusa_app.model.Login;
 import com.ats.rusa_app.model.MenuModel;
@@ -22,6 +23,7 @@ import com.ats.rusa_app.model.Testomonial;
 import com.ats.rusa_app.model.UpcomingEvent;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -32,10 +34,10 @@ import retrofit2.http.Query;
 public interface InterfaceApi {
 
     @POST("getTopMenuList")
-    Call<MenuModel> getMenuData(@Query("langId") int langId,@Query("type") int type);
+    Call<MenuModel> getMenuData(@Query("langId") int langId, @Query("type") int type);
 
     @POST("getDataBySlugName")
-    Call<PageData> getPageData(@Query("slugName") String slugName,@Query("langId") int langId);
+    Call<PageData> getPageData(@Query("slugName") String slugName, @Query("langId") int langId);
 
     @POST("getLastFourNewsByLangId")
     Call<ArrayList<NewDetail>> getNewsData(@Query("langId") int langId);
@@ -66,7 +68,7 @@ public interface InterfaceApi {
     Call<AppToken> saveAppToken(@Body AppToken appToken);
 
     @POST("verifyOtpResponse")
-    Call<OTPVerification> verifyOtpResponse(@Query("userOtp") String userOtp,@Query("uuid") String uuid);
+    Call<OTPVerification> verifyOtpResponse(@Query("userOtp") String userOtp, @Query("uuid") String uuid);
 
     @POST("getAllHomeData")
     Call<Detail> getAllHomeData(@Query("langId") int langId);
@@ -75,10 +77,10 @@ public interface InterfaceApi {
     Call<ResendOTP> verifyResendOtpResponse(@Query("uuid") String uuid);
 
     @POST("loginFrontEnd")
-    Call<Login> getLogin(@Query("userName") String userName,@Query("password") String password);
+    Call<Login> getLogin(@Query("userName") String userName, @Query("password") String password);
 
     @POST("forgetPassword")
-    Call<Login> getForgotPass(@Query("email") String email,@Query("mobileNumber") String mobileNumber);
+    Call<Login> getForgotPass(@Query("email") String email, @Query("mobileNumber") String mobileNumber);
 
     @POST("getAllUpcomingEvents")
     Call<ArrayList<UpcomingEvent>> getUpcomingEvent(@Query("langId") int langId);
@@ -90,11 +92,20 @@ public interface InterfaceApi {
     Call<EventRegistration> saveEventRegister(@Body EventRegistration eventRegistration);
 
     @POST("getAppliedEvents")
-    Call<ArrayList<EventRegCheck>> getAppliedEvents(@Query("newsblogsId") int newsblogsId,@Query("userId") int userId);
+    Call<ArrayList<EventRegCheck>> getAppliedEvents(@Query("newsblogsId") int newsblogsId, @Query("userId") int userId);
 
     @POST("changePassword")
-    Call<Info> changePassword(@Query("regId") int regId,@Query("password") String password);
+    Call<Info> changePassword(@Query("regId") int regId, @Query("password") String password);
 
     @POST("saveContactUs")
     Call<ContactUs> saveContactUs(@Body ContactUs contactUs);
+
+    @POST("getAllCatIdBySectionIdOrderByDesc")
+    Call<List<GetGalleryCategory>> getCatBySection(@Query("sectionId") int sectionId);
+
+    @POST("getImages")
+    Call<PageData> getGalleryData(@Query("slugName") String slugName, @Query("langId") int langId);
+
+
+
 }

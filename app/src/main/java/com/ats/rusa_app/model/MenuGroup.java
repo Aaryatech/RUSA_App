@@ -3,14 +3,17 @@ package com.ats.rusa_app.model;
 public class MenuGroup {
 
     public String menuName, url;
-    public boolean hasChildren, isGroup;
+    public boolean hasChildren, isGroup,isExtUrl;
 
-    public MenuGroup(String menuName, boolean isGroup, boolean hasChildren, String url) {
+
+
+    public MenuGroup(String menuName, boolean isGroup, boolean hasChildren,boolean isExtUrl, String url) {
 
         this.menuName = menuName;
         this.url = url;
         this.isGroup = isGroup;
         this.hasChildren = hasChildren;
+        this.isExtUrl = isExtUrl;
     }
 
     public String getMenuName() {
@@ -45,6 +48,14 @@ public class MenuGroup {
         isGroup = group;
     }
 
+    public boolean isExtUrl() {
+        return isExtUrl;
+    }
+
+    public void setExtUrl(boolean extUrl) {
+        isExtUrl = extUrl;
+    }
+
     @Override
     public String toString() {
         return "MenuGroup{" +
@@ -52,6 +63,7 @@ public class MenuGroup {
                 ", url='" + url + '\'' +
                 ", hasChildren=" + hasChildren +
                 ", isGroup=" + isGroup +
+                ", isExtUrl=" + isExtUrl +
                 '}';
     }
 }

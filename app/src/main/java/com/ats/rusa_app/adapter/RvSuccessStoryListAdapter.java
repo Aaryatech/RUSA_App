@@ -12,20 +12,17 @@ import android.widget.TextView;
 
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.constants.Constants;
-import com.ats.rusa_app.model.TeamList;
+import com.ats.rusa_app.model.SuccessList;
 import com.squareup.picasso.Picasso;
-
 
 import java.util.ArrayList;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
-public class RvTeamListAdapter extends RecyclerView.Adapter<RvTeamListAdapter.MyViewHolder> {
-    private ArrayList<TeamList> teamList;
+public class RvSuccessStoryListAdapter extends RecyclerView.Adapter<RvSuccessStoryListAdapter.MyViewHolder> {
+    private ArrayList<SuccessList> successLists;
     private Context context;
 
-    public RvTeamListAdapter(ArrayList<TeamList> teamList, Context context) {
-        this.teamList = teamList;
+    public RvSuccessStoryListAdapter(ArrayList<SuccessList> successLists, Context context) {
+        this.successLists = successLists;
         this.context = context;
     }
 
@@ -33,41 +30,43 @@ public class RvTeamListAdapter extends RecyclerView.Adapter<RvTeamListAdapter.My
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.adapter_rv_team_list, viewGroup, false);
+                .inflate(R.layout.adapter_rv_success_story, viewGroup, false);
 
         return new MyViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
-        final TeamList model = teamList.get(i);
-        Log.e("Model TEAM", "----------------" + model);
+        final SuccessList model = successLists.get(i);
+        Log.e("Model Success Story", "----------------" + model);
 
         try {
             String imageUri = Constants.GALLERY_URL + model.getImageName();
-            Picasso.with(context).load(imageUri).placeholder(context.getResources().getDrawable(R.drawable.profile_img)).into(myViewHolder.ivImg);
+            Picasso.with(context).load(imageUri).placeholder(context.getResources().getDrawable(R.drawable.logo_new)).into(myViewHolder.ivImg);
         } catch (Exception e) {
         }
         myViewHolder.tvName.setText(model.getFromName());
-        myViewHolder.tvDesg.setText(model.getDesignation());
+        myViewHolder.tvDesc.setText(model.getMessage());
+        myViewHolder.tvType.setText(model.getDesignation() + ", " + model.getLocation());
 
 
     }
 
     @Override
     public int getItemCount() {
-        return teamList.size();
+        return successLists.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public CircleImageView ivImg;
-        public TextView tvName, tvDesg;
+        public ImageView ivImg;
+        public TextView tvName, tvDesc, tvType;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivImg = (CircleImageView) itemView.findViewById(R.id.ivImg);
+            ivImg = (ImageView) itemView.findViewById(R.id.ivImg);
             tvName = (TextView) itemView.findViewById(R.id.tvName);
-            tvDesg = (TextView) itemView.findViewById(R.id.tvDesg);
+            tvDesc = (TextView) itemView.findViewById(R.id.tvDesc);
+            tvType = (TextView) itemView.findViewById(R.id.tvType);
         }
     }
 }

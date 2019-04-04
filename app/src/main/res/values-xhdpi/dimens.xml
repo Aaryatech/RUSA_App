@@ -1,9 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <dimen name="nav_header_height">120dp</dimen>
+
+    <dimen name="fab_margin">16dp</dimen>
+
     <dimen name="text_large">18sp</dimen>
     <dimen name="text_medium">15sp</dimen>
     <dimen name="text_small">12sp</dimen>
+    <dimen name="text_tiny">10sp</dimen>
 
     <dimen name="home_gallery_height">200dp</dimen>
+    <dimen name="home_banner_height">170dp</dimen>
+
+    <dimen name="margin_xxx_large">40dp</dimen>
+    <dimen name="margin_xx_large">35dp</dimen>
+    <dimen name="margin_x_large">25dp</dimen>
+    <dimen name="margin_large">20dp</dimen>
+    <dimen name="margin_medium">15dp</dimen>
+    <dimen name="margin_small">10dp</dimen>
+    <dimen name="margin_tiny">5dp</dimen>
+
+    <dimen name="social_media_height">300dp</dimen>
+
+    <dimen name="home_label_top_margin">25dp</dimen>
+
+    <dimen name="card_width">160dp</dimen>
+    <dimen name="card_height">190dp</dimen>
+    <dimen name="img_height">100dp</dimen>
+
+    <dimen name="youtube_card_width">180dp</dimen>
+    <dimen name="youtube_card_height">120dp</dimen>
+
+    <dimen name="company_logo_width">90dp</dimen>
+    <dimen name="company_logo_height">70dp</dimen>
 
 </resources>

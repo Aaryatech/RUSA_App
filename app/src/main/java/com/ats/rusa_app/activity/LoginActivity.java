@@ -1,7 +1,10 @@
 package com.ats.rusa_app.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -22,19 +25,20 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-public EditText ed_userName,ed_password;
-public Button btn_login;
-public TextView tv_forgotPass,tv_signUp,tv_skipLogin;
+    public EditText ed_userName, ed_password;
+    public Button btn_login;
+    public TextView tv_forgotPass, tv_signUp, tv_skipLogin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        ed_userName=(EditText)findViewById(R.id.ed_userName);
-        ed_password=(EditText)findViewById(R.id.ed_password);
-        tv_forgotPass=(TextView)findViewById(R.id.tv_forgotPassword);
-        tv_signUp=(TextView)findViewById(R.id.tv_signUp);
-        tv_skipLogin=(TextView)findViewById(R.id.tv_skipLogin);
-        btn_login=(Button)findViewById(R.id.btn_login);
+        ed_userName = (EditText) findViewById(R.id.ed_userName);
+        ed_password = (EditText) findViewById(R.id.ed_password);
+        tv_forgotPass = (TextView) findViewById(R.id.tv_forgotPassword);
+        tv_signUp = (TextView) findViewById(R.id.tv_signUp);
+        tv_skipLogin = (TextView) findViewById(R.id.tv_skipLogin);
+        btn_login = (Button) findViewById(R.id.btn_login);
 
         tv_forgotPass.setOnClickListener(this);
         tv_signUp.setOnClickListener(this);
@@ -54,7 +58,7 @@ public TextView tv_forgotPass,tv_signUp,tv_skipLogin;
 
             if (strUserName.isEmpty()) {
                 ed_userName.setError("required");
-            }  else {
+            } else {
                 ed_userName.setError(null);
                 isValidUserName = true;
             }
@@ -68,19 +72,16 @@ public TextView tv_forgotPass,tv_signUp,tv_skipLogin;
             if (isValidUserName && isValidPass) {
                 doLogin(strUserName, strPass);
             }
-        }else if(v.getId()==R.id.tv_forgotPassword)
-        {
-            Intent intent=new Intent(LoginActivity.this,ForgotPasswordActivity.class);
+        } else if (v.getId() == R.id.tv_forgotPassword) {
+            Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
             startActivity(intent);
-        }else if(v.getId()==R.id.tv_signUp)
-        {
-            Intent intent=new Intent(LoginActivity.this,RegistrationActivity.class);
+        } else if (v.getId() == R.id.tv_signUp) {
+            Intent intent = new Intent(LoginActivity.this, RegistrationActivity.class);
             startActivity(intent);
-        }else if(v.getId()==R.id.tv_skipLogin)
-        {
-            Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+        } else if (v.getId() == R.id.tv_skipLogin) {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             intent.putExtra("code", "SkipLogin");
-           // intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            // intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
 
@@ -91,7 +92,7 @@ public TextView tv_forgotPass,tv_signUp,tv_skipLogin;
             final CommonDialog commonDialog = new CommonDialog(LoginActivity.this, "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<Login> listCall = Constants.myInterface.getLogin(strUserName,strPass);
+            Call<Login> listCall = Constants.myInterface.getLogin(strUserName, strPass);
             listCall.enqueue(new Callback<Login>() {
                 @Override
                 public void onResponse(Call<Login> call, Response<Login> response) {
@@ -99,23 +100,41 @@ public TextView tv_forgotPass,tv_signUp,tv_skipLogin;
                         if (response.body() != null) {
 
                             // Log.e("RESEND VERIFY : ", " - " + response.body().toString());
-                            Login userDetail=response.body();
+                            Login userDetail = response.body();
                             Log.e("LOGIN RESPONCE : ", " - " + userDetail);
 
-                            if(userDetail.getExInt1()!=1) {
-                                Intent intent1 = new Intent(LoginActivity.this, ChangePasswordActivity.class);
-                                intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent1);
-                                commonDialog.dismiss();
-                            }else {
+                            if (!userDetail.getError()) {
                                 Gson gson = new Gson();
                                 String json = gson.toJson(userDetail);
                                 CustomSharedPreference.putString(LoginActivity.this, CustomSharedPreference.KEY_USER, json);
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                startActivity(intent);
-                                // finish();
-                                commonDialog.dismiss();
+
+                                if (userDetail.getExInt1() != 1) {
+                                    Intent intent1 = new Intent(LoginActivity.this, ChangePasswordActivity.class);
+                                    intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent1);
+                                    commonDialog.dismiss();
+                                } else {
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    // finish();
+                                    commonDialog.dismiss();
+                                }
+
+                            } else {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this, R.style.AlertDialogTheme);
+                                builder.setTitle("");
+                                builder.setMessage("" + userDetail.getMsg());
+                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
                             }
+
+
                         } else {
                             commonDialog.dismiss();
                             Toast.makeText(LoginActivity.this, "Invalid Email and Password", Toast.LENGTH_SHORT).show();
@@ -140,9 +159,6 @@ public TextView tv_forgotPass,tv_signUp,tv_skipLogin;
         } else {
             Toast.makeText(getApplicationContext(), "No Internet Connection !", Toast.LENGTH_SHORT).show();
         }
-
-
-
 
 
     }

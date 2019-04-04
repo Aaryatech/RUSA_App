@@ -104,7 +104,7 @@ public class NewContentFragment extends Fragment {
 
                                 boolean flag = false;
 
-                                if (model.getCmsContentList() == null && model.getGallaryDetailList() == null && model.getTestImonialList() == null && model.getDetailNewsList() == null && model.getDocumentUploadList() == null && model.getFaqContentList() == null && model.getTeamList() == null) {
+                                if (model.getCmsContentList() == null && model.getGallaryDetailList() == null && model.getTestImonialList() == null && model.getDetailNewsList() == null && model.getDocumentUploadList() == null && model.getFaqContentList() == null && model.getTeamList() == null && model.getSuccessList() == null && model.getImageListByCategory() == null && model.getVideoList() == null) {
                                     tvNoRecord.setVisibility(View.VISIBLE);
                                 } else if (model.getCmsContentList() != null) {
                                     if (model.getCmsContentList().size() == 0) {
@@ -152,6 +152,14 @@ public class NewContentFragment extends Fragment {
                                 }else if (model.getTeamList() != null) {
                                     Log.e("NEW CONTENT FRG","------------------ TEAM");
                                     if (model.getTeamList().size() == 0) {
+                                        tvNoRecord.setVisibility(View.VISIBLE);
+                                        flag = false;
+                                    } else {
+                                        flag = true;
+                                    }
+                                }else if (model.getSuccessList() != null) {
+                                    Log.e("NEW CONTENT FRG","------------------ Success Stories");
+                                    if (model.getSuccessList().size() == 0) {
                                         tvNoRecord.setVisibility(View.VISIBLE);
                                         flag = false;
                                     } else {

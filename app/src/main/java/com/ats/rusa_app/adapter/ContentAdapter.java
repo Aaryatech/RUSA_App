@@ -23,6 +23,7 @@ import com.ats.rusa_app.model.DocumentUploadList;
 import com.ats.rusa_app.model.FaqContentList;
 import com.ats.rusa_app.model.GallaryDetailList;
 import com.ats.rusa_app.model.PageData;
+import com.ats.rusa_app.model.SuccessList;
 import com.ats.rusa_app.model.TeamList;
 import com.ats.rusa_app.model.TestImonialList;
 
@@ -49,6 +50,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.MyViewHo
         public RecyclerView testimonialRecyclerView;
         public RecyclerView galleryRecyclerView;
         public RecyclerView teamRecyclerView;
+        public RecyclerView successStoryRecyclerView;
 
         public MyViewHolder(View view) {
             super(view);
@@ -59,6 +61,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.MyViewHo
             testimonialRecyclerView = view.findViewById(R.id.testimonialRecyclerView);
             galleryRecyclerView = view.findViewById(R.id.galleryRecyclerView);
             teamRecyclerView = view.findViewById(R.id.teamRecyclerView);
+            successStoryRecyclerView = view.findViewById(R.id.successStoryRecyclerView);
 
         }
     }
@@ -191,6 +194,26 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.MyViewHo
                 holder.teamRecyclerView.setAdapter(adapter);
 
             }
+
+
+            if (model.getSuccessList() != null) {
+                holder.successStoryRecyclerView.setVisibility(View.VISIBLE);
+
+                ArrayList<SuccessList> successLists = new ArrayList<>();
+                for (int i = 0; i < model.getSuccessList().size(); i++) {
+                    successLists.add(model.getSuccessList().get(i));
+                }
+
+                Log.e("SUCCESS STORY LIST","-------------------- "+successLists);
+
+                RvSuccessStoryListAdapter adapter = new RvSuccessStoryListAdapter(successLists, context);
+                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
+                holder.successStoryRecyclerView.setLayoutManager(mLayoutManager);
+                holder.successStoryRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                holder.successStoryRecyclerView.setAdapter(adapter);
+
+            }
+
 
         } catch (Exception e) {
         }
