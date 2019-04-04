@@ -13,8 +13,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
@@ -45,6 +44,7 @@
                 android:fontFamily="@font/lato_regular"
                 android:maxLines="1"
                 android:singleLine="true"
+                android:enabled="false"
                 android:layout_marginTop="@dimen/margin_x_large"
                 android:inputType="text"
                 android:hint="Type"
@@ -57,6 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="15dp"
+                android:enabled="false"
                 android:fontFamily="@font/lato_regular"
                 android:maxLines="1"
                 android:singleLine="true"

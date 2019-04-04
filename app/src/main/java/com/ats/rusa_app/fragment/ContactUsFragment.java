@@ -1,25 +1,23 @@
 package com.ats.rusa_app.fragment;
 
 
-import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.text.format.Formatter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ats.rusa_app.R;
@@ -64,6 +62,8 @@ public class ContactUsFragment extends Fragment implements View.OnClickListener 
         rb_feedback=(RadioButton)view.findViewById(R.id.rbFeedback);
         rb_meassage=(RadioButton)view.findViewById(R.id.rbMsg);
 
+
+
         WifiManager wm = (WifiManager) getContext().getApplicationContext().getSystemService(WIFI_SERVICE);
          ip = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
         Log.e("IP Address","-----------------"+ip);
@@ -83,6 +83,20 @@ public class ContactUsFragment extends Fragment implements View.OnClickListener 
             }
         });
 
+        if(rg.getCheckedRadioButtonId()==-1){
+            rb_feedback.setChecked(true);
+       //     boolean checked = ((RadioButton) view).isChecked();
+            selectedtext= "Feedback";
+
+        }
+
+
+//        rb_feedback.setChecked(true);
+//        boolean checked = ((RadioButton) view).isChecked();
+//        if(checked)
+//        {
+//            selectedtext= "Feedback";
+//        }
         iv_showLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -178,9 +192,21 @@ public class ContactUsFragment extends Fragment implements View.OnClickListener 
                             ContactUs model=response.body();
 
                             Log.e("CONTACT US","-----------------------------"+response.body());
-                            Log.e("CONTACT US MODEL","-----------------------------"+model);
-                           // Toast.makeText(getContext(), "Your Record has being save", Toast.LENGTH_SHORT).show();
-                                DialogOpen();
+                               // DialogOpen();
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme);
+                            builder.setTitle("");
+                            builder.setMessage("Record has being save");
+                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Fragment adf = new HomeFragment();
+                                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+                                    dialog.dismiss();
+                                }
+                            });
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+
                             commonDialog.dismiss();
 
                         } else {
@@ -206,28 +232,5 @@ public class ContactUsFragment extends Fragment implements View.OnClickListener 
         }
     }
 
-    private void DialogOpen() {
-            final Dialog openDialog = new Dialog(getActivity());
-            openDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            openDialog.setContentView(R.layout.alert_dialog_layout);
-            openDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 
-            TextView tvMsg=openDialog.findViewById(R.id.tv_msg);
-
-            Button btnOk = openDialog.findViewById(R.id.btnOk);
-
-            btnOk.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    Fragment adf = new HomeFragment();
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
-                    openDialog.dismiss();
-                }
-            });
-
-            openDialog.show();
-
-
-    }
 }

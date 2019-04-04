@@ -100,11 +100,11 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
         }
         try {
            // if (loginUser.getIsActive() == 1 && loginUser.getDelStatus() == 1 && loginUser.getEmailVerified() == 1) {
-            if(loginUser.getExInt2()==1)
-            {
+           // if(loginUser.getExInt2()==1)
+           // {
                 btn_upload.setVisibility(View.VISIBLE);
                 tv_uploadText.setVisibility(View.VISIBLE);
-            }
+           // }
 
         }catch (Exception e){
             Log.e("Exception User : ", "-----------" + e.getMessage());

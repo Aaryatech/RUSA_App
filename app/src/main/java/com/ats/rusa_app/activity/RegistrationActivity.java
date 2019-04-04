@@ -22,11 +22,9 @@ import com.ats.rusa_app.model.Reg;
 import com.ats.rusa_app.util.CommonDialog;
 import com.google.gson.Gson;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.UUID;
 
 import retrofit2.Call;
@@ -90,21 +88,22 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     ed_alterEmail.setVisibility(View.VISIBLE);
                     ed_clgName.setVisibility(View.VISIBLE);
                     ed_aisheCode.setVisibility(View.GONE);
-                    ed_designationPerson.setVisibility(View.GONE);
+                    ed_designationPerson.setVisibility(View.VISIBLE);
                     ed_nameDept.setVisibility(View.VISIBLE);
-                    ed_nameAuthePerson.setVisibility(View.VISIBLE);
-                    ed_DOB.setVisibility(View.VISIBLE);
+                    ed_nameAuthePerson.setVisibility(View.GONE);
+                    ed_DOB.setVisibility(View.GONE);
                     ed_mobile.setVisibility(View.VISIBLE);
                     ed_univercityAff.setVisibility(View.VISIBLE);
                 }else if(spinnerPosition.equals("Colleges"))
                 {
+
                     ed_Name.setVisibility(View.VISIBLE);
                     ed_Name.setHint(getString(R.string.str_institute_name));
                     ed_email.setVisibility(View.VISIBLE);
                     ed_alterEmail.setVisibility(View.VISIBLE);
                     ed_clgName.setVisibility(View.GONE);
                     ed_aisheCode.setVisibility(View.VISIBLE);
-                    ed_designationPerson.setVisibility(View.GONE);
+                    ed_designationPerson.setVisibility(View.VISIBLE);
                     ed_nameDept.setVisibility(View.VISIBLE);
                     ed_nameAuthePerson.setVisibility(View.VISIBLE);
                     ed_DOB.setVisibility(View.GONE);
@@ -142,8 +141,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             if(spinnerPosition.equals("Individual"))
                 {
                     Log.e("SpinnerInd","-----------------"+spinnerPosition);
-                    boolean isValidEmail = false, isValidClgName = false,isValidUniverAff = false,isValidName = false,  isValidNameDept = false, isValidNameAuthPer = false, isValidDob = false,isValidMob=false;
-                    String email,alt_email,fullName,clgName,univercityAff,nameDept,nameAuthPer,dob,mob;
+                    boolean isValidEmail = false, isValidClgName = false,isValidUniverAff = false,isValidName = false,  isValidNameDept = false, isValidNameAuthPer = false, isValidMob=false, isValidDesigPerson=false;
+                    String email,alt_email,fullName,clgName,univercityAff,nameDept,nameAuthPer,dob,mob,designPerName;
                     fullName = ed_Name.getText().toString().trim();
                     email = ed_email.getText().toString().trim();
                     alt_email = ed_alterEmail.getText().toString().trim();
@@ -151,7 +150,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     univercityAff = ed_univercityAff.getText().toString().trim();
                     nameDept = ed_nameDept.getText().toString().trim();
                     nameAuthPer = ed_nameAuthePerson.getText().toString().trim();
-                    dob = ed_DOB.getText().toString().trim();
+                    designPerName = ed_designationPerson.getText().toString().trim();
                     mob = ed_mobile.getText().toString().trim();
 
                     String uniqueId = UUID.randomUUID().toString();
@@ -207,37 +206,12 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         ed_nameAuthePerson.setError(null);
                         isValidNameAuthPer = true;
                     }
-
-                    SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-                    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-                    String currentDate=sdf1.format(System.currentTimeMillis());
-                   // String date1=sdf1.format(dob);
-
-                    Date date1=null;
-                    Date currentDOB=null;
-                    try {
-                        date1=formatter.parse(dob);
-                        currentDOB=sdf1.parse(currentDate);
-
-                        Log.e("Current1","--------------------"+date1);
-                        Log.e("Current2 ","--------------------"+currentDOB);
-
-                    } catch (ParseException e) {
-                        e.printStackTrace();
+                    if (designPerName.isEmpty()) {
+                        ed_designationPerson.setError("required");
+                    }  else {
+                        ed_designationPerson.setError(null);
+                        isValidDesigPerson = true;
                     }
-                    Log.e("Current1 ","--------------------"+dob);
-                   // sdf1.parse(currentDate).before(sdf1.parse(dob))
-
-                        if (dob.isEmpty()) {
-                            ed_DOB.setError("required");
-                        }else if(date1.compareTo(currentDOB)>0)
-                        {
-                            ed_DOB.setError("Invalid DOB");
-                        }
-                        else {
-                            ed_DOB.setError(null);
-                            isValidDob = true;
-                        }
 
                     if (mob.isEmpty()) {
                         ed_mobile.setError("required");
@@ -250,26 +224,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         isValidMob = true;
                     }
 
-                    if (isValidName && isValidEmail  && isValidNameDept && isValidNameAuthPer && isValidClgName && isValidUniverAff && isValidDob && isValidMob ) {
+                    if (isValidName && isValidEmail  && isValidNameDept  && isValidClgName && isValidUniverAff  && isValidMob && isValidDesigPerson ) {
                         SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd");
                         SimpleDateFormat formatter1 = new SimpleDateFormat("dd-MM-yyyy");
 
-                        Date ToDOB = null;
-                        try {
-                            ToDOB = formatter1.parse(dob);//catch exception
-                        } catch (ParseException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                        String DOB = null;
-                        try {
-                            DOB = formatter2.format(ToDOB);
-                        } catch (Exception e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
 
-                        Reg registration = new Reg(0, uniqueId, 1, email, alt_email, "", fullName, "", clgName, univercityAff, "", nameDept, mob, nameAuthPer, DOB, "", "", "Android", 1, 1, sdf.format(System.currentTimeMillis()), null, 0, 0, 0, "", "", "", 0, "", 0, 0);
+
+                        Reg registration = new Reg(0, uniqueId, 1, email, alt_email, "", fullName, "", clgName, univercityAff, designPerName, nameDept, mob, "", null, "", "", "Android", 1, 1, sdf.format(System.currentTimeMillis()), null, 0, 0, 0, "", "", "", 0, "", 0, 0);
                         Log.e("Registration", "--------------" + registration);
                         getRegistration(registration);
 
@@ -361,7 +322,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     if (isValidName && isValidEmail  && isValidNameDept && isValidNameAuthPer  && isValidUniverAff && isValidDesigPerson && isValidMob ) {
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-                    Reg registration = new Reg(0, uniqueId, 2,email,alt_email,"",institudeName,AISHECode,"",univercityAff,"",nameDept,mob,nameAuthPer,null,"","","Android",1,1,sdf.format(System.currentTimeMillis()),null,0,0,0,"","","",0,"",0,0);
+                    Reg registration = new Reg(0, uniqueId, 2,email,alt_email,"",institudeName,AISHECode,"",univercityAff,designPerName,nameDept,mob,nameAuthPer,null,"","","Android",1,1,sdf.format(System.currentTimeMillis()),null,0,0,0,"","","",0,"",0,0);
                         getRegistration(registration);
 
                         ed_Name.setText("");

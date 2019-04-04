@@ -57,32 +57,66 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
         if(v.getId()==R.id.btn_changePass)
         {
             String strPrevPass,strNewPass,strConfPass,strLoginPass;
-            boolean isValidPrevPass = false,isValidNewPass = false;
+            boolean isValidPrevPass = false,isValidNewPass = false,isValidConfirmPass = false;
             strLoginPass=loginUser.getUserPassword();
 
             Log.e("LoginPass","---------------"+strLoginPass);
+
             strPrevPass=edPrevPass.getText().toString();
             strNewPass=edNewPass.getText().toString();
             strConfPass=edConfPass.getText().toString();
-            if(!strLoginPass.equals(strPrevPass))
+
+
+            if (strPrevPass.isEmpty()) {
+                edPrevPass.setError("required");
+            }else if(!strLoginPass.equals(strPrevPass))
             {
                 edPrevPass.setError("Wrong Password");
-            }else{
+            }
+            else {
                 edPrevPass.setError(null);
-                isValidPrevPass=true;
+                isValidPrevPass = true;
             }
-            if(!strNewPass.equals(strConfPass))
-            {
-                edNewPass.setError("New Password and Confirme password Not Match");
 
-            }else{
+
+            if (strNewPass.isEmpty()) {
+                edNewPass.setError("required");
+            } else {
                 edNewPass.setError(null);
-                isValidNewPass=true;
+                isValidNewPass = true;
             }
-            if (isValidPrevPass && isValidNewPass)
+
+            if (strConfPass.isEmpty()) {
+                edConfPass.setError("required");
+            } else if (!strConfPass.equals(strNewPass)) {
+                edConfPass.setError("password not matched");
+            } else {
+                edConfPass.setError(null);
+                isValidConfirmPass = true;
+            }
+
+            if (isValidPrevPass && isValidNewPass && isValidConfirmPass)
             {
                 getChangePass(loginUser.getRegId(),strNewPass);
             }
+
+
+//            if(!strLoginPass.equals(strPrevPass))
+//            {
+//                edPrevPass.setError("Wrong Password");
+//            }else{
+//                edPrevPass.setError(null);
+//                isValidPrevPass=true;
+//            }
+//            if(!strNewPass.equals(strConfPass))
+//            {
+//                edNewPass.setError("New Password and Confirme password Not Match");
+//
+//            }else{
+//                edNewPass.setError(null);
+//                isValidNewPass=true;
+//            }
+
         }
     }
     private void getChangePass(Integer regId, String strNewPass) {

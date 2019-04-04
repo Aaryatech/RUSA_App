@@ -19,7 +19,7 @@
         <activity android:name=".activity.TestActivity">
 
         </activity>
-        <activity android:name=".activity.ChangePasswordActivity" />
+        <activity android:name=".activity.ChangePasswordActivity" ></activity>
         <activity android:name=".activity.PreviousEventDetailActivity" />
         <activity android:name=".activity.EventDetailListActivity" />
         <activity android:name=".activity.ForgotPasswordActivity" />

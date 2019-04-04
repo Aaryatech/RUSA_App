@@ -69,7 +69,7 @@
     <string name="str_submit">Submit</string>
     <string name="str_resend_otp">Resend OTP</string>
     <string name="str_full_name">Full Name*</string>
-    <string name="str_institute_name">Institute Name*</string>
+    <string name="str_institute_name">College Name*</string>
     <string name="str_university_name">University Name*</string>
 
 </resources>
