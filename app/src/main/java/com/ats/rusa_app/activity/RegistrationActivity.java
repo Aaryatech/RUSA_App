@@ -156,6 +156,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                     String uniqueId = UUID.randomUUID().toString();
 
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
                     Log.e("Email","----------------------"+email);
                     Log.e("alt_email","----------------------"+alt_email);
                     Log.e("clgName","----------------------"+clgName);
@@ -181,12 +183,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     } else {
                         isValidEmail = true;
                     }
-//                    if (email.isEmpty()) {
-//                        ed_email.setError("required");
-//                    }  else {
-//                        ed_email.setError(null);
-//                        isValidEmail = true;
-//                    }
                     if (clgName.isEmpty()) {
                         ed_clgName.setError("required");
                     }  else {
@@ -211,18 +207,47 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         ed_nameAuthePerson.setError(null);
                         isValidNameAuthPer = true;
                     }
-                    if (dob.isEmpty()) {
-                        ed_DOB.setError("required");
-                    }  else {
-                        ed_DOB.setError(null);
-                        isValidDob = true;
+
+                    SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+                    String currentDate=sdf1.format(System.currentTimeMillis());
+                   // String date1=sdf1.format(dob);
+
+                    Date date1=null;
+                    Date currentDOB=null;
+                    try {
+                        date1=formatter.parse(dob);
+                        currentDOB=sdf1.parse(currentDate);
+
+                        Log.e("Current1","--------------------"+date1);
+                        Log.e("Current2 ","--------------------"+currentDOB);
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
+                    Log.e("Current1 ","--------------------"+dob);
+                   // sdf1.parse(currentDate).before(sdf1.parse(dob))
+
+                        if (dob.isEmpty()) {
+                            ed_DOB.setError("required");
+                        }else if(date1.compareTo(currentDOB)>0)
+                        {
+                            ed_DOB.setError("Invalid DOB");
+                        }
+                        else {
+                            ed_DOB.setError(null);
+                            isValidDob = true;
+                        }
+
                     if (mob.isEmpty()) {
                         ed_mobile.setError("required");
-                    }  else {
+                    } else if (mob.length() != 10) {
+                        ed_mobile.setError("required 10 digits");
+                    } else if (mob.equalsIgnoreCase("0000000000")) {
+                        ed_mobile.setError("invalid number");
+                    }else {
                         ed_mobile.setError(null);
                         isValidMob = true;
-
                     }
 
                     if (isValidName && isValidEmail  && isValidNameDept && isValidNameAuthPer && isValidClgName && isValidUniverAff && isValidDob && isValidMob ) {
@@ -244,9 +269,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             e.printStackTrace();
                         }
 
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-                        Reg registration = new Reg(0, uniqueId, 1, email, alt_email, "", fullName, "", clgName, univercityAff, "", nameDept, mob, nameAuthPer, DOB, "", "", "Android", 1, 1, sdf.format(System.currentTimeMillis()), sdf.format(System.currentTimeMillis()), 0, 0, 0, "", "", "", 0, "", 0, 0);
+                        Reg registration = new Reg(0, uniqueId, 1, email, alt_email, "", fullName, "", clgName, univercityAff, "", nameDept, mob, nameAuthPer, DOB, "", "", "Android", 1, 1, sdf.format(System.currentTimeMillis()), null, 0, 0, 0, "", "", "", 0, "", 0, 0);
                         Log.e("Registration", "--------------" + registration);
                         getRegistration(registration);
 
@@ -323,12 +346,18 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         ed_nameAuthePerson.setError(null);
                         isValidNameAuthPer = true;
                     }
+
                     if (mob.isEmpty()) {
                         ed_mobile.setError("required");
-                    }  else {
+                    } else if (mob.length() != 10) {
+                        ed_mobile.setError("required 10 digits");
+                    } else if (mob.equalsIgnoreCase("0000000000")) {
+                        ed_mobile.setError("invalid number");
+                    }else {
                         ed_mobile.setError(null);
-                        isValidMob=true;
+                        isValidMob = true;
                     }
+
                     if (isValidName && isValidEmail  && isValidNameDept && isValidNameAuthPer  && isValidUniverAff && isValidDesigPerson && isValidMob ) {
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -402,12 +431,25 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         ed_nameAuthePerson.setError(null);
                         isValidNameAuthPer = true;
                     }
+
+//                    if (mob.isEmpty()) {
+//                        ed_mobile.setError("required");
+//                    }  else {
+//                        ed_mobile.setError(null);
+//                        isValidMob=true;
+//                    }
+
                     if (mob.isEmpty()) {
                         ed_mobile.setError("required");
-                    }  else {
+                    } else if (mob.length() != 10) {
+                        ed_mobile.setError("required 10 digits");
+                    } else if (mob.equalsIgnoreCase("0000000000")) {
+                        ed_mobile.setError("invalid number");
+                    }else {
                         ed_mobile.setError(null);
-                        isValidMob=true;
+                        isValidMob = true;
                     }
+
                     if (isValidName && isValidEmail  && isValidNameDept && isValidNameAuthPer   && isValidDesigPerson && isValidMob) {
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                     Reg registration = new Reg(0, uniqueId, 3,email,alt_email,"",UnivercityName,AISHECode,"","","",nameDept,mob,nameAuthPer,null,"","","Android",1,1,sdf.format(System.currentTimeMillis()),null,0,0,0,"","","",0,"",0,0);

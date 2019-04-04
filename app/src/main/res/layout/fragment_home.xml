@@ -59,13 +59,13 @@
                     android:layout_height="match_parent" />
 
                 <LinearLayout
-                    android:background="@drawable/slider"
                     android:padding="@dimen/margin_medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:orientation="vertical">
 
+                    <!--android:background="@drawable/slider"-->
                     <TextView
                         android:id="@+id/baner_name"
                         android:layout_width="match_parent"

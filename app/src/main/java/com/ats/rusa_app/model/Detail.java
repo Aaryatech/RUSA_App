@@ -24,13 +24,15 @@ public class Detail {
     private List<TestImonialList> testimonialList = null;
     @SerializedName("newsList")
     @Expose
-    private List<Object> newsList = null;
+    private List<NewDetail> newsList = null;
     @SerializedName("socialList")
     @Expose
     private List<Object> socialList = null;
     @SerializedName("cmsList")
     @Expose
     private List<CmsList> cmsList = null;
+
+    private List<CompanyModel> companyList = null;
 
     public LogoData getLogoData() {
         return logoData;
@@ -72,11 +74,11 @@ public class Detail {
         this.testimonialList = testimonialList;
     }
 
-    public List<Object> getNewsList() {
+    public List<NewDetail> getNewsList() {
         return newsList;
     }
 
-    public void setNewsList(List<Object> newsList) {
+    public void setNewsList(List<NewDetail> newsList) {
         this.newsList = newsList;
     }
 
@@ -94,6 +96,14 @@ public class Detail {
 
     public void setCmsList(List<CmsList> cmsList) {
         this.cmsList = cmsList;
+    }
+
+    public List<CompanyModel> getCompanyList() {
+        return companyList;
+    }
+
+    public void setCompanyList(List<CompanyModel> companyList) {
+        this.companyList = companyList;
     }
 
     @Override

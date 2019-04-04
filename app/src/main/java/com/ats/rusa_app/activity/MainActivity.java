@@ -412,10 +412,6 @@ public class MainActivity extends AppCompatActivity
                                 MenuGroup menuGroup0 = new MenuGroup("Edit Profile", false, false, "Profile");
                                 headerList.add(menuGroup0);
 
-//                                if(loginUser.getExInt1()!=1) {
-//                                    MenuGroup menuGroup4 = new MenuGroup("Change Password", false, false, "changPass");
-//                                    headerList.add(menuGroup4);
-//                                }
                                 MenuGroup menuGroup3 = new MenuGroup("Logout", false, false, "logout");
                                 headerList.add(menuGroup3);
 
@@ -426,12 +422,6 @@ public class MainActivity extends AppCompatActivity
 
                             MenuGroup menuGroup2 = new MenuGroup("" + getResources().getString(R.string.str_settings), true, true, "login");
                             headerList.add(menuGroup2);
-
-//                            if(loginUser!=null) {
-//
-//                                MenuGroup menuGroup3 = new MenuGroup("Logout", false, false, "logout");
-//                                headerList.add(menuGroup3);
-//                            }
 
                             ArrayList<MenuGroup> childModelsList = new ArrayList<>();
 

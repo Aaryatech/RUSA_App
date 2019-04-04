@@ -68,13 +68,25 @@ TextView tv_backToLogin;
 //                isValidEmail = true;
 //                ed_email.setError(null);
 //            }
+//            if (mob.isEmpty()) {
+//                ed_phoneNo.setError("required");
+//            }
+//            else {
+//                ed_phoneNo.setError(null);
+//                isValidPhone = true;
+//            }
+
             if (mob.isEmpty()) {
                 ed_phoneNo.setError("required");
-            }
-            else {
+            } else if (mob.length() != 10) {
+                ed_phoneNo.setError("required 10 digits");
+            } else if (mob.equalsIgnoreCase("0000000000")) {
+                ed_phoneNo.setError("invalid number");
+            }else {
                 ed_phoneNo.setError(null);
                 isValidPhone = true;
             }
+
             if(isValidEmail && isValidPhone)
             {
                 getForgotPassword(email,mob);

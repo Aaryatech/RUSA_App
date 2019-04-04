@@ -1,6 +1,7 @@
 package com.ats.rusa_app.fragment;
 
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
@@ -11,11 +12,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ats.rusa_app.R;
@@ -64,6 +68,7 @@ public class ContactUsFragment extends Fragment implements View.OnClickListener 
          ip = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
         Log.e("IP Address","-----------------"+ip);
 
+
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -92,8 +97,6 @@ public class ContactUsFragment extends Fragment implements View.OnClickListener 
         btn_send.setOnClickListener(this);
         return view;
     }
-
-
     @Override
     public void onClick(View v) {
         if(v.getId()==R.id.btn_send)
@@ -105,12 +108,17 @@ public class ContactUsFragment extends Fragment implements View.OnClickListener 
            strPhoneNo=ed_phoneNo.getText().toString();
            strMsg=ed_msg.getText().toString();
 
-           if (strEmail.isEmpty()) {
-                ed_email.setError("required");
-            }  else {
-                ed_email.setError(null);
+            if (!strEmail.isEmpty()) {
+                if (!isValidEmailAddress(strEmail)) {
+                    ed_email.setError("invalid email");
+                } else {
+                    ed_email.setError(null);
+                    isValidEmail = true;
+                }
+            } else {
                 isValidEmail = true;
             }
+
             if (srtName.isEmpty()) {
                 ed_name.setError("required");
             }  else {
@@ -146,6 +154,13 @@ public class ContactUsFragment extends Fragment implements View.OnClickListener 
 
         }
     }
+
+    public boolean isValidEmailAddress(String email) {
+        String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+        java.util.regex.Matcher m = p.matcher(email);
+        return m.matches();
+    }
     private void getContact(ContactUs contactUs) {
         if (Constants.isOnline(getActivity())) {
             Log.e("PARAMETER : ", "---------------- CONTACT : " + contactUs);
@@ -164,8 +179,8 @@ public class ContactUsFragment extends Fragment implements View.OnClickListener 
 
                             Log.e("CONTACT US","-----------------------------"+response.body());
                             Log.e("CONTACT US MODEL","-----------------------------"+model);
-                            Toast.makeText(getContext(), "Your Record has being save", Toast.LENGTH_SHORT).show();
-
+                           // Toast.makeText(getContext(), "Your Record has being save", Toast.LENGTH_SHORT).show();
+                                DialogOpen();
                             commonDialog.dismiss();
 
                         } else {
@@ -189,5 +204,30 @@ public class ContactUsFragment extends Fragment implements View.OnClickListener 
         } else {
             Toast.makeText(getActivity(), "No Internet Connection !", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void DialogOpen() {
+            final Dialog openDialog = new Dialog(getActivity());
+            openDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            openDialog.setContentView(R.layout.alert_dialog_layout);
+            openDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+
+            TextView tvMsg=openDialog.findViewById(R.id.tv_msg);
+
+            Button btnOk = openDialog.findViewById(R.id.btnOk);
+
+            btnOk.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Fragment adf = new HomeFragment();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+                    openDialog.dismiss();
+                }
+            });
+
+            openDialog.show();
+
+
     }
 }

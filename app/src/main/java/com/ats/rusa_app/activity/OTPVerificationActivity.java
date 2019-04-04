@@ -61,12 +61,23 @@ Reg registrationModel;
             public void onClick(View v) {
                 String userCode=ed_verificationOTP.getText().toString();
                 String UserUuid=registrationModel.getUserUuid();
-                if(smsCode.equals(userCode))
-                {
-                    getVerifyOTP(userCode,UserUuid);
+                boolean isValidOTP = false;
 
-                }else{
-                    Toast.makeText(OTPVerificationActivity.this, "Failed Verify OTP", Toast.LENGTH_SHORT).show();
+            if (userCode.isEmpty()) {
+                ed_verificationOTP.setError("required");
+            }  else {
+                isValidOTP = true;
+                ed_verificationOTP.setError(null);
+            }
+
+                if(isValidOTP) {
+
+                    if (smsCode.equals(userCode)) {
+                        getVerifyOTP(userCode, UserUuid);
+
+                    } else {
+                        Toast.makeText(OTPVerificationActivity.this, "Failed Verify OTP", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -74,16 +85,7 @@ Reg registrationModel;
         btn_resend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Gson gson = new Gson();
-//                String json = gson.toJson(registrationModel);
-//                String uuId=registrationModel.getUserUuid();
-//                Intent intent=new Intent(OTPVerificationActivity.this,OTPVerificationActivity.class);
-//                Bundle args = new Bundle();
-//                args.putString("model", json);
-//                intent.putExtra("model", json);
-//                intent.putExtra("uuCode", uuId);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
+
                 getResendOTP(registrationModel.getUserUuid());
             }
         });

@@ -27,11 +27,11 @@ import com.ats.rusa_app.adapter.NewsFeedAdapter;
 import com.ats.rusa_app.adapter.TestimonialAdapter;
 import com.ats.rusa_app.adapter.YoutubeVideosAdapter;
 import com.ats.rusa_app.constants.Constants;
-import com.ats.rusa_app.model.Baner;
 import com.ats.rusa_app.model.CompanyModel;
 import com.ats.rusa_app.model.Detail;
 import com.ats.rusa_app.model.GallaryDetailList;
 import com.ats.rusa_app.model.NewDetail;
+import com.ats.rusa_app.model.PhotoList;
 import com.ats.rusa_app.model.TestImonialList;
 import com.ats.rusa_app.model.Testimonials;
 import com.ats.rusa_app.model.VideoList;
@@ -73,11 +73,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     final ArrayList<Testimonials> list = new ArrayList<>();
     ArrayList<NewDetail> newsList = new ArrayList<>();
     ArrayList<TestImonialList> testimonialList = new ArrayList<>();
-    ArrayList<Detail> galleryList = new ArrayList<>();
+    ArrayList<PhotoList> galleryList = new ArrayList<>();
     ArrayList<CompanyModel> companyList = new ArrayList<>();
-    ArrayList<Baner> banerList = new ArrayList<>();
     ArrayList<Detail> homeList = new ArrayList<>();
-    ArrayList<Detail> homeVideoList = new ArrayList<>();
+   // ArrayList<Detail> homeVideoList = new ArrayList<>();
 
     int languageId;
 
@@ -111,13 +110,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             languageId = 1;
         }
 
-        getImageGallery();
         getNewFeed(languageId);
         getCompSlider();
-        getBaner();
         // initYoutubeVideo("gG2npfpaqsY");
-        //getTestimonial();
-        getAllHomeData(1);
+        getAllHomeData(languageId);
         //getVideoGallery();
 
         GallaryDetailList video1 = new GallaryDetailList(1, 1, 1, 1, "1", "video 1", "aa", "", "", 1, "", "", 1, 1, 1, 1, 1, 1, "H-1HFRhqhUI", "");
@@ -243,7 +239,50 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             testomonial_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
                             testomonial_recyclerView.setAdapter(tAdapter);
 
+                            galleryList.clear();
+                            if(detail.getPhotoList().size()>0)
+                            {
+                                for(int i=0;i<detail.getPhotoList().size();i++)
+                                {
+                                    galleryList.add(detail.getPhotoList().get(i));
+                                }
+                            }
+                            Log.e("Gallery List: ", " -**************************************** " + detail.getPhotoList());
+                            imageSlider(galleryList);
 
+
+                            if(detail.getBaner()!=null)
+                            {
+                                String imageUri = Constants.BANENR_URL + detail.getBaner().getSliderImage();
+                                Log.e("URI11111", "-----------" + imageUri);
+                                Picasso.with(getContext()).load(imageUri).placeholder(R.drawable.slider).into(iv_baner);
+                                tv_banerName.setText(detail.getBaner().getSliderName());
+                            }
+
+                            if(detail.getNewsList().size()>0)
+                            {
+                                for(int i=0;i<detail.getNewsList().size();i++)
+                                {
+                                    newsList.add(detail.getNewsList().get(i));
+                                }
+                            }
+
+                            Log.e("News List: ", " -**************************************** " + detail.getNewsList());
+                            NewsFeedAdapter nAdapter = new NewsFeedAdapter(newsList, getContext());
+                            new_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                            new_recyclerView.setAdapter(nAdapter);
+
+                            if(detail.getCompanyList().size()>0)
+                            {
+                                for(int i=0;i<detail.getCompanyList().size();i++)
+                                {
+                                    companyList.add(detail.getCompanyList().get(i));
+                                }
+                            }
+                            Log.e("Company List: ", " -**************************************** " + detail.getCompanyList());
+                            CompSliderAdapter cAdapter = new CompSliderAdapter(companyList, getContext());
+                            comp_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                            comp_recyclerView.setAdapter(cAdapter);
 
                             // homeList = response.body();
                             Log.e("HOME LIST", "-------------------" + detail);
@@ -271,6 +310,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             Toast.makeText(getContext(), "No Internet Connection !", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 
     public static String extractYTId(String ytUrl) {
         String vId = null;
@@ -332,51 +373,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
     }*/
 
-    private void getBaner() {
-        if (Constants.isOnline(getContext())) {
-            final CommonDialog commonDialog = new CommonDialog(getContext(), "Loading", "Please Wait...");
-            commonDialog.show();
-
-            Call<Detail> listCall = Constants.myInterface.getAllHomeData(1);
-            listCall.enqueue(new Callback<Detail>() {
-                @Override
-                public void onResponse(Call<Detail> call, Response<Detail> response) {
-                    try {
-                        if (response.body() != null) {
-
-                            Log.e("Banner responce : ", " - " + response.body());
-                            banerList.clear();
-                            // banerList=response.body();
-                            Detail baner = response.body();
-                            String imageUri = Constants.BANENR_URL + baner.getBaner().getSliderImage();
-                            Log.e("URI", "-----------" + imageUri);
-                            Picasso.with(getContext()).load(imageUri).into(iv_baner);
-                            tv_banerName.setText(baner.getBaner().getSliderName());
-                            commonDialog.dismiss();
-
-                        } else {
-                            commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----------");
-                        }
-                    } catch (Exception e) {
-                        commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<Detail> call, Throwable t) {
-                    commonDialog.dismiss();
-                    Log.e("onFailure1 : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
-                }
-            });
-        } else {
-            Toast.makeText(getContext(), "No Internet Connection !", Toast.LENGTH_SHORT).show();
-        }
-
-    }
 
     private void getCompSlider() {
         if (Constants.isOnline(getContext())) {
@@ -422,50 +418,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    private void getImageGallery() {
-        if (Constants.isOnline(getContext())) {
-            final CommonDialog commonDialog = new CommonDialog(getContext(), "Loading", "Please Wait...");
-            commonDialog.show();
-
-            Call<Detail> listCall = Constants.myInterface.getAllHomeData(1);
-            listCall.enqueue(new Callback<Detail>() {
-                @Override
-                public void onResponse(Call<Detail> call, Response<Detail> response) {
-                    try {
-                        if (response.body() != null) {
-
-                            Log.e("Gallery responce : ", " - " + response.body());
-                            galleryList.clear();
-
-                            Detail galleryDetail = response.body();
-                            galleryList.add(galleryDetail);
-                            imageSlider(galleryDetail);
-                            commonDialog.dismiss();
-
-
-                        } else {
-                            commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----------");
-                        }
-                    } catch (Exception e) {
-                        commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<Detail> call, Throwable t) {
-                    commonDialog.dismiss();
-                    Log.e("onFailure1 : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
-                }
-            });
-        } else {
-            Toast.makeText(getContext(), "No Internet Connection !", Toast.LENGTH_SHORT).show();
-        }
-
-    }
 
 
     private void getVideoGallery() {
@@ -589,12 +541,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    private void imageSlider(Detail gallaryDetailLists) {
+    private void imageSlider(ArrayList<PhotoList> galleryList) {
 
         HashMap<String, String> url_maps = new HashMap<String, String>();
-        for (int i = 0; i < gallaryDetailLists.getPhotoList().size(); i++) {
-            String image = Constants.GALLERY_URL + gallaryDetailLists.getPhotoList().get(i).getFileName();
-            String title = gallaryDetailLists.getPhotoList().get(i).getTitle();
+        for (int i = 0; i < galleryList.size(); i++) {
+            String image = Constants.GALLERY_URL + galleryList.get(i).getFileName();
+            String title = galleryList.get(i).getTitle();
             //String title = gallaryDetailLists.get(i).getTitle();
             url_maps.put(title, image);
             Log.e("Gallery", "----------" + url_maps);

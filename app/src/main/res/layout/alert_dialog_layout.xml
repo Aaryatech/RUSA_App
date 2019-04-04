@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="370dp"
+    android:layout_height="wrap_content"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_gravity="center"
+        android:text="Your record has being save"
+        android:textSize="24sp"
+       android:fontFamily="@font/lato_regular" />
+
+    <Button
+            android:id="@+id/btnOk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+             android:layout_marginBottom="20dp"
+            android:background="@color/colorPrimaryDark"
+            android:text="Ok"
+            android:textColor="@color/colorWhite"
+            android:fontFamily="@font/lato_bold" />
+
+
+</LinearLayout>

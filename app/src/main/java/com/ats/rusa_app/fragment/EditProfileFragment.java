@@ -260,10 +260,21 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                     ed_Name.setError(null);
                     isValidName = true;
                 }
-                if (email.isEmpty()) {
-                    ed_email.setError("required");
-                }  else {
-                    ed_email.setError(null);
+//                if (email.isEmpty()) {
+//                    ed_email.setError("required");
+//                }  else {
+//                    ed_email.setError(null);
+//                    isValidEmail = true;
+//                }
+
+                if (!email.isEmpty()) {
+                    if (!isValidEmailAddress(email)) {
+                        ed_email.setError("invalid email");
+                    } else {
+                        ed_email.setError(null);
+                        isValidEmail = true;
+                    }
+                } else {
                     isValidEmail = true;
                 }
                 if (clgName.isEmpty()) {
@@ -296,12 +307,23 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                     ed_DOB.setError(null);
                     isValidDob = true;
                 }
+//                if (mob.isEmpty()) {
+//                    ed_mobile.setError("required");
+//                }  else {
+//                    ed_mobile.setError(null);
+//                    isValidMob = true;
+//
+//                }
+
                 if (mob.isEmpty()) {
                     ed_mobile.setError("required");
-                }  else {
+                } else if (mob.length() != 10) {
+                    ed_mobile.setError("required 10 digits");
+                } else if (mob.equalsIgnoreCase("0000000000")) {
+                    ed_mobile.setError("invalid number");
+                }else {
                     ed_mobile.setError(null);
                     isValidMob = true;
-
                 }
 
                 if (isValidName && isValidEmail  && isValidNameDept && isValidNameAuthPer && isValidClgName && isValidUniverAff && isValidDob && isValidMob ) {
@@ -362,12 +384,23 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                     ed_Name.setError(null);
                     isValidName = true;
                 }
-                if (email.isEmpty()) {
-                    ed_email.setError("required");
-                }  else {
-                    ed_email.setError(null);
+//                if (email.isEmpty()) {
+//                    ed_email.setError("required");
+//                }  else {
+//                    ed_email.setError(null);
+//                    isValidEmail = true;
+//                }
+                if (!email.isEmpty()) {
+                    if (!isValidEmailAddress(email)) {
+                        ed_email.setError("invalid email");
+                    } else {
+                        ed_email.setError(null);
+                        isValidEmail = true;
+                    }
+                } else {
                     isValidEmail = true;
                 }
+
                 if (univercityAff.isEmpty()) {
                     ed_univercityAff.setError("required");
                 }  else {
@@ -392,12 +425,25 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                     ed_nameAuthePerson.setError(null);
                     isValidNameAuthPer = true;
                 }
+
+//                if (mob.isEmpty()) {
+//                    ed_mobile.setError("required");
+//                }  else {
+//                    ed_mobile.setError(null);
+//                    isValidMob=true;
+//                }
+
                 if (mob.isEmpty()) {
                     ed_mobile.setError("required");
-                }  else {
+                } else if (mob.length() != 10) {
+                    ed_mobile.setError("required 10 digits");
+                } else if (mob.equalsIgnoreCase("0000000000")) {
+                    ed_mobile.setError("invalid number");
+                }else {
                     ed_mobile.setError(null);
-                    isValidMob=true;
+                    isValidMob = true;
                 }
+
                 if (isValidName && isValidEmail  && isValidNameDept && isValidNameAuthPer  && isValidUniverAff && isValidDesigPerson && isValidMob ) {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -437,10 +483,21 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                     ed_Name.setError(null);
                     isValidName = true;
                 }
-                if (email.isEmpty()) {
-                    ed_email.setError("required");
-                }  else {
-                    ed_email.setError(null);
+//                if (email.isEmpty()) {
+//                    ed_email.setError("required");
+//                }  else {
+//                    ed_email.setError(null);
+//                    isValidEmail = true;
+//                }
+
+                if (!email.isEmpty()) {
+                    if (!isValidEmailAddress(email)) {
+                        ed_email.setError("invalid email");
+                    } else {
+                        ed_email.setError(null);
+                        isValidEmail = true;
+                    }
+                } else {
                     isValidEmail = true;
                 }
 
@@ -462,12 +519,24 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                     ed_nameAuthePerson.setError(null);
                     isValidNameAuthPer = true;
                 }
+//                if (mob.isEmpty()) {
+//                    ed_mobile.setError("required");
+//                }  else {
+//                    ed_mobile.setError(null);
+//                    isValidMob=true;
+//                }
+
                 if (mob.isEmpty()) {
                     ed_mobile.setError("required");
-                }  else {
+                } else if (mob.length() != 10) {
+                    ed_mobile.setError("required 10 digits");
+                } else if (mob.equalsIgnoreCase("0000000000")) {
+                    ed_mobile.setError("invalid number");
+                }else {
                     ed_mobile.setError(null);
-                    isValidMob=true;
+                    isValidMob = true;
                 }
+
                 if (isValidName && isValidEmail  && isValidNameDept && isValidNameAuthPer   && isValidDesigPerson && isValidMob) {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                     Reg registration = new Reg(loginUser.getRegId(), loginUser.getUserUuid(), loginUser.getUserType(),loginUser.getEmails(),alt_email,loginUser.getUserPassword(),UnivercityName,AISHECode,"","","",nameDept,loginUser.getMobileNumber(),nameAuthPer,null,"","",loginUser.getRegisterVia(),loginUser.getIsActive(),loginUser.getDelStatus(),loginUser.getAddDate(), sdf.format(System.currentTimeMillis()),loginUser.getEditByUserId(),loginUser.getExInt1(),loginUser.getExInt2(),email,mob,"",loginUser.getEmailVerified(),"",loginUser.getSmsVerified(),loginUser.getEditByAdminuserId());
@@ -504,7 +573,12 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         }
 
     }
-
+    public boolean isValidEmailAddress(String email) {
+        String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+        java.util.regex.Matcher m = p.matcher(email);
+        return m.matches();
+    }
     DatePickerDialog.OnDateSetListener dateListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
