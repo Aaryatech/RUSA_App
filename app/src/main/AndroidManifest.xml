@@ -19,29 +19,49 @@
         <activity android:name=".activity.TestActivity">
 
         </activity>
-        <activity android:name=".activity.ChangePasswordActivity" ></activity>
-        <activity android:name=".activity.PreviousEventDetailActivity" />
-        <activity android:name=".activity.EventDetailListActivity" />
-        <activity android:name=".activity.ForgotPasswordActivity" />
-        <activity android:name=".activity.NewsActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-        <activity android:name=".activity.NotificationActivity" />
+        <activity
+            android:name=".activity.ChangePasswordActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activity.PreviousEventDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.EventDetailListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".activity.ForgotPasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.NewsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".activity.NotificationActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.YoutubePlayerActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".activity.TestimonialWebviewActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
+            android:name=".activity.TestimonialWebviewActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activity.RegistrationActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.OTPVerificationActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.SplashActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -51,6 +71,7 @@
         </activity>
         <activity
             android:name=".activity.ImageZoomActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".activity.WebViewActivity" />
         <activity

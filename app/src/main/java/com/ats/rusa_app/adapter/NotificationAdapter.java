@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.model.NotificationModel;
 
+import org.sufficientlysecure.htmltextview.HtmlTextView;
+
 import java.util.ArrayList;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.MyViewHolder> {
@@ -36,7 +38,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         final NotificationModel model = notificationList.get(i);
 
         myViewHolder.tvTitle.setText("" + model.getTitle());
-        myViewHolder.tvDesc.setText("" + model.getDesc());
+        myViewHolder.tvDesc.setHtml("" + model.getDesc());
+        myViewHolder.tvDate.setText("" + model.getDate());
 
     }
 
@@ -46,12 +49,14 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvTitle, tvDesc;
+        public TextView tvTitle,  tvDate;
+        public HtmlTextView tvDesc;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvDesc = itemView.findViewById(R.id.tvDesc);
+            tvDate = itemView.findViewById(R.id.tvDate);
         }
     }
 }

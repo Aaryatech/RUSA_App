@@ -2,6 +2,7 @@ package com.ats.rusa_app.activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -16,6 +17,7 @@ import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -39,6 +41,8 @@ import com.ats.rusa_app.util.RealPathUtil;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileOutputStream;
@@ -47,7 +51,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -57,8 +65,8 @@ import static java.security.AccessController.getContext;
 public class EventDetailListActivity extends AppCompatActivity implements View.OnClickListener {
     UpcomingEvent upcomingEvent;
     ImageView imageView;
-    TextView tv_eventName, tv_eventVenu, tv_eventDate, tv_uploadText;
-    Button btn_apply, btn_upload;
+    TextView tv_eventName, tv_eventVenu, tv_eventDate, tv_uploadText, btn_upload;
+    Button btn_apply;
     Login loginUser;
     private String selectedImagePath;
     private final int ACTIVITY_CAMERA = 0;
@@ -75,6 +83,8 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
     File folder = new File(Environment.getExternalStorageDirectory() + File.separator, "rusa_folder");
     File f;
 
+    public static String path, imagePath;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +95,7 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
         tv_eventVenu = (TextView) findViewById(R.id.tvEventVenu);
         tv_eventDate = (TextView) findViewById(R.id.tvEventDate);
         btn_apply = (Button) findViewById(R.id.btn_apply);
-        btn_upload = (Button) findViewById(R.id.btn_upload);
+        btn_upload = findViewById(R.id.btn_upload);
         tv_uploadText = (TextView) findViewById(R.id.tv_uploadText);
 
         btn_apply.setOnClickListener(this);
@@ -94,7 +104,7 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
         if (PermissionsUtil.checkAndRequestPermissions(EventDetailListActivity.this)) {
         }
 
-        createFolder();
+        // createFolder();
 
         String upcomingStr = getIntent().getStringExtra("model");
         Gson gson = new Gson();
@@ -135,10 +145,14 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
         if (v.getId() == R.id.btn_apply) {
             try {
                 if (loginUser.getIsActive() == 1 && loginUser.getDelStatus() == 1 && loginUser.getEmailVerified() == 1) {
-//                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//                    EventRegistration eventRegistration=new EventRegistration(1,loginUser.getRegId(),sdf.format(System.currentTimeMillis()),upcomingEvent.getNewsblogsId(),0,null,0,"",0,1,1,0,0,"","");
-//                    getEventRegistration(eventRegistration);
-                    getAppliedEvent(upcomingEvent.getNewsblogsId(), loginUser.getRegId());
+                    //getAppliedEvent(upcomingEvent.getNewsblogsId(), loginUser.getRegId());
+
+                    File imgFile = new File(imagePath);
+                    int pos = imgFile.getName().lastIndexOf(".");
+                    String ext = imgFile.getName().substring(pos + 1);
+                    String fileName = loginUser.getRegId() + "_" + System.currentTimeMillis() + "." + ext;
+
+                    sendDocToServer(fileName, upcomingEvent.getNewsblogsId(), loginUser.getRegId());
 
                 } else {
                     Toast.makeText(EventDetailListActivity.this, "Not Apply For This Event", Toast.LENGTH_SHORT).show();
@@ -151,6 +165,8 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
             }
+
+
         } else if (v.getId() == R.id.btn_upload) {
 
 //            Intent intent = new Intent();
@@ -163,7 +179,7 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
 
             showFileChooser();
 
-            //openFolder();
+            //  browseDocuments();
 
         }
     }
@@ -179,7 +195,7 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
         startActivityForResult(Intent.createChooser(intent, "Choose File to Upload.."), 1);
     }
 
-    private void getAppliedEvent(Integer newsblogsId, Integer regId) {
+    private void getAppliedEvent(Integer newsblogsId, Integer regId, final String fileName) {
 
         if (Constants.isOnline(getApplicationContext())) {
             final CommonDialog commonDialog = new CommonDialog(getApplicationContext(), "Loading", "Please Wait...");
@@ -195,7 +211,7 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
                             Log.e("APPLIED EVENT LIST : ", " - " + response.body());
 
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                            EventRegistration eventRegistration = new EventRegistration(1, loginUser.getRegId(), sdf.format(System.currentTimeMillis()), upcomingEvent.getNewsblogsId(), 0, null, 0, "", 0, 1, 1, 0, 0, "", "");
+                            EventRegistration eventRegistration = new EventRegistration(1, loginUser.getRegId(), sdf.format(System.currentTimeMillis()), upcomingEvent.getNewsblogsId(), 0, null, 0, fileName, 0, 1, 1, 0, 0, "", "");
                             getEventRegistration(eventRegistration);
 
                             commonDialog.dismiss();
@@ -295,12 +311,29 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
                 Uri selectedFileUri = data.getData();
                 Log.e("UriPath", "----------" + selectedFileUri.getPath());
 
-                File myFile = new File(selectedFileUri.getPath());
-
                 Log.e("FILE URI ", "********************* " + getContentResolver().openInputStream(selectedFileUri).toString());
 
 
-                Log.e("DATA PATH","---------------------- "+getPath(EventDetailListActivity.this,selectedFileUri));
+                Log.e("DATA PATH", "---------------------- " + getPath(EventDetailListActivity.this, selectedFileUri));
+
+                imagePath = getPath(EventDetailListActivity.this, selectedFileUri);
+                if (getPath(EventDetailListActivity.this, selectedFileUri) == null) {
+                    imagePath = "";
+                    AlertDialog.Builder builder = new AlertDialog.Builder(EventDetailListActivity.this, R.style.AlertDialogTheme);
+                    builder.setMessage("Please select other file");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+
+                } else {
+                    tv_uploadText.setText("" + getPath(EventDetailListActivity.this, selectedFileUri));
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -338,7 +371,7 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
                     return "storage" + "/" + docId.replace(":", "/");
                 }
 
-            }else{
+            } else {
                 final String docId = DocumentsContract.getDocumentId(uri);
                 final String[] split = docId.split(":");
                 final String type = split[0];
@@ -362,58 +395,39 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
     }
 
 
-    public void openFolder(){
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        Uri uri = Uri.parse(Environment.getExternalStorageDirectory().getPath()
-                +  File.separator + "rusa_folder" + File.separator);
-        intent.setDataAndType(uri, "application/pdf");
-        startActivity(Intent.createChooser(intent, "Open folder"));
-    }
+    private void sendDocToServer(final String filename, final int eventId, final int regId) {
+        final CommonDialog commonDialog = new CommonDialog(this, "Loading", "Please Wait...");
+        commonDialog.show();
 
-    public void createFolder() {
-        if (!folder.exists()) {
-            folder.mkdir();
-        }
-    }
+        File imgFile = new File(imagePath);
+
+        RequestBody requestFile = RequestBody.create(MediaType.parse("file"), imgFile);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", imgFile.getName(), requestFile);
+
+        RequestBody imgName = RequestBody.create(MediaType.parse("text/plain"), filename);
 
 
-    public void showCameraDialog(final int sequence) {
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                f = new File(folder + File.separator, "Camera.pdf");
+        Call<JSONObject> call = Constants.myInterface.docUpload(body, imgName);
+        call.enqueue(new Callback<JSONObject>() {
+            @Override
+            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
+                commonDialog.dismiss();
+                //  addNewNotification(bean);
+                imagePath = "";
+                Log.e("Response : ", "--" + response.body());
 
-                String authorities = BuildConfig.APPLICATION_ID + ".provider";
-                Uri imageUri = FileProvider.getUriForFile(EventDetailListActivity.this, authorities, f);
-
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-                intent.setDataAndType(imageUri, "application/pdf");
-
-                if (sequence == 1) {
-                    startActivityForResult(intent, 102);
-                } else if (sequence == 2) {
-                    startActivityForResult(intent, 202);
-                }
-
-            } else {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                f = new File(folder + File.separator, "Camera.pdf");
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                if (sequence == 1) {
-                    startActivityForResult(intent, 102);
-                } else if (sequence == 2) {
-                    startActivityForResult(intent, 202);
-                }
+                getAppliedEvent(eventId, regId, filename);
 
             }
-        } catch (Exception e) {
-            Log.e("select camera : ", " Exception : " + e.getMessage());
-        }
 
-
+            @Override
+            public void onFailure(Call<JSONObject> call, Throwable t) {
+                Log.e("Error : ", "--" + t.getMessage());
+                commonDialog.dismiss();
+                t.printStackTrace();
+                Toast.makeText(EventDetailListActivity.this, "Unable To Process", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 

@@ -27,7 +27,7 @@ public class ImageZoomActivity extends AppCompatActivity {
             image = getIntent().getExtras().getString("image");
             Log.e("IMAGE PATH : ", " " + image);
 
-            Picasso.with(this).load(image).placeholder(R.drawable.rusa_logo).into(zoomageView);
+            Picasso.with(this).load(image).placeholder(ImageZoomActivity.this.getResources().getDrawable(R.drawable.img_placeholder)).into(zoomageView);
 
 
         } catch (Exception e) {

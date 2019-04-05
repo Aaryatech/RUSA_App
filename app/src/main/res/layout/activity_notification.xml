@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/login_bg"
     tools:context=".activity.NotificationActivity">
 
 
@@ -12,6 +13,6 @@
         android:id="@+id/rvList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp" />
+        android:layout_margin="5dp" />
 
 </LinearLayout>

@@ -71,5 +71,6 @@
     <string name="str_full_name">Full Name*</string>
     <string name="str_institute_name">College Name*</string>
     <string name="str_university_name">University Name*</string>
+    <string name="str_apply">APPLY</string>
 
 </resources>

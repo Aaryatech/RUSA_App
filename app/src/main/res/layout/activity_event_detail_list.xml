@@ -2,167 +2,136 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/RelativeLayout"
-    android:background="@drawable/login_bg"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp">
-
-    <ImageView
-        android:id="@+id/iv_baner"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:scaleType="fitXY"
-
-        />
-
-        <!--android:src="@drawable/slider"-->
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Event Name :"
-            android:fontFamily="@font/lato_bold"
-            android:layout_weight="2.4"
-            android:textSize="16sp"
-            android:textColor="@color/colorPrimary"/>
-
-        <TextView
-            android:id="@+id/tvEventName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/lato_regular"
-            android:layout_weight="1"
-            android:textSize="16sp"
-            android:textColor="@color/colorPrimary"/>
-
-    </LinearLayout>
-
-        <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Venu :"
-            android:fontFamily="@font/lato_bold"
-            android:textColor="@color/colorPrimary"
-            android:layout_weight="2.4"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/tvEventVenu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/lato_regular"
-            android:textColor="@color/colorPrimary"
-            android:layout_marginLeft="10dp"
-            android:textSize="16sp"
-            android:layout_marginRight="10dp"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Date :"
-            android:textSize="16sp"
-            android:textColor="@color/colorPrimary"
-            android:layout_weight="2.4"
-            android:fontFamily="@font/lato_bold"
-            android:layout_marginRight="10dp"
-            />
-
-        <TextView
-            android:id="@+id/tvEventDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="16sp"
-            android:fontFamily="@font/lato_regular"
-            android:textColor="@color/colorPrimary"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            />
-
-    </LinearLayout>
-
-        <LinearLayout
-            android:visibility="visible"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="20dp">
-
-            <Button
-                android:id="@+id/btn_upload"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="5"
-                android:visibility="visible"
-                android:gravity="center"
-                android:background="@drawable/ic_action_upload"
-                android:textColor="@color/colorWhite"
-                android:fontFamily="@font/lato_bold"
-                android:layout_marginLeft="10dp"/>
-
-            <TextView
-                android:id="@+id/tv_uploadText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorBlack"
-                android:hint="upload"
-                android:visibility="visible"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:maxLines="10"
-                android:lines="10"/>
-
-
-        </LinearLayout>
-
-    </LinearLayout>
+    android:layout_height="match_parent"
+    android:background="@drawable/login_bg">
 
     <Button
         android:id="@+id/btn_apply"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Apply"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimaryDark"
-        android:textColor="@color/colorWhite"
+        android:background="@drawable/button_background"
         android:fontFamily="@font/lato_bold"
-        android:layout_marginTop="20dp"
-        />
+        android:text="@string/str_apply"
+        android:textColor="@color/colorWhite" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/btn_apply"
+        android:layout_alignParentTop="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_baner"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_margin="@dimen/margin_small"
+                android:scaleType="fitXY" />
+
+            <TextView
+                android:id="@+id/tvEventName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_small"
+                android:fontFamily="@font/lato_regular"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_large" />
+
+            <org.sufficientlysecure.htmltextview.HtmlTextView
+                android:id="@+id/tvEventDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_small"
+                android:fontFamily="@font/lato_light"
+                android:textSize="@dimen/text_medium" />
+
+            <TextView
+                android:id="@+id/tvEventVenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_small"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginRight="@dimen/margin_small"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:drawableLeft="@drawable/ic_loc"
+                android:drawablePadding="10dp"
+                android:fontFamily="@font/lato_light"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/text_medium" />
+
+            <TextView
+                android:id="@+id/tvEventDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_small"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginRight="@dimen/margin_small"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:drawableLeft="@drawable/ic_action_calender"
+                android:drawablePadding="10dp"
+                android:fontFamily="@font/lato_light"
+                android:gravity="center_vertical"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_large"
+                android:background="@color/colorWhite"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_medium"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="Attach File"
+                    android:textColor="@color/colorOrange" />
+
+                <LinearLayout
+                    android:layout_marginBottom="@dimen/margin_medium"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/btn_upload"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_medium"
+                        android:background="@drawable/rounded_corner_button"
+                        android:fontFamily="@font/lato_bold"
+                        android:gravity="center"
+                        android:padding="7dp"
+                        android:text="  Pick File  "
+                        android:textColor="@color/colorWhite"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/tv_uploadText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_margin="3dp"
+                        android:maxLines="2" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+
 </RelativeLayout>

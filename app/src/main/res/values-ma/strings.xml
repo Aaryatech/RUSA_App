@@ -12,7 +12,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">हॅलो रिक्त खंड</string>
 
-    <string name="error_player">ouTube प्लेअर (% 1 $ s) प्रारंभ करताना त्रुटी आली</string>
+    <string name="error_player">YouTube प्लेअर (% 1 $ s) प्रारंभ करताना त्रुटी आली</string>
 
     <string name="edittext_hint"><font size="14">वापरकर्ता नाव</font></string>
 
@@ -65,7 +65,8 @@
     <string name="str_enter_otp">ओटीपी प्रविष्ट करा</string>
     <string name="str_submit">सबमिट करा</string>
     <string name="str_resend_otp">ओटीपी पुन्हा पाठवा</string>
-    <string name="str_full_name">Full Name*</string>
-    <string name="str_institute_name">College Name*</string>
-    <string name="str_university_name">University Name*</string>
+    <string name="str_full_name">पूर्ण नाव*</string>
+    <string name="str_institute_name">कॉलेजचे नाव*</string>
+    <string name="str_university_name">विद्यापीठाचे नाव*</string>
+    <string name="str_apply">अर्ज करा</string>
 </resources>

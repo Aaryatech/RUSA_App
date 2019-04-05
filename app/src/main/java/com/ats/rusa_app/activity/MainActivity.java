@@ -55,6 +55,7 @@ import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -122,6 +123,9 @@ public class MainActivity extends AppCompatActivity
         loginUser = gson.fromJson(userStr, Login.class);
         Log.e("HOME_ACTIVITY : ", "--------USER-------" + loginUser);
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+
         try {
             String token = SharedPrefManager.getmInstance(MainActivity.this).getDeviceToken();
             Log.e("Token : ", "---------" + token);
@@ -131,21 +135,31 @@ public class MainActivity extends AppCompatActivity
             AppToken appToken = gson2.fromJson(str, AppToken.class);
             Log.e("APP TOKEN", "-------------- " + appToken);
 
+            if (appToken != null) {
+                if (appToken.getApptokenId() > 0) {
+                    if (loginUser != null) {
+                        appToken.setToken(token);
+                        appToken.setRegisterId(loginUser.getRegId());
+                        saveToken(appToken);
+                    } else {
+                        appToken.setToken(token);
+                        saveToken(appToken);
+                    }
+
+                }
+            } else {
+                if (loginUser != null) {
+                    AppToken appToken1 = new AppToken(0, "android", getMacAddress(), token, loginUser.getRegId(), sdf.format(Calendar.getInstance().getTimeInMillis()));
+                    saveToken(appToken1);
+                } else {
+                    AppToken appToken1 = new AppToken(0, "android", getMacAddress(), token, 0, sdf.format(Calendar.getInstance().getTimeInMillis()));
+                    saveToken(appToken1);
+                }
+            }
+
         } catch (Exception e) {
             Log.e("Exception : ", "-----------" + e.getMessage());
         }
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-       /* if (appToken != null) {
-            if (appToken.getApptokenId() > 0) {
-                appToken.setToken(token);
-                saveToken(appToken);
-            }
-        } else {
-            AppToken appToken1 = new AppToken(0, "android", getMacAddress(), token, 0, sdf.format(Calendar.getInstance().getTimeInMillis()));
-            saveToken(appToken1);
-        }*/
 
 
         Log.e("MAC", "---------------- " + getMacAddress());
@@ -737,7 +751,7 @@ public class MainActivity extends AppCompatActivity
                             String str = gson1.toJson(response.body());
 
                             CustomSharedPreference.putString(MainActivity.this, CustomSharedPreference.PREFERENCE_TOKEN, str);
-
+                            commonDialog.dismiss();
                         } else {
                             commonDialog.dismiss();
                             Log.e("Data Null : ", "-----------");
@@ -757,7 +771,7 @@ public class MainActivity extends AppCompatActivity
                 }
             });
         } else {
-            Toast.makeText(MainActivity.this, "No Internet Connection !", Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(MainActivity.this, "No Internet Connection !", Toast.LENGTH_SHORT).show();
         }
 
     }

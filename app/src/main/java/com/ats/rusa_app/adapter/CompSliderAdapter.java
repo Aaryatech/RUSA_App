@@ -40,13 +40,17 @@ public class CompSliderAdapter extends RecyclerView.Adapter<CompSliderAdapter.My
     @Override
     public void onBindViewHolder(@NonNull CompSliderAdapter.MyViewHolder myViewHolder, int i) {
         final CompanyModel model = compList.get(i);
-        String imageUri = Constants.BANENR_URL +model.getSliderImage();
-        Log.e("Image","--------------"+imageUri);
-        Picasso.with(context).load(imageUri).into(myViewHolder.imageView);
+        String imageUri = Constants.BANENR_URL + model.getSliderImage();
+        Log.e("Image", "--------------" + imageUri);
+        try {
+            Picasso.with(context).load(imageUri).placeholder(context.getResources().getDrawable(R.drawable.imp_links_placeholder)).into(myViewHolder.imageView);
+
+        } catch (Exception e) {
+        }
         myViewHolder.linearLayout_comp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(""+model.getUrlLink()));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("" + model.getUrlLink()));
                 context.startActivity(browserIntent);
 
             }
@@ -61,10 +65,11 @@ public class CompSliderAdapter extends RecyclerView.Adapter<CompSliderAdapter.My
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public ImageView imageView;
         public LinearLayout linearLayout_comp;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageView=(ImageView)itemView.findViewById(R.id.iv_comp);
-            linearLayout_comp=(LinearLayout)itemView.findViewById(R.id.linearLayout_comp);
+            imageView = (ImageView) itemView.findViewById(R.id.iv_comp);
+            linearLayout_comp = (LinearLayout) itemView.findViewById(R.id.linearLayout_comp);
         }
     }
 }

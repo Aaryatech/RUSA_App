@@ -114,7 +114,7 @@ public interface InterfaceApi {
 
     @Multipart
     @POST("docUpload")
-    Call<JSONObject> imageUpload(@Part MultipartBody.Part filePath, @Part("docName") ArrayList<String> docName);
+    Call<JSONObject> docUpload(@Part MultipartBody.Part filePath, @Part("docName") RequestBody docName);
 
 
 }

@@ -1,6 +1,7 @@
 package com.ats.rusa_app.fcm;
 
 import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.ats.rusa_app.activity.MainActivity;
@@ -57,7 +58,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             String imageUrl = "";
             int tag = json.getInt("tag");
 
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
             MyNotificationManager mNotificationManager = new MyNotificationManager(getApplicationContext());
 
@@ -73,17 +74,23 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 mNotificationManager.showSmallNotification(title, message, intent);
 
             } else {
-                Intent pushNotification = new Intent();
-                //  pushNotification.setAction("NOTIFICATION_ADMIN");
-                //  pushNotification.putExtra("message", message);
-                //  LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
 
-                MyNotificationManager notificationUtils = new MyNotificationManager(getApplicationContext());
-                notificationUtils.playNotificationSound();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                mNotificationManager.showSmallNotification(title, message, intent);
+
+//                MyNotificationManager notificationUtils = new MyNotificationManager(getApplicationContext());
+//                notificationUtils.playNotificationSound();
 
                 db.addNotification(title, message, "" + sdf.format(Calendar.getInstance().getTimeInMillis()));
 
             }
+
+            Intent pushNotificationIntent = new Intent();
+            pushNotificationIntent.setAction("REFRESH_NOTIFICATION");
+            LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotificationIntent);
+
 
         } catch (JSONException e) {
             Log.e(TAG, "Json Exception: -----------" + e.getMessage());
