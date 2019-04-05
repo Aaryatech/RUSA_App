@@ -42,7 +42,7 @@ public class UpcominEventAdapter extends RecyclerView.Adapter<UpcominEventAdapte
         final UpcomingEvent model= upcomingList.get(i);
         myViewHolder.tv_eventName.setText(model.getHeading());
         myViewHolder.tv_Fromdate.setText(""+model.getEventDateFrom());
-        myViewHolder.tv_Todate.setText(""+model.getEventDateTo());
+        //myViewHolder.tv_Todate.setText(""+model.getEventDateTo());
 
         myViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +86,6 @@ public class UpcominEventAdapter extends RecyclerView.Adapter<UpcominEventAdapte
             super(itemView);
             tv_eventName=itemView.findViewById(R.id.tvEventName);
             tv_Fromdate=itemView.findViewById(R.id.tvFromdate);
-            tv_Todate=itemView.findViewById(R.id.tvTodate);
             cardView=itemView.findViewById(R.id.cardView);
         }
     }

@@ -16,21 +16,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.TestActivity">
-
-        </activity>
-        <activity android:name=".activity.ChangePasswordActivity" ></activity>
+        <activity android:name=".activity.FeedbackActivity"></activity>
+        <activity android:name=".activity.TestActivity"></activity>
+        <activity android:name=".activity.ChangePasswordActivity" />
         <activity android:name=".activity.PreviousEventDetailActivity" />
         <activity android:name=".activity.EventDetailListActivity" />
         <activity android:name=".activity.ForgotPasswordActivity" />
-        <activity android:name=".activity.NewsActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
+            android:name=".activity.NewsActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".activity.NotificationActivity" />
         <activity
             android:name=".activity.YoutubePlayerActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".activity.TestimonialWebviewActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
+            android:name=".activity.TestimonialWebviewActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activity.RegistrationActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -90,7 +91,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-
     </application>
 
 </manifest>

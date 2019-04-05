@@ -8,6 +8,7 @@ import com.ats.rusa_app.model.ContactUs;
 import com.ats.rusa_app.model.Detail;
 import com.ats.rusa_app.model.EventRegCheck;
 import com.ats.rusa_app.model.EventRegistration;
+import com.ats.rusa_app.model.FeedbackSave;
 import com.ats.rusa_app.model.GallaryDetailList;
 import com.ats.rusa_app.model.GetGalleryCategory;
 import com.ats.rusa_app.model.Info;
@@ -16,6 +17,7 @@ import com.ats.rusa_app.model.MenuModel;
 import com.ats.rusa_app.model.NewDetail;
 import com.ats.rusa_app.model.OTPVerification;
 import com.ats.rusa_app.model.PageData;
+import com.ats.rusa_app.model.PrevEvent;
 import com.ats.rusa_app.model.PreviousEvent;
 import com.ats.rusa_app.model.Reg;
 import com.ats.rusa_app.model.ResendOTP;
@@ -28,7 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -116,5 +117,10 @@ public interface InterfaceApi {
     @POST("docUpload")
     Call<JSONObject> imageUpload(@Part MultipartBody.Part filePath, @Part("docName") ArrayList<String> docName);
 
+    @POST("allPreviousEventWithApllied ")
+    Call<ArrayList<PrevEvent>> getAllPreviousEventWithApllied(@Query("langId") int langId,@Query("userId") int userId);
+
+    @POST("updateEventFeedback")
+    Call<FeedbackSave> getUpdateEventFeedback(@Query("eventId") int eventId, @Query("userId") int userId,@Query("messge") String messge,@Query("value") int value);
 
 }

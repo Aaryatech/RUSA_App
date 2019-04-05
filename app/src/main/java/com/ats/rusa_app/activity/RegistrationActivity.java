@@ -230,7 +230,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
 
 
-                        Reg registration = new Reg(0, uniqueId, 1, email, alt_email, "", fullName, "", clgName, univercityAff, designPerName, nameDept, mob, "", null, "", "", "Android", 1, 1, sdf.format(System.currentTimeMillis()), null, 0, 0, 0, "", "", "", 0, "", 0, 0);
+                        Reg registration = new Reg(0, uniqueId, 1, email, alt_email, "0", fullName, "", clgName, univercityAff, designPerName, nameDept, mob, "", null, "", "", "Android", 0, 1, sdf.format(System.currentTimeMillis()), null, 0, 0, 0, "", "", "", 0, "", 0, 0);
                         Log.e("Registration", "--------------" + registration);
                         getRegistration(registration);
 
@@ -322,7 +322,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     if (isValidName && isValidEmail  && isValidNameDept && isValidNameAuthPer  && isValidUniverAff && isValidDesigPerson && isValidMob ) {
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-                    Reg registration = new Reg(0, uniqueId, 2,email,alt_email,"",institudeName,AISHECode,"",univercityAff,designPerName,nameDept,mob,nameAuthPer,null,"","","Android",1,1,sdf.format(System.currentTimeMillis()),null,0,0,0,"","","",0,"",0,0);
+                    Reg registration = new Reg(0, uniqueId, 2,email,alt_email,"0",institudeName,AISHECode,"",univercityAff,designPerName,nameDept,mob,nameAuthPer,null,"","","Android",0,1,sdf.format(System.currentTimeMillis()),null,0,0,0,"","","",0,"",0,0);
                         getRegistration(registration);
 
                         ed_Name.setText("");
@@ -413,7 +413,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                     if (isValidName && isValidEmail  && isValidNameDept && isValidNameAuthPer   && isValidDesigPerson && isValidMob) {
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    Reg registration = new Reg(0, uniqueId, 3,email,alt_email,"",UnivercityName,AISHECode,"","","",nameDept,mob,nameAuthPer,null,"","","Android",1,1,sdf.format(System.currentTimeMillis()),null,0,0,0,"","","",0,"",0,0);
+                    Reg registration = new Reg(0, uniqueId, 3,email,alt_email,"0",UnivercityName,AISHECode,"","","",nameDept,mob,nameAuthPer,null,"","","Android",0,1,sdf.format(System.currentTimeMillis()),null,0,0,0,"","","",0,"",0,0);
                         getRegistration(registration);
 
                         ed_Name.setText("");
