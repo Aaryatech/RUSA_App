@@ -16,9 +16,11 @@ import com.ats.rusa_app.R;
 import com.ats.rusa_app.adapter.PreviousEventAdapter;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.interfaces.PreviousEventsInterface;
-import com.ats.rusa_app.model.PreviousEvent;
+import com.ats.rusa_app.model.Login;
+import com.ats.rusa_app.model.PrevEvent;
 import com.ats.rusa_app.util.CommonDialog;
 import com.ats.rusa_app.util.CustomSharedPreference;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -32,7 +34,8 @@ import retrofit2.Response;
 public class PreviousEventFragment extends Fragment implements PreviousEventsInterface {
     public RecyclerView recyclerView;
     int languageId;
-    ArrayList<PreviousEvent> previousEventList = new ArrayList<>();
+    Login loginUser;
+    ArrayList<PrevEvent> previousEventList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,20 +55,20 @@ public class PreviousEventFragment extends Fragment implements PreviousEventsInt
         return view;
     }
 
-    private void getPrevoiusEvent(int languageId) {
+    private void getPrevoiusEvent(int languageId,int regId) {
 
         if (Constants.isOnline(getContext())) {
             final CommonDialog commonDialog = new CommonDialog(getContext(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<ArrayList<PreviousEvent>> listCall = Constants.myInterface.getPreviousEvent(languageId);
-            listCall.enqueue(new Callback<ArrayList<PreviousEvent>>() {
+            Call<ArrayList<PrevEvent>> listCall = Constants.myInterface.getAllPreviousEventWithApllied(languageId,regId);
+            listCall.enqueue(new Callback<ArrayList<PrevEvent>>() {
                 @Override
-                public void onResponse(Call<ArrayList<PreviousEvent>> call, Response<ArrayList<PreviousEvent>> response) {
+                public void onResponse(Call<ArrayList<PrevEvent>> call, Response<ArrayList<PrevEvent>> response) {
                     try {
                         if (response.body() != null) {
 
-                            Log.e("UPCOMING EVENT LIST : ", " - " + response.body());
+                            Log.e("PREVIOUS EVENT LIST : ", " - " + response.body());
                             previousEventList.clear();
                             previousEventList = response.body();
 
@@ -89,7 +92,7 @@ public class PreviousEventFragment extends Fragment implements PreviousEventsInt
                 }
 
                 @Override
-                public void onFailure(Call<ArrayList<PreviousEvent>> call, Throwable t) {
+                public void onFailure(Call<ArrayList<PrevEvent>> call, Throwable t) {
                     commonDialog.dismiss();
                     Log.e("onFailure : ", "-----------" + t.getMessage());
                     t.printStackTrace();
@@ -109,6 +112,10 @@ public class PreviousEventFragment extends Fragment implements PreviousEventsInt
             languageId = 1;
         }
 
-        getPrevoiusEvent(languageId);
+        String userStr = CustomSharedPreference.getString(getActivity(), CustomSharedPreference.KEY_USER);
+        Gson gson = new Gson();
+        loginUser = gson.fromJson(userStr, Login.class);
+        int regId=loginUser.getRegId();
+        getPrevoiusEvent(languageId,regId);
     }
 }
