@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardView"
     android:layout_width="@dimen/card_width"
-    android:layout_height="@dimen/card_height"
+    android:layout_height="wrap_content"
     android:layout_marginLeft="3dp"
     android:layout_marginRight="3dp"
     android:layout_marginBottom="6dp"
@@ -14,10 +14,12 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_margin="@dimen/margin_tiny"
             android:id="@+id/iv_testominal"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/img_height" />
+            android:layout_width="@dimen/img_height"
+            android:layout_height="@dimen/img_height"
+            android:layout_gravity="center" />
 
         <TextView
             android:id="@+id/tv_Title"
@@ -25,8 +27,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_tiny"
             android:fontFamily="@font/lato_regular"
-            android:maxLines="2"
+            android:gravity="center"
+            android:lines="1"
+            android:maxLines="1"
             android:text="Rusa app"
+            android:textAlignment="center"
             android:textColor="@color/colorOrange"
             android:textSize="@dimen/text_tiny" />
 
@@ -34,10 +39,15 @@
             android:id="@+id/tv_Discription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_tiny"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
             android:fontFamily="@font/lato_light"
-            android:maxLines="2"
+            android:gravity="center"
+            android:lines="1"
+            android:maxLines="1"
             android:text="Rusa app"
+            android:textAlignment="center"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/text_tiny"
 

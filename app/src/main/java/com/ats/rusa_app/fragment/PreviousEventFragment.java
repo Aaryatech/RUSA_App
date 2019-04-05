@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.adapter.PreviousEventAdapter;
 import com.ats.rusa_app.constants.Constants;
+import com.ats.rusa_app.interfaces.PreviousEventsInterface;
 import com.ats.rusa_app.model.PreviousEvent;
 import com.ats.rusa_app.util.CommonDialog;
 import com.ats.rusa_app.util.CustomSharedPreference;
@@ -28,16 +29,17 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PreviousEventFragment extends Fragment {
+public class PreviousEventFragment extends Fragment implements PreviousEventsInterface {
     public RecyclerView recyclerView;
     int languageId;
     ArrayList<PreviousEvent> previousEventList = new ArrayList<>();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_previous_event, container, false);
-        recyclerView=(RecyclerView)view.findViewById(R.id.recyclerView);
+        View view = inflater.inflate(R.layout.fragment_previous_event, container, false);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
         String langId = CustomSharedPreference.getString(getActivity(), CustomSharedPreference.LANGUAGE_SELECTED);
         try {
@@ -46,7 +48,7 @@ public class PreviousEventFragment extends Fragment {
             languageId = 1;
         }
 
-        getPrevoiusEvent(languageId);
+       // getPrevoiusEvent(languageId);
         return view;
     }
 
@@ -98,4 +100,15 @@ public class PreviousEventFragment extends Fragment {
         }
     }
 
+    @Override
+    public void fragmentBecameVisible() {
+        String langId = CustomSharedPreference.getString(getActivity(), CustomSharedPreference.LANGUAGE_SELECTED);
+        try {
+            languageId = Integer.parseInt(langId);
+        } catch (Exception e) {
+            languageId = 1;
+        }
+
+        getPrevoiusEvent(languageId);
+    }
 }

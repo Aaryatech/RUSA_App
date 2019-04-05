@@ -23,12 +23,14 @@
         <activity android:name=".activity.PreviousEventDetailActivity" />
         <activity android:name=".activity.EventDetailListActivity" />
         <activity android:name=".activity.ForgotPasswordActivity" />
-        <activity android:name=".activity.NewsActivity" />
+        <activity android:name=".activity.NewsActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name=".activity.NotificationActivity" />
         <activity
             android:name=".activity.YoutubePlayerActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".activity.TestimonialWebviewActivity" />
+        <activity android:name=".activity.TestimonialWebviewActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
             android:name=".activity.RegistrationActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -77,6 +79,18 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            android:readPermission="${applicationId}.provider.READ">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
     </application>
 
 </manifest>

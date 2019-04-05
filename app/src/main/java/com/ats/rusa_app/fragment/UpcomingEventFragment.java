@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.adapter.UpcominEventAdapter;
 import com.ats.rusa_app.constants.Constants;
+import com.ats.rusa_app.interfaces.UpcomingEventsInterface;
 import com.ats.rusa_app.model.UpcomingEvent;
 import com.ats.rusa_app.util.CommonDialog;
 import com.ats.rusa_app.util.CustomSharedPreference;
@@ -28,7 +29,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class UpcomingEventFragment extends Fragment {
+public class UpcomingEventFragment extends Fragment implements UpcomingEventsInterface {
 public RecyclerView recyclerView;
 int languageId;
 
@@ -99,4 +100,15 @@ int languageId;
         }
     }
 
+    @Override
+    public void fragmentBecameVisible() {
+        String langId = CustomSharedPreference.getString(getActivity(), CustomSharedPreference.LANGUAGE_SELECTED);
+        try {
+            languageId = Integer.parseInt(langId);
+        } catch (Exception e) {
+            languageId = 1;
+        }
+
+        getUpcomingEvent(languageId);
+    }
 }

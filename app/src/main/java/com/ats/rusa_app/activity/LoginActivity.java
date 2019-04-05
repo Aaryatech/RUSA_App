@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } else if (v.getId() == R.id.tv_skipLogin) {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             intent.putExtra("code", "SkipLogin");
-            // intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
 
@@ -114,8 +114,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     commonDialog.dismiss();
                                 } else {
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     startActivity(intent);
-                                    // finish();
                                     commonDialog.dismiss();
                                 }
 
@@ -132,6 +132,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 });
                                 AlertDialog dialog = builder.create();
                                 dialog.show();
+                                commonDialog.dismiss();
                             }
 
 

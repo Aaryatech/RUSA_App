@@ -22,13 +22,19 @@ import com.ats.rusa_app.model.ResendOTP;
 import com.ats.rusa_app.model.Testomonial;
 import com.ats.rusa_app.model.UpcomingEvent;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 public interface InterfaceApi {
@@ -106,6 +112,9 @@ public interface InterfaceApi {
     @POST("getImages")
     Call<PageData> getGalleryData(@Query("slugName") String slugName, @Query("langId") int langId);
 
+    @Multipart
+    @POST("docUpload")
+    Call<JSONObject> imageUpload(@Part MultipartBody.Part filePath, @Part("docName") ArrayList<String> docName);
 
 
 }

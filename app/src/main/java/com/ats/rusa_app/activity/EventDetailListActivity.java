@@ -1,6 +1,7 @@
 package com.ats.rusa_app.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -8,9 +9,13 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.ParcelFileDescriptor;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ats.rusa_app.BuildConfig;
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.EventRegCheck;
@@ -29,12 +35,16 @@ import com.ats.rusa_app.util.CommonDialog;
 import com.ats.rusa_app.util.CustomSharedPreference;
 import com.ats.rusa_app.util.FilePath;
 import com.ats.rusa_app.util.PermissionsUtil;
+import com.ats.rusa_app.util.RealPathUtil;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileDescriptor;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -42,15 +52,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static java.security.AccessController.getContext;
+
 public class EventDetailListActivity extends AppCompatActivity implements View.OnClickListener {
     UpcomingEvent upcomingEvent;
     ImageView imageView;
-    TextView tv_eventName,tv_eventVenu,tv_eventDate,tv_uploadText;
-    Button btn_apply,btn_upload;
+    TextView tv_eventName, tv_eventVenu, tv_eventDate, tv_uploadText;
+    Button btn_apply, btn_upload;
     Login loginUser;
     private String selectedImagePath;
     private final int ACTIVITY_CAMERA = 0;
-    private final int RESULT_OK = 100;
+    private final int RESULT_OK = -1;
     private final int ACTIVITY_CHOOSE_FILE = 1;
     Uri URI = null;
     private static final int PICK_FROM_GALLERY = 101;
@@ -59,28 +71,35 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
     String attachmentFile;
     private String selectedFilePath;
     private static int RESULT_LOAD_IMAGE = 1;
+
+    File folder = new File(Environment.getExternalStorageDirectory() + File.separator, "rusa_folder");
+    File f;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail_list);
 
-        imageView=(ImageView)findViewById(R.id.iv_baner);
-        tv_eventName=(TextView)findViewById(R.id.tvEventName);
-        tv_eventVenu=(TextView)findViewById(R.id.tvEventVenu);
-        tv_eventDate=(TextView)findViewById(R.id.tvEventDate);
-        btn_apply=(Button)findViewById(R.id.btn_apply);
-        btn_upload=(Button)findViewById(R.id.btn_upload);
-        tv_uploadText=(TextView)findViewById(R.id.tv_uploadText);
+        imageView = (ImageView) findViewById(R.id.iv_baner);
+        tv_eventName = (TextView) findViewById(R.id.tvEventName);
+        tv_eventVenu = (TextView) findViewById(R.id.tvEventVenu);
+        tv_eventDate = (TextView) findViewById(R.id.tvEventDate);
+        btn_apply = (Button) findViewById(R.id.btn_apply);
+        btn_upload = (Button) findViewById(R.id.btn_upload);
+        tv_uploadText = (TextView) findViewById(R.id.tv_uploadText);
 
         btn_apply.setOnClickListener(this);
         btn_upload.setOnClickListener(this);
 
         if (PermissionsUtil.checkAndRequestPermissions(EventDetailListActivity.this)) {
         }
+
+        createFolder();
+
         String upcomingStr = getIntent().getStringExtra("model");
         Gson gson = new Gson();
         upcomingEvent = gson.fromJson(upcomingStr, UpcomingEvent.class);
-        Log.e("responce","-----------------------"+upcomingEvent);
+        Log.e("responce", "-----------------------" + upcomingEvent);
 
         String userStr = CustomSharedPreference.getString(EventDetailListActivity.this, CustomSharedPreference.KEY_USER);
         loginUser = gson.fromJson(userStr, Login.class);
@@ -94,19 +113,18 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
             String imageUri = "" + upcomingEvent.getFeaturedImage();
             Log.e("URI", "-----------" + imageUri);
             Picasso.with(getApplicationContext()).load(imageUri).placeholder(getResources().getDrawable(R.drawable.img_placeholder)).into(imageView);
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             Log.e("Exception User : ", "-----------" + e.getMessage());
         }
+
         try {
-           // if (loginUser.getIsActive() == 1 && loginUser.getDelStatus() == 1 && loginUser.getEmailVerified() == 1) {
-           // if(loginUser.getExInt2()==1)
-           // {
+            // if (loginUser.getIsActive() == 1 && loginUser.getDelStatus() == 1 && loginUser.getEmailVerified() == 1) {
+            if (loginUser.getExInt2() == 1) {
                 btn_upload.setVisibility(View.VISIBLE);
                 tv_uploadText.setVisibility(View.VISIBLE);
-           // }
+            }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.e("Exception User : ", "-----------" + e.getMessage());
         }
 
@@ -114,51 +132,51 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
 
     @Override
     public void onClick(View v) {
-        if(v.getId()==R.id.btn_apply)
-        {
+        if (v.getId() == R.id.btn_apply) {
             try {
                 if (loginUser.getIsActive() == 1 && loginUser.getDelStatus() == 1 && loginUser.getEmailVerified() == 1) {
 //                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 //                    EventRegistration eventRegistration=new EventRegistration(1,loginUser.getRegId(),sdf.format(System.currentTimeMillis()),upcomingEvent.getNewsblogsId(),0,null,0,"",0,1,1,0,0,"","");
 //                    getEventRegistration(eventRegistration);
-                    getAppliedEvent(upcomingEvent.getNewsblogsId(),loginUser.getRegId());
+                    getAppliedEvent(upcomingEvent.getNewsblogsId(), loginUser.getRegId());
 
                 } else {
                     Toast.makeText(EventDetailListActivity.this, "Not Apply For This Event", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(this,LoginActivity.class);
+                    Intent intent = new Intent(this, LoginActivity.class);
                     startActivity(intent);
                 }
-            }catch (Exception e)
-            {
+            } catch (Exception e) {
                 Log.e("Exception User : ", "-----------" + e.getMessage());
                 Toast.makeText(EventDetailListActivity.this, "Not Apply For This Event", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this,LoginActivity.class);
+                Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
             }
-        }else if(v.getId()==R.id.btn_upload)
-        {
-//                Intent i = new Intent(
-//                        Intent.ACTION_PICK,
-//                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//
-//                startActivityForResult(i, RESULT_OK);
+        } else if (v.getId() == R.id.btn_upload) {
 
 //            Intent intent = new Intent();
-//            intent.setType("image/*");
+//            //sets the select file to all types of files
+//            intent.setType("*/*");
+//            //allows to select data and return it
 //            intent.setAction(Intent.ACTION_GET_CONTENT);
-//            startActivityForResult(Intent.createChooser(intent,
-//                    "Select Picture"), RESULT_LOAD_IMAGE);
+//            //starts new activity to select file and return data
+//            startActivityForResult(Intent.createChooser(intent,"Choose File to Upload.."),PICK_FILE_REQUEST);
 
-            Intent intent = new Intent();
-            //sets the select file to all types of files
-            intent.setType("*/*");
-            //allows to select data and return it
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            //starts new activity to select file and return data
-            startActivityForResult(Intent.createChooser(intent,"Choose File to Upload.."),PICK_FILE_REQUEST);
+            showFileChooser();
 
+            //openFolder();
 
         }
+    }
+
+    private void showFileChooser() {
+        Intent intent = new Intent();
+        //sets the select file to all types of files
+        intent.setType("*/*");
+        String[] mimetypes = {"application/msword", "application/pdf", "application/vnd.ms-excel", "application/excel", "application/x-excel", "application/x-msexcel"};
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);//allows to select data and return it
+        intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+        //starts new activity to select file and return data
+        startActivityForResult(Intent.createChooser(intent, "Choose File to Upload.."), 1);
     }
 
     private void getAppliedEvent(Integer newsblogsId, Integer regId) {
@@ -167,7 +185,7 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
             final CommonDialog commonDialog = new CommonDialog(getApplicationContext(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<ArrayList<EventRegCheck>> listCall = Constants.myInterface.getAppliedEvents(newsblogsId,regId);
+            Call<ArrayList<EventRegCheck>> listCall = Constants.myInterface.getAppliedEvents(newsblogsId, regId);
             listCall.enqueue(new Callback<ArrayList<EventRegCheck>>() {
                 @Override
                 public void onResponse(Call<ArrayList<EventRegCheck>> call, Response<ArrayList<EventRegCheck>> response) {
@@ -177,12 +195,12 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
                             Log.e("APPLIED EVENT LIST : ", " - " + response.body());
 
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                            EventRegistration eventRegistration=new EventRegistration(1,loginUser.getRegId(),sdf.format(System.currentTimeMillis()),upcomingEvent.getNewsblogsId(),0,null,0,"",0,1,1,0,0,"","");
+                            EventRegistration eventRegistration = new EventRegistration(1, loginUser.getRegId(), sdf.format(System.currentTimeMillis()), upcomingEvent.getNewsblogsId(), 0, null, 0, "", 0, 1, 1, 0, 0, "", "");
                             getEventRegistration(eventRegistration);
 
                             commonDialog.dismiss();
 
-                        } else if(response.body()!=null){
+                        } else if (response.body() != null) {
                             commonDialog.dismiss();
                             Log.e("APPLIED EVENT LIST1 : ", " - " + response.body());
                             Toast.makeText(EventDetailListActivity.this, "Already Applied For This Event", Toast.LENGTH_SHORT).show();
@@ -224,21 +242,15 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
                     try {
                         if (response.body() != null) {
 
-                            EventRegistration model=response.body();
+                            EventRegistration model = response.body();
 
-                            Log.e("EVENT REGISTRATION","-----------------------------"+response.body());
-                            Log.e("EVENT REG MODEL","-----------------------------"+model);
+                            Log.e("EVENT REGISTRATION", "-----------------------------" + response.body());
+                            Log.e("EVENT REG MODEL", "-----------------------------" + model);
 
                             Toast.makeText(EventDetailListActivity.this, "Applied for this Event", Toast.LENGTH_SHORT).show();
                             commonDialog.dismiss();
                             finish();
-//                            FragmentTransaction ft =getSupportFragmentManager().beginTransaction();
-//                            ft.replace(R.id.content_frame, new UpcomingEventFragment(), "HomeFragment");
-//                            ft.commit();
-//                            commonDialog.dismiss();
 
-//                            Intent intent=new Intent(EventDetailListActivity.this, MainActivity.class);
-//                            startActivity(intent);
                         } else {
                             commonDialog.dismiss();
                             Log.e("Data Null : ", "-----------");
@@ -263,149 +275,146 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
     }
 
 
+    //--------------------------------------------------------------------
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
-    protected void onActivityResult(int reqCode, int resCode, Intent data) {
-        super.onActivityResult(reqCode, resCode, data);
-        if(resCode == Activity.RESULT_OK){
-            if(reqCode == PICK_FILE_REQUEST){
-                if(data == null){
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        String realPath;
+
+        Log.e("EVENT DET LIST ACT", "---------------------- onActivityResult " + requestCode + " - " + resultCode);
+
+        if (resultCode == RESULT_OK && requestCode == 1) {
+            try {
+
+                if (data == null) {
                     //no data present
                     return;
                 }
                 Uri selectedFileUri = data.getData();
-                Log.e("UriPath","----------"+selectedFileUri.getPath());
-                selectedFilePath = FilePath.getPath(this,selectedFileUri);
-                Log.i("TAG","Selected File Path:" + selectedFilePath);
+                Log.e("UriPath", "----------" + selectedFileUri.getPath());
 
-                if(selectedFilePath != null && !selectedFilePath.equals("")){
-                    savePath(selectedFilePath);
-                    tv_uploadText.setText(selectedFilePath);
-                }else{
-                    Toast.makeText(this,"Cannot upload file to server",Toast.LENGTH_SHORT).show();
-                }
+                File myFile = new File(selectedFileUri.getPath());
+
+                Log.e("FILE URI ", "********************* " + getContentResolver().openInputStream(selectedFileUri).toString());
+
+
+                Log.e("DATA PATH","---------------------- "+getPath(EventDetailListActivity.this,selectedFileUri));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e("EVENT DET LIST ACT : ", "-----Exception : ------" + e.getMessage());
             }
         }
     }
 
-    private void savePath(String selectedFilePath) {
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public static String getPath(final Context context, final Uri uri) {
+        final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
 
-        if (selectedFilePath != null) {
-            // pathArray.add(imagePath1);
-            File imgFile1 = new File(selectedFilePath);
-            int pos = imgFile1.getName().lastIndexOf(".");
-            String ext = imgFile1.getName().substring(pos + 1);
-           String photo1 = System.currentTimeMillis() + "_p1." + ext;
-           // fileNameArray.add(photo1);
-            Log.e("SelectFilePath","-----------"+selectedFilePath);
-            Log.e("photo1","-----------"+photo1);
+        // DocumentProvider
+        if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
+            System.out.println("getPath() uri: " + uri.toString());
+            System.out.println("getPath() uri authority: " + uri.getAuthority());
+            System.out.println("getPath() uri path: " + uri.getPath());
+
+            // ExternalStorageProvider
+            if ("com.android.externalstorage.documents".equals(uri.getAuthority())) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+                System.out.println("getPath() docId: " + docId + ", split: " + split.length + ", type: " + type);
+
+                // This is for checking Main Memory
+                if ("primary".equalsIgnoreCase(type)) {
+                    if (split.length > 1) {
+                        return Environment.getExternalStorageDirectory() + "/" + split[1] + "/";
+                    } else {
+                        return Environment.getExternalStorageDirectory() + "/";
+                    }
+                    // This is for checking SD Card
+                } else {
+                    return "storage" + "/" + docId.replace(":", "/");
+                }
+
+            }else{
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+                System.out.println("getPath() docId: " + docId + ", split: " + split.length + ", type: " + type);
+
+                // This is for checking Main Memory
+                if ("primary".equalsIgnoreCase(type)) {
+                    if (split.length > 1) {
+                        return Environment.getDataDirectory() + "/" + split[1] + "/";
+                    } else {
+                        return Environment.getDataDirectory() + "/";
+                    }
+                    // This is for checking SD Card
+                } else {
+                    return "storage" + "/" + docId.replace(":", "/");
+                }
+
+            }
+        }
+        return null;
+    }
+
+
+    public void openFolder(){
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        Uri uri = Uri.parse(Environment.getExternalStorageDirectory().getPath()
+                +  File.separator + "rusa_folder" + File.separator);
+        intent.setDataAndType(uri, "application/pdf");
+        startActivity(Intent.createChooser(intent, "Open folder"));
+    }
+
+    public void createFolder() {
+        if (!folder.exists()) {
+            folder.mkdir();
         }
     }
 
 
-//
-//    public static String getPath(Context context, Uri uri ) {
-//        String result = null;
-//        String[] proj = { MediaStore.Images.Media.DATA };
-//        Cursor cursor = context.getContentResolver( ).query( uri, proj, null, null, null );
-//        if(cursor != null){
-//            if ( cursor.moveToFirst( ) ) {
-//                int column_index = cursor.getColumnIndexOrThrow( proj[0] );
-//                result = cursor.getString( column_index );
-//            }
-//            cursor.close( );
-//        }
-//        if(result == null) {
-//            result = "Not found";
-//        }
-//        return result;
-//    }
+    public void showCameraDialog(final int sequence) {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                f = new File(folder + File.separator, "Camera.pdf");
 
+                String authorities = BuildConfig.APPLICATION_ID + ".provider";
+                Uri imageUri = FileProvider.getUriForFile(EventDetailListActivity.this, authorities, f);
 
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
-//            Uri selectedImage = data.getData();
-//            String s = getRealPathFromURI(selectedImage);
-//            Log.d("Picture Path", "------------------"+s);
-//            String[] filePathColumn = { MediaStore.Images.Media.DATA };
-//
-//            Cursor cursor = getContentResolver().query(selectedImage,
-//                    filePathColumn, null, null, null);
-//            cursor.moveToFirst();
-//
-//            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-//            String picturePath = cursor.getString(columnIndex);
-//            cursor.close();
-//
-//           // ImageView imageView = (ImageView) findViewById(R.id.imgView);
-//
-//            Bitmap bmp = null;
-//            try {
-//                bmp = getBitmapFromUri(selectedImage);
-//            } catch (IOException e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//            }
-//
-//            Log.e("ImageName","-----------------"+s);
-//           // imageView.setImageBitmap(bmp);
-//            tv_uploadText.setText(s);
-//        }
-//
-//        if (requestCode == PICK_FROM_GALLERY && resultCode == RESULT_OK) {
-//            Uri selectedImage = data.getData();
-//            String[] filePathColumn = { MediaStore.Images.Media.DATA };
-//            Cursor cursor = getContentResolver().query(selectedImage,filePathColumn, null, null, null);
-//            cursor.moveToFirst();
-//            columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-//            attachmentFile = cursor.getString(columnIndex);
-//            Log.e("Attachment Path:", attachmentFile);
-//            URI = Uri.parse("file://" + attachmentFile);
-//            tv_uploadText.setText(URI);
-//            cursor.close();
-//        }
- //  }
-    public String getPath(Uri uri) {
-        // just some safety built in
-        if( uri == null ) {
-            // TODO perform some logging or show user feedback
-            return null;
+                intent.setDataAndType(imageUri, "application/pdf");
+
+                if (sequence == 1) {
+                    startActivityForResult(intent, 102);
+                } else if (sequence == 2) {
+                    startActivityForResult(intent, 202);
+                }
+
+            } else {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                f = new File(folder + File.separator, "Camera.pdf");
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                if (sequence == 1) {
+                    startActivityForResult(intent, 102);
+                } else if (sequence == 2) {
+                    startActivityForResult(intent, 202);
+                }
+
+            }
+        } catch (Exception e) {
+            Log.e("select camera : ", " Exception : " + e.getMessage());
         }
-        // try to retrieve the image from the media store first
-        // this will only work for images selected from gallery
-        String[] projection = { MediaStore.Images.Media.DATA };
-        Cursor cursor = managedQuery(uri, projection, null, null, null);
-        if( cursor != null ){
-            int column_index = cursor
-                    .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            String path = cursor.getString(column_index);
-            cursor.close();
-            return path;
-        }
-        // this is our fallback here
-        return uri.getPath();
-    }
-    private String getRealPathFromURI(Uri selectedImage) {
-        String[] projection = { MediaStore.Images.Media.DATA };
-        @SuppressWarnings("deprecation")
-        Cursor cursor = managedQuery(selectedImage, projection, null, null, null);
-        int column_index = cursor
-                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
-    }
 
 
-    private Bitmap getBitmapFromUri(Uri uri) throws IOException {
-        ParcelFileDescriptor parcelFileDescriptor =
-               getContentResolver().openFileDescriptor(uri, "r");
-        FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
-        Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
-        parcelFileDescriptor.close();
-        return image;
     }
+
 
 }

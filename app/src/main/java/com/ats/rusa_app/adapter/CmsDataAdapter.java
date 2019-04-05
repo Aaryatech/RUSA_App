@@ -30,7 +30,9 @@ import android.widget.Toast;
 
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.activity.MainActivity;
+import com.ats.rusa_app.activity.WebViewActivity;
 import com.ats.rusa_app.constants.Constants;
+import com.ats.rusa_app.fragment.ContentFragment;
 import com.ats.rusa_app.model.CmsContentList;
 import com.ats.rusa_app.util.ClickableTableSpanImpl;
 import com.ats.rusa_app.util.HtmlHttpImageGetter;
@@ -39,6 +41,7 @@ import com.ats.rusa_app.util.RvWebView;
 import com.ats.rusa_app.util.TouchyWebView;
 import com.squareup.picasso.Picasso;
 
+import org.sufficientlysecure.htmltextview.ClickableTableSpan;
 import org.sufficientlysecure.htmltextview.DrawTableLinkSpan;
 import org.sufficientlysecure.htmltextview.HtmlTextView;
 
@@ -167,23 +170,15 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
 
         //htmlText.replaceAll("<iframe\\s+.*?\\s+src=(\".*?\").*?<\\/iframe>", "<a href=$1>CLICK TO WATCH</a>");
 
-        holder.webView.setWebChromeClient(new WebChromeClient());
-        holder.webView.setWebViewClient(new WebViewClient());
-        holder.webView.getSettings().setAppCacheEnabled(true);
-        holder.webView.getSettings().setJavaScriptEnabled(true);
-        holder.webView.getSettings().setLoadWithOverviewMode(true);
-        holder.webView.getSettings().setUseWideViewPort(true);
-        holder.webView.setInitialScale(0);
-
-        holder.webView.loadData(htmlText, "text/html", "utf-8");
         holder.rvWebview.loadData(htmlText, "text/html", "utf-8");
+        holder.webView.loadData(htmlText, "text/html", "utf-8");
         holder.tWebview.loadData(htmlText, "text/html", "utf-8");
 
         Spanned spanned = Html.fromHtml(htmlText, this, null);
         holder.tvHtml.setText(spanned);
         //tvHtml.setText(Html.fromHtml(htmlText));
 
-        holder.tvHtmlTxt.setClickableTableSpan(new ClickableTableSpanImpl(context));
+        holder.tvHtmlTxt.setClickableTableSpan(new ClickableTableSpanImpl());
         DrawTableLinkSpan drawTableLinkSpan = new DrawTableLinkSpan();
         drawTableLinkSpan.setTableLinkText("\n\n\nView Table");
         holder.tvHtmlTxt.setDrawTableLinkSpan(drawTableLinkSpan);
@@ -237,6 +232,13 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
 
             float smallestWidth = Math.min(widthDp, heightDp);
 
+
+            // Best to use indentation that matches screen density.
+//            DisplayMetrics metrics = new DisplayMetrics();
+//            activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+//            holder.tvHtmlTxt.setListIndentPx(metrics.density * 10);
+
+
             Log.e("CMS DATA ADPT ", "----------------- WIDTH  = " + smallestWidth);
 
             if (smallestWidth > 600) {
@@ -254,7 +256,8 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
 
             } else {
 
-                if (slugName.equalsIgnoreCase("downloads31")) {
+                if (width == 720) {
+
                     String temp = htmlText;
 
                     temp = temp + "&nbsp" +
@@ -266,22 +269,37 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
 
                 } else {
 
-                    String temp;
-                    if (height > 2000) {
-                        temp = htmlText.replaceAll("<br></br>", "<br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>");
+                    if (slugName.equalsIgnoreCase("downloads31")) {
+                        String temp = htmlText;
+
+                        temp = temp + "&nbsp" +
+                                "</body>" +
+                                "</html>";
+
+                        holder.tvHtmlTxt.setHtml(temp, new HtmlHttpImageGetter(holder.tvHtmlTxt));
+                        Log.e("html Text", "---------------------" + temp);
 
                     } else {
-                        temp = htmlText.replaceAll("<br></br>", "<br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>");
 
+                        String temp;
+                        if (height > 2000) {
+                            temp = htmlText.replaceAll("<br></br>", "<br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>");
+
+                        } else {
+                            temp = htmlText.replaceAll("<br></br>", "<br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>");
+
+                        }
+
+                        temp = temp + "&nbsp" +
+                                "</body>" +
+                                "</html>";
+
+                        holder.tvHtmlTxt.setHtml(temp, new HtmlHttpImageGetterNew(holder.tvHtmlTxt));
+                        Log.e("html Text", "---------------------" + temp);
                     }
 
-                    temp = temp + "&nbsp" +
-                            "</body>" +
-                            "</html>";
-
-                    holder.tvHtmlTxt.setHtml(temp, new HtmlHttpImageGetterNew(holder.tvHtmlTxt));
-                    Log.e("html Text", "---------------------" + temp);
                 }
+
 
             }
 
@@ -296,7 +314,7 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
         }
 
         if (htmlText.contains("iframe")) {
-            Log.e("CMS DATA ADPT ","*****************************************  IFRAME");
+            Log.e("CMS DATA ADPT ", "*****************************************  IFRAME");
             holder.llHtml.setVisibility(View.GONE);
             holder.llWebview.setVisibility(View.VISIBLE);
 
@@ -359,6 +377,20 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
                 // CharSequence t = tvHtml.getText();
                 // tvHtml.setText(t);
             }
+        }
+    }
+
+    class ClickableTableSpanImpl extends ClickableTableSpan {
+        @Override
+        public ClickableTableSpan newInstance() {
+            return new ClickableTableSpanImpl();
+        }
+
+        @Override
+        public void onClick(View widget) {
+            Intent intent = new Intent(context, WebViewActivity.class);
+            intent.putExtra("EXTRA_TABLE_HTML", getTableHtml());
+            context.startActivity(intent);
         }
     }
 

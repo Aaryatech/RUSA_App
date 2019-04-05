@@ -39,6 +39,7 @@ import com.ats.rusa_app.util.CommonDialog;
 import com.ats.rusa_app.util.CustomSharedPreference;
 import com.ats.rusa_app.util.TouchyWebView;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
+import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
@@ -76,7 +77,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     ArrayList<PhotoList> galleryList = new ArrayList<>();
     ArrayList<CompanyModel> companyList = new ArrayList<>();
     ArrayList<Detail> homeList = new ArrayList<>();
-   // ArrayList<Detail> homeVideoList = new ArrayList<>();
+    // ArrayList<Detail> homeVideoList = new ArrayList<>();
 
     int languageId;
 
@@ -116,20 +117,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         getAllHomeData(languageId);
         //getVideoGallery();
 
-        GallaryDetailList video1 = new GallaryDetailList(1, 1, 1, 1, "1", "video 1", "aa", "", "", 1, "", "", 1, 1, 1, 1, 1, 1, "H-1HFRhqhUI", "");
-        GallaryDetailList video2 = new GallaryDetailList(1, 1, 1, 1, "1", "video 2", "aa", "", "", 1, "", "", 1, 1, 1, 1, 1, 1, "Hl5y81RlASg", "");
-        GallaryDetailList video3 = new GallaryDetailList(1, 1, 1, 1, "1", "video 3", "aa", "", "", 1, "", "", 1, 1, 1, 1, 1, 1, "BUsiRIymzbQ", "");
-
-        ArrayList<GallaryDetailList> videoList = new ArrayList<>();
-        videoList.add(video1);
-        videoList.add(video2);
-        videoList.add(video3);
-
-        YoutubeVideosAdapter adapter = new YoutubeVideosAdapter(videoList, getContext());
-        video_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         // video_recyclerView.setAdapter(adapter);
 
-        String widgetInfo = "<a class=\"twitter-timeline\" href=\"http://twitter.com/HRDMinistry\"</a> " +
+        String widgetInfo = "<a class=\"twitter-timeline\" href=\"http://twitter.com/RUSA_MH\"</a> " +
                 "<div id=\"fb-root\"></div>" +
                 "<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+\"://platform.twitter.com/widgets.js\";fjs.parentNode.insertBefore(js,fjs);}}(document,\"script\",\"twitter-wjs\");</script>";
 
@@ -167,7 +157,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         wvTwitter.loadDataWithBaseURL("http://twitter.com", widgetInfo, "text/html", "UTF-8", null);
 
-        String widgetInfo1 = "<div class=\"fb-page\" data-href=\"https://www.facebook.com/HRDMinistry\" data-tabs=\"timeline\" data-small-header=\"false\" data-adapt-container-width=\"true\" data-hide-cover=\"false\" data-show-facepile=\"true\"><blockquote cite=\"https://www.facebook.com/HRDMinistry\" class=\"fb-xfbml-parse-ignore\"><a href=\"https://www.facebook.com/HRDMinistry\">Ministry of Human Resource Development, Government of India</a></blockquote></div>" + "<script async defer crossorigin=\"anonymous\" src=\"https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v3.2\"></script>";
+        String widgetInfo1 = "<div class=\"fb-page\" data-href=\"https://www.facebook.com/RUSAMaharashtra\" data-tabs=\"timeline\" data-small-header=\"false\" data-adapt-container-width=\"true\" data-hide-cover=\"false\" data-show-facepile=\"true\"><blockquote cite=\"https://www.facebook.com/RUSAMaharashtra\" class=\"fb-xfbml-parse-ignore\"><a href=\"https://www.facebook.com/RUSAMaharashtra\">Ministry of Human Resource Development, Government of India</a></blockquote></div>" + "<script async defer crossorigin=\"anonymous\" src=\"https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v3.2\"></script>";
 
         wvFb.setVerticalScrollBarEnabled(false);
         wvFb.setHorizontalScrollBarEnabled(false);
@@ -223,13 +213,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             video_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
                             video_recyclerView.setAdapter(adapter);
 
-
                             //Testimonials---------------------------
 
                             testimonialList.clear();
 
-                            if (detail.getTestimonialList().size()>0){
-                                for (int i=0;i<detail.getTestimonialList().size();i++){
+                            if (detail.getTestimonialList().size() > 0) {
+                                for (int i = 0; i < detail.getTestimonialList().size(); i++) {
                                     testimonialList.add(detail.getTestimonialList().get(i));
                                 }
                             }
@@ -240,10 +229,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             testomonial_recyclerView.setAdapter(tAdapter);
 
                             galleryList.clear();
-                            if(detail.getPhotoList().size()>0)
-                            {
-                                for(int i=0;i<detail.getPhotoList().size();i++)
-                                {
+                            if (detail.getPhotoList().size() > 0) {
+                                for (int i = 0; i < detail.getPhotoList().size(); i++) {
                                     galleryList.add(detail.getPhotoList().get(i));
                                 }
                             }
@@ -251,18 +238,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             imageSlider(galleryList);
 
 
-                            if(detail.getBaner()!=null)
-                            {
+                            if (detail.getBaner() != null) {
                                 String imageUri = Constants.BANENR_URL + detail.getBaner().getSliderImage();
                                 Log.e("URI11111", "-----------" + imageUri);
                                 Picasso.with(getContext()).load(imageUri).placeholder(R.drawable.slider).into(iv_baner);
                                 tv_banerName.setText(detail.getBaner().getSliderName());
                             }
 
-                            if(detail.getNewsList().size()>0)
-                            {
-                                for(int i=0;i<detail.getNewsList().size();i++)
-                                {
+                            if (detail.getNewsList().size() > 0) {
+                                for (int i = 0; i < detail.getNewsList().size(); i++) {
                                     newsList.add(detail.getNewsList().get(i));
                                 }
                             }
@@ -272,10 +256,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             new_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
                             new_recyclerView.setAdapter(nAdapter);
 
-                            if(detail.getCompanyList().size()>0)
-                            {
-                                for(int i=0;i<detail.getCompanyList().size();i++)
-                                {
+                            if (detail.getCompanyList().size() > 0) {
+                                for (int i = 0; i < detail.getCompanyList().size(); i++) {
                                     companyList.add(detail.getCompanyList().get(i));
                                 }
                             }
@@ -310,7 +292,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             Toast.makeText(getContext(), "No Internet Connection !", Toast.LENGTH_SHORT).show();
         }
     }
-
 
 
     public static String extractYTId(String ytUrl) {
@@ -417,7 +398,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
 
     }
-
 
 
     private void getVideoGallery() {
@@ -570,6 +550,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
         sliderLayout.setPresetTransformer(SliderLayout.Transformer.Accordion);
         sliderLayout.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+        //sliderLayout.setIndicatorVisibility(PagerIndicator.IndicatorVisibility.Invisible);
         sliderLayout.setCustomAnimation(new DescriptionAnimation());
         sliderLayout.setDuration(4000);
 

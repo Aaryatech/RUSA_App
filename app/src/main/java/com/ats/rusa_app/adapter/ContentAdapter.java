@@ -83,6 +83,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.MyViewHo
 
             if (model.getCmsContentList() != null) {
                 holder.cmsRecyclerView.setVisibility(View.VISIBLE);
+                Log.e("CONTENT ADAPTER","**********************************************************");
 
                 ArrayList<CmsContentList> cmsList = new ArrayList<>();
                 for (int i = 0; i < model.getCmsContentList().size(); i++) {

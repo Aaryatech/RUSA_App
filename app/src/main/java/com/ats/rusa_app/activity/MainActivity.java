@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity
         View header = navigationView.getHeaderView(0);
         tv_loginUserName = header.findViewById(R.id.loginUserName);
 
-        try {
+       /* try {
             intent = getIntent();
             final String skipLogin = intent.getStringExtra("code");
             Log.e("Skip", "-----------" + skipLogin);
@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity
         } catch (Exception e) {
             Log.e("MAIN ACT ", "------------ EXCEPTION----------------- " + e.getMessage());
             e.printStackTrace();
-        }
+        }*/
 
         try {
             if (loginUser != null) {
@@ -377,13 +377,26 @@ public class MainActivity extends AppCompatActivity
                                         //   Menu topChannelMenu = drawerMenu.addSubMenu("" + model.getSectionlist().get(i).getSectionName());
                                         MenuGroup menuGroup = null;
                                         if (model.getSectionlist().get(i).getCatCount() == 0) {
+
                                             if (model.getSectionlist().get(i).getExternalUrl() != null) {
-                                                menuGroup = new MenuGroup(model.getSectionlist().get(i).getSectionName(), false, false, true, "" + model.getSectionlist().get(i).getExternalUrl());
+                                                Log.e("MAIN ACT", " *********************************    NOT  NULL");
+
+                                                if (model.getSectionlist().get(i).getExternalUrl().equalsIgnoreCase("imgGallary")) {
+                                                    menuGroup = new MenuGroup(model.getSectionlist().get(i).getSectionName(), false, false, false, "" + model.getSectionlist().get(i).getExternalUrl());
+                                                } else {
+                                                    menuGroup = new MenuGroup(model.getSectionlist().get(i).getSectionName(), false, false, false, "" + model.getSectionlist().get(i).getSectionSlugname());
+                                                }
                                             } else {
                                                 menuGroup = new MenuGroup(model.getSectionlist().get(i).getSectionName(), false, false, false, "" + model.getSectionlist().get(i).getSectionSlugname());
                                             }
                                             headerList.add(menuGroup);
-                                        } else {
+
+                                        }
+
+
+//                                        menuGroup = new MenuGroup(model.getSectionlist().get(i).getSectionName(), false, false, false, "" + model.getSectionlist().get(i).getSectionSlugname());
+//                                        headerList.add(menuGroup);
+                                        else {
                                             menuGroup = new MenuGroup(model.getSectionlist().get(i).getSectionName(), true, true, false, "");
                                             headerList.add(menuGroup);
                                         }
@@ -399,12 +412,22 @@ public class MainActivity extends AppCompatActivity
                                                 // topChannelMenu.add("" + model.getCategoryList().get(j).getCatName());
 
                                                 if (model.getCategoryList().get(j).getExternalUrl() != null) {
-                                                    MenuGroup childModel = new MenuGroup(model.getCategoryList().get(j).getCatName(), false, false, true, model.getCategoryList().get(j).getExternalUrl());
-                                                    childModelsList.add(childModel);
+                                                    Log.e("MAIN ACT", " *********************************    NOT  NULL");
+
+                                                    if (model.getCategoryList().get(j).getExternalUrl().equalsIgnoreCase("imgGallary")) {
+                                                        MenuGroup childModel = new MenuGroup(model.getCategoryList().get(j).getCatName(), false, false, false, model.getCategoryList().get(j).getExternalUrl());
+                                                        childModelsList.add(childModel);
+                                                    } else {
+                                                        MenuGroup childModel = new MenuGroup(model.getCategoryList().get(j).getCatName(), false, false, false, model.getCategoryList().get(j).getSlugName());
+                                                        childModelsList.add(childModel);
+                                                    }
                                                 } else {
                                                     MenuGroup childModel = new MenuGroup(model.getCategoryList().get(j).getCatName(), false, false, false, model.getCategoryList().get(j).getSlugName());
                                                     childModelsList.add(childModel);
                                                 }
+
+                                                //MenuGroup childModel = new MenuGroup(model.getCategoryList().get(j).getCatName(), false, false, false, model.getCategoryList().get(j).getSlugName());
+                                                // childModelsList.add(childModel);
 
 
                                                 if (model.getSubCatList().size() > 0) {
@@ -412,13 +435,25 @@ public class MainActivity extends AppCompatActivity
                                                     for (int k = 0; k < model.getSubCatList().size(); k++) {
                                                         if (model.getCategoryList().get(j).getCatId() == model.getSubCatList().get(k).getParentId()) {
                                                             // subChannelMenu = topChannelMenu.addSubMenu("" + model.getCategoryList().get(j).getCatName());
+
+
                                                             if (model.getSubCatList().get(k).getExternalUrl() != null) {
-                                                                MenuGroup childModel1 = new MenuGroup(model.getSubCatList().get(k).getSubCatName(), false, false, true, model.getSubCatList().get(k).getExternalUrl());
-                                                                childModelsList.add(childModel1);
+                                                                Log.e("MAIN ACT", " *********************************    NOT  NULL");
+
+                                                                if (model.getSubCatList().get(k).getExternalUrl().equalsIgnoreCase("imgGallary")) {
+                                                                    MenuGroup childModel1 = new MenuGroup(model.getSubCatList().get(k).getSubCatName(), false, false, false, model.getSubCatList().get(k).getExternalUrl());
+                                                                    childModelsList.add(childModel1);
+                                                                } else {
+                                                                    MenuGroup childModel1 = new MenuGroup(model.getSubCatList().get(k).getSubCatName(), false, false, false, model.getSubCatList().get(k).getSubSlugName());
+                                                                    childModelsList.add(childModel1);
+                                                                }
                                                             } else {
                                                                 MenuGroup childModel1 = new MenuGroup(model.getSubCatList().get(k).getSubCatName(), false, false, false, model.getSubCatList().get(k).getSubSlugName());
                                                                 childModelsList.add(childModel1);
                                                             }
+
+//                                                            MenuGroup childModel1 = new MenuGroup(model.getSubCatList().get(k).getSubCatName(), false, false, false, model.getSubCatList().get(k).getSubSlugName());
+//                                                            childModelsList.add(childModel1);
 
                                                         }
 
@@ -483,7 +518,8 @@ public class MainActivity extends AppCompatActivity
                             commonDialog.dismiss();
                             Log.e("Data Null : ", "-----------");
                         }
-                    } catch (Exception e) {
+                    } catch (
+                            Exception e) {
                         commonDialog.dismiss();
                         Log.e("Exception : ", "-----------" + e.getMessage());
                         e.printStackTrace();
@@ -545,7 +581,7 @@ public class MainActivity extends AppCompatActivity
                             public void onClick(DialogInterface dialog, int which) {
 
                                 CustomSharedPreference.deletePreference(MainActivity.this);
-                                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                Intent intent = new Intent(MainActivity.this, MainActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                                 finish();
@@ -634,9 +670,13 @@ public class MainActivity extends AppCompatActivity
                         builder.show();
 
                     } else if (model.getUrl().equalsIgnoreCase("videos19")) {
-                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                        ft.replace(R.id.content_frame, new VideoFragment(), "HomeFragment");
-                        ft.commit();
+
+                        Fragment adf = new VideoFragment();
+                        Bundle args = new Bundle();
+                        args.putString("slugName", model.getUrl());
+                        adf.setArguments(args);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+
 
                         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                         drawer.closeDrawer(GravityCompat.START);
@@ -654,13 +694,14 @@ public class MainActivity extends AppCompatActivity
 //                        webView.loadUrl(model.url);
 //                        onBackPressed();
 
+                        Toast.makeText(MainActivity.this, "" + model.getUrl(), Toast.LENGTH_SHORT).show();
+
                         Fragment adf = new NewContentFragment();
                         Bundle args = new Bundle();
                         args.putString("slugName", model.getUrl());
                         adf.setArguments(args);
                         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
 
-                        // Toast.makeText(MainActivity.this, "" + model.getUrl(), Toast.LENGTH_SHORT).show();
 
                         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                         drawer.closeDrawer(GravityCompat.START);
@@ -725,9 +766,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.linearLayout_home) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, new HomeFragment(), "Exit");
-            ft.commit();
+
+            Intent intent = new Intent(MainActivity.this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+
+//            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//            ft.replace(R.id.content_frame, new HomeFragment(), "Exit");
+//            ft.commit();
         } else if (v.getId() == R.id.linearLayout_aboutUs) {
             Fragment adf = new NewContentFragment();
             Bundle args = new Bundle();
@@ -736,11 +782,9 @@ public class MainActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
 
         } else if (v.getId() == R.id.linearLayout_gallery) {
-            Fragment adf = new NewContentFragment();
-            Bundle args = new Bundle();
-            args.putString("slugName", "rusa-photo-gallery17");
-            adf.setArguments(args);
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, new PhotoGalleryFragment(), "HomeFragment");
+            ft.commit();
 
         } else if (v.getId() == R.id.linearLayout_news) {
 //            Fragment adf = new NewContentFragment();

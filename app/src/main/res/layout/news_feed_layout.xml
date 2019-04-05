@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardView"
     android:layout_width="@dimen/card_width"
-    android:layout_height="@dimen/card_height"
+    android:layout_height="wrap_content"
     android:layout_margin="@dimen/margin_tiny"
     app:cardElevation="@dimen/margin_tiny"
     app:cardUseCompatPadding="true">
@@ -24,18 +24,25 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_tiny"
             android:fontFamily="@font/lato_regular"
+            android:gravity="center"
+            android:lines="2"
             android:maxLines="2"
+            android:textAlignment="center"
             android:textColor="@color/colorOrange"
-            android:textSize="@dimen/text_tiny"
-            />
+            android:textSize="@dimen/text_tiny" />
 
         <org.sufficientlysecure.htmltextview.HtmlTextView
             android:id="@+id/tv_newsDiscription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_tiny"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginBottom="2dp"
             android:fontFamily="@font/lato_light"
-            android:maxLines="2"
+            android:gravity="center"
+            android:lines="1"
+            android:maxLines="1"
+            android:textAlignment="center"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/text_tiny" />
 

@@ -74,7 +74,7 @@ public class GalleryAdapter extends BaseAdapter {
             holder.llVideo.setVisibility(View.GONE);
 
             try {
-                Picasso.with(mContext).load(Constants.GALLERY_URL + model.getFileName()).placeholder(R.drawable.rusa_logo).into(holder.ivImg);
+                Picasso.with(mContext).load(Constants.GALLERY_URL + model.getFileName()).placeholder(R.drawable.img_placeholder).into(holder.ivImg);
             } catch (Exception e) {
             }
 

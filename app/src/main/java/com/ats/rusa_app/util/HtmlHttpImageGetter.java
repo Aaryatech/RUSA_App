@@ -170,16 +170,15 @@ public class HtmlHttpImageGetter implements ImageGetter {
                 Log.e("WIDTH", "--------*******************----------" + (int) (drawable.getIntrinsicWidth() * scale));
                 Log.e("HEIGHT", "--------******************----------" + (int) (drawable.getIntrinsicHeight() * scale));
 
-                ((BitmapDrawable) drawable).setGravity(Gravity.CENTER);
+                ((BitmapDrawable) drawable).setGravity(Gravity.CENTER_HORIZONTAL);
 
                 drawable.setBounds(0, 0, (int) (drawable.getIntrinsicWidth() * scale), (int) (drawable.getIntrinsicHeight() * scale));
-
+                //drawable.setBounds(0, 0, 720, 1280);
 
 //                float multiplier = (float) 1000 / (float) drawable.getIntrinsicWidth();
-//                int width = (int) (drawable.getIntrinsicWidth() * multiplier);
-//                int height = (int) (drawable.getIntrinsicHeight() * multiplier);
-//                drawable.setBounds(0, 0, width, height);
-
+//                int width = (int) (drawable.getIntrinsicWidth() * scale);
+//                int height = (int) (drawable.getIntrinsicHeight() * scale);
+//                drawable.setBounds(0, 0, 1000, height);
 
                 return drawable;
             } catch (Exception e) {
