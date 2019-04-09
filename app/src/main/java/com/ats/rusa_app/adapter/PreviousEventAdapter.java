@@ -64,6 +64,9 @@ public class PreviousEventAdapter extends RecyclerView.Adapter<PreviousEventAdap
             Log.e("UPCOMING EVE ADPT","------------------ EXCEPTION -"+e.getMessage());
         }
 
+        if(model.getApply()==1 && model.getIsFeedback()==0) {
+            myViewHolder.linearLayout.setVisibility(View.VISIBLE);
+        }
 
         myViewHolder.tv_feedback.setOnClickListener(new View.OnClickListener() {
             @Override

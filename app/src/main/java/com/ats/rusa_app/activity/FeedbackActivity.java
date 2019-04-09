@@ -1,6 +1,9 @@
 package com.ats.rusa_app.activity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -44,7 +47,6 @@ public class FeedbackActivity extends AppCompatActivity implements View.OnClickL
         ed_msg=(EditText)findViewById(R.id.ed_Msg);
         btn_save=(Button)findViewById(R.id.btn_saveFeedback);
 
-
         String previousStr = getIntent().getStringExtra("model");
         Gson gson = new Gson();
         previousEvent = gson.fromJson(previousStr, PrevEvent.class);
@@ -68,28 +70,32 @@ public class FeedbackActivity extends AppCompatActivity implements View.OnClickL
             }
         });
 
+        if(rg.getCheckedRadioButtonId()==-1){
+            rb_neutral.setChecked(true);
+            //     boolean checked = ((RadioButton) view).isChecked();
+            selectedtext= "Neutral";
+        }
+
         btn_save.setOnClickListener(this);
 
     }
 
-    /**
-     * Called when a view has been clicked.
-     *
-     * @param v The view that was clicked.
-     */
     @Override
     public void onClick(View v) {
         if(v.getId()==R.id.btn_saveFeedback)
         {
             if(selectedtext.equals("Very Satisfied"))
             {
-                getFeedbackSave(previousEvent.getNewsblogsId(),loginUser.getRegId(),"",5);
+                String msg=ed_msg.getText().toString();
+                getFeedbackSave(previousEvent.getNewsblogsId(),loginUser.getRegId(),msg,5);
             }else if(selectedtext.equals("Satisfied"))
             {
-                getFeedbackSave(previousEvent.getNewsblogsId(),loginUser.getRegId(),"",4);
+                String msg=ed_msg.getText().toString();
+                getFeedbackSave(previousEvent.getNewsblogsId(),loginUser.getRegId(),msg,4);
             }else if(selectedtext.equals("Neutral"))
             {
-                getFeedbackSave(previousEvent.getNewsblogsId(),loginUser.getRegId(),"",3);
+                String msg=ed_msg.getText().toString();
+                getFeedbackSave(previousEvent.getNewsblogsId(),loginUser.getRegId(),msg,3);
             }else if(selectedtext.equals("Dissatisfied"))
             {
                 String msg=ed_msg.getText().toString();
@@ -115,7 +121,6 @@ public class FeedbackActivity extends AppCompatActivity implements View.OnClickL
             }
         }
     }
-
     private void getFeedbackSave(Integer newsblogsId, Integer regId, String msg, int value) {
         Log.e("PARAMETERS : ", "        EVENT ID : " + newsblogsId + "      REG ID : " + regId+ "      MSG : " + msg+ "      VALUE : " + value);
 
@@ -132,6 +137,23 @@ public class FeedbackActivity extends AppCompatActivity implements View.OnClickL
 
                            // Toast.makeText(getApplicationContext(), ""+response.message(), Toast.LENGTH_SHORT).show();
                             Log.e("FEEDBACK SAVE","-----------------------------"+response.body());
+                            AlertDialog.Builder builder = new AlertDialog.Builder(FeedbackActivity.this, R.style.AlertDialogTheme);
+                            builder.setTitle("");
+                            builder.setMessage("Feedback has being save successfully");
+                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //finish();
+                                    Intent intent = new Intent(FeedbackActivity.this, MainActivity.class);
+                                    intent.putExtra("Feedback", "Feedback");
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+                                    dialog.dismiss();
+                                }
+                            });
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+
                             commonDialog.dismiss();
                         }else {
                             commonDialog.dismiss();

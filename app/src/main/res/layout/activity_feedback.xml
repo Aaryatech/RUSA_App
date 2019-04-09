@@ -13,7 +13,7 @@
         android:id="@+id/btn_saveFeedback"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/contact_button_background"
+        android:background="@drawable/button_background"
         android:fontFamily="@font/lato_bold"
         android:text="save"
         android:textColor="@color/colorWhite" />
@@ -37,7 +37,7 @@
                 android:fontFamily="@font/lato_bold"
                 android:gravity="center"
                 android:text="Feedback Form"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/colorRed"
                 android:textSize="20dp" />
 
             <TextView
@@ -47,7 +47,7 @@
                 android:layout_marginTop="30dp"
                 android:fontFamily="@font/lato_regular"
                 android:text="Please rate your over all level of satisfaction with our event"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="16dp" />
 
             <RadioGroup
@@ -66,10 +66,10 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="10dp"
                     android:layout_weight="1"
-                    android:buttonTint="@color/colorBlack"
+                    android:buttonTint="@color/colorPrimaryDark"
                     android:fontFamily="@font/lato_regular"
                     android:text="Very Satisfied"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="16dp" />
 
                 <RadioButton
@@ -80,10 +80,10 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="10dp"
                     android:layout_weight="1"
-                    android:buttonTint="@color/colorBlack"
+                    android:buttonTint="@color/colorPrimaryDark"
                     android:fontFamily="@font/lato_regular"
                     android:text="Satisfied"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="16dp" />
 
                 <RadioButton
@@ -94,10 +94,10 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="10dp"
                     android:layout_weight="1"
-                    android:buttonTint="@color/colorBlack"
+                    android:buttonTint="@color/colorPrimaryDark"
                     android:fontFamily="@font/lato_regular"
                     android:text="Neutral"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="16dp" />
 
                 <RadioButton
@@ -108,10 +108,10 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="10dp"
                     android:layout_weight="1"
-                    android:buttonTint="@color/colorBlack"
+                    android:buttonTint="@color/colorPrimaryDark"
                     android:fontFamily="@font/lato_regular"
                     android:text="Dissatisfied"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="16dp" />
 
                 <RadioButton
@@ -122,14 +122,13 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="10dp"
                     android:layout_weight="1"
-                    android:buttonTint="@color/colorBlack"
+                    android:buttonTint="@color/colorPrimaryDark"
                     android:fontFamily="@font/lato_regular"
                     android:text="Very Dissatisfied"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="16dp" />
 
             </RadioGroup>
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -137,7 +136,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/lato_regular"
                 android:text="Are there any other comments of suggestions you like to make? "
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="16dp" />
 
             <EditText
@@ -150,6 +149,7 @@
                 android:background="@drawable/edittext_background"
                 android:hint="Message"
                 android:inputType="text"
+                android:textColor="@color/colorPrimaryDark"
                 android:lines="5"
                 android:maxLines="5"
                 android:padding="10dp" />

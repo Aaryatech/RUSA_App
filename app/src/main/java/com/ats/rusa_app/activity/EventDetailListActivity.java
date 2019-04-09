@@ -1,58 +1,42 @@
 package com.ats.rusa_app.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.ParcelFileDescriptor;
 import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ats.rusa_app.BuildConfig;
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.constants.Constants;
-import com.ats.rusa_app.model.EventRegCheck;
 import com.ats.rusa_app.model.EventRegistration;
+import com.ats.rusa_app.model.Info;
 import com.ats.rusa_app.model.Login;
 import com.ats.rusa_app.model.UpcomingEvent;
 import com.ats.rusa_app.util.CommonDialog;
-import com.ats.rusa_app.util.Constant;
 import com.ats.rusa_app.util.CustomSharedPreference;
-import com.ats.rusa_app.util.FilePath;
 import com.ats.rusa_app.util.PermissionsUtil;
-import com.ats.rusa_app.util.RealPathUtil;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileDescriptor;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.regex.Pattern;
+import java.util.Arrays;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -61,12 +45,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static java.security.AccessController.getContext;
-
 public class EventDetailListActivity extends AppCompatActivity implements View.OnClickListener {
     UpcomingEvent upcomingEvent;
     ImageView imageView;
     TextView tv_eventName, tv_eventVenu, tv_eventDate, tv_uploadText, btn_upload;
+    LinearLayout linearLayout_attach;
     Button btn_apply;
     Login loginUser;
     private String selectedImagePath;
@@ -91,7 +74,6 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail_list);
 
-
         imageView = (ImageView) findViewById(R.id.iv_baner);
         tv_eventName = (TextView) findViewById(R.id.tvEventName);
         tv_eventVenu = (TextView) findViewById(R.id.tvEventVenu);
@@ -99,7 +81,7 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
         btn_apply = (Button) findViewById(R.id.btn_apply);
         btn_upload = findViewById(R.id.btn_upload);
         tv_uploadText = (TextView) findViewById(R.id.tv_uploadText);
-
+        linearLayout_attach=(LinearLayout)findViewById(R.id.linearLayout_Attach);
         btn_apply.setOnClickListener(this);
         btn_upload.setOnClickListener(this);
 
@@ -126,14 +108,27 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
             Log.e("URI", "-----------" + imageUri);
             Picasso.with(getApplicationContext()).load(imageUri).placeholder(getResources().getDrawable(R.drawable.img_placeholder)).into(imageView);
         } catch (Exception e) {
-            Log.e("Exception User : ", "-----------" + e.getMessage());
+            Log.e("Exception  : ", "-----------" + e.getMessage());
         }
 
         try {
             // if (loginUser.getIsActive() == 1 && loginUser.getDelStatus() == 1 && loginUser.getEmailVerified() == 1) {
-            if (loginUser.getExInt2() == 1) {
-                btn_upload.setVisibility(View.VISIBLE);
-                tv_uploadText.setVisibility(View.VISIBLE);
+            if (upcomingEvent.getExInt2() == 1) {
+//                btn_upload.setVisibility(View.VISIBLE);
+//                tv_uploadText.setVisibility(View.VISIBLE);
+                   linearLayout_attach.setVisibility(View.VISIBLE);
+            }
+            String Values= upcomingEvent.getExVar2().toString();
+            Log.e("Values","-------------"+Values);
+            List<String> items = Arrays.asList(Values.split("\\s*,\\s*"));
+            // String[] values1 = Values.split("\\s*,\\s*");
+            Log.e("Values1","-------------"+ items);
+            String userType= String.valueOf(loginUser.getUserType());
+            for(int i=0;i<items.size();i++) {
+                if (items.get(i).equals(userType)) {
+                    btn_apply.setVisibility(View.VISIBLE);
+
+                }
             }
 
         } catch (Exception e) {
@@ -148,24 +143,42 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
             try {
                 if (loginUser.getIsActive() == 1 && loginUser.getDelStatus() == 1 && loginUser.getEmailVerified() == 1) {
                     //getAppliedEvent(upcomingEvent.getNewsblogsId(), loginUser.getRegId());
+                        if(loginUser.getExInt2()==1) {
+                            File imgFile = new File(imagePath);
+                            int pos = imgFile.getName().lastIndexOf(".");
+                            String ext = imgFile.getName().substring(pos + 1);
+                            String fileName = loginUser.getRegId() + "_" + System.currentTimeMillis() + "." + ext;
 
-                    File imgFile = new File(imagePath);
-                    int pos = imgFile.getName().lastIndexOf(".");
-                    String ext = imgFile.getName().substring(pos + 1);
-                    String fileName = loginUser.getRegId() + "_" + System.currentTimeMillis() + "." + ext;
-
-                    sendDocToServer(fileName, upcomingEvent.getNewsblogsId(), loginUser.getRegId());
+                            sendDocToServer(fileName, upcomingEvent.getNewsblogsId(), loginUser.getRegId());
+                        }else{
+                            getAppliedEvent(upcomingEvent.getNewsblogsId(), loginUser.getRegId(), "");
+                        }
 
                 } else {
-                    Toast.makeText(EventDetailListActivity.this, "Not Apply For This Event", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(this, LoginActivity.class);
-                    startActivity(intent);
+
+                    //Toast.makeText(EventDetailListActivity.this, "Not Apply For This Event", Toast.LENGTH_SHORT).show();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(EventDetailListActivity.this, R.style.AlertDialogTheme);
+                    builder.setTitle("");
+                    builder.setMessage("Not Apply For This Event");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(EventDetailListActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+
+
                 }
             } catch (Exception e) {
-                Log.e("Exception User : ", "-----------" + e.getMessage());
-                Toast.makeText(EventDetailListActivity.this, "Not Apply For This Event", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
+                Log.e("Exception1 : ", "-----------" + e.getMessage());
+               e.printStackTrace();
+               // Toast.makeText(EventDetailListActivity.this, "Not Apply For This Event", Toast.LENGTH_SHORT).show();
+
+
             }
 
 
@@ -198,17 +211,17 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
     }
 
     private void getAppliedEvent(Integer newsblogsId, Integer regId, final String fileName) {
-
         if (Constants.isOnline(getApplicationContext())) {
             final CommonDialog commonDialog = new CommonDialog(getApplicationContext(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<ArrayList<EventRegCheck>> listCall = Constants.myInterface.getAppliedEvents(newsblogsId, regId);
-            listCall.enqueue(new Callback<ArrayList<EventRegCheck>>() {
+            Call<Info> listCall = Constants.myInterface.getAppliedEvents(newsblogsId, regId);
+            listCall.enqueue(new Callback<Info>() {
                 @Override
-                public void onResponse(Call<ArrayList<EventRegCheck>> call, Response<ArrayList<EventRegCheck>> response) {
+                public void onResponse(Call<Info> call, Response<Info> response) {
                     try {
-                        if (response.body().isEmpty()) {
+
+                        if (response.body().getError().equals(false)) {
 
                             Log.e("APPLIED EVENT LIST : ", " - " + response.body());
 
@@ -218,15 +231,27 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
 
                             commonDialog.dismiss();
 
-                        } else if (response.body() != null) {
-                            commonDialog.dismiss();
+                        } else if (response.body().getError().equals(true)) {
+
                             Log.e("APPLIED EVENT LIST1 : ", " - " + response.body());
-                            Toast.makeText(EventDetailListActivity.this, "Already Applied For This Event", Toast.LENGTH_SHORT).show();
-                            finish();
-//                            Intent intent=new Intent(EventDetailListActivity.this, MainActivity.class);
-//                            startActivity(intent);
+                            // Toast.makeText(EventDetailListActivity.this, "Already Applied For This Event", Toast.LENGTH_SHORT).show();
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(EventDetailListActivity.this, R.style.AlertDialogTheme);
+                            builder.setTitle("");
+                            builder.setMessage("Already Applied For This Event");
+                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                    dialog.dismiss();
+                                }
+                            });
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+                            //commonDialog.dismiss();
 
                         }
+
                     } catch (Exception e) {
                         commonDialog.dismiss();
                         Log.e("Exception : ", "-----------" + e.getMessage());
@@ -235,7 +260,7 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
                 }
 
                 @Override
-                public void onFailure(Call<ArrayList<EventRegCheck>> call, Throwable t) {
+                public void onFailure(Call<Info> call, Throwable t) {
                     commonDialog.dismiss();
                     Log.e("onFailure : ", "-----------" + t.getMessage());
                     t.printStackTrace();
@@ -244,6 +269,7 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
         } else {
             Toast.makeText(getApplicationContext(), "No Internet Connection !", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     private void getEventRegistration(EventRegistration eventRegistration) {
@@ -265,9 +291,21 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
                             Log.e("EVENT REGISTRATION", "-----------------------------" + response.body());
                             Log.e("EVENT REG MODEL", "-----------------------------" + model);
 
-                            Toast.makeText(EventDetailListActivity.this, "Applied for this Event", Toast.LENGTH_SHORT).show();
-                            commonDialog.dismiss();
-                            finish();
+                            //Toast.makeText(EventDetailListActivity.this, "Applied for this Event", Toast.LENGTH_SHORT).show();
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(EventDetailListActivity.this, R.style.AlertDialogTheme);
+                            builder.setTitle("");
+                            builder.setMessage("Succesfully Applied for this Event");
+                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                    dialog.dismiss();
+                                }
+                            });
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+
 
                         } else {
                             commonDialog.dismiss();
@@ -407,7 +445,6 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", imgFile.getName(), requestFile);
 
         RequestBody imgName = RequestBody.create(MediaType.parse("text/plain"), filename);
-
 
         Call<JSONObject> call = Constants.myInterface.docUpload(body, imgName);
         call.enqueue(new Callback<JSONObject>() {

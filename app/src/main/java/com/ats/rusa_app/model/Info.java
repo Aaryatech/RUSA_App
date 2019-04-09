@@ -26,4 +26,12 @@ public class Info {
     public void setError(Boolean error) {
         this.error = error;
     }
+
+    @Override
+    public String toString() {
+        return "Info{" +
+                "msg='" + msg + '\'' +
+                ", error=" + error +
+                '}';
+    }
 }

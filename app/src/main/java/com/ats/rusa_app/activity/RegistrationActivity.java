@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.constants.Constants;
+import com.ats.rusa_app.model.Info;
 import com.ats.rusa_app.model.Reg;
 import com.ats.rusa_app.util.CommonDialog;
 import com.google.gson.Gson;
@@ -39,6 +40,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     String spinnerPosition;
     long dateMillis;
     int yyyy, mm, dd;
+    boolean isValidEmail = false, isValidMob = false;
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
     private BroadcastReceiver receiver;
     ArrayList<String> typeNameArray = new ArrayList<>();
@@ -96,7 +98,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     ed_univercityAff.setVisibility(View.VISIBLE);
                 }else if(spinnerPosition.equals("Colleges"))
                 {
-
                     ed_Name.setVisibility(View.VISIBLE);
                     ed_Name.setHint(getString(R.string.str_institute_name));
                     ed_email.setVisibility(View.VISIBLE);
@@ -141,7 +142,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             if(spinnerPosition.equals("Individual"))
                 {
                     Log.e("SpinnerInd","-----------------"+spinnerPosition);
-                    boolean isValidEmail = false, isValidClgName = false,isValidUniverAff = false,isValidName = false,  isValidNameDept = false, isValidNameAuthPer = false, isValidMob=false, isValidDesigPerson=false;
+                    boolean isValidClgName = false,isValidUniverAff = false,isValidName = false,  isValidNameDept = false, isValidNameAuthPer = false,  isValidDesigPerson=false;
                     String email,alt_email,fullName,clgName,univercityAff,nameDept,nameAuthPer,dob,mob,designPerName;
                     fullName = ed_Name.getText().toString().trim();
                     email = ed_email.getText().toString().trim();
@@ -177,6 +178,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             ed_email.setError("invalid email");
                         } else {
                             ed_email.setError(null);
+                           // isValidEmail = true;
+                            getCheckUniqueField(email,2,0);
                             isValidEmail = true;
                         }
                     } else {
@@ -200,12 +203,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         ed_nameDept.setError(null);
                         isValidNameDept = true;
                     }
-                    if (nameAuthPer.isEmpty()) {
-                        ed_nameAuthePerson.setError("required");
-                    }  else {
-                        ed_nameAuthePerson.setError(null);
-                        isValidNameAuthPer = true;
-                    }
                     if (designPerName.isEmpty()) {
                         ed_designationPerson.setError("required");
                     }  else {
@@ -221,6 +218,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         ed_mobile.setError("invalid number");
                     }else {
                         ed_mobile.setError(null);
+                        //isValidMob = true;
+                        getCheckUniqueField(mob,1,0);
                         isValidMob = true;
                     }
 
@@ -228,10 +227,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd");
                         SimpleDateFormat formatter1 = new SimpleDateFormat("dd-MM-yyyy");
 
-
-
                         Reg registration = new Reg(0, uniqueId, 1, email, alt_email, "0", fullName, "", clgName, univercityAff, designPerName, nameDept, mob, "", null, "", "", "Android", 0, 1, sdf.format(System.currentTimeMillis()), null, 0, 0, 0, "", "", "", 0, "", 0, 0);
                         Log.e("Registration", "--------------" + registration);
+
                         getRegistration(registration);
 
                         ed_Name.setText("");
@@ -241,6 +239,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         ed_univercityAff.setText("");
                         ed_nameDept.setText("");
                         ed_DOB.setText("");
+                        ed_designationPerson.setText("");
                         ed_mobile.setText("");
                         ed_nameAuthePerson.setText("");
                          }
@@ -249,7 +248,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 if(spinnerPosition.equals("Colleges"))
                 {
                     Log.e("Spinnerclg","-----------------"+spinnerPosition);
-                    boolean isValidEmail = false,isValidUniverAff = false,isValidName = false, isValidDesigPerson = false, isValidNameDept = false, isValidNameAuthPer = false,isValidMob=false;
+                    boolean isValidUniverAff = false,isValidName = false, isValidDesigPerson = false, isValidNameDept = false, isValidNameAuthPer = false;
                     String email,alt_email,institudeName,univercityAff,nameDept,nameAuthPer,designPerName,AISHECode,mob;
                     institudeName = ed_Name.getText().toString().trim();
                     email = ed_email.getText().toString().trim();
@@ -272,7 +271,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             ed_email.setError("invalid email");
                         } else {
                             ed_email.setError(null);
-                            isValidEmail = true;
+                           // isValidEmail = true;
+                            getCheckUniqueField(email,2,0);
                         }
                     } else {
                         isValidEmail = true;
@@ -316,7 +316,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         ed_mobile.setError("invalid number");
                     }else {
                         ed_mobile.setError(null);
-                        isValidMob = true;
+                        //isValidMob = true;
+                        getCheckUniqueField(mob,1,0);
                     }
 
                     if (isValidName && isValidEmail  && isValidNameDept && isValidNameAuthPer  && isValidUniverAff && isValidDesigPerson && isValidMob ) {
@@ -331,6 +332,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         ed_designationPerson.setText("");
                         ed_univercityAff.setText("");
                         ed_nameDept.setText("");
+                        ed_designationPerson.setText("");
                         ed_aisheCode.setText("");
                         ed_mobile.setText("");
                         ed_nameAuthePerson.setText("");
@@ -339,7 +341,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 if(spinnerPosition.equals("University"))
                 {
                     Log.e("SpinnerUni","-----------------"+spinnerPosition);
-                    boolean isValidEmail = false,isValidName = false, isValidDesigPerson = false, isValidNameDept = false, isValidNameAuthPer = false,isValidMob=false;
+                    boolean isValidName = false, isValidDesigPerson = false, isValidNameDept = false, isValidNameAuthPer = false;
                     String email,alt_email,UnivercityName,nameDept,nameAuthPer,designPerName,AISHECode,mob;
                     UnivercityName = ed_Name.getText().toString().trim();
                     email = ed_email.getText().toString().trim();
@@ -362,7 +364,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             ed_email.setError("invalid email");
                         } else {
                             ed_email.setError(null);
-                            isValidEmail = true;
+                           // isValidEmail = true;
+                            getCheckUniqueField(email,2,0);
                         }
                     } else {
                         isValidEmail = true;
@@ -408,7 +411,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         ed_mobile.setError("invalid number");
                     }else {
                         ed_mobile.setError(null);
-                        isValidMob = true;
+                        //isValidMob = true;
+                        getCheckUniqueField(mob,1,0);
                     }
 
                     if (isValidName && isValidEmail  && isValidNameDept && isValidNameAuthPer   && isValidDesigPerson && isValidMob) {
@@ -450,6 +454,65 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
             }
     }
+
+    private void getCheckUniqueField(String inputValue, final int valueType, int primaryKey) {
+        Log.e("PARAMETERS : ", "        INPUT VALUE : " + inputValue + "      VALUE TYPE : " + valueType+ "      PRIMARY KEY : " + primaryKey);
+
+        if (Constants.isOnline(getApplicationContext())) {
+            final CommonDialog commonDialog = new CommonDialog(RegistrationActivity.this, "Loading", "Please Wait...");
+            commonDialog.show();
+
+            Call<Info> listCall = Constants.myInterface.getCheckUniqueField(inputValue,valueType,primaryKey);
+            listCall.enqueue(new Callback<Info>() {
+                @Override
+                public void onResponse(Call<Info> call, Response<Info> response) {
+                    try {
+
+                                if(response.body().getError().equals(true))
+                                {
+                                    if(valueType==1)
+                                    {
+                                        ed_mobile.setError("Duplicate MOB Number");
+                                    }else{
+                                        ed_mobile.setError(null);
+                                        //isValidMob = true;
+                                    }
+                                    if(valueType==2)
+                                    {
+                                        ed_email.setError("Duplicate Email Id");
+                                    }else{
+                                        ed_email.setError(null);
+                                        //isValidEmail = true;
+
+                                    }
+
+                            // Toast.makeText(getApplicationContext(), ""+response.message(), Toast.LENGTH_SHORT).show();
+                            Log.e("RESPONCE UNICE","-----------------------------"+response.body());
+                            commonDialog.dismiss();
+                        }else {
+                            commonDialog.dismiss();
+                            Log.e("Data Null : ", "-----------");
+                        }
+                    } catch (Exception e) {
+                        commonDialog.dismiss();
+                        Log.e("Exception : ", "-----------" + e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Info> call, Throwable t) {
+                    commonDialog.dismiss();
+                    Log.e("onFailure : ", "-----------" + t.getMessage());
+                    t.printStackTrace();
+                }
+            });
+        } else {
+            Toast.makeText(getApplicationContext(), "No Internet Connection !", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
     public boolean isValidEmailAddress(String email) {
         String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);

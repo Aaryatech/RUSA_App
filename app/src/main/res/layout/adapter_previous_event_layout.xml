@@ -107,7 +107,7 @@
             android:gravity="center"
             android:orientation="vertical"
             android:padding="10dp"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/tv_feedback"
@@ -119,7 +119,6 @@
 
 
         </LinearLayout>
-
 
     </LinearLayout>
 

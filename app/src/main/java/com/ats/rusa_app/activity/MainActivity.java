@@ -180,6 +180,32 @@ public class MainActivity extends AppCompatActivity
         View header = navigationView.getHeaderView(0);
         tv_loginUserName = header.findViewById(R.id.loginUserName);
 
+
+        try {
+            intent = getIntent();
+             String strFeedback = intent.getStringExtra("Feedback");
+            Log.e("Feedback", "-----------" + strFeedback);
+            if(strFeedback.equals("Feedback"))
+            {
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, new EventFragment(), "HomeFragment");
+                ft.commit();
+            }else{
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, new HomeFragment(), "Exit");
+                ft.commit();
+            }
+
+        }catch (Exception e)
+        {
+            Log.e("MAIN ACT ", "------------ EXCEPTION----------------- " + e.getMessage());
+            e.printStackTrace();
+
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, new HomeFragment(), "Exit");
+            ft.commit();
+        }
+
        /* try {
             intent = getIntent();
             final String skipLogin = intent.getStringExtra("code");
@@ -214,9 +240,6 @@ public class MainActivity extends AppCompatActivity
 
         // drawerMenu = navigationView.getMenu();
 
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.content_frame, new HomeFragment(), "Exit");
-        ft.commit();
 
         getMenuData(languageId);
 
@@ -272,7 +295,8 @@ public class MainActivity extends AppCompatActivity
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, new EventFragment(), "HomeFragment");
             ft.commit();
-        } else if (photoGalleryFragment instanceof GalleryEventDetailsFragment && photoGalleryFragment.isVisible()) {
+        }
+        else if (photoGalleryFragment instanceof GalleryEventDetailsFragment && photoGalleryFragment.isVisible()) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, new PhotoGalleryFragment(), "HomeFragment");
             ft.commit();
@@ -442,7 +466,6 @@ public class MainActivity extends AppCompatActivity
 
                                                 //MenuGroup childModel = new MenuGroup(model.getCategoryList().get(j).getCatName(), false, false, false, model.getCategoryList().get(j).getSlugName());
                                                 // childModelsList.add(childModel);
-
 
                                                 if (model.getSubCatList().size() > 0) {
                                                     // SubMenu subChannelMenu;

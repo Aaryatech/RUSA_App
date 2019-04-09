@@ -100,7 +100,7 @@ public interface InterfaceApi {
     Call<EventRegistration> saveEventRegister(@Body EventRegistration eventRegistration);
 
     @POST("getAppliedEvents")
-    Call<ArrayList<EventRegCheck>> getAppliedEvents(@Query("newsblogsId") int newsblogsId, @Query("userId") int userId);
+    Call<Info> getAppliedEvents(@Query("newsblogsId") int newsblogsId, @Query("userId") int userId);
 
     @POST("changePassword")
     Call<Info> changePassword(@Query("regId") int regId, @Query("password") String password);
@@ -123,5 +123,8 @@ public interface InterfaceApi {
 
     @POST("updateEventFeedback")
     Call<FeedbackSave> getUpdateEventFeedback(@Query("eventId") int eventId, @Query("userId") int userId,@Query("messge") String messge,@Query("value") int value);
+
+    @POST("checkUniqueField")
+    Call<Info> getCheckUniqueField(@Query("inputValue") String inputValue, @Query("valueType") int valueType,@Query("primaryKey") int primaryKey);
 
 }
