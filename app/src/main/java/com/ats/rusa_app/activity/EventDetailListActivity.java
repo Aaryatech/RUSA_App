@@ -91,6 +91,7 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail_list);
 
+
         imageView = (ImageView) findViewById(R.id.iv_baner);
         tv_eventName = (TextView) findViewById(R.id.tvEventName);
         tv_eventVenu = (TextView) findViewById(R.id.tvEventVenu);
