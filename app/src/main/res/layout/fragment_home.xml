@@ -48,7 +48,6 @@
             </LinearLayout>
 
             <RelativeLayout
-                android:padding="@dimen/margin_medium"
                 android:id="@+id/relativeLayout_baner"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/home_banner_height"
@@ -56,6 +55,7 @@
 
                 <ImageView
                     android:id="@+id/iv_baner"
+                    android:scaleType="fitXY"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 

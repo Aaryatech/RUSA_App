@@ -708,7 +708,7 @@ public class MainActivity extends AppCompatActivity
 //                        webView.loadUrl(model.url);
 //                        onBackPressed();
 
-                        Toast.makeText(MainActivity.this, "" + model.getUrl(), Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(MainActivity.this, "" + model.getUrl(), Toast.LENGTH_SHORT).show();
 
                         Fragment adf = new NewContentFragment();
                         Bundle args = new Bundle();

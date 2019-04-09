@@ -19,9 +19,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Constants {
 
-   // public static final String BASE_URL = "http://ats.aaryatechindia.in:6435/atswebapi/";
+    public static final String BASE_URL = "http://ats.aaryatechindia.in:6435/atswebapi/";
 
-   public static final String BASE_URL = "http://192.168.2.6:8095/";
+   //public static final String BASE_URL = "http://192.168.2.6:8095/";
 
     public static final String PDF_URL = "http://tomcat.aaryatechindia.in:6435/media/pdf/";
 

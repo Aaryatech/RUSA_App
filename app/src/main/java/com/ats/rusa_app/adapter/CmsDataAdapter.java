@@ -199,7 +199,7 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
             int height = metrics.heightPixels;
             int width = metrics.widthPixels;
 
-            Toast.makeText(context, "" + width + " x " + height, Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(context, "" + width + " x " + height, Toast.LENGTH_SHORT).show();
 
          /*   String temp;
 
@@ -256,7 +256,7 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
 
             } else {
 
-                if (width == 720) {
+                if (width == 720 || width ==480) {
 
                     String temp = htmlText;
 

@@ -1,146 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/login_bg"
     android:orientation="vertical"
     tools:context=".activity.FeedbackActivity">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Feedback Form"
-        android:gravity="center"
-        android:layout_marginTop="30dp"
-        android:fontFamily="@font/lato_bold"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="20dp"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="8dp"
-        android:textSize="16dp"
-        android:fontFamily="@font/lato_regular"
-        android:textColor="@color/colorBlack"
-        android:text="Please rate your over all level of satisfaction with our event"
-        />
-
-    <RadioGroup
-        android:id="@+id/rg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="15dp"
-        android:orientation="vertical">
-
-        <RadioButton
-            android:id="@+id/rb_verySatisfied"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_weight="1"
-            android:textSize="16dp"
-            android:textColor="@color/colorBlack"
-            android:buttonTint="@color/colorBlack"
-            android:fontFamily="@font/lato_regular"
-            android:text="Very Satisfied" />
-
-        <RadioButton
-            android:id="@+id/rb_Satisfied"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            android:textColor="@color/colorBlack"
-            android:layout_weight="1"
-            android:textSize="16dp"
-            android:buttonTint="@color/colorBlack"
-            android:fontFamily="@font/lato_regular"
-            android:text="Satisfied" />
-
-        <RadioButton
-            android:id="@+id/rb_neutral"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_weight="1"
-            android:textSize="16dp"
-            android:textColor="@color/colorBlack"
-            android:buttonTint="@color/colorBlack"
-            android:fontFamily="@font/lato_regular"
-            android:text="Neutral" />
-
-        <RadioButton
-            android:id="@+id/rb_disSatisfied"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_weight="1"
-            android:textSize="16dp"
-            android:textColor="@color/colorBlack"
-            android:buttonTint="@color/colorBlack"
-            android:fontFamily="@font/lato_regular"
-            android:text="Dissatisfied" />
-
-        <RadioButton
-            android:id="@+id/rb_veryDisSatisfied"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_weight="1"
-            android:textSize="16dp"
-            android:textColor="@color/colorBlack"
-            android:buttonTint="@color/colorBlack"
-            android:fontFamily="@font/lato_regular"
-            android:text="Very Dissatisfied" />
-
-    </RadioGroup>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="8dp"
-        android:textSize="16dp"
-        android:fontFamily="@font/lato_regular"
-        android:textColor="@color/colorBlack"
-        android:text="Are there any other comments of suggestions you like to make? "
-        />
-    <EditText
-        android:id="@+id/ed_Msg"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:hint="Message"
-        android:inputType="text"
-        android:lines="5"
-        android:maxLines="5"
-        android:padding="10dp"
-        android:background="@drawable/edittext_background"/>
-
-
     <Button
+        android:layout_alignParentBottom="true"
         android:id="@+id/btn_saveFeedback"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:text="save"
+        android:background="@drawable/contact_button_background"
         android:fontFamily="@font/lato_bold"
-        android:textColor="@color/colorWhite"
-        android:background="@drawable/contact_button_background"/>
-</LinearLayout>
+        android:text="save"
+        android:textColor="@color/colorWhite" />
+
+
+    <ScrollView
+        android:layout_above="@id/btn_saveFeedback"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/lato_bold"
+                android:gravity="center"
+                android:text="Feedback Form"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/lato_regular"
+                android:text="Please rate your over all level of satisfaction with our event"
+                android:textColor="@color/colorBlack"
+                android:textSize="16dp" />
+
+            <RadioGroup
+                android:id="@+id/rg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/rb_verySatisfied"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/colorBlack"
+                    android:fontFamily="@font/lato_regular"
+                    android:text="Very Satisfied"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="16dp" />
+
+                <RadioButton
+                    android:id="@+id/rb_Satisfied"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/colorBlack"
+                    android:fontFamily="@font/lato_regular"
+                    android:text="Satisfied"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="16dp" />
+
+                <RadioButton
+                    android:id="@+id/rb_neutral"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/colorBlack"
+                    android:fontFamily="@font/lato_regular"
+                    android:text="Neutral"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="16dp" />
+
+                <RadioButton
+                    android:id="@+id/rb_disSatisfied"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/colorBlack"
+                    android:fontFamily="@font/lato_regular"
+                    android:text="Dissatisfied"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="16dp" />
+
+                <RadioButton
+                    android:id="@+id/rb_veryDisSatisfied"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/colorBlack"
+                    android:fontFamily="@font/lato_regular"
+                    android:text="Very Dissatisfied"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="16dp" />
+
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/lato_regular"
+                android:text="Are there any other comments of suggestions you like to make? "
+                android:textColor="@color/colorBlack"
+                android:textSize="16dp" />
+
+            <EditText
+                android:id="@+id/ed_Msg"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/edittext_background"
+                android:hint="Message"
+                android:inputType="text"
+                android:lines="5"
+                android:maxLines="5"
+                android:padding="10dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+
+</RelativeLayout>

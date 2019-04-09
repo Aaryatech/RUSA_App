@@ -34,6 +34,7 @@ import com.ats.rusa_app.model.EventRegistration;
 import com.ats.rusa_app.model.Login;
 import com.ats.rusa_app.model.UpcomingEvent;
 import com.ats.rusa_app.util.CommonDialog;
+import com.ats.rusa_app.util.Constant;
 import com.ats.rusa_app.util.CustomSharedPreference;
 import com.ats.rusa_app.util.FilePath;
 import com.ats.rusa_app.util.PermissionsUtil;
@@ -120,7 +121,7 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
         tv_eventDate.setText("" + upcomingEvent.getEventDateFrom());
 
         try {
-            String imageUri = "" + upcomingEvent.getFeaturedImage();
+            String imageUri = Constants.GALLERY_URL + "" + upcomingEvent.getFeaturedImage();
             Log.e("URI", "-----------" + imageUri);
             Picasso.with(getApplicationContext()).load(imageUri).placeholder(getResources().getDrawable(R.drawable.img_placeholder)).into(imageView);
         } catch (Exception e) {
