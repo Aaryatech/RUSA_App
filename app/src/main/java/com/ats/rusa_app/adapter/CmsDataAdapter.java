@@ -2,7 +2,6 @@ package com.ats.rusa_app.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Paint;
@@ -19,22 +18,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.activity.MainActivity;
 import com.ats.rusa_app.activity.WebViewActivity;
 import com.ats.rusa_app.constants.Constants;
-import com.ats.rusa_app.fragment.ContentFragment;
 import com.ats.rusa_app.model.CmsContentList;
-import com.ats.rusa_app.util.ClickableTableSpanImpl;
 import com.ats.rusa_app.util.HtmlHttpImageGetter;
 import com.ats.rusa_app.util.HtmlHttpImageGetterNew;
 import com.ats.rusa_app.util.RvWebView;
@@ -283,10 +277,10 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
 
                         String temp;
                         if (height > 2000) {
-                            temp = htmlText.replaceAll("<br></br>", "<br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>");
+                            temp = htmlText.replaceAll("<br></br>", "<br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>");
 
                         } else {
-                            temp = htmlText.replaceAll("<br></br>", "<br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>");
+                            temp = htmlText.replaceAll("<br></br>", "<br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>");
 
                         }
 

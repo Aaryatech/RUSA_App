@@ -122,16 +122,25 @@ public class ContactUsFragment extends Fragment implements View.OnClickListener 
            strPhoneNo=ed_phoneNo.getText().toString();
            strMsg=ed_msg.getText().toString();
 
-            if (!strEmail.isEmpty()) {
-                if (!isValidEmailAddress(strEmail)) {
-                    ed_email.setError("invalid email");
-                } else {
-                    ed_email.setError(null);
-                    isValidEmail = true;
-                }
+            if (strEmail.isEmpty()) {
+                ed_email.setError("required");
+            } else if (!isValidEmailAddress(strEmail)) {
+                ed_email.setError("invalid email");
             } else {
+                ed_email.setError(null);
                 isValidEmail = true;
             }
+
+//            if (!strEmail.isEmpty()) {
+//                if (!isValidEmailAddress(strEmail)) {
+//                    ed_email.setError("invalid email");
+//                } else {
+//                    ed_email.setError(null);
+//                    isValidEmail = true;
+//                }
+//            } else {
+//                isValidEmail = true;
+//            }
 
             if (srtName.isEmpty()) {
                 ed_name.setError("required");

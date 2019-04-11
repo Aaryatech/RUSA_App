@@ -85,7 +85,6 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         ed_mobile.setText(loginUser.getMobileNumber());
         ed_nameAuthePerson.setText(loginUser.getAuthorizedPerson());
 
-
         if(loginUser.getUserType()==1)
         {
             ed_type.setText("Individual");

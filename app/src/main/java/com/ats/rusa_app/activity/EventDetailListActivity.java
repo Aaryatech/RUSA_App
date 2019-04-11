@@ -35,6 +35,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -81,7 +82,7 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
         btn_apply = (Button) findViewById(R.id.btn_apply);
         btn_upload = findViewById(R.id.btn_upload);
         tv_uploadText = (TextView) findViewById(R.id.tv_uploadText);
-        linearLayout_attach=(LinearLayout)findViewById(R.id.linearLayout_Attach);
+        linearLayout_attach = (LinearLayout) findViewById(R.id.linearLayout_Attach);
         btn_apply.setOnClickListener(this);
         btn_upload.setOnClickListener(this);
 
@@ -112,23 +113,8 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
         }
 
         try {
-            // if (loginUser.getIsActive() == 1 && loginUser.getDelStatus() == 1 && loginUser.getEmailVerified() == 1) {
             if (upcomingEvent.getExInt2() == 1) {
-//                btn_upload.setVisibility(View.VISIBLE);
-//                tv_uploadText.setVisibility(View.VISIBLE);
-                   linearLayout_attach.setVisibility(View.VISIBLE);
-            }
-            String Values= upcomingEvent.getExVar2().toString();
-            Log.e("Values","-------------"+Values);
-            List<String> items = Arrays.asList(Values.split("\\s*,\\s*"));
-            // String[] values1 = Values.split("\\s*,\\s*");
-            Log.e("Values1","-------------"+ items);
-            String userType= String.valueOf(loginUser.getUserType());
-            for(int i=0;i<items.size();i++) {
-                if (items.get(i).equals(userType)) {
-                    btn_apply.setVisibility(View.VISIBLE);
-
-                }
+                linearLayout_attach.setVisibility(View.VISIBLE);
             }
 
         } catch (Exception e) {
@@ -141,25 +127,11 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
     public void onClick(View v) {
         if (v.getId() == R.id.btn_apply) {
             try {
-                if (loginUser.getIsActive() == 1 && loginUser.getDelStatus() == 1 && loginUser.getEmailVerified() == 1) {
-                    //getAppliedEvent(upcomingEvent.getNewsblogsId(), loginUser.getRegId());
-                        if(loginUser.getExInt2()==1) {
-                            File imgFile = new File(imagePath);
-                            int pos = imgFile.getName().lastIndexOf(".");
-                            String ext = imgFile.getName().substring(pos + 1);
-                            String fileName = loginUser.getRegId() + "_" + System.currentTimeMillis() + "." + ext;
 
-                            sendDocToServer(fileName, upcomingEvent.getNewsblogsId(), loginUser.getRegId());
-                        }else{
-                            getAppliedEvent(upcomingEvent.getNewsblogsId(), loginUser.getRegId(), "");
-                        }
-
-                } else {
-
-                    //Toast.makeText(EventDetailListActivity.this, "Not Apply For This Event", Toast.LENGTH_SHORT).show();
+                if (loginUser == null) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(EventDetailListActivity.this, R.style.AlertDialogTheme);
-                    builder.setTitle("");
-                    builder.setMessage("Not Apply For This Event");
+                    builder.setTitle("Alert");
+                    builder.setMessage("To apply this event you need to sign in");
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -171,30 +143,64 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
                     AlertDialog dialog = builder.create();
                     dialog.show();
 
+                } else {
 
-                }
+                    String Values = upcomingEvent.getExVar2().toString();
+                    Log.e("Values", "-------------" + Values);
+
+                    List<String> items = new ArrayList<>();
+
+                    items = Arrays.asList(Values.split("\\s*,\\s*"));
+
+                    Log.e("Values1", "-------------" + items);
+
+                    String userType = String.valueOf(loginUser.getUserType());
+
+                    if (items.size()>0){
+
+                        if (items.contains(userType)){
+
+                            if (upcomingEvent.getExInt2() == 1) {
+                                File imgFile = new File(imagePath);
+                                int pos = imgFile.getName().lastIndexOf(".");
+                                String ext = imgFile.getName().substring(pos + 1);
+                                String fileName = loginUser.getRegId() + "_" + System.currentTimeMillis() + "." + ext;
+                                   sendDocToServer(fileName, upcomingEvent.getNewsblogsId(), loginUser.getRegId());
+                            } else {
+                                  getAppliedEvent(upcomingEvent.getNewsblogsId(), loginUser.getRegId(), "");
+                            }
+                        }else{
+                            AlertDialog.Builder builder = new AlertDialog.Builder(EventDetailListActivity.this, R.style.AlertDialogTheme);
+                            builder.setTitle("Alert");
+                            builder.setMessage("Sorry you are not applicabale for this event");
+                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+
+                        }
+
+                    }
+
+
+                }//else
+
+
             } catch (Exception e) {
                 Log.e("Exception1 : ", "-----------" + e.getMessage());
-               e.printStackTrace();
-               // Toast.makeText(EventDetailListActivity.this, "Not Apply For This Event", Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+                // Toast.makeText(EventDetailListActivity.this, "Not Apply For This Event", Toast.LENGTH_SHORT).show();
 
 
             }
 
-
         } else if (v.getId() == R.id.btn_upload) {
 
-//            Intent intent = new Intent();
-//            //sets the select file to all types of files
-//            intent.setType("*/*");
-//            //allows to select data and return it
-//            intent.setAction(Intent.ACTION_GET_CONTENT);
-//            //starts new activity to select file and return data
-//            startActivityForResult(Intent.createChooser(intent,"Choose File to Upload.."),PICK_FILE_REQUEST);
-
             showFileChooser();
-
-            //  browseDocuments();
 
         }
     }
@@ -228,7 +234,6 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                             EventRegistration eventRegistration = new EventRegistration(1, loginUser.getRegId(), sdf.format(System.currentTimeMillis()), upcomingEvent.getNewsblogsId(), 0, null, 0, fileName, 0, 1, 1, 0, 0, "", "");
                             getEventRegistration(eventRegistration);
-
                             commonDialog.dismiss();
 
                         } else if (response.body().getError().equals(true)) {
@@ -464,7 +469,9 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
                 Log.e("Error : ", "--" + t.getMessage());
                 commonDialog.dismiss();
                 t.printStackTrace();
-                Toast.makeText(EventDetailListActivity.this, "Unable To Process", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(EventDetailListActivity.this, "Unable To Process", Toast.LENGTH_SHORT).show();
+                imagePath = "";
+                getAppliedEvent(eventId, regId, filename);
             }
         });
     }

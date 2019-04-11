@@ -112,10 +112,16 @@ public class PreviousEventFragment extends Fragment implements PreviousEventsInt
             languageId = 1;
         }
 
-        String userStr = CustomSharedPreference.getString(getActivity(), CustomSharedPreference.KEY_USER);
-        Gson gson = new Gson();
-        loginUser = gson.fromJson(userStr, Login.class);
-        int regId=loginUser.getRegId();
-        getPrevoiusEvent(languageId,regId);
+        try {
+            String userStr = CustomSharedPreference.getString(getActivity(), CustomSharedPreference.KEY_USER);
+            Gson gson = new Gson();
+            loginUser = gson.fromJson(userStr, Login.class);
+            int regId = loginUser.getRegId();
+            getPrevoiusEvent(languageId, regId);
+        }catch (Exception e)
+        {
+            Log.e("onFailure : ", "-----------" + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

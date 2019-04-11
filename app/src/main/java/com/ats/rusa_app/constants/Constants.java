@@ -19,15 +19,20 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Constants {
 
-    public static final String BASE_URL = "http://ats.aaryatechindia.in:6435/atswebapi/";
+   // public static final String BASE_URL = "http://ats.aaryatechindia.in:6435/atswebapi/";
 
-   //public static final String BASE_URL = "http://192.168.2.6:8095/";
+   //public static final String BASE_URL = "http://192.168.2.6:8096/";
 
-    public static final String PDF_URL = "http://tomcat.aaryatechindia.in:6435/media/pdf/";
+   public static final String BASE_URL = "http://ats.aaryatechindia.in:15063/rusawebapi/";
 
-    public static final String GALLERY_URL = "http://tomcat.aaryatechindia.in:6435/media/gallery/";
+   // public static final String PDF_URL = "http://tomcat.aaryatechindia.in:6435/media/pdf/";
+    public static final String PDF_URL = "http://ats.aaryatechindia.in:15063/media/pdf/";
 
-    public static final String BANENR_URL = "http://tomcat.aaryatechindia.in:6435/media/banenr/";
+   // public static final String GALLERY_URL = "http://tomcat.aaryatechindia.in:6435/media/gallery/";
+    public static final String GALLERY_URL = "http://ats.aaryatechindia.in:15063/media/gallery/";
+
+    //public static final String BANENR_URL = "http://tomcat.aaryatechindia.in:6435/media/banenr/";
+    public static final String BANENR_URL = "http://ats.aaryatechindia.in:15063/media/banenr/";
 
     public static OkHttpClient client = new OkHttpClient.Builder()
             .addInterceptor(new Interceptor() {

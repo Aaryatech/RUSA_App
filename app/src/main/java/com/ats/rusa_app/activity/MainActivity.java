@@ -183,21 +183,19 @@ public class MainActivity extends AppCompatActivity
 
         try {
             intent = getIntent();
-             String strFeedback = intent.getStringExtra("Feedback");
+            String strFeedback = intent.getStringExtra("Feedback");
             Log.e("Feedback", "-----------" + strFeedback);
-            if(strFeedback.equals("Feedback"))
-            {
+            if (strFeedback.equals("Feedback")) {
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.content_frame, new EventFragment(), "HomeFragment");
                 ft.commit();
-            }else{
+            } else {
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.content_frame, new HomeFragment(), "Exit");
                 ft.commit();
             }
 
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.e("MAIN ACT ", "------------ EXCEPTION----------------- " + e.getMessage());
             e.printStackTrace();
 
@@ -295,8 +293,7 @@ public class MainActivity extends AppCompatActivity
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, new EventFragment(), "HomeFragment");
             ft.commit();
-        }
-        else if (photoGalleryFragment instanceof GalleryEventDetailsFragment && photoGalleryFragment.isVisible()) {
+        } else if (photoGalleryFragment instanceof GalleryEventDetailsFragment && photoGalleryFragment.isVisible()) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, new PhotoGalleryFragment(), "HomeFragment");
             ft.commit();
@@ -595,7 +592,12 @@ public class MainActivity extends AppCompatActivity
 
                     String url = headerList.get(groupPosition).getUrl();
 
-                    if (url.equalsIgnoreCase("ContactUs")) {
+                    if (headerList.get(groupPosition).menuName.equalsIgnoreCase("Contact Us")) {
+                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        ft.replace(R.id.content_frame, new ContactUsFragment(), "HomeFragment");
+                        ft.commit();
+
+                    } else if (url.equalsIgnoreCase("ContactUs")) {
                         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                         ft.replace(R.id.content_frame, new ContactUsFragment(), "HomeFragment");
                         ft.commit();
@@ -691,11 +693,15 @@ public class MainActivity extends AppCompatActivity
                                         if (pos == 0) {
                                             Constant.yourLanguage(MainActivity.this, CustomSharedPreference.LANGUAGE_ENG);
                                             CustomSharedPreference.putString(MainActivity.this, CustomSharedPreference.LANGUAGE_ENG, CustomSharedPreference.LANGUAGE_ENG_ID);
+                                            CustomSharedPreference.putString(MainActivity.this, CustomSharedPreference.LANGUAGE_SELECTED, CustomSharedPreference.LANGUAGE_ENG_ID);
+
 
                                             //setLocale("ta");
                                         } else if (pos == 1) {
                                             Constant.yourLanguage(MainActivity.this, CustomSharedPreference.LANGUAGE_MAR);
                                             CustomSharedPreference.putString(MainActivity.this, CustomSharedPreference.LANGUAGE_MAR, CustomSharedPreference.LANGUAGE_MAR_ID);
+                                            CustomSharedPreference.putString(MainActivity.this, CustomSharedPreference.LANGUAGE_SELECTED, CustomSharedPreference.LANGUAGE_MAR_ID);
+
                                             //setLocale("hi");
                                         }
                                         Intent refresh = new Intent(MainActivity.this, MainActivity.class);
@@ -731,7 +737,7 @@ public class MainActivity extends AppCompatActivity
 //                        webView.loadUrl(model.url);
 //                        onBackPressed();
 
-                      //  Toast.makeText(MainActivity.this, "" + model.getUrl(), Toast.LENGTH_SHORT).show();
+                        //  Toast.makeText(MainActivity.this, "" + model.getUrl(), Toast.LENGTH_SHORT).show();
 
                         Fragment adf = new NewContentFragment();
                         Bundle args = new Bundle();
@@ -794,7 +800,7 @@ public class MainActivity extends AppCompatActivity
                 }
             });
         } else {
-          //  Toast.makeText(MainActivity.this, "No Internet Connection !", Toast.LENGTH_SHORT).show();
+            //  Toast.makeText(MainActivity.this, "No Internet Connection !", Toast.LENGTH_SHORT).show();
         }
 
     }
