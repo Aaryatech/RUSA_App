@@ -10,7 +10,7 @@
     <dimen name="text_small">12sp</dimen>
     <dimen name="text_tiny">10sp</dimen>
 
-    <dimen name="home_gallery_height">200dp</dimen>
+    <dimen name="home_gallery_height">220dp</dimen>
     <dimen name="home_banner_height">170dp</dimen>
 
     <dimen name="margin_xxx_large">40dp</dimen>

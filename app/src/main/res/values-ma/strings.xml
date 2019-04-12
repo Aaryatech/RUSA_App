@@ -23,7 +23,7 @@
     <string name="str_login">लॉग इन</string>
     <string name="str_notification">अधिसूचना</string>
 
-    <string name="str_latest_news">ताजी बातमी</string>
+    <string name="str_latest_news">अद्यतने</string>
     <string name="str_videos">व्हिडिओ</string>
     <string name="str_testimonial">प्रशंसापत्रे</string>
     <string name="str_company">महत्वपूर्ण लिंक</string>
@@ -69,5 +69,6 @@
     <string name="str_institute_name">कॉलेजचे नाव*</string>
     <string name="str_university_name">विद्यापीठाचे नाव*</string>
     <string name="str_apply">अर्ज करा</string>
+    <string name="str_news_and_notification">बातम्या आणि अधिसूचना</string>
 
 </resources>

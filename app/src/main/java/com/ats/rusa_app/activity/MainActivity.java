@@ -189,6 +189,8 @@ public class MainActivity extends AppCompatActivity
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.content_frame, new EventFragment(), "HomeFragment");
                 ft.commit();
+            } else if (strFeedback.equalsIgnoreCase("fcm")) {
+               startActivity(new Intent(MainActivity.this,NotificationActivity.class));
             } else {
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.content_frame, new HomeFragment(), "Exit");

@@ -27,11 +27,13 @@ import com.ats.rusa_app.model.Login;
 import com.ats.rusa_app.model.UpcomingEvent;
 import com.ats.rusa_app.util.CommonDialog;
 import com.ats.rusa_app.util.CustomSharedPreference;
+import com.ats.rusa_app.util.HtmlHttpImageGetter;
 import com.ats.rusa_app.util.PermissionsUtil;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
+import org.sufficientlysecure.htmltextview.HtmlTextView;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -50,6 +52,7 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
     UpcomingEvent upcomingEvent;
     ImageView imageView;
     TextView tv_eventName, tv_eventVenu, tv_eventDate, tv_uploadText, btn_upload;
+    HtmlTextView tvEventDesc;
     LinearLayout linearLayout_attach;
     Button btn_apply;
     Login loginUser;
@@ -74,6 +77,10 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail_list);
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+        setTitle("Event");
 
         imageView = (ImageView) findViewById(R.id.iv_baner);
         tv_eventName = (TextView) findViewById(R.id.tvEventName);
@@ -85,6 +92,7 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
         linearLayout_attach = (LinearLayout) findViewById(R.id.linearLayout_Attach);
         btn_apply.setOnClickListener(this);
         btn_upload.setOnClickListener(this);
+        tvEventDesc = findViewById(R.id.tvEventDesc);
 
         if (PermissionsUtil.checkAndRequestPermissions(EventDetailListActivity.this)) {
         }
@@ -103,11 +111,12 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
         tv_eventName.setText(upcomingEvent.getHeading());
         tv_eventVenu.setText("" + upcomingEvent.getEventLocation());
         tv_eventDate.setText("" + upcomingEvent.getEventDateFrom());
+        tvEventDesc.setHtml(upcomingEvent.getDescriptions(), new HtmlHttpImageGetter(tvEventDesc));
 
         try {
             String imageUri = Constants.GALLERY_URL + "" + upcomingEvent.getFeaturedImage();
             Log.e("URI", "-----------" + imageUri);
-            Picasso.with(getApplicationContext()).load(imageUri).placeholder(getResources().getDrawable(R.drawable.img_placeholder)).into(imageView);
+            Picasso.with(getApplicationContext()).load(imageUri).placeholder(getResources().getDrawable(R.drawable.logo_new)).into(imageView);
         } catch (Exception e) {
             Log.e("Exception  : ", "-----------" + e.getMessage());
         }
@@ -476,5 +485,11 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
         });
     }
 
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
+    }
 
 }

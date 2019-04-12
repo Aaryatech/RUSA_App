@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -23,8 +24,10 @@ import android.widget.Toast;
 
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.adapter.CompSliderAdapter;
+import com.ats.rusa_app.adapter.NewsAndNotificationAdapter;
 import com.ats.rusa_app.adapter.NewsFeedAdapter;
 import com.ats.rusa_app.adapter.TestimonialAdapter;
+import com.ats.rusa_app.adapter.UpcominEventAdapter;
 import com.ats.rusa_app.adapter.YoutubeVideosAdapter;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.CompanyModel;
@@ -34,6 +37,7 @@ import com.ats.rusa_app.model.NewDetail;
 import com.ats.rusa_app.model.PhotoList;
 import com.ats.rusa_app.model.TestImonialList;
 import com.ats.rusa_app.model.Testimonials;
+import com.ats.rusa_app.model.UpcomingEvent;
 import com.ats.rusa_app.model.VideoList;
 import com.ats.rusa_app.util.CommonDialog;
 import com.ats.rusa_app.util.CustomSharedPreference;
@@ -68,7 +72,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private FloatingActionButton fabTwitter, fabFb;
 
-    private RecyclerView testomonial_recyclerView, new_recyclerView, comp_recyclerView, video_recyclerView;
+    private RecyclerView testomonial_recyclerView, new_recyclerView, comp_recyclerView, video_recyclerView,rvNewsAndNotify;
     private LinearLayoutManager linearLayoutManager;
 
     final ArrayList<Testimonials> list = new ArrayList<>();
@@ -78,6 +82,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     ArrayList<CompanyModel> companyList = new ArrayList<>();
     ArrayList<Detail> homeList = new ArrayList<>();
     // ArrayList<Detail> homeVideoList = new ArrayList<>();
+
+    ArrayList<UpcomingEvent> upcomingEventList = new ArrayList<>();
 
     int languageId;
 
@@ -90,6 +96,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         testomonial_recyclerView = view.findViewById(R.id.testominal_recyclerView);
         new_recyclerView = view.findViewById(R.id.news_recyclerView);
         comp_recyclerView = view.findViewById(R.id.comp_recyclerView);
+        rvNewsAndNotify = view.findViewById(R.id.rvNewsAndNotify);
         relativeLayout_baner = view.findViewById(R.id.relativeLayout_baner);
         iv_baner = view.findViewById(R.id.iv_baner);
         wvTwitter = view.findViewById(R.id.wvTwitter);
@@ -115,6 +122,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         getCompSlider();
         // initYoutubeVideo("gG2npfpaqsY");
         getAllHomeData(languageId);
+        getUpcomingEvent(languageId);
         //getVideoGallery();
 
         // video_recyclerView.setAdapter(adapter);
@@ -229,6 +237,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             testomonial_recyclerView.setAdapter(tAdapter);
 
                             galleryList.clear();
+
                             if (detail.getPhotoList().size() > 0) {
                                 for (int i = 0; i < detail.getPhotoList().size(); i++) {
                                     galleryList.add(detail.getPhotoList().get(i));
@@ -241,7 +250,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             if (detail.getBaner() != null) {
                                 String imageUri = Constants.BANENR_URL + detail.getBaner().getSliderImage();
                                 Log.e("URI11111", "-----------" + imageUri);
-                                Picasso.with(getContext()).load(imageUri).placeholder(R.drawable.slider).into(iv_baner);
+                                try {
+                                    Picasso.with(getContext()).load(imageUri).placeholder(R.drawable.slider).into(iv_baner);
+                                } catch (Exception e) {
+                                }
                                 tv_banerName.setText(detail.getBaner().getSliderName());
                             }
 
@@ -524,14 +536,22 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private void imageSlider(ArrayList<PhotoList> galleryList) {
 
         HashMap<String, String> url_maps = new HashMap<String, String>();
+        //url_maps.put("img",Constants.GALLERY_URL +"slider.jpg");
         for (int i = 0; i < galleryList.size(); i++) {
-            String image = Constants.GALLERY_URL + galleryList.get(i).getFileName();
-            String title = galleryList.get(i).getTitle();
-            //String title = gallaryDetailLists.get(i).getTitle();
-            url_maps.put(title, image);
-            Log.e("Gallery", "----------" + url_maps);
 
+            if (i == 1) {
+                url_maps.put("img", Constants.GALLERY_URL + "slider.jpg");
+            } else {
+
+                String image = Constants.GALLERY_URL + galleryList.get(i).getFileName();
+                String title = galleryList.get(i).getTitle();
+                //String title = gallaryDetailLists.get(i).getTitle();
+                url_maps.put(title, image);
+                Log.e("Gallery", "----------" + url_maps);
+            }
         }
+
+
         for (String name : url_maps.keySet()) {
             TextSliderView textSliderView = new TextSliderView(getActivity());
             // initialize a SliderLayout
@@ -553,36 +573,58 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         //sliderLayout.setIndicatorVisibility(PagerIndicator.IndicatorVisibility.Invisible);
         sliderLayout.setCustomAnimation(new DescriptionAnimation());
         sliderLayout.setDuration(4000);
-
-
-//        url_maps.put("Hannibal", "https://images.pexels.com/photos/326055/pexels-photo-326055.jpeg?cs=srgb&dl=beautiful-blur-bright-326055.jpg&fm=jpg");
-//        url_maps.put("Big Bang Theory", "https://resize.indiatvnews.com/en/resize/newbucket/715_-/2018/02/propose-1517999844.jpg");
-//        url_maps.put("House of Cards", "https://cdn.pixabay.com/photo/2017/01/06/23/21/soap-bubble-1959327_960_720.jpg");
-//        url_maps.put("Game of Thrones", "https://media.cntraveller.in/wp-content/uploads/2018/10/GettyImages-990972132-866x487.jpg");
-
-
-//        for (String name : url_maps.keySet()) {
-//            TextSliderView textSliderView = new TextSliderView(getActivity());
-//            // initialize a SliderLayout
-//            textSliderView
-//                    .description(name)
-//                    .image(url_maps.get(name))
-//                    .setScaleType(BaseSliderView.ScaleType.Fit);
-//            //.setOnSliderClickListener(getActivity());
-//
-//            //add your extra information
-//            textSliderView.bundle(new Bundle());
-//            textSliderView.getBundle()
-//                    .putString("extra", name);
-//
-//            sliderLayout.addSlider(textSliderView);
-//        }
-//        sliderLayout.setPresetTransformer(SliderLayout.Transformer.Accordion);
-//        sliderLayout.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-//        sliderLayout.setCustomAnimation(new DescriptionAnimation());
-//        sliderLayout.setDuration(4000);
+        // sliderLayout.setCurrentPosition(11,true);
 
     }
+
+
+    private void getUpcomingEvent(int languageId) {
+
+        if (Constants.isOnline(getContext())) {
+            final CommonDialog commonDialog = new CommonDialog(getContext(), "Loading", "Please Wait...");
+            commonDialog.show();
+
+            Call<ArrayList<UpcomingEvent>> listCall = Constants.myInterface.getUpcomingEvent(languageId);
+            listCall.enqueue(new Callback<ArrayList<UpcomingEvent>>() {
+                @Override
+                public void onResponse(Call<ArrayList<UpcomingEvent>> call, Response<ArrayList<UpcomingEvent>> response) {
+                    try {
+                        if (response.body() != null) {
+
+                            Log.e("UPCOMING EVENT LIST : ", " - " + response.body());
+                            upcomingEventList.clear();
+                            upcomingEventList = response.body();
+
+                            NewsAndNotificationAdapter adapter = new NewsAndNotificationAdapter(upcomingEventList, getContext());
+                            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+                            rvNewsAndNotify.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                            rvNewsAndNotify.setAdapter(adapter);
+
+                            commonDialog.dismiss();
+
+                        } else {
+                            commonDialog.dismiss();
+                            Log.e("Data Null : ", "-----------");
+                        }
+                    } catch (Exception e) {
+                        commonDialog.dismiss();
+                        Log.e("Exception : ", "-----------" + e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ArrayList<UpcomingEvent>> call, Throwable t) {
+                    commonDialog.dismiss();
+                    Log.e("onFailure : ", "-----------" + t.getMessage());
+                    t.printStackTrace();
+                }
+            });
+        } else {
+            Toast.makeText(getContext(), "No Internet Connection !", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     @Override
     public void onClick(View v) {

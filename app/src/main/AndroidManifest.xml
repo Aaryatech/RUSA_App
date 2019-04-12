@@ -27,15 +27,14 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.EventDetailListActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.ForgotPasswordActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.NewsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            />
         <activity
             android:name=".activity.NotificationActivity"
             android:screenOrientation="portrait" />
@@ -45,8 +44,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activity.TestimonialWebviewActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.RegistrationActivity"
             android:screenOrientation="portrait"

@@ -26,7 +26,7 @@
     <string name="str_login">Login</string>
     <string name="str_notification">Notification</string>
 
-    <string name="str_latest_news">Latest News</string>
+    <string name="str_latest_news">Updates</string>
     <string name="str_videos">Videos</string>
     <string name="str_testimonial">Testimonials</string>
     <string name="str_company">Important Links</string>
@@ -72,6 +72,7 @@
     <string name="str_institute_name">College Name*</string>
     <string name="str_university_name">University Name*</string>
     <string name="str_apply">APPLY</string>
+    <string name="str_news_and_notification">News And Notification</string>
 
 
 </resources>
