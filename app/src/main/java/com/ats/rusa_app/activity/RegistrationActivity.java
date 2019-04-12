@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -36,6 +37,7 @@ import retrofit2.Response;
 
 public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
     public EditText ed_Name, ed_email, ed_alterEmail, ed_clgName, ed_aisheCode, ed_designationPerson, ed_nameDept, ed_nameAuthePerson, ed_DOB, ed_univercityAff, ed_mobile;
+    public TextInputLayout tv_Name, tv_email, tv_alterEmail, tv_clgName, tv_aisheCode, tv_designationPerson, tv_nameDept, tv_nameAuthePerson, tv_DOB, tv_univercityAff, tv_mobile;
     public Button btn_registration;
     public Spinner spType;
     public TextView tv_signIn;
@@ -64,6 +66,20 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         ed_DOB = (EditText) findViewById(R.id.ed_DOB);
         ed_mobile = (EditText) findViewById(R.id.ed_mobileNo);
         ed_univercityAff = (EditText) findViewById(R.id.ed_univercityAffil);
+
+
+        tv_Name = (TextInputLayout) findViewById(R.id.tv_name);
+        tv_email = (TextInputLayout) findViewById(R.id.tv_email);
+        tv_alterEmail = (TextInputLayout) findViewById(R.id.tv_alterEmail);
+        tv_clgName = (TextInputLayout) findViewById(R.id.tv_clgName);
+        tv_aisheCode = (TextInputLayout) findViewById(R.id.tv_AISHE_code);
+        tv_designationPerson = (TextInputLayout) findViewById(R.id.tv_designationPerson);
+        tv_nameDept = (TextInputLayout) findViewById(R.id.tv_nameDept);
+        tv_nameAuthePerson = (TextInputLayout) findViewById(R.id.tv_nameAuthPerson);
+        tv_DOB = (TextInputLayout) findViewById(R.id.tv_DOB);
+        tv_mobile = (TextInputLayout) findViewById(R.id.tv_mobileNo);
+        tv_univercityAff = (TextInputLayout) findViewById(R.id.tv_univercityAffil);
+
         spType = (Spinner) findViewById(R.id.spType);
         tv_signIn = (TextView) findViewById(R.id.tv_signIn);
         btn_registration = (Button) findViewById(R.id.btn_registration);
@@ -88,17 +104,29 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 spinnerPosition = typeNameArray.get(position);
                 if (spinnerPosition.equals("Individual")) {
                     ed_Name.setVisibility(View.VISIBLE);
+                    tv_Name.setVisibility(View.VISIBLE);
                     ed_Name.setHint(getString(R.string.str_full_name));
+                    tv_Name.setHint(getString(R.string.str_full_name));
                     ed_email.setVisibility(View.VISIBLE);
+                    tv_email.setVisibility(View.VISIBLE);
                     ed_alterEmail.setVisibility(View.VISIBLE);
+                    tv_alterEmail.setVisibility(View.VISIBLE);
                     ed_clgName.setVisibility(View.VISIBLE);
+                    tv_clgName.setVisibility(View.VISIBLE);
                     ed_aisheCode.setVisibility(View.GONE);
+                    tv_aisheCode.setVisibility(View.GONE);
                     ed_designationPerson.setVisibility(View.VISIBLE);
+                    tv_designationPerson.setVisibility(View.VISIBLE);
                     ed_nameDept.setVisibility(View.VISIBLE);
+                    tv_nameDept.setVisibility(View.VISIBLE);
                     ed_nameAuthePerson.setVisibility(View.GONE);
+                    tv_nameAuthePerson.setVisibility(View.GONE);
                     ed_DOB.setVisibility(View.GONE);
+                    tv_DOB.setVisibility(View.GONE);
                     ed_mobile.setVisibility(View.VISIBLE);
+                    tv_mobile.setVisibility(View.VISIBLE);
                     ed_univercityAff.setVisibility(View.VISIBLE);
+                    tv_univercityAff.setVisibility(View.VISIBLE);
 
                     ed_Name.setText("");
                     ed_email.setText("");
@@ -112,17 +140,29 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     ed_nameAuthePerson.setText("");
                 } else if (spinnerPosition.equals("Colleges")) {
                     ed_Name.setVisibility(View.VISIBLE);
+                    tv_Name.setVisibility(View.VISIBLE);
                     ed_Name.setHint(getString(R.string.str_institute_name));
+                    tv_Name.setHint(getString(R.string.str_institute_name));
                     ed_email.setVisibility(View.VISIBLE);
+                    tv_email.setVisibility(View.VISIBLE);
                     ed_alterEmail.setVisibility(View.VISIBLE);
+                    tv_alterEmail.setVisibility(View.VISIBLE);
                     ed_clgName.setVisibility(View.GONE);
+                    tv_clgName.setVisibility(View.GONE);
                     ed_aisheCode.setVisibility(View.VISIBLE);
+                    tv_aisheCode.setVisibility(View.VISIBLE);
                     ed_designationPerson.setVisibility(View.VISIBLE);
+                    tv_designationPerson.setVisibility(View.VISIBLE);
                     ed_nameDept.setVisibility(View.VISIBLE);
+                    tv_nameDept.setVisibility(View.VISIBLE);
                     ed_nameAuthePerson.setVisibility(View.VISIBLE);
+                    tv_nameAuthePerson.setVisibility(View.VISIBLE);
                     ed_DOB.setVisibility(View.GONE);
+                    tv_DOB.setVisibility(View.GONE);
                     ed_mobile.setVisibility(View.VISIBLE);
+                    tv_mobile.setVisibility(View.VISIBLE);
                     ed_univercityAff.setVisibility(View.VISIBLE);
+                    tv_univercityAff.setVisibility(View.VISIBLE);
 
                     ed_Name.setText("");
                     ed_email.setText("");
@@ -136,17 +176,29 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     ed_nameAuthePerson.setText("");
                 } else if (spinnerPosition.equals("University")) {
                     ed_Name.setVisibility(View.VISIBLE);
+                    tv_Name.setVisibility(View.VISIBLE);
                     ed_Name.setHint(getString(R.string.str_university_name));
+                    tv_Name.setHint(getString(R.string.str_university_name));
                     ed_email.setVisibility(View.VISIBLE);
+                    tv_email.setVisibility(View.VISIBLE);
                     ed_alterEmail.setVisibility(View.VISIBLE);
+                    tv_alterEmail.setVisibility(View.VISIBLE);
                     ed_clgName.setVisibility(View.GONE);
+                    tv_clgName.setVisibility(View.GONE);
                     ed_aisheCode.setVisibility(View.VISIBLE);
+                    tv_aisheCode.setVisibility(View.VISIBLE);
                     ed_designationPerson.setVisibility(View.VISIBLE);
+                    tv_designationPerson.setVisibility(View.VISIBLE);
                     ed_nameDept.setVisibility(View.VISIBLE);
+                    tv_nameDept.setVisibility(View.VISIBLE);
                     ed_nameAuthePerson.setVisibility(View.VISIBLE);
+                    tv_nameAuthePerson.setVisibility(View.VISIBLE);
                     ed_DOB.setVisibility(View.GONE);
+                    tv_DOB.setVisibility(View.GONE);
                     ed_mobile.setVisibility(View.VISIBLE);
+                    tv_mobile.setVisibility(View.VISIBLE);
                     ed_univercityAff.setVisibility(View.GONE);
+                    tv_univercityAff.setVisibility(View.GONE);
 
                     ed_Name.setText("");
                     ed_email.setText("");
