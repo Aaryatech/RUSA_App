@@ -6,7 +6,6 @@ import com.ats.rusa_app.model.Baner;
 import com.ats.rusa_app.model.CompanyModel;
 import com.ats.rusa_app.model.ContactUs;
 import com.ats.rusa_app.model.Detail;
-import com.ats.rusa_app.model.EventRegCheck;
 import com.ats.rusa_app.model.EventRegistration;
 import com.ats.rusa_app.model.FeedbackSave;
 import com.ats.rusa_app.model.GallaryDetailList;
@@ -19,6 +18,7 @@ import com.ats.rusa_app.model.OTPVerification;
 import com.ats.rusa_app.model.PageData;
 import com.ats.rusa_app.model.PrevEvent;
 import com.ats.rusa_app.model.PreviousEvent;
+import com.ats.rusa_app.model.PreviousRecord;
 import com.ats.rusa_app.model.Reg;
 import com.ats.rusa_app.model.ResendOTP;
 import com.ats.rusa_app.model.Testomonial;
@@ -70,6 +70,12 @@ public interface InterfaceApi {
 
     @POST("saveRegistration")
     Call<Reg> editProfile(@Body Reg registration);
+
+    @POST("savePreviousRecord")
+    Call<PreviousRecord> savePreviousRecord(@Body PreviousRecord previousRecord);
+
+    @POST("getRegUserbyRegId")
+    Call<Reg> getRegUserbyRegId(@Query("regId") int regId);
     //saveRegistration
 
     @POST("saveAppTokens")
@@ -126,5 +132,8 @@ public interface InterfaceApi {
 
     @POST("checkUniqueField")
     Call<Info> getCheckUniqueField(@Query("inputValue") String inputValue, @Query("valueType") int valueType,@Query("primaryKey") int primaryKey);
+
+    @POST("getPrevRecordByRegId ")
+    Call<PreviousRecord> getPrevRecordByRegId(@Query("regId") int regId);
 
 }

@@ -2,7 +2,6 @@ package com.ats.rusa_app.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -47,7 +46,13 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.MyView
     public void onBindViewHolder(@NonNull NewsFeedAdapter.MyViewHolder myViewHolder, int i) {
         final NewDetail model = newsList.get(i);
         String imageUri = Constants.GALLERY_URL + model.getFeaturedImage();
-        Picasso.with(context).load(imageUri).into(myViewHolder.imageView);
+
+        try {
+            Picasso.with(context).load(imageUri).placeholder(context.getResources().getDrawable(R.drawable.img_placeholder)).into(myViewHolder.imageView);
+        } catch (Exception e) {
+        }
+
+
         myViewHolder.tv_newsTitle.setText(model.getHeading());
         myViewHolder.tv_newsDisc.setHtml(model.getDescriptions(), new HtmlHttpImageGetter(myViewHolder.tv_newsDisc));
         myViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
@@ -55,11 +60,11 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.MyView
             public void onClick(View v) {
                 try {
 
-                    Gson gson=new Gson();
-                    String str=gson.toJson(model);
+                    Gson gson = new Gson();
+                    String str = gson.toJson(model);
 
-                    Intent intent=new Intent(context, NewsActivity.class);
-                    intent.putExtra("model",str);
+                    Intent intent = new Intent(context, NewsActivity.class);
+                    intent.putExtra("model", str);
                     context.startActivity(intent);
 //                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("" + model.getNewsSourceUrlName()));
 //                    context.startActivity(browserIntent);

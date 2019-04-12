@@ -277,10 +277,10 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
 
                         String temp;
                         if (height > 2000) {
-                            temp = htmlText.replaceAll("<br></br>", "<br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>");
+                            temp = htmlText.replaceAll("<!--<br></br>-->", "<br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>");
 
                         } else {
-                            temp = htmlText.replaceAll("<br></br>", "<br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>");
+                            temp = htmlText.replaceAll("<!--<br></br>-->", "<br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>");
 
                         }
 

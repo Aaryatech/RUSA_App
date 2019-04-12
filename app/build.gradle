@@ -55,6 +55,11 @@ dependencies {
     //circle imageview
     implementation 'de.hdodenhof:circleimageview:3.0.0'
 
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.8.5'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.8.5'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.8.5'
+
+
 
 }
 //AIzaSyCXE9dOasGKh3b3G9_2tcpqL6SuBGAXTOw
