@@ -255,7 +255,7 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
                 public void onResponse(Call<Info> call, Response<Info> response) {
                     try {
                         Log.e("ERROR : ", " - " + response.body().getError());
-                        if (response.body().getError().equals(false)) {
+                        if (response.body().getError().equals(true)) {
 
                             Log.e("APPLIED EVENT LIST : ", " - " + response.body());
 
@@ -264,7 +264,7 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
                             getEventRegistration(eventRegistration);
                             commonDialog.dismiss();
 
-                        } else if (response.body().getError().equals(true)) {
+                        } else if (response.body().getError().equals(false)) {
 
                             Log.e("APPLIED EVENT LIST1 : ", " - " + response.body());
                             // Toast.makeText(EventDetailListActivity.this, "Already Applied For This Event", Toast.LENGTH_SHORT).show();

@@ -216,7 +216,6 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                             Log.e("Register By id", "-----------------------------" + RegModel);
                             commonDialog.dismiss();
 
-
                         } else {
                             commonDialog.dismiss();
                             Log.e("Data Null : ", "-----------");
