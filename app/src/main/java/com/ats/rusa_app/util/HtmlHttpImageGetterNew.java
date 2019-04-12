@@ -131,7 +131,7 @@ public class HtmlHttpImageGetterNew  implements ImageGetter {
                 return;
             }
             // set the correct bound according to the result from HTTP call
-            urlDrawable.setBounds(0, 0, (int) (result.getIntrinsicWidth() * scale), (int) (result.getIntrinsicHeight() * scale));
+            urlDrawable.setBounds(0, 0, (int) (result.getIntrinsicWidth() * scale), (int) ((result.getIntrinsicHeight() * scale)));
             //urlDrawable.setBounds(0, 0, (int) (100 * scale), (int) (100 * scale));
             // change the reference of the current drawable to the result from the HTTP call
             urlDrawable.drawable = result;

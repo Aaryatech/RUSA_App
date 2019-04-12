@@ -72,7 +72,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private FloatingActionButton fabTwitter, fabFb;
 
-    private RecyclerView testomonial_recyclerView, new_recyclerView, comp_recyclerView, video_recyclerView,rvNewsAndNotify;
+    private RecyclerView testomonial_recyclerView, new_recyclerView, comp_recyclerView, video_recyclerView, rvNewsAndNotify;
     private LinearLayoutManager linearLayoutManager;
 
     final ArrayList<Testimonials> list = new ArrayList<>();
@@ -536,19 +536,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private void imageSlider(ArrayList<PhotoList> galleryList) {
 
         HashMap<String, String> url_maps = new HashMap<String, String>();
-        //url_maps.put("img",Constants.GALLERY_URL +"slider.jpg");
+        url_maps.put("img", Constants.GALLERY_URL + "slider.jpg");
         for (int i = 0; i < galleryList.size(); i++) {
 
-            if (i == 1) {
-                url_maps.put("img", Constants.GALLERY_URL + "slider.jpg");
-            } else {
-
-                String image = Constants.GALLERY_URL + galleryList.get(i).getFileName();
-                String title = galleryList.get(i).getTitle();
-                //String title = gallaryDetailLists.get(i).getTitle();
-                url_maps.put(title, image);
-                Log.e("Gallery", "----------" + url_maps);
-            }
+            String image = Constants.GALLERY_URL + galleryList.get(i).getFileName();
+            String title = galleryList.get(i).getTitle();
+            //String title = gallaryDetailLists.get(i).getTitle();
+            url_maps.put(title, image);
+            Log.e("Gallery", "----------" + url_maps);
         }
 
 
@@ -573,7 +568,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         //sliderLayout.setIndicatorVisibility(PagerIndicator.IndicatorVisibility.Invisible);
         sliderLayout.setCustomAnimation(new DescriptionAnimation());
         sliderLayout.setDuration(4000);
-        // sliderLayout.setCurrentPosition(11,true);
+        sliderLayout.setCurrentPosition(1, true);
+
 
     }
 

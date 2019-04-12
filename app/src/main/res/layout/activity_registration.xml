@@ -4,420 +4,409 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/login_bg"
     tools:context=".activity.LoginActivity">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    <LinearLayout
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/login_bg">
-
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="@dimen/margin_xx_large"
-            android:layout_gravity="center"
-            android:src="@drawable/logo_new"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_large"
-            android:textColor="@color/colorBlue"
-            android:fontFamily="@font/lato_bold"
-            android:text="@string/str_rashtriya_uchchatar"
-            android:gravity="center"
-            />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_large"
-            android:fontFamily="@font/lato_bold"
-            android:textColor="@color/colorBlue"
-            android:text="@string/str_shiksha_abhiyan"
-            android:gravity="center"
-            />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_medium"
-            android:fontFamily="@font/lato_bold"
-            android:textColor="@color/colorRed"
-            android:text="@string/str_goverment_of_maharashtra"
-            android:gravity="center"
-            />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_large"
-            android:fontFamily="@font/lato_bold"
-            android:textColor="@color/colorBlue"
-            android:text="@string/str_registration"
-            android:layout_marginTop="@dimen/margin_x_large"
-            android:gravity="center"/>
-
-        <Spinner
-            android:id="@+id/spType"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_x_large"
-            android:layout_marginTop="@dimen/margin_xx_large"
-            android:background="@drawable/spinner_bg"
-            android:layout_marginRight="@dimen/margin_x_large" />
-        <!--android:drawableRight="@drawable/name_icon"-->
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/tv_name"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:visibility="gone"
-            android:layout_marginLeft="@dimen/margin_x_large"
-            android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginRight="@dimen/margin_x_large"
-            android:gravity="bottom"
-            app:passwordToggleEnabled="true">
-
-        <EditText
-            android:id="@+id/ed_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="15dp"
-            android:fontFamily="@font/lato_regular"
-            android:maxLines="1"
-            android:visibility="gone"
-            android:singleLine="true"
-            android:layout_marginTop="@dimen/margin_x_large"
-            android:inputType="text"
-            android:hint="@string/str_name"
-            android:background="@drawable/edittext_background"
-            />
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/tv_AISHE_code"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:visibility="gone"
-            android:layout_marginLeft="@dimen/margin_x_large"
-            android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginRight="@dimen/margin_x_large"
-            android:gravity="bottom"
-            app:passwordToggleEnabled="true">
-
-        <EditText
-            android:id="@+id/ed_AISHE_code"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/margin_medium"
-            android:fontFamily="@font/lato_regular"
-            android:maxLines="1"
-            android:visibility="gone"
-            android:singleLine="true"
-            android:layout_marginTop="@dimen/margin_x_large"
-            android:inputType="text"
-            android:hint="@string/str_aishe_code"
-            android:background="@drawable/edittext_background"
-        />
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/tv_clgName"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:visibility="gone"
-            android:layout_marginLeft="@dimen/margin_x_large"
-            android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginRight="@dimen/margin_x_large"
-            android:gravity="bottom"
-            app:passwordToggleEnabled="true">
-
-        <EditText
-            android:id="@+id/ed_clgName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/margin_medium"
-            android:fontFamily="@font/lato_regular"
-            android:maxLines="1"
-            android:visibility="gone"
-            android:singleLine="true"
-            android:layout_marginTop="@dimen/margin_x_large"
-            android:inputType="text"
-            android:hint="@string/str_college_name"
-            android:background="@drawable/edittext_background"
-           />
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/tv_univercityAffil"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:visibility="gone"
-            android:layout_marginLeft="@dimen/margin_x_large"
-            android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginRight="@dimen/margin_x_large"
-            android:gravity="bottom"
-            app:passwordToggleEnabled="true">
-
-        <EditText
-            android:id="@+id/ed_univercityAffil"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/margin_medium"
-            android:fontFamily="@font/lato_regular"
-            android:maxLines="1"
-            android:visibility="gone"
-            android:singleLine="true"
-            android:layout_marginTop="@dimen/margin_x_large"
-            android:inputType="text"
-            android:hint="@string/str_university_affiliated"
-            android:background="@drawable/edittext_background"
-           />
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/tv_nameAuthPerson"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:visibility="gone"
-            android:layout_marginLeft="@dimen/margin_x_large"
-            android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginRight="@dimen/margin_x_large"
-            android:gravity="bottom"
-            app:passwordToggleEnabled="true">
-
-        <EditText
-            android:id="@+id/ed_nameAuthPerson"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/margin_medium"
-            android:fontFamily="@font/lato_regular"
-            android:maxLines="1"
-            android:visibility="gone"
-            android:singleLine="true"
-            android:layout_marginTop="@dimen/margin_x_large"
-            android:inputType="text"
-            android:hint="@string/str_name_of_the_authorized_person"
-            android:background="@drawable/edittext_background"
-            />
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/tv_designationPerson"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:visibility="gone"
-            android:layout_marginLeft="@dimen/margin_x_large"
-            android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginRight="@dimen/margin_x_large"
-            android:gravity="bottom"
-            app:passwordToggleEnabled="true">
-
-        <EditText
-            android:id="@+id/ed_designationPerson"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/margin_medium"
-            android:fontFamily="@font/lato_regular"
-            android:maxLines="1"
-            android:visibility="gone"
-            android:singleLine="true"
-            android:layout_marginTop="@dimen/margin_x_large"
-            android:inputType="text"
-            android:hint="@string/str_designation_of_the_authorized_person"
-            android:background="@drawable/edittext_background"
-           />
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/tv_nameDept"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:visibility="gone"
-            android:layout_marginLeft="@dimen/margin_x_large"
-            android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginRight="@dimen/margin_x_large"
-            android:gravity="bottom"
-            app:passwordToggleEnabled="true">
-
-        <EditText
-            android:id="@+id/ed_nameDept"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/margin_medium"
-            android:fontFamily="@font/lato_regular"
-            android:maxLines="1"
-            android:visibility="gone"
-            android:singleLine="true"
-            android:layout_marginTop="@dimen/margin_x_large"
-            android:inputType="text"
-            android:hint="@string/str_name_of_department"
-            android:background="@drawable/edittext_background"
-           />
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/tv_mobileNo"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:visibility="gone"
-            android:layout_marginLeft="@dimen/margin_x_large"
-            android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginRight="@dimen/margin_x_large"
-            android:gravity="bottom"
-            app:passwordToggleEnabled="true">
-
-        <EditText
-            android:id="@+id/ed_mobileNo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/margin_medium"
-            android:fontFamily="@font/lato_regular"
-            android:layout_marginTop="@dimen/margin_x_large"
-            android:inputType="number"
-            android:visibility="gone"
-            android:hint="@string/str_mobile_number"
-            android:maxLength="10"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:background="@drawable/edittext_background"
-            />
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/tv_DOB"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:visibility="gone"
-            android:layout_marginLeft="@dimen/margin_x_large"
-            android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginRight="@dimen/margin_x_large"
-            android:gravity="bottom"
-            app:passwordToggleEnabled="true">
-
-        <EditText
-            android:id="@+id/ed_DOB"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/margin_medium"
-            android:drawableRight="@drawable/ic_action_calender"
-            android:fontFamily="@font/lato_regular"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:visibility="gone"
-            android:inputType="none"
-            android:layout_marginTop="@dimen/margin_x_large"
-            android:hint="@string/str_date_of_birth"
-            android:background="@drawable/edittext_background"
-           />
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/tv_email"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:visibility="gone"
-            android:layout_marginLeft="@dimen/margin_x_large"
-            android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginRight="@dimen/margin_x_large"
-            android:gravity="bottom"
-            app:passwordToggleEnabled="true">
-
-        <EditText
-            android:id="@+id/ed_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/margin_medium"
-            android:fontFamily="@font/lato_regular"
-            android:maxLines="1"
-            android:visibility="gone"
-            android:singleLine="true"
-            android:layout_marginTop="@dimen/margin_x_large"
-            android:inputType="textEmailAddress"
-            android:hint="@string/str_email"
-            android:background="@drawable/edittext_background"
-            />
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/tv_alterEmail"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:visibility="gone"
-            android:layout_marginLeft="@dimen/margin_x_large"
-            android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginRight="@dimen/margin_x_large"
-            android:gravity="bottom"
-            app:passwordToggleEnabled="true">
-
-        <EditText
-            android:id="@+id/ed_alterEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/margin_medium"
-            android:fontFamily="@font/lato_regular"
-            android:maxLines="1"
-            android:visibility="gone"
-            android:singleLine="true"
-            android:layout_marginTop="@dimen/margin_x_large"
-            android:inputType="textEmailAddress"
-            android:hint="@string/str_alternet_email"
-            android:background="@drawable/edittext_background"
-            />
-
-        </android.support.design.widget.TextInputLayout>
-
-        <Button
-            android:id="@+id/btn_registration"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/margin_x_large"
-            android:layout_marginLeft="@dimen/margin_x_large"
-            android:layout_marginTop="@dimen/margin_xx_large"
-            android:padding="@dimen/margin_small"
-            android:textSize="@dimen/text_medium"
-            android:fontFamily="@font/lato_bold"
-            android:background="@drawable/button_background"
-            android:textColor="@color/colorWhite"
-            android:text="@string/str_create_an_account"
-            />
+        android:layout_gravity="center">
 
         <LinearLayout
-            android:id="@+id/linearLayout_signUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/margin_x_large"
-            android:gravity="center">
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margin_xx_large"
+                android:src="@drawable/logo_new" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/str_already_a_user"
                 android:fontFamily="@font/lato_bold"
-                android:textSize="@dimen/text_medium"
-                android:textColor="@color/colorBlack"/>
+                android:gravity="center"
+                android:text="@string/str_rashtriya_uchchatar"
+                android:textColor="@color/colorBlue"
+                android:textSize="@dimen/text_large" />
 
             <TextView
-                android:id="@+id/tv_signIn"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/str_sign_in_now"
                 android:fontFamily="@font/lato_bold"
-                android:textSize="@dimen/text_medium"
-                android:textColor="@color/colorRed"/>
-        </LinearLayout>
+                android:gravity="center"
+                android:text="@string/str_shiksha_abhiyan"
+                android:textColor="@color/colorBlue"
+                android:textSize="@dimen/text_large" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato_bold"
+                android:gravity="center"
+                android:text="@string/str_goverment_of_maharashtra"
+                android:textColor="@color/colorRed"
+                android:textSize="@dimen/text_medium" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_x_large"
+                android:fontFamily="@font/lato_bold"
+                android:gravity="center"
+                android:text="@string/str_registration"
+                android:textColor="@color/colorBlue"
+                android:textSize="@dimen/text_large" />
+
+            <Spinner
+                android:id="@+id/spType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_x_large"
+                android:layout_marginTop="@dimen/margin_xx_large"
+                android:layout_marginRight="@dimen/margin_x_large"
+                android:background="@drawable/spinner_bg" />
+            <!--android:drawableRight="@drawable/name_icon"-->
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tv_name"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginLeft="@dimen/margin_x_large"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginRight="@dimen/margin_x_large"
+                android:gravity="bottom"
+                android:visibility="gone"
+                app:passwordToggleEnabled="true">
+
+                <EditText
+                    android:id="@+id/ed_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_x_large"
+                    android:background="@drawable/edittext_background"
+                    android:fontFamily="@font/lato_regular"
+                    android:hint="@string/str_name"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:padding="15dp"
+                    android:singleLine="true"
+                    android:visibility="gone" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tv_AISHE_code"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginLeft="@dimen/margin_x_large"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginRight="@dimen/margin_x_large"
+                android:gravity="bottom"
+                android:visibility="gone"
+                app:passwordToggleEnabled="true">
+
+                <EditText
+                    android:id="@+id/ed_AISHE_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_x_large"
+                    android:background="@drawable/edittext_background"
+                    android:fontFamily="@font/lato_regular"
+                    android:hint="@string/str_aishe_code"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:padding="@dimen/margin_medium"
+                    android:singleLine="true"
+                    android:visibility="gone" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tv_clgName"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginLeft="@dimen/margin_x_large"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginRight="@dimen/margin_x_large"
+                android:gravity="bottom"
+                android:visibility="gone"
+                app:passwordToggleEnabled="true">
+
+                <EditText
+                    android:id="@+id/ed_clgName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_x_large"
+                    android:background="@drawable/edittext_background"
+                    android:fontFamily="@font/lato_regular"
+                    android:hint="@string/str_college_name"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:padding="@dimen/margin_medium"
+                    android:singleLine="true"
+                    android:visibility="gone" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tv_univercityAffil"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginLeft="@dimen/margin_x_large"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginRight="@dimen/margin_x_large"
+                android:gravity="bottom"
+                android:visibility="gone"
+                app:passwordToggleEnabled="true">
+
+                <EditText
+                    android:id="@+id/ed_univercityAffil"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_x_large"
+                    android:background="@drawable/edittext_background"
+                    android:fontFamily="@font/lato_regular"
+                    android:hint="@string/str_university_affiliated"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:padding="@dimen/margin_medium"
+                    android:singleLine="true"
+                    android:visibility="gone" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tv_nameAuthPerson"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginLeft="@dimen/margin_x_large"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginRight="@dimen/margin_x_large"
+                android:gravity="bottom"
+                android:visibility="gone"
+                app:passwordToggleEnabled="true">
+
+                <EditText
+                    android:id="@+id/ed_nameAuthPerson"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_x_large"
+                    android:background="@drawable/edittext_background"
+                    android:fontFamily="@font/lato_regular"
+                    android:hint="@string/str_name_of_the_authorized_person"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:padding="@dimen/margin_medium"
+                    android:singleLine="true"
+                    android:visibility="gone" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tv_designationPerson"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginLeft="@dimen/margin_x_large"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginRight="@dimen/margin_x_large"
+                android:gravity="bottom"
+                android:visibility="gone"
+                app:passwordToggleEnabled="true">
+
+                <EditText
+                    android:id="@+id/ed_designationPerson"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_x_large"
+                    android:background="@drawable/edittext_background"
+                    android:fontFamily="@font/lato_regular"
+                    android:hint="@string/str_designation_of_the_authorized_person"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:padding="@dimen/margin_medium"
+                    android:singleLine="true"
+                    android:visibility="gone" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tv_nameDept"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginLeft="@dimen/margin_x_large"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginRight="@dimen/margin_x_large"
+                android:gravity="bottom"
+                android:visibility="gone"
+                app:passwordToggleEnabled="true">
+
+                <EditText
+                    android:id="@+id/ed_nameDept"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_x_large"
+                    android:background="@drawable/edittext_background"
+                    android:fontFamily="@font/lato_regular"
+                    android:hint="@string/str_name_of_department"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:padding="@dimen/margin_medium"
+                    android:singleLine="true"
+                    android:visibility="gone" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tv_mobileNo"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginLeft="@dimen/margin_x_large"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginRight="@dimen/margin_x_large"
+                android:gravity="bottom"
+                android:visibility="gone"
+                app:passwordToggleEnabled="true">
+
+                <EditText
+                    android:id="@+id/ed_mobileNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_x_large"
+                    android:background="@drawable/edittext_background"
+                    android:fontFamily="@font/lato_regular"
+                    android:hint="@string/str_mobile_number"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:maxLines="1"
+                    android:padding="@dimen/margin_medium"
+                    android:singleLine="true"
+                    android:visibility="gone" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tv_DOB"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginLeft="@dimen/margin_x_large"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginRight="@dimen/margin_x_large"
+                android:gravity="bottom"
+                android:visibility="gone"
+                app:passwordToggleEnabled="true">
+
+                <EditText
+                    android:id="@+id/ed_DOB"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_x_large"
+                    android:background="@drawable/edittext_background"
+                    android:drawableRight="@drawable/ic_action_calender"
+                    android:fontFamily="@font/lato_regular"
+                    android:hint="@string/str_date_of_birth"
+                    android:inputType="none"
+                    android:maxLines="1"
+                    android:padding="@dimen/margin_medium"
+                    android:singleLine="true"
+                    android:visibility="gone" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tv_email"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginLeft="@dimen/margin_x_large"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginRight="@dimen/margin_x_large"
+                android:gravity="bottom"
+                android:visibility="gone"
+                app:passwordToggleEnabled="true">
+
+                <EditText
+                    android:id="@+id/ed_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_x_large"
+                    android:background="@drawable/edittext_background"
+                    android:fontFamily="@font/lato_regular"
+                    android:hint="@string/str_email"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:padding="@dimen/margin_medium"
+                    android:singleLine="true"
+                    android:visibility="gone" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tv_alterEmail"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginLeft="@dimen/margin_x_large"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginRight="@dimen/margin_x_large"
+                android:gravity="bottom"
+                android:visibility="gone"
+                app:passwordToggleEnabled="true">
+
+                <EditText
+                    android:id="@+id/ed_alterEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_x_large"
+                    android:background="@drawable/edittext_background"
+                    android:fontFamily="@font/lato_regular"
+                    android:hint="@string/str_alternet_email"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:padding="@dimen/margin_medium"
+                    android:singleLine="true"
+                    android:visibility="gone" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/btn_registration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_x_large"
+                android:layout_marginTop="@dimen/margin_xx_large"
+                android:layout_marginRight="@dimen/margin_x_large"
+                android:background="@drawable/button_background"
+                android:fontFamily="@font/lato_bold"
+                android:padding="@dimen/margin_small"
+                android:text="@string/str_create_an_account"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_medium" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout_signUp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_x_large"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="@string/str_already_a_user"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/text_medium" />
+
+                <TextView
+                    android:id="@+id/tv_signIn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="@string/str_sign_in_now"
+                    android:textColor="@color/colorRed"
+                    android:textSize="@dimen/text_medium" />
+            </LinearLayout>
 
 
         </LinearLayout>

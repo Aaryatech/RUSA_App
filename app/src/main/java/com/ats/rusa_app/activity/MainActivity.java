@@ -426,6 +426,11 @@ public class MainActivity extends AppCompatActivity
                                             } else {
                                                 menuGroup = new MenuGroup(model.getSectionlist().get(i).getSectionName(), false, false, false, "" + model.getSectionlist().get(i).getSectionSlugname());
                                             }
+
+                                            if (model.getSectionlist().get(i).getSectionName().equalsIgnoreCase("Rusa Gallery")){
+                                                menuGroup = new MenuGroup(model.getSectionlist().get(i).getSectionName(), false, false, false, "imgGallary" );
+                                            }
+
                                             headerList.add(menuGroup);
 
                                         }
@@ -458,6 +463,12 @@ public class MainActivity extends AppCompatActivity
                                                         MenuGroup childModel = new MenuGroup(model.getCategoryList().get(j).getCatName(), false, false, false, model.getCategoryList().get(j).getSlugName());
                                                         childModelsList.add(childModel);
                                                     }
+
+                                                    if (model.getCategoryList().get(j).getCatName().equalsIgnoreCase("Rusa Gallery")){
+                                                        MenuGroup childModel = new MenuGroup(model.getCategoryList().get(j).getCatName(), false, false, false, "imgGallary");
+                                                        childModelsList.add(childModel);
+                                                    }
+
                                                 } else {
                                                     MenuGroup childModel = new MenuGroup(model.getCategoryList().get(j).getCatName(), false, false, false, model.getCategoryList().get(j).getSlugName());
                                                     childModelsList.add(childModel);
@@ -610,6 +621,12 @@ public class MainActivity extends AppCompatActivity
                         ft.replace(R.id.content_frame, new PhotoGalleryFragment(), "HomeFragment");
                         ft.commit();
 
+                    }else if (headerList.get(groupPosition).getMenuName().equalsIgnoreCase("RUSA GALLERY")) {
+                        Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
+                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        ft.replace(R.id.content_frame, new PhotoGalleryFragment(), "HomeFragment");
+                        ft.commit();
+
                     } else if (url.equalsIgnoreCase("login")) {
                         startActivity(new Intent(MainActivity.this, LoginActivity.class));
 
@@ -727,6 +744,14 @@ public class MainActivity extends AppCompatActivity
                         drawer.closeDrawer(GravityCompat.START);
 
                     } else if (model.getUrl().equalsIgnoreCase("imgGallary")) {
+                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        ft.replace(R.id.content_frame, new PhotoGalleryFragment(), "HomeFragment");
+                        ft.commit();
+
+                        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                        drawer.closeDrawer(GravityCompat.START);
+
+                    }else if (model.getMenuName().equalsIgnoreCase("RUSA GALLERY")) {
                         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                         ft.replace(R.id.content_frame, new PhotoGalleryFragment(), "HomeFragment");
                         ft.commit();
