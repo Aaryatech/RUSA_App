@@ -108,6 +108,7 @@
                     android:padding="@dimen/margin_medium"
                     android:fontFamily="@font/lato_regular"
                     android:maxLines="1"
+                    android:enabled="false"
                     android:visibility="gone"
                     android:singleLine="true"
                     android:layout_marginTop="@dimen/margin_x_large"

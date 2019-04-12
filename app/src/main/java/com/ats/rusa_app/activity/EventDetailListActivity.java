@@ -176,7 +176,26 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
                                 String fileName = loginUser.getRegId() + "_" + System.currentTimeMillis() + "." + ext;
                                    sendDocToServer(fileName, upcomingEvent.getNewsblogsId(), loginUser.getRegId());
                             } else {
-                                  getAppliedEvent(upcomingEvent.getNewsblogsId(), loginUser.getRegId(), "");
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(EventDetailListActivity.this, R.style.AlertDialogTheme);
+                                builder.setTitle("Alert");
+                                builder.setMessage("Are You sure you want to apply");
+                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        getAppliedEvent(upcomingEvent.getNewsblogsId(), loginUser.getRegId(), "");
+                                        dialog.dismiss();
+                                    }
+                                });
+                                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+
                             }
                         }else{
                             AlertDialog.Builder builder = new AlertDialog.Builder(EventDetailListActivity.this, R.style.AlertDialogTheme);
@@ -235,7 +254,7 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
                 @Override
                 public void onResponse(Call<Info> call, Response<Info> response) {
                     try {
-
+                        Log.e("ERROR : ", " - " + response.body().getError());
                         if (response.body().getError().equals(false)) {
 
                             Log.e("APPLIED EVENT LIST : ", " - " + response.body());
@@ -469,7 +488,25 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
                 imagePath = "";
                 Log.e("Response : ", "--" + response.body());
 
-                getAppliedEvent(eventId, regId, filename);
+                AlertDialog.Builder builder = new AlertDialog.Builder(EventDetailListActivity.this, R.style.AlertDialogTheme);
+                builder.setTitle("Alert");
+                builder.setMessage("Are You sure you want to apply");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        getAppliedEvent(eventId, regId, filename);
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
 
             }
 
@@ -480,7 +517,28 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
                 t.printStackTrace();
                 //Toast.makeText(EventDetailListActivity.this, "Unable To Process", Toast.LENGTH_SHORT).show();
                 imagePath = "";
-                getAppliedEvent(eventId, regId, filename);
+               // getAppliedEvent(eventId, regId, filename);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(EventDetailListActivity.this, R.style.AlertDialogTheme);
+                builder.setTitle("Alert");
+                builder.setMessage("Are You sure you want to apply");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        getAppliedEvent(eventId, regId, filename);
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+
             }
         });
     }
