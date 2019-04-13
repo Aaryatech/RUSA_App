@@ -11,11 +11,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.ats.rusa_app.R;
+import com.ats.rusa_app.activity.FullScreenViewActivity;
 import com.ats.rusa_app.activity.ImageZoomActivity;
+import com.ats.rusa_app.activity.MainActivity;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.FaqContentList;
 import com.ats.rusa_app.model.GallaryDetailList;
 import com.google.android.youtube.player.YouTubeThumbnailView;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 
@@ -55,7 +58,7 @@ public class RvGalleryAdapter extends RecyclerView.Adapter<RvGalleryAdapter.MyVi
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
         final GallaryDetailList model = galleryList.get(position);
 
         if (model.getTypeVideoImage().equals("3")) {
@@ -78,9 +81,22 @@ public class RvGalleryAdapter extends RecyclerView.Adapter<RvGalleryAdapter.MyVi
         holder.ivImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ImageZoomActivity.class);
-                intent.putExtra("image", Constants.GALLERY_URL + model.getFileName());
-                context.startActivity(intent);
+//                Intent intent = new Intent(context, ImageZoomActivity.class);
+//                intent.putExtra("image", Constants.GALLERY_URL + model.getFileName());
+//                context.startActivity(intent);
+
+                Gson gson = new Gson();
+                String jsonStr = gson.toJson(galleryList);
+
+                MainActivity activity = (MainActivity) context;
+
+
+
+                Intent i = new Intent(activity, FullScreenViewActivity.class);
+                i.putExtra("position", position);
+                i.putExtra("gallery", jsonStr);
+                activity.startActivity(i);
+
             }
         });
 

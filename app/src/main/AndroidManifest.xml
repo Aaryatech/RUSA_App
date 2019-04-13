@@ -16,12 +16,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.TestActivity">
-
-        </activity>
+        <activity android:name=".activity.FullScreenViewActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+        <activity android:name=".activity.TestActivity"></activity>
         <activity
             android:name=".activity.ChangePasswordActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.PreviousEventDetailActivity"
             android:screenOrientation="portrait" />
@@ -33,8 +33,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.NewsActivity"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.NotificationActivity"
             android:screenOrientation="portrait" />
@@ -57,12 +56,10 @@
             android:name=".activity.OTPVerificationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activity.FeedbackActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activity.SplashActivity"
             android:screenOrientation="portrait"
@@ -115,7 +112,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-
     </application>
 
 </manifest>
