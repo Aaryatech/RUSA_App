@@ -11,6 +11,7 @@
         android:layout_height="fill_parent"
         android:scaleType="fitCenter" />
 
+
     <com.jsibbold.zoomage.ZoomageView
         android:id="@+id/myZoomageView"
         android:layout_width="match_parent"
