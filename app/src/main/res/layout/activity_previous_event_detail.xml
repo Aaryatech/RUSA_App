@@ -56,21 +56,6 @@
                 android:fontFamily="@font/lato_regular"
                 android:textSize="@dimen/text_medium" />
 
-            <TextView
-                android:id="@+id/tvEventVenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_small"
-                android:layout_marginTop="@dimen/margin_medium"
-                android:layout_marginRight="@dimen/margin_small"
-                android:layout_marginBottom="@dimen/margin_medium"
-                android:drawableLeft="@drawable/ic_loc"
-                android:visibility="gone"
-                android:drawablePadding="10dp"
-                android:fontFamily="@font/lato_regular"
-                android:gravity="center_vertical"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/text_medium" />
 
             <TextView
                 android:id="@+id/tvEventDate"
@@ -86,6 +71,92 @@
                 android:gravity="center_vertical"
                 android:textColor="@color/colorPrimary"
                 android:textSize="16sp" />
+
+
+            <LinearLayout
+                android:id="@+id/linearLayoutFeedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_large"
+                android:background="@color/colorWhite"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_medium"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="Feedback"
+                    android:textColor="@color/colorOrange" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:layout_marginBottom="@dimen/margin_medium"
+                        android:layout_marginLeft="@dimen/margin_medium"
+                        android:layout_weight="4.4"
+                        android:text="Rating:"
+                        android:fontFamily="@font/lato_bold"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/text_medium" />
+
+                    <TextView
+                        android:id="@+id/tvEventFeedbackValue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:layout_marginBottom="@dimen/margin_medium"
+                        android:layout_weight="1.1"
+                        android:fontFamily="@font/lato_regular"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/text_medium" />
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvEventMsg"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:layout_marginLeft="@dimen/margin_medium"
+                        android:layout_marginBottom="@dimen/margin_medium"
+                        android:layout_weight="3.4"
+                        android:text="Message:"
+                        android:fontFamily="@font/lato_bold"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/text_medium" />
+
+                    <TextView
+                        android:id="@+id/tvEventFeedback"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:layout_marginBottom="@dimen/margin_medium"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/lato_regular"
+                        android:gravity="start"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/text_medium" />
+                </LinearLayout>
+
+            </LinearLayout>
 
 
 

@@ -9,6 +9,7 @@ import com.ats.rusa_app.model.Detail;
 import com.ats.rusa_app.model.EventRegistration;
 import com.ats.rusa_app.model.FeedbackSave;
 import com.ats.rusa_app.model.GallaryDetailList;
+import com.ats.rusa_app.model.Gallery;
 import com.ats.rusa_app.model.GetGalleryCategory;
 import com.ats.rusa_app.model.Info;
 import com.ats.rusa_app.model.Login;
@@ -17,6 +18,7 @@ import com.ats.rusa_app.model.NewDetail;
 import com.ats.rusa_app.model.OTPVerification;
 import com.ats.rusa_app.model.PageData;
 import com.ats.rusa_app.model.PrevEvent;
+import com.ats.rusa_app.model.PrevEventFeedback;
 import com.ats.rusa_app.model.PreviousEvent;
 import com.ats.rusa_app.model.PreviousRecord;
 import com.ats.rusa_app.model.Reg;
@@ -135,5 +137,11 @@ public interface InterfaceApi {
 
     @POST("getPrevRecordByRegId ")
     Call<PreviousRecord> getPrevRecordByRegId(@Query("regId") int regId);
+
+    @POST("getFeedbackByUserIdAndNewsblogsId ")
+    Call<PrevEventFeedback> getFeedbackByUserIdAndNewsblogsId(@Query("userId") int userId,@Query("newsblogsId") int newsblogsId);
+
+    @POST("getCategoryListWithImageCount")
+    Call<ArrayList<Gallery>> getCategoryListWithImageCount(@Query("sectionId") int sectionId,@Query("langId") int langId);
 
 }
