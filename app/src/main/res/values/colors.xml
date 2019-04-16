@@ -11,4 +11,6 @@
     <color name="colorOrange">#FFA500</color>
     <color name="twitterColor">#00ADEF</color>
     <color name="fbColor">#465993</color>
+    <color name="colorTrans">#55ffffff</color>
+    <color name="colorTransfer">#55000000</color>
 </resources>

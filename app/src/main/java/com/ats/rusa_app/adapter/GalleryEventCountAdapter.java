@@ -32,7 +32,7 @@ public class GalleryEventCountAdapter extends RecyclerView.Adapter<GalleryEventC
     @Override
     public GalleryEventCountAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.adapter_gallery_events_count, viewGroup, false);
+                .inflate(R.layout.gallery_event_adapter, viewGroup, false);
 
         return new MyViewHolder(itemView);
     }
@@ -42,9 +42,9 @@ public class GalleryEventCountAdapter extends RecyclerView.Adapter<GalleryEventC
         final Gallery model = eventList.get(i);
 
         myViewHolder.tvName.setText(""+model.getCatName());
-        myViewHolder.tvVedio.setText("Video : "+model.getVideoCount());
-        myViewHolder.tvImages.setText("Images : "+model.getImgCount());
-        myViewHolder.tvCatrgori.setText("Categori : "+model.getCategoryCount());
+        myViewHolder.tvVedio.setText(""+model.getVideoCount());
+        myViewHolder.tvImages.setText(""+model.getImgCount());
+        myViewHolder.tvCatrgori.setText(""+model.getCategoryCount());
 
         myViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,7 +79,7 @@ public class GalleryEventCountAdapter extends RecyclerView.Adapter<GalleryEventC
             tvVedio = itemView.findViewById(R.id.tv_video);
             tvImages = itemView.findViewById(R.id.tv_images);
             tvCatrgori = itemView.findViewById(R.id.tv_categori);
-           cardView = itemView.findViewById(R.id.cardView);
+           cardView = itemView.findViewById(R.id.card_view);
         }
     }
 }

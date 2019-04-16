@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--<string name="app_name">रुसा</string>-->
+    <string name="app_icon_name">RUSA</string>
     <string name="app_name">राष्ट्रीय उच्चतर शिक्षा अभियान</string>
     <string name="str_title">राष्ट्रीय उच्चतर शिक्षा अभियान (रूसा)</string>
     <string name="navigation_drawer_open">ओपन नेव्हिगेशन ड्रॉवर</string>

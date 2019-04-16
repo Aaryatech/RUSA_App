@@ -1,4 +1,5 @@
 <resources>
+    <string name="app_icon_name">RUSA</string>
     <string name="app_name">राष्ट्रीय उच्चतर शिक्षा अभियान</string>
     <string name="str_title">Rashtriya Uchchatar Shiksha Abhiyan (RUSA)</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
