@@ -1,7 +1,9 @@
 package com.ats.rusa_app.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -23,35 +25,37 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.ats.rusa_app.constants.Constants.authHeader;
+
 public class OTPVerificationActivity extends AppCompatActivity {
-public EditText ed_verificationOTP;
-public Button btn_submit,btn_resend;
-Reg registrationModel;
-     String smsCode;
+    public EditText ed_verificationOTP;
+    public Button btn_submit, btn_resend;
+    Reg registrationModel;
+    String smsCode;
     String model;
     ArrayList<ResendOTP> resendOTP = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otpverification);
-        ed_verificationOTP=(EditText)findViewById(R.id.ed_verifyOTP);
-        btn_submit=(Button)findViewById(R.id.btn_submit);
-        btn_resend=(Button)findViewById(R.id.btn_resend);
+        ed_verificationOTP = (EditText) findViewById(R.id.ed_verifyOTP);
+        btn_submit = (Button) findViewById(R.id.btn_submit);
+        btn_resend = (Button) findViewById(R.id.btn_resend);
         Bundle bundle = getIntent().getExtras();
-       // final String smsCode = bundle.getString("code");
+        // final String smsCode = bundle.getString("code");
         String uuId = null;
         try {
-              uuId = bundle.getString("uuCode");
-        }catch (Exception e)
-        {
+            uuId = bundle.getString("uuCode");
+        } catch (Exception e) {
 
         }
-         model = bundle.getString("model");
+        model = bundle.getString("model");
         Gson gson = new Gson();
         registrationModel = gson.fromJson(model, Reg.class);
-         smsCode = registrationModel.getSmsCode();
-        Log.e("CODE","------------"+smsCode);
-        Log.e("reg model","------------"+registrationModel);
+        smsCode = registrationModel.getSmsCode();
+        Log.e("CODE", "------------" + smsCode);
+        Log.e("reg model", "------------" + registrationModel);
 //        Log.e("uuId","------------"+uuId);
 
         //getResendOTP(uuId);
@@ -59,18 +63,18 @@ Reg registrationModel;
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String userCode=ed_verificationOTP.getText().toString();
-                String UserUuid=registrationModel.getUserUuid();
+                String userCode = ed_verificationOTP.getText().toString();
+                String UserUuid = registrationModel.getUserUuid();
                 boolean isValidOTP = false;
 
-            if (userCode.isEmpty()) {
-                ed_verificationOTP.setError("required");
-            }  else {
-                isValidOTP = true;
-                ed_verificationOTP.setError(null);
-            }
+                if (userCode.isEmpty()) {
+                    ed_verificationOTP.setError("required");
+                } else {
+                    isValidOTP = true;
+                    ed_verificationOTP.setError(null);
+                }
 
-                if(isValidOTP) {
+                if (isValidOTP) {
 
                     if (smsCode.equals(userCode)) {
                         getVerifyOTP(userCode, UserUuid);
@@ -93,23 +97,23 @@ Reg registrationModel;
     }
 
     private void getResendOTP(String userUuid) {
-        Log.e("PARA","----------------"+userUuid);
+        Log.e("PARA", "----------------" + userUuid);
 
         if (Constants.isOnline(getApplicationContext())) {
             final CommonDialog commonDialog = new CommonDialog(OTPVerificationActivity.this, "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<ResendOTP> listCall = Constants.myInterface.verifyResendOtpResponse(userUuid);
+            Call<ResendOTP> listCall = Constants.myInterface.verifyResendOtpResponse(userUuid,authHeader);
             listCall.enqueue(new Callback<ResendOTP>() {
                 @Override
                 public void onResponse(Call<ResendOTP> call, Response<ResendOTP> response) {
                     try {
                         if (response.body() != null) {
 
-                           // Log.e("RESEND VERIFY : ", " - " + response.body().toString());
-                            ResendOTP resendOTP=response.body();
+                            // Log.e("RESEND VERIFY : ", " - " + response.body().toString());
+                            ResendOTP resendOTP = response.body();
                             Log.e("RESEND VERIFY LIST : ", " - " + resendOTP);
-                            smsCode=resendOTP.getReg().getSmsCode();
+                            smsCode = resendOTP.getReg().getSmsCode();
                             Log.e("RESEND CODE : ", " - " + smsCode);
                             // finish();
                             commonDialog.dismiss();
@@ -143,7 +147,7 @@ Reg registrationModel;
             final CommonDialog commonDialog = new CommonDialog(OTPVerificationActivity.this, "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<OTPVerification> listCall = Constants.myInterface.verifyOtpResponse(userCode,userUuid);
+            Call<OTPVerification> listCall = Constants.myInterface.verifyOtpResponse(userCode, userUuid,authHeader);
             listCall.enqueue(new Callback<OTPVerification>() {
                 @Override
                 public void onResponse(Call<OTPVerification> call, Response<OTPVerification> response) {
@@ -151,12 +155,12 @@ Reg registrationModel;
                         if (response.body() != null) {
 
                             Log.e("VERIFY : ", " - " + response.body().toString());
-                            OTPVerification otpVerification=response.body();
+                            OTPVerification otpVerification = response.body();
                             Log.e("VERIFY LIST : ", " - " + otpVerification);
-                            Intent intent=new Intent(OTPVerificationActivity.this,LoginActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            Intent intent = new Intent(OTPVerificationActivity.this, LoginActivity.class);
+                            //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
-                           // finish();
+                             finish();
                             commonDialog.dismiss();
 
                         } else {
@@ -180,5 +184,30 @@ Reg registrationModel;
         } else {
             Toast.makeText(getApplicationContext(), "No Internet Connection !", Toast.LENGTH_SHORT).show();
         }
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        AlertDialog.Builder builder = new AlertDialog.Builder(OTPVerificationActivity.this, R.style.AlertDialogTheme);
+        builder.setTitle("Caution");
+        builder.setMessage("Do you want to cancel the registration process?");
+        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

@@ -13,11 +13,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.Login;
+import com.ats.rusa_app.model.NewReg;
 import com.ats.rusa_app.model.PreviousRecord;
 import com.ats.rusa_app.model.Reg;
 import com.ats.rusa_app.util.CommonDialog;
@@ -35,21 +37,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.ats.rusa_app.constants.Constants.authHeader;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class EditProfileFragment extends Fragment implements View.OnClickListener {
-    public EditText ed_Name, ed_email, ed_alterEmail, ed_clgName, ed_aisheCode, ed_designationPerson, ed_nameDept, ed_nameAuthePerson, ed_DOB, ed_univercityAff, ed_mobile, ed_type;
-    public TextInputLayout tv_Name, tv_email, tv_alterEmail, tv_clgName, tv_aisheCode, tv_designationPerson, tv_nameDept, tv_nameAuthePerson, tv_DOB, tv_univercityAff, tv_mobile,tv_type;
+    public EditText edName, edInst, edUni, edCode, edDesg, edDept, edMobile, edEmail, edAlterEmail, edAuthName;
     public Button btn_registration;
-    public Spinner spType;
-    String spinnerPosition;
-    long dateMillis;
+    public TextInputLayout tilName, tilAuthName;
     Login loginUser;
-    int yyyy, mm, dd;
-    public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
-    private BroadcastReceiver receiver;
-    ArrayList<String> typeNameArray = new ArrayList<>();
+    public TextView tvHead;
     Reg RegModel;
 
     @Override
@@ -58,33 +56,21 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
 
-        ed_Name = (EditText) view.findViewById(R.id.ed_name);
-        ed_email = (EditText) view.findViewById(R.id.ed_email);
-        ed_alterEmail = (EditText) view.findViewById(R.id.ed_alterEmail);
-        ed_clgName = (EditText) view.findViewById(R.id.ed_clgName);
-        ed_aisheCode = (EditText) view.findViewById(R.id.ed_AISHE_code);
-        ed_designationPerson = (EditText) view.findViewById(R.id.ed_designationPerson);
-        ed_nameDept = (EditText) view.findViewById(R.id.ed_nameDept);
-        ed_nameAuthePerson = (EditText) view.findViewById(R.id.ed_nameAuthPerson);
-        ed_DOB = (EditText) view.findViewById(R.id.ed_DOB);
-        ed_mobile = (EditText) view.findViewById(R.id.ed_mobileNo);
-        ed_univercityAff = (EditText) view.findViewById(R.id.ed_univercityAffil);
-        ed_type = (EditText) view.findViewById(R.id.ed_type);
-        btn_registration = (Button) view.findViewById(R.id.btn_registration);
+        edName = view.findViewById(R.id.edName);
+        edInst = view.findViewById(R.id.edInst);
+        edUni = view.findViewById(R.id.edUni);
+        edCode = view.findViewById(R.id.edCode);
+        edDesg = view.findViewById(R.id.edDesg);
+        edDept = view.findViewById(R.id.edDept);
+        edMobile = view.findViewById(R.id.edMobile);
+        edEmail = view.findViewById(R.id.edEmail);
+        edAlterEmail = view.findViewById(R.id.edAlterEmail);
+        btn_registration = view.findViewById(R.id.btn_registration);
+        edAuthName = view.findViewById(R.id.edAuthName);
+        tvHead = view.findViewById(R.id.tvHead);
 
-
-        tv_Name = (TextInputLayout)view.findViewById(R.id.tv_name);
-        tv_type = (TextInputLayout)view.findViewById(R.id.tv_type);
-        tv_email = (TextInputLayout) view.findViewById(R.id.tv_email);
-        tv_alterEmail = (TextInputLayout) view.findViewById(R.id.tv_alterEmail);
-        tv_clgName = (TextInputLayout) view.findViewById(R.id.tv_clgName);
-        tv_aisheCode = (TextInputLayout) view.findViewById(R.id.tv_AISHE_code);
-        tv_designationPerson = (TextInputLayout) view.findViewById(R.id.tv_designationPerson);
-        tv_nameDept = (TextInputLayout) view.findViewById(R.id.tv_nameDept);
-        tv_nameAuthePerson = (TextInputLayout) view.findViewById(R.id.tv_nameAuthPerson);
-        tv_DOB = (TextInputLayout) view.findViewById(R.id.tv_DOB);
-        tv_mobile = (TextInputLayout) view.findViewById(R.id.tv_mobileNo);
-        tv_univercityAff = (TextInputLayout) view.findViewById(R.id.tv_univercityAffil);
+        tilAuthName = view.findViewById(R.id.tilAuthName);
+        tilName = view.findViewById(R.id.tilName);
 
         btn_registration.setOnClickListener(this);
 
@@ -93,88 +79,102 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         loginUser = gson.fromJson(userStr, Login.class);
         Log.e("HOME_ACTIVITY : ", "--------USER-------" + loginUser);
 
-        getRegById(loginUser.getRegId());
 
-        if (loginUser.getUserType() == 1) {
-            ed_Name.setVisibility(View.VISIBLE);
-            tv_Name.setVisibility(View.VISIBLE);
-            ed_Name.setHint(getString(R.string.str_full_name));
-            tv_Name.setHint(getString(R.string.str_full_name));
-            ed_email.setVisibility(View.VISIBLE);
-            tv_email.setVisibility(View.VISIBLE);
-            ed_alterEmail.setVisibility(View.VISIBLE);
-            tv_alterEmail.setVisibility(View.VISIBLE);
-            ed_clgName.setVisibility(View.VISIBLE);
-            tv_clgName.setVisibility(View.VISIBLE);
-            ed_aisheCode.setVisibility(View.GONE);
-            tv_aisheCode.setVisibility(View.GONE);
-            ed_designationPerson.setVisibility(View.VISIBLE);
-            tv_designationPerson.setVisibility(View.VISIBLE);
-            ed_nameDept.setVisibility(View.VISIBLE);
-            tv_nameDept.setVisibility(View.VISIBLE);
-            ed_nameAuthePerson.setVisibility(View.GONE);
-            tv_nameAuthePerson.setVisibility(View.GONE);
-            ed_DOB.setVisibility(View.GONE);
-            tv_DOB.setVisibility(View.GONE);
-            ed_mobile.setVisibility(View.VISIBLE);
-            tv_mobile.setVisibility(View.VISIBLE);
-            ed_univercityAff.setVisibility(View.VISIBLE);
-            tv_univercityAff.setVisibility(View.VISIBLE);
+        if (loginUser != null) {
 
-        } else if (loginUser.getUserType() == 2) {
-            ed_Name.setVisibility(View.VISIBLE);
-            tv_Name.setVisibility(View.VISIBLE);
-            ed_Name.setHint(getString(R.string.str_institute_name));
-            tv_Name.setHint(getString(R.string.str_institute_name));
-            ed_email.setVisibility(View.VISIBLE);
-            tv_email.setVisibility(View.VISIBLE);
-            ed_alterEmail.setVisibility(View.VISIBLE);
-            tv_alterEmail.setVisibility(View.VISIBLE);
-            ed_clgName.setVisibility(View.GONE);
-            tv_clgName.setVisibility(View.GONE);
-            ed_aisheCode.setVisibility(View.VISIBLE);
-            tv_aisheCode.setVisibility(View.VISIBLE);
-            ed_designationPerson.setVisibility(View.VISIBLE);
-            tv_designationPerson.setVisibility(View.VISIBLE);
-            ed_nameDept.setVisibility(View.VISIBLE);
-            tv_nameDept.setVisibility(View.VISIBLE);
-            ed_nameAuthePerson.setVisibility(View.VISIBLE);
-            tv_nameAuthePerson.setVisibility(View.VISIBLE);
-            ed_DOB.setVisibility(View.GONE);
-            tv_DOB.setVisibility(View.GONE);
-            ed_mobile.setVisibility(View.VISIBLE);
-            tv_mobile.setVisibility(View.VISIBLE);
-            ed_univercityAff.setVisibility(View.VISIBLE);
-            tv_univercityAff.setVisibility(View.VISIBLE);
+            getRegDetailById(loginUser.getRegId());
+            getRegById(loginUser.getRegId());
 
-        } else if (loginUser.getUserType() == 3) {
-            ed_Name.setVisibility(View.VISIBLE);
-            tv_Name.setVisibility(View.VISIBLE);
-            ed_Name.setHint(getString(R.string.str_university_name));
-            tv_Name.setHint(getString(R.string.str_university_name));
-            ed_email.setVisibility(View.VISIBLE);
-            tv_email.setVisibility(View.VISIBLE);
-            ed_alterEmail.setVisibility(View.VISIBLE);
-            tv_alterEmail.setVisibility(View.VISIBLE);
-            ed_clgName.setVisibility(View.GONE);
-            tv_clgName.setVisibility(View.GONE);
-            ed_aisheCode.setVisibility(View.VISIBLE);
-            tv_aisheCode.setVisibility(View.VISIBLE);
-            ed_designationPerson.setVisibility(View.VISIBLE);
-            tv_designationPerson.setVisibility(View.VISIBLE);
-            ed_nameDept.setVisibility(View.VISIBLE);
-            tv_nameDept.setVisibility(View.VISIBLE);
-            ed_nameAuthePerson.setVisibility(View.VISIBLE);
-            tv_nameAuthePerson.setVisibility(View.VISIBLE);
-            ed_DOB.setVisibility(View.GONE);
-            tv_DOB.setVisibility(View.GONE);
-            ed_mobile.setVisibility(View.VISIBLE);
-            tv_mobile.setVisibility(View.VISIBLE);
-            ed_univercityAff.setVisibility(View.GONE);
-            tv_univercityAff.setVisibility(View.GONE);
+            if (loginUser.getUserType() == 1) {
+                tilAuthName.setVisibility(View.GONE);
+                tilName.setVisibility(View.VISIBLE);
+            } else {
+                tilAuthName.setVisibility(View.VISIBLE);
+                tilName.setVisibility(View.GONE);
+            }
+
+            edName.setText("" + loginUser.getName());
+            edCode.setText("" + loginUser.getAisheCode());
+            edUni.setText("" + loginUser.getUnversityName());
+            edInst.setText("" + loginUser.getCollegeName());
+            edEmail.setText("" + loginUser.getEmails());
+            edDesg.setText("" + loginUser.getDesignationName());
+            edDept.setText("" + loginUser.getDepartmentName());
+            edMobile.setText("" + loginUser.getMobileNumber());
+            edAlterEmail.setText("" + loginUser.getAlternateEmail());
+            edAuthName.setText("" + loginUser.getAuthorizedPerson());
+
+
         }
 
         return view;
+    }
+
+    private void getRegDetailById(Integer regId) {
+        if (Constants.isOnline(getActivity())) {
+            Log.e("PARAMETER : ", "---------------- regId : " + regId);
+
+            final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
+            commonDialog.show();
+
+            Call<NewReg> listCall = Constants.myInterface.getRegUserDetailbyRegId(regId,authHeader);
+            listCall.enqueue(new Callback<NewReg>() {
+                @Override
+                public void onResponse(Call<NewReg> call, Response<NewReg> response) {
+                    try {
+                        if (response.body() != null) {
+                            NewReg newRegModel = response.body();
+
+                            if (newRegModel.getUserType() == 1) {
+                                tvHead.setText("Edit Profile (Individual)");
+                                tilAuthName.setVisibility(View.GONE);
+                                tilName.setVisibility(View.VISIBLE);
+                            } else {
+
+                                if (newRegModel.getUserType() == 2) {
+                                    tvHead.setText("Edit Profile (Institute)");
+                                } else if (newRegModel.getUserType() == 1) {
+                                    tvHead.setText("Edit Profile (University)");
+                                }
+                                tilAuthName.setVisibility(View.VISIBLE);
+                                tilName.setVisibility(View.GONE);
+                            }
+
+                            edName.setText("" + newRegModel.getName());
+                            edCode.setText("" + newRegModel.getAisheCode());
+                             edUni.setText("" + newRegModel.getUniName());
+                             edInst.setText("" + newRegModel.getInstName());
+                            edEmail.setText("" + newRegModel.getEmails());
+                            edDesg.setText("" + newRegModel.getDesignationName());
+                            edDept.setText("" + newRegModel.getDepartmentName());
+                            edMobile.setText("" + newRegModel.getMobileNumber());
+                            edAlterEmail.setText("" + newRegModel.getAlternateEmail());
+                            edAuthName.setText("" + newRegModel.getAuthorizedPerson());
+
+                            Log.e("Register By id", "-----------------------------" + newRegModel);
+                            commonDialog.dismiss();
+
+                        } else {
+                            commonDialog.dismiss();
+                            Log.e("Data Null : ", "-----------");
+                        }
+                    } catch (Exception e) {
+                        commonDialog.dismiss();
+                        Log.e("Exception : ", "-----------" + e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<NewReg> call, Throwable t) {
+                    commonDialog.dismiss();
+                    Log.e("onFailure : ", "-----------" + t.getMessage());
+                    t.printStackTrace();
+                }
+            });
+        } else {
+            Toast.makeText(getActivity(), "No Internet Connection !", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void getRegById(Integer regId) {
@@ -184,34 +184,13 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
             final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<Reg> listCall = Constants.myInterface.getRegUserbyRegId(regId);
+            Call<Reg> listCall = Constants.myInterface.getRegUserbyRegId(regId,authHeader);
             listCall.enqueue(new Callback<Reg>() {
                 @Override
                 public void onResponse(Call<Reg> call, Response<Reg> response) {
                     try {
                         if (response.body() != null) {
                             RegModel = response.body();
-
-                            if(RegModel.getUserType()==1)
-                            {
-                                ed_type.setText("Individual");
-                            }else  if(RegModel.getUserType()==2)
-                            {
-                                ed_type.setText("Colleges");
-                            }else  if(RegModel.getUserType()==3)
-                            {
-                                ed_type.setText("University");
-                            }
-                            ed_email.setText(RegModel.getEmails());
-                            ed_alterEmail.setText(RegModel.getAlternateEmail());
-                            ed_Name.setText(RegModel.getName());
-                            ed_aisheCode.setText(RegModel.getAisheCode());
-                            ed_clgName.setText(RegModel.getCollegeName());
-                            ed_univercityAff.setText(RegModel.getUnversityName());
-                            ed_designationPerson.setText(RegModel.getDesignationName());
-                            ed_nameDept.setText(RegModel.getDepartmentName());
-                            ed_mobile.setText(RegModel.getMobileNumber());
-                            ed_nameAuthePerson.setText(RegModel.getAuthorizedPerson());
 
                             Log.e("Register By id", "-----------------------------" + RegModel);
                             commonDialog.dismiss();
@@ -239,11 +218,6 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         }
     }
 
-    /**
-     * Called when a view has been clicked.
-     *
-     * @param v The view that was clicked.
-     */
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btn_registration) {
@@ -251,249 +225,182 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
             //Individual
             if (loginUser.getUserType() == 1) {
                 Log.e("SpinnerInd", "-----------------" + loginUser.getUserType());
-                boolean isValidEmail = false, isValidClgName = false, isValidUniverAff = false, isValidName = false, isValidNameDept = false, isValidNameAuthPer = false, isDesignationPer = false, isValidDob = false, isValidMob = false;
-                String email, alt_email, fullName, clgName, univercityAff, nameDept, nameAuthPer, designationPer, dob, mob;
-                fullName = ed_Name.getText().toString().trim();
-                email = ed_email.getText().toString().trim();
-                alt_email = ed_alterEmail.getText().toString().trim();
-                clgName = ed_clgName.getText().toString().trim();
-                univercityAff = ed_univercityAff.getText().toString().trim();
-                nameDept = ed_nameDept.getText().toString().trim();
-                nameAuthPer = ed_nameAuthePerson.getText().toString().trim();
-                designationPer = ed_designationPerson.getText().toString().trim();
-                dob = ed_DOB.getText().toString().trim();
-                mob = ed_mobile.getText().toString().trim();
+                boolean isValidAlterEmail = false, isValidNameDept = false, isDesignationPer = false, isValidMob = false;
+                String alt_email, nameDept, designationPer, mob;
+                alt_email = edAlterEmail.getText().toString().trim();
+                nameDept = edDept.getText().toString().trim();
+                designationPer = edDesg.getText().toString().trim();
+                mob = edMobile.getText().toString().trim();
 
-                String uniqueId = UUID.randomUUID().toString();
-
-                Log.e("Email", "----------------------" + email);
-                Log.e("alt_email", "----------------------" + alt_email);
-                Log.e("clgName", "----------------------" + clgName);
-                Log.e("univercityAff", "----------------------" + univercityAff);
-                Log.e("nameDept", "----------------------" + nameDept);
-                Log.e("nameAuthPer", "----------------------" + nameAuthPer);
-                Log.e("uniqueId", "----------------------" + uniqueId);
-
-                if (fullName.isEmpty()) {
-                    ed_Name.setError("required");
-                } else {
-                    ed_Name.setError(null);
-                    isValidName = true;
-                }
-
-                if (!email.isEmpty()) {
-                    if (!isValidEmailAddress(email)) {
-                        ed_email.setError("invalid email");
-                    } else {
-                        ed_email.setError(null);
-                        isValidEmail = true;
-                    }
-                } else {
-                    isValidEmail = true;
-                }
-                if (clgName.isEmpty()) {
-                    ed_clgName.setError("required");
-                } else {
-                    ed_clgName.setError(null);
-                    isValidClgName = true;
-                }
-                if (univercityAff.isEmpty()) {
-                    ed_univercityAff.setError("required");
-                } else {
-                    ed_univercityAff.setError(null);
-                    isValidUniverAff = true;
-                }
-                if (nameDept.isEmpty()) {
-                    ed_nameDept.setError("required");
-                } else {
-                    ed_nameDept.setError(null);
-                    isValidNameDept = true;
-                }
                 if (designationPer.isEmpty()) {
-                    ed_designationPerson.setError("required");
+                    edDesg.setError("required");
                 } else {
-                    ed_designationPerson.setError(null);
+                    edDesg.setError(null);
                     isDesignationPer = true;
                 }
-                if (dob.isEmpty()) {
-                    ed_DOB.setError("required");
+
+                if (nameDept.isEmpty()) {
+                    edDept.setError("required");
                 } else {
-                    ed_DOB.setError(null);
-                    isValidDob = true;
+                    edDept.setError(null);
+                    isValidNameDept = true;
                 }
 
                 if (mob.isEmpty()) {
-                    ed_mobile.setError("required");
+                    edMobile.setError("required");
                 } else if (mob.length() != 10) {
-                    ed_mobile.setError("required 10 digits");
+                    edMobile.setError("required 10 digits");
                 } else if (mob.equalsIgnoreCase("0000000000")) {
-                    ed_mobile.setError("invalid number");
+                    edMobile.setError("invalid number");
                 } else {
-                    ed_mobile.setError(null);
+                    edMobile.setError(null);
                     isValidMob = true;
                 }
 
-                if (isValidName && isValidEmail && isValidNameDept && isDesignationPer && isValidClgName && isValidUniverAff && isValidMob) {
-                    SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd");
-                    SimpleDateFormat formatter1 = new SimpleDateFormat("dd-MM-yyyy");
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                if (!alt_email.isEmpty()) {
+                    if (!isValidEmailAddress(alt_email)) {
+                        isValidAlterEmail = false;
+                        edAlterEmail.setError("invalid Email ID");
+                    } else {
+                        edAlterEmail.setError(null);
+                        isValidAlterEmail = true;
+                    }
 
-                    //Reg registration = new Reg(loginUser.getRegId(), loginUser.getUserUuid(), loginUser.getUserType(), loginUser.getEmails(), alt_email, loginUser.getUserPassword(), fullName, "", clgName, univercityAff, designationPer, nameDept, loginUser.getMobileNumber(), loginUser.getAuthorizedPerson(), null, "", "", loginUser.getRegisterVia(), loginUser.getIsActive(), loginUser.getDelStatus(), loginUser.getAddDate(), sdf.format(System.currentTimeMillis()), loginUser.getEditByUserId(), loginUser.getExInt1(), loginUser.getExInt2(), email, loginUser., "", loginUser.getEmailVerified(), "", loginUser.getSmsVerified(), loginUser.getEditByAdminuserId());
-                    //Reg registration = new Reg(RegModel.getRegId(), RegModel.getUserUuid(), RegModel.getUserType(), email, alt_email, RegModel.getUserPassword(), RegModel.getName(), RegModel.getAisheCode(), clgName, univercityAff, designationPer, nameDept, mob, RegModel.getAuthorizedPerson(), null, RegModel.getImageName(), RegModel.getTokenId(), RegModel.getRegisterVia(), RegModel.getIsActive(), RegModel.getDelStatus(), RegModel.getAddDate(), sdf.format(System.currentTimeMillis()), RegModel.getEditByUserId(), RegModel.getExInt1(), RegModel.getExInt2(), RegModel.getExVar1(), RegModel.getExVar2(), RegModel.getEmailCode(), RegModel.getEmailVerified(), "", RegModel.getSmsVerified(), RegModel.getEditByAdminuserId());
-                    //Log.e("Registration", "--------------" + registration);
+                } else {
+                    edAlterEmail.setError(null);
+                    isValidAlterEmail = true;
+                }
+
+                if (isValidNameDept && isDesignationPer && isValidMob && isValidAlterEmail) {
 
                     getPreviousRecord(loginUser.getRegId(), RegModel);
-
-                    // getRegistration(registration);
 
                 }
 
             }
-            if (loginUser.getUserType() == 2) {//College
-                Log.e("Spinnerclg", "-----------------" + loginUser.getUserType());
-                boolean isValidEmail = false, isValidUniverAff = false, isValidName = false, isValidDesigPerson = false, isValidNameDept = false, isValidNameAuthPer = false, isValidMob = false;
-                String email, alt_email, institudeName, univercityAff, nameDept, nameAuthPer, designPerName, AISHECode, mob;
-                institudeName = ed_Name.getText().toString().trim();
-                email = ed_email.getText().toString().trim();
-                alt_email = ed_alterEmail.getText().toString().trim();
-                designPerName = ed_designationPerson.getText().toString().trim();
-                univercityAff = ed_univercityAff.getText().toString().trim();
-                nameDept = ed_nameDept.getText().toString().trim();
-                nameAuthPer = ed_nameAuthePerson.getText().toString().trim();
-                AISHECode = ed_aisheCode.getText().toString().trim();
-                mob = ed_mobile.getText().toString().trim();
-                String uniqueId = UUID.randomUUID().toString();
-                if (institudeName.isEmpty()) {
-                    ed_Name.setError("required");
-                } else {
-                    ed_Name.setError(null);
-                    isValidName = true;
-                }
-                if (!email.isEmpty()) {
-                    if (!isValidEmailAddress(email)) {
-                        ed_email.setError("invalid email");
-                    } else {
-                        ed_email.setError(null);
-                        isValidEmail = true;
-                    }
-                } else {
-                    isValidEmail = true;
-                }
+            if (loginUser.getUserType() == 2) {//Institute
 
-                if (univercityAff.isEmpty()) {
-                    ed_univercityAff.setError("required");
-                } else {
-                    ed_univercityAff.setError(null);
-                    isValidUniverAff = true;
-                }
-                if (designPerName.isEmpty()) {
-                    ed_designationPerson.setError("required");
-                } else {
-                    ed_designationPerson.setError(null);
-                    isValidDesigPerson = true;
-                }
-                if (nameDept.isEmpty()) {
-                    ed_nameDept.setError("required");
-                } else {
-                    ed_nameDept.setError(null);
-                    isValidNameDept = true;
-                }
+                boolean isValidDesigPerson = false, isValidNameDept = false, isValidNameAuthPer = false, isValidMob = false, isValidAltEmail = false;
+                String nameDept, nameAuthPer, designPerName, altEmail, strMobile;
+
+                designPerName = edDesg.getText().toString().trim();
+                nameDept = edDept.getText().toString().trim();
+                nameAuthPer = edAuthName.getText().toString().trim();
+                strMobile = edMobile.getText().toString().trim();
+                altEmail = edAlterEmail.getText().toString().trim();
+
                 if (nameAuthPer.isEmpty()) {
-                    ed_nameAuthePerson.setError("required");
+                    edAuthName.setError("required");
                 } else {
-                    ed_nameAuthePerson.setError(null);
+                    edAuthName.setError(null);
                     isValidNameAuthPer = true;
                 }
-                if (mob.isEmpty()) {
-                    ed_mobile.setError("required");
-                } else if (mob.length() != 10) {
-                    ed_mobile.setError("required 10 digits");
-                } else if (mob.equalsIgnoreCase("0000000000")) {
-                    ed_mobile.setError("invalid number");
+
+                if (designPerName.isEmpty()) {
+                    edDesg.setError("required");
                 } else {
-                    ed_mobile.setError(null);
+                    edDesg.setError(null);
+                    isValidDesigPerson = true;
+                }
+
+                if (nameDept.isEmpty()) {
+                    edDept.setError("required");
+                } else {
+                    edDept.setError(null);
+                    isValidNameDept = true;
+                }
+
+                if (strMobile.isEmpty()) {
+                    edMobile.setError("required");
+                } else if (strMobile.length() != 10) {
+                    edMobile.setError("required 10 digits");
+                } else if (strMobile.equalsIgnoreCase("0000000000")) {
+                    edMobile.setError("invalid number");
+                } else {
+                    edMobile.setError(null);
                     isValidMob = true;
                 }
 
-                if (isValidName && isValidEmail && isValidNameDept && isValidNameAuthPer && isValidUniverAff && isValidDesigPerson && isValidMob) {
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                if (!altEmail.isEmpty()) {
+                    if (!isValidEmailAddress(altEmail)) {
+                        isValidAltEmail = false;
+                        edAlterEmail.setError("invalid Email ID");
+                    } else {
+                        edAlterEmail.setError(null);
+                        isValidAltEmail = true;
+                    }
 
-//                    if (!loginUser.getMobileNumber().equals(mob) && !loginUser.getEmails().equals(email)) {
-//                        Reg registration = new Reg(loginUser.getRegId(), loginUser.getUserUuid(), loginUser.getUserType(), loginUser.getEmails(), alt_email, loginUser.getUserPassword(), institudeName, AISHECode, "", univercityAff, designPerName, nameDept, loginUser.getMobileNumber(), nameAuthPer, null, "", "", loginUser.getRegisterVia(), loginUser.getIsActive(), loginUser.getDelStatus(), loginUser.getAddDate(), sdf.format(System.currentTimeMillis()), loginUser.getEditByUserId(), loginUser.getExInt1(), loginUser.getExInt2(), email, mob, "", loginUser.getEmailVerified(), "", loginUser.getSmsVerified(), loginUser.getEditByAdminuserId());
-//                        getRegistration(registration);
-//                    }
+                } else {
+                    edAlterEmail.setError(null);
+                    isValidAltEmail = true;
+                }
+
+                if (isValidNameDept && isValidNameAuthPer && isValidDesigPerson && isValidMob && isValidAltEmail) {
 
                     getPreviousRecord(loginUser.getRegId(), RegModel);
 
                 }
             }
             if (loginUser.getUserType() == 3) {//University
-                Log.e("SpinnerUni", "-----------------" + loginUser.getUserType());
-                boolean isValidEmail = false, isValidName = false, isValidDesigPerson = false, isValidNameDept = false, isValidNameAuthPer = false, isValidMob = false;
-                String email, alt_email, UnivercityName, nameDept, nameAuthPer, designPerName, AISHECode, mob;
-                UnivercityName = ed_Name.getText().toString().trim();
-                email = ed_email.getText().toString().trim();
-                alt_email = ed_alterEmail.getText().toString().trim();
-                designPerName = ed_designationPerson.getText().toString().trim();
-                nameDept = ed_nameDept.getText().toString().trim();
-                nameAuthPer = ed_nameAuthePerson.getText().toString().trim();
-                AISHECode = ed_aisheCode.getText().toString().trim();
-                mob = ed_mobile.getText().toString().trim();
-                String uniqueId = UUID.randomUUID().toString();
 
-                if (UnivercityName.isEmpty()) {
-                    ed_Name.setError("required");
+                boolean isValidDesigPerson = false, isValidNameDept = false, isValidNameAuthPer = false, isValidMob = false, isValidAltEmail = false;
+                String nameDept, nameAuthPer, designPerName, altEmail, strMobile;
+
+                designPerName = edDesg.getText().toString().trim();
+                nameDept = edDept.getText().toString().trim();
+                nameAuthPer = edAuthName.getText().toString().trim();
+                strMobile = edMobile.getText().toString().trim();
+                altEmail = edAlterEmail.getText().toString().trim();
+
+                if (nameAuthPer.isEmpty()) {
+                    edAuthName.setError("required");
                 } else {
-                    ed_Name.setError(null);
-                    isValidName = true;
-                }
-                if (!email.isEmpty()) {
-                    if (!isValidEmailAddress(email)) {
-                        ed_email.setError("invalid email");
-                    } else {
-                        ed_email.setError(null);
-                        isValidEmail = true;
-                    }
-                } else {
-                    isValidEmail = true;
+                    edAuthName.setError(null);
+                    isValidNameAuthPer = true;
                 }
 
                 if (designPerName.isEmpty()) {
-                    ed_designationPerson.setError("required");
+                    edDesg.setError("required");
                 } else {
-                    ed_designationPerson.setError(null);
+                    edDesg.setError(null);
                     isValidDesigPerson = true;
                 }
+
                 if (nameDept.isEmpty()) {
-                    ed_nameDept.setError("required");
+                    edDept.setError("required");
                 } else {
-                    ed_nameDept.setError(null);
+                    edDept.setError(null);
                     isValidNameDept = true;
                 }
-                if (nameAuthPer.isEmpty()) {
-                    ed_nameAuthePerson.setError("required");
+
+                if (strMobile.isEmpty()) {
+                    edMobile.setError("required");
+                } else if (strMobile.length() != 10) {
+                    edMobile.setError("required 10 digits");
+                } else if (strMobile.equalsIgnoreCase("0000000000")) {
+                    edMobile.setError("invalid number");
                 } else {
-                    ed_nameAuthePerson.setError(null);
-                    isValidNameAuthPer = true;
-                }
-                if (mob.isEmpty()) {
-                    ed_mobile.setError("required");
-                } else if (mob.length() != 10) {
-                    ed_mobile.setError("required 10 digits");
-                } else if (mob.equalsIgnoreCase("0000000000")) {
-                    ed_mobile.setError("invalid number");
-                } else {
-                    ed_mobile.setError(null);
+                    edMobile.setError(null);
                     isValidMob = true;
                 }
 
-                if (isValidName && isValidEmail && isValidNameDept && isValidNameAuthPer && isValidDesigPerson && isValidMob) {
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//                    Reg registration = new Reg(loginUser.getRegId(), loginUser.getUserUuid(), loginUser.getUserType(), loginUser.getEmails(), loginUser.getAlternateEmail(), loginUser.getUserPassword(), loginUser.getName(), loginUser.getAisheCode(), loginUser.getCollegeName(), loginUser.getUnversityName(), loginUser.getDesignationName(), loginUser.getDepartmentName(), loginUser.getMobileNumber(), loginUser.getAuthorizedPerson(), null, "", "", loginUser.getRegisterVia(), loginUser.getIsActive(), loginUser.getDelStatus(), loginUser.getAddDate(), loginUser.getEditDate(), loginUser.getEditByUserId(), loginUser.getExInt1(), loginUser.getExInt2(), "", "", "", loginUser.getEmailVerified(), "", loginUser.getSmsVerified(), loginUser.getEditByAdminuserId());
-//                    getRegistration(registration);
+                if (!altEmail.isEmpty()) {
+                    if (!isValidEmailAddress(altEmail)) {
+                        isValidAltEmail = false;
+                        edAlterEmail.setError("invalid Email ID");
+                    } else {
+                        edAlterEmail.setError(null);
+                        isValidAltEmail = true;
+                    }
+
+                } else {
+                    edAlterEmail.setError(null);
+                    isValidAltEmail = true;
+                }
+
+                if (isValidNameDept && isValidNameAuthPer && isValidDesigPerson && isValidMob && isValidAltEmail) {
 
                     getPreviousRecord(loginUser.getRegId(), RegModel);
-
 
                 }
 
@@ -512,7 +419,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
             final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<PreviousRecord> listCall = Constants.myInterface.getPrevRecordByRegId(regId);
+            Call<PreviousRecord> listCall = Constants.myInterface.getPrevRecordByRegId(regId,authHeader);
             listCall.enqueue(new Callback<PreviousRecord>() {
                 @Override
                 public void onResponse(Call<PreviousRecord> call, Response<PreviousRecord> response) {
@@ -531,7 +438,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
                                 PreviousRecord previousRecord1 = new PreviousRecord(previousRecord.getPrevId(), RegModel.getRegId(), previousRecord.getRecord(), sdf.format(System.currentTimeMillis()), previousRecord.getExtraVar1());
 
-                                Log.e("PREV REC : ","-************************************************************- TRUE");
+                                Log.e("PREV REC : ", "-************************************************************- TRUE");
                                 getSavePreviousRecord(previousRecord1);
 
                             } else {
@@ -576,14 +483,14 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                                 Log.e("JSON STRING", "-------------------" + regPrevious);
 
                                 String email, alt_email, clgName, univercityAff, nameDept, nameAuthPer, designationPer, mob;
-                                email = ed_email.getText().toString().trim();
-                                alt_email = ed_alterEmail.getText().toString().trim();
-                                clgName = ed_clgName.getText().toString().trim();
-                                univercityAff = ed_univercityAff.getText().toString().trim();
-                                nameDept = ed_nameDept.getText().toString().trim();
-                                nameAuthPer = ed_nameAuthePerson.getText().toString().trim();
-                                designationPer = ed_designationPerson.getText().toString().trim();
-                                mob = ed_mobile.getText().toString().trim();
+                                email = edEmail.getText().toString().trim();
+                                alt_email = edAlterEmail.getText().toString().trim();
+                                clgName = edInst.getText().toString().trim();
+                                univercityAff = edUni.getText().toString().trim();
+                                nameDept = edDept.getText().toString().trim();
+                                nameAuthPer = edAuthName.getText().toString().trim();
+                                designationPer = edDesg.getText().toString().trim();
+                                mob = edMobile.getText().toString().trim();
 
                                 Log.e("email", "------------------" + email);
                                 Log.e("clgName", "------------------" + clgName);
@@ -596,13 +503,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
                                     boolean valChange = false;
 
-                                    if (!RegModel.getCollegeName().equalsIgnoreCase(clgName)) {
-                                        regPrevious.setCollegeName(RegModel.getCollegeName());
-                                        valChange = true;
-                                    } else if (!RegModel.getUnversityName().equalsIgnoreCase(univercityAff)) {
-                                        regPrevious.setUnversityName(RegModel.getUnversityName());
-                                        valChange = true;
-                                    } else if (!RegModel.getDesignationName().equalsIgnoreCase(designationPer)) {
+                                    if (!RegModel.getDesignationName().equalsIgnoreCase(designationPer)) {
                                         regPrevious.setDesignationName(RegModel.getDesignationName());
                                         valChange = true;
                                     } else if (!RegModel.getDepartmentName().equalsIgnoreCase(nameDept)) {
@@ -610,9 +511,6 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                                         valChange = true;
                                     } else if (!RegModel.getMobileNumber().equalsIgnoreCase(mob)) {
                                         regPrevious.setMobileNumber(RegModel.getMobileNumber());
-                                        valChange = true;
-                                    } else if (!RegModel.getEmails().equalsIgnoreCase(email)) {
-                                        regPrevious.setEmails(RegModel.getEmails());
                                         valChange = true;
                                     } else if (!RegModel.getAlternateEmail().equalsIgnoreCase(alt_email)) {
                                         regPrevious.setAlternateEmail(RegModel.getAlternateEmail());
@@ -628,7 +526,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
                                         PreviousRecord previousRecord1 = new PreviousRecord(previousRecord.getPrevId(), previousRecord.getRegId(), previousRecord.getRecord(), sdf.format(System.currentTimeMillis()), previousRecord.getExtraVar1());
 
-                                        Log.e("PREV REC : ","-************************************************************- FALSE ----- 1");
+                                        Log.e("PREV REC : ", "-************************************************************- FALSE ----- 1");
                                         getSavePreviousRecord(previousRecord1);
 
 
@@ -641,13 +539,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
                                     boolean valChange = false;
 
-                                    if (!RegModel.getCollegeName().equalsIgnoreCase(clgName)) {
-                                        regPrevious.setCollegeName(RegModel.getCollegeName());
-                                        valChange = true;
-                                    } else if (!RegModel.getUnversityName().equalsIgnoreCase(univercityAff)) {
-                                        regPrevious.setUnversityName(RegModel.getUnversityName());
-                                        valChange = true;
-                                    } else if (!RegModel.getDesignationName().equalsIgnoreCase(designationPer)) {
+                                    if (!RegModel.getDesignationName().equalsIgnoreCase(designationPer)) {
                                         regPrevious.setDesignationName(RegModel.getDesignationName());
                                         valChange = true;
                                     } else if (!RegModel.getDepartmentName().equalsIgnoreCase(nameDept)) {
@@ -656,14 +548,8 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                                     } else if (!RegModel.getMobileNumber().equalsIgnoreCase(mob)) {
                                         regPrevious.setMobileNumber(RegModel.getMobileNumber());
                                         valChange = true;
-                                    } else if (!RegModel.getEmails().equalsIgnoreCase(email)) {
-                                        regPrevious.setEmails(RegModel.getEmails());
-                                        valChange = true;
                                     } else if (!RegModel.getAlternateEmail().equalsIgnoreCase(alt_email)) {
                                         regPrevious.setAlternateEmail(RegModel.getAlternateEmail());
-                                        valChange = true;
-                                    } else if (!RegModel.getAuthorizedPerson().equalsIgnoreCase(nameAuthPer)) {
-                                        regPrevious.setAuthorizedPerson(RegModel.getAuthorizedPerson());
                                         valChange = true;
                                     }
 
@@ -676,7 +562,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
                                         PreviousRecord previousRecord1 = new PreviousRecord(previousRecord.getPrevId(), previousRecord.getRegId(), previousRecord.getRecord(), sdf.format(System.currentTimeMillis()), previousRecord.getExtraVar1());
 
-                                        Log.e("PREV REC : ","-************************************************************- FALSE ----- 2");
+                                        Log.e("PREV REC : ", "-************************************************************- FALSE ----- 2");
                                         getSavePreviousRecord(previousRecord1);
 
                                     } else {
@@ -688,10 +574,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
                                     boolean valChange = false;
 
-                                    if (!RegModel.getCollegeName().equalsIgnoreCase(clgName)) {
-                                        regPrevious.setCollegeName(RegModel.getCollegeName());
-                                        valChange = true;
-                                    } else if (!RegModel.getDesignationName().equalsIgnoreCase(designationPer)) {
+                                    if (!RegModel.getDesignationName().equalsIgnoreCase(designationPer)) {
                                         regPrevious.setDesignationName(RegModel.getDesignationName());
                                         valChange = true;
                                     } else if (!RegModel.getDepartmentName().equalsIgnoreCase(nameDept)) {
@@ -700,14 +583,8 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                                     } else if (!RegModel.getMobileNumber().equalsIgnoreCase(mob)) {
                                         regPrevious.setMobileNumber(RegModel.getMobileNumber());
                                         valChange = true;
-                                    } else if (!RegModel.getEmails().equalsIgnoreCase(email)) {
-                                        regPrevious.setEmails(RegModel.getEmails());
-                                        valChange = true;
                                     } else if (!RegModel.getAlternateEmail().equalsIgnoreCase(alt_email)) {
                                         regPrevious.setAlternateEmail(RegModel.getAlternateEmail());
-                                        valChange = true;
-                                    } else if (!RegModel.getAuthorizedPerson().equalsIgnoreCase(nameAuthPer)) {
-                                        regPrevious.setAuthorizedPerson(RegModel.getAuthorizedPerson());
                                         valChange = true;
                                     }
 
@@ -720,7 +597,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
                                         PreviousRecord previousRecord1 = new PreviousRecord(previousRecord.getPrevId(), previousRecord.getRegId(), previousRecord.getRecord(), sdf.format(System.currentTimeMillis()), previousRecord.getExtraVar1());
 
-                                        Log.e("PREV REC : ","-************************************************************- FALSE ----- 3");
+                                        Log.e("PREV REC : ", "-************************************************************- FALSE ----- 3");
                                         getSavePreviousRecord(previousRecord1);
 
                                     } else {
@@ -734,7 +611,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
                             commonDialog.dismiss();
 
-                        }else{
+                        } else {
                             commonDialog.dismiss();
                             Toast.makeText(getActivity(), "Unable to process", Toast.LENGTH_SHORT).show();
                         }
@@ -771,7 +648,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
             final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<PreviousRecord> listCall = Constants.myInterface.savePreviousRecord(previousRecord);
+            Call<PreviousRecord> listCall = Constants.myInterface.savePreviousRecord(previousRecord,authHeader);
             listCall.enqueue(new Callback<PreviousRecord>() {
                 @Override
                 public void onResponse(Call<PreviousRecord> call, Response<PreviousRecord> response) {
@@ -784,55 +661,44 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
                             if (loginUser.getUserType() == 1) {
-                                String email, alt_email, fullName, clgName, univercityAff, nameDept, nameAuthPer, designationPer, dob, mob;
-                                fullName = ed_Name.getText().toString().trim();
-                                email = ed_email.getText().toString().trim();
-                                alt_email = ed_alterEmail.getText().toString().trim();
-                                clgName = ed_clgName.getText().toString().trim();
-                                univercityAff = ed_univercityAff.getText().toString().trim();
-                                nameDept = ed_nameDept.getText().toString().trim();
-                                nameAuthPer = ed_nameAuthePerson.getText().toString().trim();
-                                designationPer = ed_designationPerson.getText().toString().trim();
-                                dob = ed_DOB.getText().toString().trim();
-                                mob = ed_mobile.getText().toString().trim();
+                                String alt_email, nameDept, designationPer, mob;
 
-                                String uniqueId = UUID.randomUUID().toString();
+                                alt_email = edAlterEmail.getText().toString().trim();
+                                nameDept = edDept.getText().toString().trim();
+                                designationPer = edDesg.getText().toString().trim();
+                                mob = edMobile.getText().toString().trim();
 
-                                Reg reg = new Reg(RegModel.getRegId(), RegModel.getUserUuid(), 1, email, alt_email, RegModel.getUserPassword(), RegModel.getName(), RegModel.getAisheCode(), clgName, univercityAff, designationPer, nameDept, mob, RegModel.getAuthorizedPerson(), dob, RegModel.getImageName(), RegModel.getTokenId(), RegModel.getRegisterVia(), RegModel.getIsActive(), RegModel.getDelStatus(), RegModel.getAddDate(), sdf.format(System.currentTimeMillis()), RegModel.getEditByUserId(), RegModel.getExInt1(), RegModel.getExInt2(), RegModel.getExVar1(), RegModel.getExVar2(), RegModel.getEmailCode(), RegModel.getEmailVerified(), RegModel.getSmsCode(), RegModel.getSmsVerified(), RegModel.getEditByAdminuserId());
+
+                                Reg reg = new Reg(RegModel.getRegId(), RegModel.getUserUuid(), 1, RegModel.getEmails(), alt_email, RegModel.getUserPassword(), RegModel.getName(), RegModel.getAisheCode(), RegModel.getCollegeName(), RegModel.getUnversityName(), designationPer, nameDept, mob, RegModel.getAuthorizedPerson(), RegModel.getDob(), RegModel.getImageName(), RegModel.getTokenId(), RegModel.getRegisterVia(), RegModel.getIsActive(), RegModel.getDelStatus(), RegModel.getAddDate(), sdf.format(System.currentTimeMillis()), RegModel.getEditByUserId(), RegModel.getExInt1(), RegModel.getExInt2(), RegModel.getExVar1(), RegModel.getExVar2(), RegModel.getEmailCode(), RegModel.getEmailVerified(), RegModel.getSmsCode(), RegModel.getSmsVerified(), RegModel.getEditByAdminuserId());
                                 getRegistration(reg);
 
                             } else if (loginUser.getUserType() == 2) {
 
-                                String email, alt_email, institudeName, univercityAff, nameDept, nameAuthPer, designPerName, AISHECode, mob;
-                                institudeName = ed_Name.getText().toString().trim();
-                                email = ed_email.getText().toString().trim();
-                                alt_email = ed_alterEmail.getText().toString().trim();
-                                designPerName = ed_designationPerson.getText().toString().trim();
-                                univercityAff = ed_univercityAff.getText().toString().trim();
-                                nameDept = ed_nameDept.getText().toString().trim();
-                                nameAuthPer = ed_nameAuthePerson.getText().toString().trim();
-                                AISHECode = ed_aisheCode.getText().toString().trim();
-                                mob = ed_mobile.getText().toString().trim();
-                                String uniqueId = UUID.randomUUID().toString();
+                                String alt_email, nameDept, nameAuthPer, designPerName, mob;
 
-                                Reg reg = new Reg(RegModel.getRegId(), RegModel.getUserUuid(), 2, email, alt_email, RegModel.getUserPassword(), RegModel.getName(), RegModel.getAisheCode(), RegModel.getCollegeName(), univercityAff, designPerName, nameDept, mob, nameAuthPer, RegModel.getDob(), RegModel.getImageName(), RegModel.getTokenId(), RegModel.getRegisterVia(), RegModel.getIsActive(), RegModel.getDelStatus(), RegModel.getAddDate(), sdf.format(System.currentTimeMillis()), RegModel.getEditByUserId(), RegModel.getExInt1(), RegModel.getExInt2(), RegModel.getExVar1(), RegModel.getExVar2(), RegModel.getEmailCode(), RegModel.getEmailVerified(), RegModel.getSmsCode(), RegModel.getSmsVerified(), RegModel.getEditByAdminuserId());
+
+                                alt_email = edAlterEmail.getText().toString().trim();
+                                designPerName = edDesg.getText().toString().trim();
+                                nameDept = edDept.getText().toString().trim();
+                                nameAuthPer = edAuthName.getText().toString().trim();
+                                mob = edMobile.getText().toString().trim();
+
+                                Reg reg = new Reg(RegModel.getRegId(), RegModel.getUserUuid(), 2, RegModel.getEmails(), alt_email, RegModel.getUserPassword(), RegModel.getName(), RegModel.getAisheCode(), RegModel.getCollegeName(), RegModel.getUnversityName(), designPerName, nameDept, mob, nameAuthPer, RegModel.getDob(), RegModel.getImageName(), RegModel.getTokenId(), RegModel.getRegisterVia(), RegModel.getIsActive(), RegModel.getDelStatus(), RegModel.getAddDate(), sdf.format(System.currentTimeMillis()), RegModel.getEditByUserId(), RegModel.getExInt1(), RegModel.getExInt2(), RegModel.getExVar1(), RegModel.getExVar2(), RegModel.getEmailCode(), RegModel.getEmailVerified(), RegModel.getSmsCode(), RegModel.getSmsVerified(), RegModel.getEditByAdminuserId());
                                 getRegistration(reg);
 
 
                             } else if (loginUser.getUserType() == 3) {
 
-                                String email, alt_email, UnivercityName, nameDept, nameAuthPer, designPerName, AISHECode, mob;
-                                UnivercityName = ed_Name.getText().toString().trim();
-                                email = ed_email.getText().toString().trim();
-                                alt_email = ed_alterEmail.getText().toString().trim();
-                                designPerName = ed_designationPerson.getText().toString().trim();
-                                nameDept = ed_nameDept.getText().toString().trim();
-                                nameAuthPer = ed_nameAuthePerson.getText().toString().trim();
-                                AISHECode = ed_aisheCode.getText().toString().trim();
-                                mob = ed_mobile.getText().toString().trim();
-                                String uniqueId = UUID.randomUUID().toString();
+                                String alt_email, nameDept, nameAuthPer, designPerName, mob;
 
-                                Reg reg = new Reg(RegModel.getRegId(), RegModel.getUserUuid(), 3, email, alt_email, RegModel.getUserPassword(), RegModel.getName(), RegModel.getAisheCode(), RegModel.getCollegeName(), RegModel.getUnversityName(), designPerName, nameDept, mob, nameAuthPer, RegModel.getDob(), RegModel.getImageName(), RegModel.getTokenId(), RegModel.getRegisterVia(), RegModel.getIsActive(), RegModel.getDelStatus(), RegModel.getAddDate(), sdf.format(System.currentTimeMillis()), RegModel.getEditByUserId(), RegModel.getExInt1(), RegModel.getExInt2(), RegModel.getExVar1(), RegModel.getExVar2(), RegModel.getEmailCode(), RegModel.getEmailVerified(), RegModel.getSmsCode(), RegModel.getSmsVerified(), RegModel.getEditByAdminuserId());
+
+                                alt_email = edAlterEmail.getText().toString().trim();
+                                designPerName = edDesg.getText().toString().trim();
+                                nameDept = edDept.getText().toString().trim();
+                                nameAuthPer = edAuthName.getText().toString().trim();
+                                mob = edMobile.getText().toString().trim();
+
+                                Reg reg = new Reg(RegModel.getRegId(), RegModel.getUserUuid(), 3, RegModel.getEmails(), alt_email, RegModel.getUserPassword(), RegModel.getName(), RegModel.getAisheCode(), RegModel.getCollegeName(), RegModel.getUnversityName(), designPerName, nameDept, mob, nameAuthPer, RegModel.getDob(), RegModel.getImageName(), RegModel.getTokenId(), RegModel.getRegisterVia(), RegModel.getIsActive(), RegModel.getDelStatus(), RegModel.getAddDate(), sdf.format(System.currentTimeMillis()), RegModel.getEditByUserId(), RegModel.getExInt1(), RegModel.getExInt2(), RegModel.getExVar1(), RegModel.getExVar2(), RegModel.getEmailCode(), RegModel.getEmailVerified(), RegModel.getSmsCode(), RegModel.getSmsVerified(), RegModel.getEditByAdminuserId());
                                 getRegistration(reg);
 
                             }
@@ -867,60 +733,47 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
     }
 
-    private void saveRegData(){
+    private void saveRegData() {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
         if (loginUser.getUserType() == 1) {
-            String email, alt_email, fullName, clgName, univercityAff, nameDept, nameAuthPer, designationPer, dob, mob;
-            fullName = ed_Name.getText().toString().trim();
-            email = ed_email.getText().toString().trim();
-            alt_email = ed_alterEmail.getText().toString().trim();
-            clgName = ed_clgName.getText().toString().trim();
-            univercityAff = ed_univercityAff.getText().toString().trim();
-            nameDept = ed_nameDept.getText().toString().trim();
-            nameAuthPer = ed_nameAuthePerson.getText().toString().trim();
-            designationPer = ed_designationPerson.getText().toString().trim();
-            dob = ed_DOB.getText().toString().trim();
-            mob = ed_mobile.getText().toString().trim();
 
-            String uniqueId = UUID.randomUUID().toString();
+            String alt_email, nameDept, designationPer, mob;
 
-            Reg reg = new Reg(RegModel.getRegId(), RegModel.getUserUuid(), 1, email, alt_email, RegModel.getUserPassword(), fullName, RegModel.getAisheCode(), clgName, univercityAff, designationPer, nameDept, mob, RegModel.getAuthorizedPerson(), dob, RegModel.getImageName(), RegModel.getTokenId(), RegModel.getRegisterVia(), RegModel.getIsActive(), RegModel.getDelStatus(), RegModel.getAddDate(), sdf.format(System.currentTimeMillis()), RegModel.getEditByUserId(), RegModel.getExInt1(), RegModel.getExInt2(), RegModel.getExVar1(), RegModel.getExVar2(), RegModel.getEmailCode(), RegModel.getEmailVerified(), RegModel.getSmsCode(), RegModel.getSmsVerified(), RegModel.getEditByAdminuserId());
+            alt_email = edAlterEmail.getText().toString().trim();
+            nameDept = edDept.getText().toString().trim();
+            designationPer = edDesg.getText().toString().trim();
+            mob = edMobile.getText().toString().trim();
+
+            Reg reg = new Reg(RegModel.getRegId(), RegModel.getUserUuid(), 1, RegModel.getEmails(), alt_email, RegModel.getUserPassword(), RegModel.getName(), RegModel.getAisheCode(), RegModel.getCollegeName(), RegModel.getUnversityName(), designationPer, nameDept, mob, RegModel.getAuthorizedPerson(), RegModel.getDob(), RegModel.getImageName(), RegModel.getTokenId(), RegModel.getRegisterVia(), RegModel.getIsActive(), RegModel.getDelStatus(), RegModel.getAddDate(), sdf.format(System.currentTimeMillis()), RegModel.getEditByUserId(), RegModel.getExInt1(), RegModel.getExInt2(), RegModel.getExVar1(), RegModel.getExVar2(), RegModel.getEmailCode(), RegModel.getEmailVerified(), RegModel.getSmsCode(), RegModel.getSmsVerified(), RegModel.getEditByAdminuserId());
             getRegistration(reg);
 
         } else if (loginUser.getUserType() == 2) {
 
-            String email, alt_email, institudeName, univercityAff, nameDept, nameAuthPer, designPerName, AISHECode, mob;
-            institudeName = ed_Name.getText().toString().trim();
-            email = ed_email.getText().toString().trim();
-            alt_email = ed_alterEmail.getText().toString().trim();
-            designPerName = ed_designationPerson.getText().toString().trim();
-            univercityAff = ed_univercityAff.getText().toString().trim();
-            nameDept = ed_nameDept.getText().toString().trim();
-            nameAuthPer = ed_nameAuthePerson.getText().toString().trim();
-            AISHECode = ed_aisheCode.getText().toString().trim();
-            mob = ed_mobile.getText().toString().trim();
-            String uniqueId = UUID.randomUUID().toString();
+            String alt_email, nameDept, nameAuthPer, designPerName, mob;
 
-            Reg reg = new Reg(RegModel.getRegId(), RegModel.getUserUuid(), 2, email, alt_email, RegModel.getUserPassword(), RegModel.getName(), RegModel.getAisheCode(), RegModel.getCollegeName(), univercityAff, designPerName, nameDept, mob, nameAuthPer, RegModel.getDob(), RegModel.getImageName(), RegModel.getTokenId(), RegModel.getRegisterVia(), RegModel.getIsActive(), RegModel.getDelStatus(), RegModel.getAddDate(), sdf.format(System.currentTimeMillis()), RegModel.getEditByUserId(), RegModel.getExInt1(), RegModel.getExInt2(), RegModel.getExVar1(), RegModel.getExVar2(), RegModel.getEmailCode(), RegModel.getEmailVerified(), RegModel.getSmsCode(), RegModel.getSmsVerified(), RegModel.getEditByAdminuserId());
+            alt_email = edAlterEmail.getText().toString().trim();
+            designPerName = edDesg.getText().toString().trim();
+            nameDept = edDept.getText().toString().trim();
+            nameAuthPer = edAuthName.getText().toString().trim();
+            mob = edMobile.getText().toString().trim();
+
+            Reg reg = new Reg(RegModel.getRegId(), RegModel.getUserUuid(), 2, RegModel.getEmails(), alt_email, RegModel.getUserPassword(), RegModel.getName(), RegModel.getAisheCode(), RegModel.getCollegeName(), RegModel.getUnversityName(), designPerName, nameDept, mob, nameAuthPer, RegModel.getDob(), RegModel.getImageName(), RegModel.getTokenId(), RegModel.getRegisterVia(), RegModel.getIsActive(), RegModel.getDelStatus(), RegModel.getAddDate(), sdf.format(System.currentTimeMillis()), RegModel.getEditByUserId(), RegModel.getExInt1(), RegModel.getExInt2(), RegModel.getExVar1(), RegModel.getExVar2(), RegModel.getEmailCode(), RegModel.getEmailVerified(), RegModel.getSmsCode(), RegModel.getSmsVerified(), RegModel.getEditByAdminuserId());
             getRegistration(reg);
 
 
         } else if (loginUser.getUserType() == 3) {
 
-            String email, alt_email, UnivercityName, nameDept, nameAuthPer, designPerName, AISHECode, mob;
-            UnivercityName = ed_Name.getText().toString().trim();
-            email = ed_email.getText().toString().trim();
-            alt_email = ed_alterEmail.getText().toString().trim();
-            designPerName = ed_designationPerson.getText().toString().trim();
-            nameDept = ed_nameDept.getText().toString().trim();
-            nameAuthPer = ed_nameAuthePerson.getText().toString().trim();
-            AISHECode = ed_aisheCode.getText().toString().trim();
-            mob = ed_mobile.getText().toString().trim();
-            String uniqueId = UUID.randomUUID().toString();
+            String alt_email, nameDept, nameAuthPer, designPerName, mob;
 
-            Reg reg = new Reg(RegModel.getRegId(), RegModel.getUserUuid(), 3, email, alt_email, RegModel.getUserPassword(), RegModel.getName(), RegModel.getAisheCode(), RegModel.getCollegeName(), RegModel.getUnversityName(), designPerName, nameDept, mob, nameAuthPer, RegModel.getDob(), RegModel.getImageName(), RegModel.getTokenId(), RegModel.getRegisterVia(), RegModel.getIsActive(), RegModel.getDelStatus(), RegModel.getAddDate(), sdf.format(System.currentTimeMillis()), RegModel.getEditByUserId(), RegModel.getExInt1(), RegModel.getExInt2(), RegModel.getExVar1(), RegModel.getExVar2(), RegModel.getEmailCode(), RegModel.getEmailVerified(), RegModel.getSmsCode(), RegModel.getSmsVerified(), RegModel.getEditByAdminuserId());
+            alt_email = edAlterEmail.getText().toString().trim();
+            designPerName = edDesg.getText().toString().trim();
+            nameDept = edDept.getText().toString().trim();
+            nameAuthPer = edAuthName.getText().toString().trim();
+            mob = edMobile.getText().toString().trim();
+
+            Reg reg = new Reg(RegModel.getRegId(), RegModel.getUserUuid(), 3, RegModel.getEmails(), alt_email, RegModel.getUserPassword(), RegModel.getName(), RegModel.getAisheCode(), RegModel.getCollegeName(), RegModel.getUnversityName(), designPerName, nameDept, mob, nameAuthPer, RegModel.getDob(), RegModel.getImageName(), RegModel.getTokenId(), RegModel.getRegisterVia(), RegModel.getIsActive(), RegModel.getDelStatus(), RegModel.getAddDate(), sdf.format(System.currentTimeMillis()), RegModel.getEditByUserId(), RegModel.getExInt1(), RegModel.getExInt2(), RegModel.getExVar1(), RegModel.getExVar2(), RegModel.getEmailCode(), RegModel.getEmailVerified(), RegModel.getSmsCode(), RegModel.getSmsVerified(), RegModel.getEditByAdminuserId());
             getRegistration(reg);
 
         }
@@ -939,24 +792,22 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         if (Constants.isOnline(getActivity())) {
             Log.e("PARAMETER : ", "---------------- REGISTRATION : " + registration);
 
-            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-            SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
-
-            if (registration.getDob().isEmpty()){
-                registration.setDob(null);
+            if (registration.getDob() != null) {
+                //if (registration.getDob().isEmpty()) {
+                    registration.setDob(null);
+                //}
             }
-
 
             final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<Reg> listCall = Constants.myInterface.editProfile(registration);
+            Call<Reg> listCall = Constants.myInterface.editProfile(registration,authHeader);
             listCall.enqueue(new Callback<Reg>() {
                 @Override
                 public void onResponse(Call<Reg> call, Response<Reg> response) {
                     try {
                         if (response.body() != null) {
-                           // Reg model = response.body();
+                            // Reg model = response.body();
 
                             Log.e("Save Registration", "-----------------------------" + response.body());
                             Toast.makeText(getActivity(), "Updated Successfully ", Toast.LENGTH_SHORT).show();

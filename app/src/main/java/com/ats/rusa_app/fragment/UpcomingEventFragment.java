@@ -26,6 +26,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.ats.rusa_app.constants.Constants.authHeader;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -58,7 +60,7 @@ int languageId;
             final CommonDialog commonDialog = new CommonDialog(getContext(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<ArrayList<UpcomingEvent>> listCall = Constants.myInterface.getUpcomingEvent(languageId);
+            Call<ArrayList<UpcomingEvent>> listCall = Constants.myInterface.getUpcomingEvent(languageId,authHeader);
             listCall.enqueue(new Callback<ArrayList<UpcomingEvent>>() {
                 @Override
                 public void onResponse(Call<ArrayList<UpcomingEvent>> call, Response<ArrayList<UpcomingEvent>> response) {

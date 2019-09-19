@@ -8,6 +8,7 @@
     tools:context=".activity.SplashActivity">
 
     <LinearLayout
+        android:background="#40ffffff"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -19,10 +20,10 @@
        android:gravity="center">
 
         <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
             android:layout_gravity="center"
-            android:src="@drawable/logo"
+            android:src="@drawable/logo_new"
             />
         <TextView
             android:layout_width="match_parent"

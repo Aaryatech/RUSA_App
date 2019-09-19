@@ -71,12 +71,74 @@ public class TestimonialWebviewActivity extends AppCompatActivity {
             } catch (Exception e) {
             }
 
-            String htmlText = model.getMessage();
+
+            if(model.getExInt1()==1){
+
+                String htmlText = model.getMessage();
+
+                tvHtmlText.setHtml("" + model.getMessage(), new HtmlHttpImageGetter(tvHtmlText));
+
+                webView.getSettings().setJavaScriptEnabled(true);
+                webView.loadData(htmlText, "text/html", "utf-8");
+
+                llVideo.setVisibility(View.GONE);
+                llHtml.setVisibility(View.VISIBLE);
+
+            }else if (model.getExInt1()==2){
+
+                final String code=model.getMessage();
+
+                ytThumb.initialize(Config.DEVELOPER_KEY, new YouTubeThumbnailView.OnInitializedListener() {
+                    @Override
+                    public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, final YouTubeThumbnailLoader youTubeThumbnailLoader) {
+                        youTubeThumbnailLoader.setVideo(code);
+
+                        Log.e("Video model", "----------------" + code);
+                        //model.getExVar1()
+                        youTubeThumbnailLoader.setOnThumbnailLoadedListener(new YouTubeThumbnailLoader.OnThumbnailLoadedListener() {
+                            @Override
+                            public void onThumbnailLoaded(YouTubeThumbnailView youTubeThumbnailView, String s) {
+                                youTubeThumbnailLoader.release();
+                            }
+
+                            @Override
+                            public void onThumbnailError(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader.ErrorReason errorReason) {
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView, YouTubeInitializationResult youTubeInitializationResult) {
+
+                    }
+                });
+
+
+                ytThumb.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(TestimonialWebviewActivity.this, YoutubePlayerActivity.class);
+                        intent.putExtra("video", code);
+                        startActivity(intent);
+                    }
+                });
+
+
+                llHtml.setVisibility(View.GONE);
+                llVideo.setVisibility(View.VISIBLE);
+
+            }
+
+           /* String htmlText = model.getMessage();
 
             tvHtmlText.setHtml("" + model.getMessage(), new HtmlHttpImageGetter(tvHtmlText));
 
             webView.getSettings().setJavaScriptEnabled(true);
             webView.loadData(htmlText, "text/html", "utf-8");
+
+
+
 
 
             if (htmlText.contains("iframe")) {
@@ -143,7 +205,7 @@ public class TestimonialWebviewActivity extends AppCompatActivity {
             } else {
                 llVideo.setVisibility(View.GONE);
                 llHtml.setVisibility(View.VISIBLE);
-            }
+            }*/
 
 
         }

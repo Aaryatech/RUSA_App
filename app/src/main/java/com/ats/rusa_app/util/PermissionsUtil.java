@@ -19,10 +19,11 @@ public class PermissionsUtil {
                 Manifest.permission.READ_EXTERNAL_STORAGE);
         int cameraPermission = ContextCompat.checkSelfPermission(context,
                 Manifest.permission.CAMERA);
-        int callPermission = ContextCompat.checkSelfPermission(context,
-                Manifest.permission.CALL_PHONE);
-        int contactPermission = ContextCompat.checkSelfPermission(context,
-                Manifest.permission.READ_CONTACTS);
+//        int callPermission = ContextCompat.checkSelfPermission(context,
+//                Manifest.permission.CALL_PHONE);
+//        int contactPermission = ContextCompat.checkSelfPermission(context,
+//                Manifest.permission.READ_CONTACTS
+        //);
 
 
         List<String> listPermissionsNeeded = new ArrayList<>();
@@ -33,12 +34,12 @@ public class PermissionsUtil {
             listPermissionsNeeded
                     .add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
-        if (callPermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.CALL_PHONE);
-        }
-        if (contactPermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.READ_CONTACTS);
-        }
+//        if (callPermission != PackageManager.PERMISSION_GRANTED) {
+//            listPermissionsNeeded.add(Manifest.permission.CALL_PHONE);
+//        }
+//        if (contactPermission != PackageManager.PERMISSION_GRANTED) {
+//            listPermissionsNeeded.add(Manifest.permission.READ_CONTACTS);
+//        }
         if (!listPermissionsNeeded.isEmpty()) {
             ActivityCompat.requestPermissions(context, listPermissionsNeeded
                             .toArray(new String[listPermissionsNeeded.size()]),

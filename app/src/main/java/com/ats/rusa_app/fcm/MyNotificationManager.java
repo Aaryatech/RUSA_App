@@ -130,11 +130,11 @@ public class MyNotificationManager {
                     .setSmallIcon(R.mipmap.ic_launcher) //your app icon
                     .setBadgeIconType(R.mipmap.ic_launcher) //your app icon
                     .setChannelId(id)
-                    .setContentTitle(title)
+                    .setContentTitle("Rashtriya Uchchatar Shiksha Abhiyan (RUSA)")
                     .setAutoCancel(true).setContentIntent(pendingIntent)
                     .setNumber(1)
                     .setColor(255)
-                    .setContentText(message)
+                    .setContentText(title)
                     .setWhen(System.currentTimeMillis());
             notificationManager.notify(1, notificationBuilder.build());
 
@@ -145,8 +145,8 @@ public class MyNotificationManager {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(mCtx)
                     .setAutoCancel(true)
                     .setSmallIcon(R.mipmap.ic_launcher).setDefaults(Notification.DEFAULT_ALL)
-                    .setContentTitle(title)
-                    .setContentText(message)
+                    .setContentTitle("Rashtriya Uchchatar Shiksha Abhiyan (RUSA)")
+                    .setContentText(title)
                     .setContentIntent(resultPendingIntent);
             NotificationManager manager = (NotificationManager) mCtx.getSystemService(NOTIFICATION_SERVICE);
             manager.notify(0, builder.build());

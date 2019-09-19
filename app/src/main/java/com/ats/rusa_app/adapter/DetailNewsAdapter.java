@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.DetailNewsList;
+import com.ats.rusa_app.util.ConnectivityDialog;
 import com.squareup.picasso.Picasso;
 
 import org.sufficientlysecure.htmltextview.HtmlHttpImageGetter;
@@ -70,8 +71,15 @@ public class DetailNewsAdapter extends RecyclerView.Adapter<DetailNewsAdapter.My
         holder.llNews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(""+model.getNewsSourceUrlName()));
-                context.startActivity(browserIntent);
+
+                if (!Constants.isOnline(context)) {
+
+                    new ConnectivityDialog(context).show();
+
+                } else {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("" + model.getNewsSourceUrlName()));
+                    context.startActivity(browserIntent);
+                }
             }
         });
 

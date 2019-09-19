@@ -26,6 +26,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.ats.rusa_app.constants.Constants.authHeader;
+
 public class PreviousEventDetailActivity extends AppCompatActivity {
     ImageView imageView;
     TextView tv_eventName, tv_eventFeedback,tv_eventFeedbackValue, tv_eventDate;
@@ -84,7 +86,7 @@ public class PreviousEventDetailActivity extends AppCompatActivity {
             final CommonDialog commonDialog = new CommonDialog(PreviousEventDetailActivity.this, "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<PrevEventFeedback> listCall = Constants.myInterface.getFeedbackByUserIdAndNewsblogsId(regId,newsblogsId);
+            Call<PrevEventFeedback> listCall = Constants.myInterface.getFeedbackByUserIdAndNewsblogsId(regId,newsblogsId,authHeader);
             listCall.enqueue(new Callback<PrevEventFeedback>() {
                 @Override
                 public void onResponse(Call<PrevEventFeedback> call, Response<PrevEventFeedback> response) {

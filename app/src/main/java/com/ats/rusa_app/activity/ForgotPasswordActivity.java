@@ -19,6 +19,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.ats.rusa_app.constants.Constants.authHeader;
+
 public class ForgotPasswordActivity extends AppCompatActivity implements View.OnClickListener {
 EditText ed_email,ed_phoneNo;
 Button btn_forgotPassword;
@@ -104,7 +106,7 @@ TextView tv_backToLogin;
             final CommonDialog commonDialog = new CommonDialog(ForgotPasswordActivity.this, "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<Login> listCall = Constants.myInterface.getForgotPass(email,mob);
+            Call<Login> listCall = Constants.myInterface.getForgotPass(email,mob,authHeader);
             listCall.enqueue(new Callback<Login>() {
                 @Override
                 public void onResponse(Call<Login> call, Response<Login> response) {

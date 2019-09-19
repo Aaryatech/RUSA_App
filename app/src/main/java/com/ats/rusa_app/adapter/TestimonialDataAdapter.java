@@ -16,6 +16,7 @@ import com.ats.rusa_app.activity.TestimonialWebviewActivity;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.DetailNewsList;
 import com.ats.rusa_app.model.TestImonialList;
+import com.ats.rusa_app.util.ConnectivityDialog;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
@@ -77,9 +78,16 @@ public class TestimonialDataAdapter extends RecyclerView.Adapter<TestimonialData
                 Gson gson = new Gson();
                 String json = gson.toJson(model);
 
-                Intent intent = new Intent(context, TestimonialWebviewActivity.class);
-                intent.putExtra("model", json);
-                context.startActivity(intent);
+                if (!Constants.isOnline(context)) {
+
+                    new ConnectivityDialog(context).show();
+
+                } else {
+
+                    Intent intent = new Intent(context, TestimonialWebviewActivity.class);
+                    intent.putExtra("model", json);
+                    context.startActivity(intent);
+                }
 
             }
         });

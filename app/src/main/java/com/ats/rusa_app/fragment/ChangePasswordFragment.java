@@ -25,6 +25,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.ats.rusa_app.constants.Constants.authHeader;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -97,7 +99,7 @@ public class ChangePasswordFragment extends Fragment implements View.OnClickList
             final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<Info> listCall = Constants.myInterface.changePassword(regId,strNewPass);
+            Call<Info> listCall = Constants.myInterface.changePassword(regId,strNewPass,authHeader);
             listCall.enqueue(new Callback<Info>() {
                 @Override
                 public void onResponse(Call<Info> call, Response<Info> response) {

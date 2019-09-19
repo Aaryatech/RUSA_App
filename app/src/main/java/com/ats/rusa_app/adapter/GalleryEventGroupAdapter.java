@@ -21,6 +21,7 @@ import com.ats.rusa_app.model.GallaryDetailList;
 import com.ats.rusa_app.model.GetGalleryCategory;
 import com.ats.rusa_app.model.ImageListByCategory;
 import com.ats.rusa_app.model.VideoList;
+import com.ats.rusa_app.util.ConnectivityDialog;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
@@ -130,14 +131,21 @@ public class GalleryEventGroupAdapter extends RecyclerView.Adapter<GalleryEventG
                 Log.e("PIC ", "------------------ " + picList);
                 Log.e("VID ", "------------------ " + vidList);
 
-                Fragment adf = new GalleryDisplayFragment();
-                Bundle args = new Bundle();
-                args.putString("title", model.getCateName());
-                args.putString("gallery", strGallery);
-                args.putString("video", strVideo);
-                adf.setArguments(args);
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "GalleryEventDetailFragment").commit();
+                if (!Constants.isOnline(context)) {
 
+                    new ConnectivityDialog(context).show();
+
+                } else {
+
+
+                    Fragment adf = new GalleryDisplayFragment();
+                    Bundle args = new Bundle();
+                    args.putString("title", model.getCateName());
+                    args.putString("gallery", strGallery);
+                    args.putString("video", strVideo);
+                    adf.setArguments(args);
+                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "GalleryEventDetailFragment").commit();
+                }
             }
         });
 

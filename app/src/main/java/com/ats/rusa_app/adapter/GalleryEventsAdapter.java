@@ -12,9 +12,11 @@ import android.widget.TextView;
 
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.activity.MainActivity;
+import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.fragment.GalleryEventDetailsFragment;
 import com.ats.rusa_app.model.FaqContentList;
 import com.ats.rusa_app.model.GetGalleryCategory;
+import com.ats.rusa_app.util.ConnectivityDialog;
 
 import org.sufficientlysecure.htmltextview.HtmlTextView;
 
@@ -62,12 +64,17 @@ public class GalleryEventsAdapter extends RecyclerView.Adapter<GalleryEventsAdap
 
                 MainActivity activity = (MainActivity) context;
 
-                Fragment adf = new GalleryEventDetailsFragment();
-                Bundle args = new Bundle();
-                args.putString("slugName", model.getSlugName());
-                adf.setArguments(args);
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "PhotoGalleryFragment").commit();
+                if (!Constants.isOnline(context)) {
 
+                    new ConnectivityDialog(context).show();
+
+                } else {
+                    Fragment adf = new GalleryEventDetailsFragment();
+                    Bundle args = new Bundle();
+                    args.putString("slugName", model.getSlugName());
+                    adf.setArguments(args);
+                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "PhotoGalleryFragment").commit();
+                }
             }
         });
 

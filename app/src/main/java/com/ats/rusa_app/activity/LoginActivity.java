@@ -23,6 +23,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.ats.rusa_app.constants.Constants.authHeader;
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     public EditText ed_userName, ed_password;
     public Button btn_login;
@@ -76,7 +78,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             startActivity(intent);
         } else if (v.getId() == R.id.tv_signUp) {
             Intent intent = new Intent(LoginActivity.this, RegistrationActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+            finish();
         } else if (v.getId() == R.id.tv_skipLogin) {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             intent.putExtra("code", "SkipLogin");
@@ -91,7 +95,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             final CommonDialog commonDialog = new CommonDialog(LoginActivity.this, "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<Login> listCall = Constants.myInterface.getLogin(strUserName, strPass);
+            Call<Login> listCall = Constants.myInterface.getLogin(strUserName, strPass,authHeader);
             listCall.enqueue(new Callback<Login>() {
                 @Override
                 public void onResponse(Call<Login> call, Response<Login> response) {

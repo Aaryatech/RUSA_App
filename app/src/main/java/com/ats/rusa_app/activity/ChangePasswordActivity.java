@@ -21,18 +21,21 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.ats.rusa_app.constants.Constants.authHeader;
+
 public class ChangePasswordActivity extends AppCompatActivity implements View.OnClickListener {
-    EditText edPrevPass,edNewPass,edConfPass;
+    EditText edPrevPass, edNewPass, edConfPass;
     Button btnChangePass;
     Login loginUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
-        edPrevPass=(EditText) findViewById(R.id.ed_prePass);
-        edNewPass=(EditText) findViewById(R.id.ed_newPass);
-        edConfPass=(EditText) findViewById(R.id.ed_confPass);
-        btnChangePass=(Button)findViewById(R.id.btn_changePass);
+        edPrevPass = (EditText) findViewById(R.id.ed_prePass);
+        edNewPass = (EditText) findViewById(R.id.ed_newPass);
+        edConfPass = (EditText) findViewById(R.id.ed_confPass);
+        btnChangePass = (Button) findViewById(R.id.btn_changePass);
 
         String userStr = CustomSharedPreference.getString(getApplicationContext(), CustomSharedPreference.KEY_USER);
         Gson gson = new Gson();
@@ -54,26 +57,23 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
      */
     @Override
     public void onClick(View v) {
-        if(v.getId()==R.id.btn_changePass)
-        {
-            String strPrevPass,strNewPass,strConfPass,strLoginPass;
-            boolean isValidPrevPass = false,isValidNewPass = false,isValidConfirmPass = false;
-            strLoginPass=loginUser.getUserPassword();
+        if (v.getId() == R.id.btn_changePass) {
+            String strPrevPass, strNewPass, strConfPass, strLoginPass;
+            boolean isValidPrevPass = false, isValidNewPass = false, isValidConfirmPass = false;
+            strLoginPass = loginUser.getUserPassword();
 
-            Log.e("LoginPass","---------------"+strLoginPass);
+            Log.e("LoginPass", "---------------" + strLoginPass);
 
-            strPrevPass=edPrevPass.getText().toString();
-            strNewPass=edNewPass.getText().toString();
-            strConfPass=edConfPass.getText().toString();
+            strPrevPass = edPrevPass.getText().toString();
+            strNewPass = edNewPass.getText().toString();
+            strConfPass = edConfPass.getText().toString();
 
 
             if (strPrevPass.isEmpty()) {
                 edPrevPass.setError("required");
-            }else if(!strLoginPass.equals(strPrevPass))
-            {
+            } else if (!strLoginPass.equals(strPrevPass)) {
                 edPrevPass.setError("Wrong Password");
-            }
-            else {
+            } else {
                 edPrevPass.setError(null);
                 isValidPrevPass = true;
             }
@@ -95,9 +95,8 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
                 isValidConfirmPass = true;
             }
 
-            if (isValidPrevPass && isValidNewPass && isValidConfirmPass)
-            {
-                getChangePass(loginUser.getRegId(),strNewPass);
+            if (isValidPrevPass && isValidNewPass && isValidConfirmPass) {
+                getChangePass(loginUser.getRegId(), strNewPass);
             }
 
 
@@ -119,12 +118,13 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
 
         }
     }
+
     private void getChangePass(Integer regId, String strNewPass) {
         if (Constants.isOnline(getApplicationContext())) {
             final CommonDialog commonDialog = new CommonDialog(ChangePasswordActivity.this, "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<Info> listCall = Constants.myInterface.changePassword(regId,strNewPass);
+            Call<Info> listCall = Constants.myInterface.changePassword(regId, strNewPass,authHeader);
             listCall.enqueue(new Callback<Info>() {
                 @Override
                 public void onResponse(Call<Info> call, Response<Info> response) {
@@ -132,10 +132,10 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
                         if (response.body() != null) {
 
                             Toast.makeText(getApplicationContext(), "Update Password", Toast.LENGTH_SHORT).show();
-                            Intent intent=new Intent(getApplicationContext(), LoginActivity.class);
+                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                             startActivity(intent);
                             commonDialog.dismiss();
-                        }else {
+                        } else {
                             commonDialog.dismiss();
                             Log.e("Data Null : ", "-----------");
                         }
@@ -156,5 +156,14 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
         } else {
             Toast.makeText(getApplicationContext(), "No Internet Connection !", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(ChangePasswordActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
     }
 }

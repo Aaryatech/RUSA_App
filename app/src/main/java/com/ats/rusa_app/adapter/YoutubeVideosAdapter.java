@@ -7,11 +7,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.activity.YoutubePlayerActivity;
+import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.GallaryDetailList;
 import com.ats.rusa_app.util.Config;
+import com.ats.rusa_app.util.ConnectivityDialog;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeThumbnailLoader;
 import com.google.android.youtube.player.YouTubeThumbnailView;
@@ -55,7 +58,7 @@ public class YoutubeVideosAdapter extends RecyclerView.Adapter<YoutubeVideosAdap
                 public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, final YouTubeThumbnailLoader youTubeThumbnailLoader) {
                     youTubeThumbnailLoader.setVideo(model.getExVar1());
 
-                    Log.e("Vedio model","----------------"+model.getFileName());
+                    //Log.e("Vedio model","----------------"+model.getFileName());
                     //model.getExVar1()
                     youTubeThumbnailLoader.setOnThumbnailLoadedListener(new YouTubeThumbnailLoader.OnThumbnailLoadedListener() {
                         @Override
@@ -65,7 +68,9 @@ public class YoutubeVideosAdapter extends RecyclerView.Adapter<YoutubeVideosAdap
 
                         @Override
                         public void onThumbnailError(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader.ErrorReason errorReason) {
-
+                            Log.e("YOUTUBE","******************************  ERROR");
+                            holder.ytThumb.setBackground(context.getResources().getDrawable(R.drawable.logo_new));
+                            holder.ytThumb.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
                         }
                     });
                 }
@@ -80,9 +85,18 @@ public class YoutubeVideosAdapter extends RecyclerView.Adapter<YoutubeVideosAdap
             holder.ytThumb.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent=new Intent(context,YoutubePlayerActivity.class);
-                    intent.putExtra("video",model.getExVar1());
-                    context.startActivity(intent);
+
+                    if (!Constants.isOnline(context)) {
+
+                        new ConnectivityDialog(context).show();
+
+                    } else {
+
+
+                        Intent intent = new Intent(context, YoutubePlayerActivity.class);
+                        intent.putExtra("video", model.getExVar1());
+                        context.startActivity(intent);
+                    }
                 }
             });
 

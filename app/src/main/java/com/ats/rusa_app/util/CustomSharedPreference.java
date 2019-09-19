@@ -23,6 +23,11 @@ public class CustomSharedPreference
     public static String LANGUAGE_SELECTED = "1"; //--- for marathi
     public static String KEY_USER = "User";
 
+    public static String KEY_MENU = "Menu";
+    public static String KEY_HOME_NEWS = "HomeNews";
+    public static String KEY_HOME_COMPANY = "HomeCompany";
+    public static String KEY_HOME_DATA = "HomeData";
+
     private static String PREFERENCE_NAME = "UserInfo";
     public static String PREFERENCE_TOKEN = "appToken";
 

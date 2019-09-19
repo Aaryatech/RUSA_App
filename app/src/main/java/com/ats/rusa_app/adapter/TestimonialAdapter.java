@@ -17,6 +17,7 @@ import com.ats.rusa_app.activity.TestimonialWebviewActivity;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.Detail;
 import com.ats.rusa_app.model.TestImonialList;
+import com.ats.rusa_app.util.ConnectivityDialog;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
@@ -53,7 +54,16 @@ public class TestimonialAdapter extends RecyclerView.Adapter<TestimonialAdapter.
         } catch (Exception e) {
         }
         myViewHolder.tv_Title.setText(model.getFromName());
-        myViewHolder.tv_Disc.setHtml(model.getMessage(), new HtmlHttpImageGetter(myViewHolder.tv_Disc));
+
+        if (model.getExInt1()==1){
+
+            myViewHolder.tv_Disc.setHtml(model.getMessage(), new HtmlHttpImageGetter(myViewHolder.tv_Disc));
+
+        }else if (model.getExInt1()==2){
+
+            myViewHolder.tv_Disc.setText("See more");
+
+        }
 
         myViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,9 +73,15 @@ public class TestimonialAdapter extends RecyclerView.Adapter<TestimonialAdapter.
                     Gson gson = new Gson();
                     String str = gson.toJson(model);
 
-                    Intent intent = new Intent(context, TestimonialWebviewActivity.class);
-                    intent.putExtra("model", str);
-                    context.startActivity(intent);
+                    if (!Constants.isOnline(context)) {
+
+                        new ConnectivityDialog(context).show();
+
+                    } else {
+                        Intent intent = new Intent(context, TestimonialWebviewActivity.class);
+                        intent.putExtra("model", str);
+                        context.startActivity(intent);
+                    }
 //                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("" + model.getNewsSourceUrlName()));
 //                    context.startActivity(browserIntent);
                 } catch (Exception e) {

@@ -49,7 +49,7 @@ public class VideosFragment extends Fragment implements VideosInterface {
 
                 VideoList video = staticVideosList.get(i);
 
-                String iframeStr = video.getFileName();
+               /* String iframeStr = video.getFileName();
                 Log.e("STRING ", "---------- " + iframeStr);
 
                 int index = (iframeStr.lastIndexOf("src"));
@@ -66,7 +66,15 @@ public class VideosFragment extends Fragment implements VideosInterface {
                 Log.e("VIDEO CODE : ", "------------------------ " + code);
 
                 GallaryDetailList videoModel = new GallaryDetailList(1, 1, 1, 1, "1", "video 1", "aa", "", "", 1, "", "", 1, 1, 1, 1, 1, 1, "" + code, "");
+                videoList.add(videoModel);*/
+
+                String code =video.getFileName() ;
+
+                Log.e("VIDEO CODE : ", "------------------------ " + code);
+
+                GallaryDetailList videoModel = new GallaryDetailList(1, 1, 1, 1, "1", "video 1", "aa", "", "", 1, "", "", 1, 1, 1, 1, 1, 1, "" + code, "");
                 videoList.add(videoModel);
+
             }
 
             YoutubeVideosAdapter adapter = new YoutubeVideosAdapter(videoList, getContext());

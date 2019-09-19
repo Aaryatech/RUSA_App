@@ -16,7 +16,9 @@ import android.widget.TextView;
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.activity.FeedbackActivity;
 import com.ats.rusa_app.activity.PreviousEventDetailActivity;
+import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.PrevEvent;
+import com.ats.rusa_app.util.ConnectivityDialog;
 import com.google.gson.Gson;
 
 import org.sufficientlysecure.htmltextview.HtmlTextView;
@@ -72,14 +74,21 @@ public class PreviousEventAdapter extends RecyclerView.Adapter<PreviousEventAdap
         myViewHolder.tv_feedback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Gson gson = new Gson();
-                String json = gson.toJson(model);
-                Intent intent = new Intent(context, FeedbackActivity.class);
-                Bundle args = new Bundle();
-                args.putString("model", json);
-                intent.putExtra("model", json);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                context.startActivity(intent);
+
+                if (!Constants.isOnline(context)) {
+
+                    new ConnectivityDialog(context).show();
+
+                } else {
+                    Gson gson = new Gson();
+                    String json = gson.toJson(model);
+                    Intent intent = new Intent(context, FeedbackActivity.class);
+                    Bundle args = new Bundle();
+                    args.putString("model", json);
+                    intent.putExtra("model", json);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    context.startActivity(intent);
+                }
             }
         });
 
@@ -89,12 +98,19 @@ public class PreviousEventAdapter extends RecyclerView.Adapter<PreviousEventAdap
                 Gson gson = new Gson();
                 String json = gson.toJson(model);
 
-                Intent intent=new Intent(context, PreviousEventDetailActivity.class);
-                Bundle args = new Bundle();
-                args.putString("model", json);
-                intent.putExtra("model", json);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                context.startActivity(intent);
+                if (!Constants.isOnline(context)) {
+
+                    new ConnectivityDialog(context).show();
+
+                } else {
+
+                    Intent intent = new Intent(context, PreviousEventDetailActivity.class);
+                    Bundle args = new Bundle();
+                    args.putString("model", json);
+                    intent.putExtra("model", json);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    context.startActivity(intent);
+                }
 
             }
         });

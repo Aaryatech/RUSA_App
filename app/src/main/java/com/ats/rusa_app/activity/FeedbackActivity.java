@@ -26,6 +26,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.ats.rusa_app.constants.Constants.authHeader;
+
 public class FeedbackActivity extends AppCompatActivity implements View.OnClickListener  {
     public RadioGroup rg;
     String selectedtext;
@@ -128,7 +130,7 @@ public class FeedbackActivity extends AppCompatActivity implements View.OnClickL
             final CommonDialog commonDialog = new CommonDialog(FeedbackActivity.this, "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<FeedbackSave> listCall = Constants.myInterface.getUpdateEventFeedback(newsblogsId,regId,msg,value);
+            Call<FeedbackSave> listCall = Constants.myInterface.getUpdateEventFeedback(newsblogsId,regId,msg,value,authHeader);
             listCall.enqueue(new Callback<FeedbackSave>() {
                 @Override
                 public void onResponse(Call<FeedbackSave> call, Response<FeedbackSave> response) {

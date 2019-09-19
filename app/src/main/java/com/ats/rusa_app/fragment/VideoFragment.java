@@ -8,6 +8,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,8 @@ import java.util.regex.Pattern;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.ats.rusa_app.constants.Constants.authHeader;
 
 public class VideoFragment extends Fragment {
 
@@ -120,11 +123,12 @@ public class VideoFragment extends Fragment {
 
     public void getPageData(final String slugName, int langId) {
 
+
         if (Constants.isOnline(getContext())) {
             final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<PageData> listCall = Constants.myInterface.getPageData(slugName, langId);
+            Call<PageData> listCall = Constants.myInterface.getPageData(slugName, langId,authHeader);
             listCall.enqueue(new Callback<PageData>() {
                 @Override
                 public void onResponse(Call<PageData> call, Response<PageData> response) {

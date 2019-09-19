@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -23,6 +24,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ats.rusa_app.R;
+import com.ats.rusa_app.activity.ConnectionCheckActivity;
+import com.ats.rusa_app.activity.MainActivity;
 import com.ats.rusa_app.adapter.CompSliderAdapter;
 import com.ats.rusa_app.adapter.NewsAndNotificationAdapter;
 import com.ats.rusa_app.adapter.NewsFeedAdapter;
@@ -33,6 +36,7 @@ import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.CompanyModel;
 import com.ats.rusa_app.model.Detail;
 import com.ats.rusa_app.model.GallaryDetailList;
+import com.ats.rusa_app.model.MenuModel;
 import com.ats.rusa_app.model.NewDetail;
 import com.ats.rusa_app.model.PhotoList;
 import com.ats.rusa_app.model.TestImonialList;
@@ -50,8 +54,11 @@ import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -60,6 +67,8 @@ import java.util.regex.Pattern;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.ats.rusa_app.constants.Constants.authHeader;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
@@ -117,6 +126,103 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         } catch (Exception e) {
             languageId = 1;
         }
+
+
+        if (!Constants.isOnline(getContext())) {
+
+
+
+            try {
+
+                //------------------NEWS----------------------------
+                String newsStr = CustomSharedPreference.getString(getActivity(), CustomSharedPreference.KEY_HOME_NEWS);
+                Gson gson = new Gson();
+                Type type = new TypeToken<ArrayList<NewDetail>>() {
+                }.getType();
+                newsList.clear();
+                newsList = gson.fromJson(newsStr, type);
+
+                if (newsList != null) {
+                    NewsFeedAdapter adapter = new NewsFeedAdapter(newsList, getContext());
+                    new_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                    new_recyclerView.setAdapter(adapter);
+                }
+
+                //----------------COMPANY-------------------------------
+                String compStr = CustomSharedPreference.getString(getActivity(), CustomSharedPreference.KEY_HOME_COMPANY);
+                Gson cGson = new Gson();
+                Type cType = new TypeToken<ArrayList<CompanyModel>>() {
+                }.getType();
+                companyList.clear();
+                companyList = cGson.fromJson(compStr, cType);
+                Log.e("HOME------", "---------OFFLINE------------------- COMP - " + companyList);
+
+                if (companyList != null) {
+                    CompSliderAdapter cAdapter = new CompSliderAdapter(companyList, getContext());
+                    comp_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                    comp_recyclerView.setAdapter(cAdapter);
+                }
+
+                //-------------------HOME-----------------------------------
+                String homeStr = CustomSharedPreference.getString(getActivity(), CustomSharedPreference.KEY_HOME_DATA);
+                Gson dGson = new Gson();
+                Detail detail = dGson.fromJson(homeStr, Detail.class);
+
+                ArrayList<GallaryDetailList> videoList = new ArrayList<>();
+                try {
+                    for (int i = 0; i < detail.getVideoList().size(); i++) {
+
+                        VideoList video = detail.getVideoList().get(i);
+                        String code = video.getFileName();
+
+                        GallaryDetailList videoModel = new GallaryDetailList(1, 1, 1, 1, "1", "video 1", "aa", "", "", 1, "", "", 1, 1, 1, 1, 1, 1, "" + code, "");
+                        videoList.add(videoModel);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (videoList != null) {
+                    YoutubeVideosAdapter yAdapter = new YoutubeVideosAdapter(videoList, getContext());
+                    video_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                    video_recyclerView.setAdapter(yAdapter);
+                }
+
+                //-----------------Testimonials---------------------------
+                testimonialList.clear();
+
+                if (detail.getTestimonialList().size() > 0) {
+                    for (int i = 0; i < detail.getTestimonialList().size(); i++) {
+                        testimonialList.add(detail.getTestimonialList().get(i));
+                    }
+                }
+
+                if (testimonialList != null) {
+                    TestimonialAdapter tAdapter = new TestimonialAdapter(testimonialList, getContext());
+                    testomonial_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                    testomonial_recyclerView.setAdapter(tAdapter);
+                }
+
+
+                //--------------------------GALLERY----------------------------------
+                galleryList.clear();
+                if (detail.getPhotoList().size() > 0) {
+                    for (int i = 0; i < detail.getPhotoList().size(); i++) {
+                        galleryList.add(detail.getPhotoList().get(i));
+                    }
+                }
+                imageSlider(galleryList);
+
+
+            } catch (Exception e) {
+                Log.e("Offline--", "------------------------- ERROR - " + e.getMessage());
+                e.printStackTrace();
+            }
+
+            //startActivity(new Intent(MainActivity.this, ConnectionCheckActivity.class));
+            //finish();
+        }
+
 
         getNewFeed(languageId);
         getCompSlider();
@@ -176,11 +282,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     private void getAllHomeData(int langId) {
+
+
         if (Constants.isOnline(getContext())) {
             final CommonDialog commonDialog = new CommonDialog(getContext(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<Detail> listCall = Constants.myInterface.getAllHomeData(langId);
+            Call<Detail> listCall = Constants.myInterface.getAllHomeData(langId, authHeader);
             listCall.enqueue(new Callback<Detail>() {
                 @Override
                 public void onResponse(Call<Detail> call, Response<Detail> response) {
@@ -191,31 +299,49 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             homeList.clear();
                             Detail detail = response.body();
 
+                            Gson dGson = new Gson();
+                            String dJson = dGson.toJson(detail);
+                            CustomSharedPreference.putString(getActivity(), CustomSharedPreference.KEY_HOME_DATA, dJson);
+
+
                             ArrayList<GallaryDetailList> videoList = new ArrayList<>();
 
-                            for (int i = 0; i < detail.getVideoList().size(); i++) {
+                            try {
+                                for (int i = 0; i < detail.getVideoList().size(); i++) {
 
-                                VideoList video = detail.getVideoList().get(i);
+                                    VideoList video = detail.getVideoList().get(i);
 
-                                String iframeStr = video.getFileName();
-                                Log.e("STRING ", "---------- " + iframeStr);
+                                   /* String iframeStr = video.getFileName();
+                                    Log.e("STRING ", "---------- " + iframeStr);
 
-                                int index = (iframeStr.lastIndexOf("src"));
-                                Log.e("FIRST INDEX : ", "-------------------- " + index);
-                                int firstIndex = (iframeStr.indexOf('"', index)) + 1;
-                                Log.e("LAST INDEX : ", "-------------------- " + firstIndex);
-                                int lastIndex = iframeStr.indexOf('"', firstIndex);
+                                    int index = (iframeStr.lastIndexOf("src"));
+                                    Log.e("FIRST INDEX : ", "-------------------- " + index);
+                                    int firstIndex = (iframeStr.indexOf('"', index)) + 1;
+                                    Log.e("LAST INDEX : ", "-------------------- " + firstIndex);
+                                    int lastIndex = iframeStr.indexOf('"', firstIndex);
 
 
-                                Log.e("VIDEO URL : ", "------------------------ " + iframeStr.substring(firstIndex, lastIndex));
+                                    Log.e("VIDEO URL : ", "------------------------ " + iframeStr.substring(firstIndex, lastIndex));
 
-                                String code = extractYTId(iframeStr.substring(firstIndex, lastIndex)).replace("\\", "");
+                                    String code = extractYTId(iframeStr.substring(firstIndex, lastIndex)).replace("\\", "");
+                                   // String code = video.getFileName();
 
-                                Log.e("VIDEO CODE : ", "------------------------ " + code);
+                                    Log.e("VIDEO CODE : ", "------------------------ " + code);
 
-                                GallaryDetailList videoModel = new GallaryDetailList(1, 1, 1, 1, "1", "video 1", "aa", "", "", 1, "", "", 1, 1, 1, 1, 1, 1, "" + code, "");
-                                videoList.add(videoModel);
+                                    GallaryDetailList videoModel = new GallaryDetailList(1, 1, 1, 1, "1", "video 1", "aa", "", "", 1, "", "", 1, 1, 1, 1, 1, 1, "" + code, "");
+                                    videoList.add(videoModel);*/
+
+                                    String code = video.getFileName();
+
+                                    Log.e("VIDEO CODE : ", "------------------------ " + code);
+
+                                    GallaryDetailList videoModel = new GallaryDetailList(1, 1, 1, 1, "1", "video 1", "aa", "", "", 1, "", "", 1, 1, 1, 1, 1, 1, "" + code, "");
+                                    videoList.add(videoModel);
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
+
 
                             YoutubeVideosAdapter adapter = new YoutubeVideosAdapter(videoList, getContext());
                             video_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
@@ -319,60 +445,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    /*private void getTestimonial() {
-
-        if (Constants.isOnline(getContext())) {
-            final CommonDialog commonDialog = new CommonDialog(getContext(), "Loading", "Please Wait...");
-            commonDialog.show();
-
-            Call<Detail> listCall = Constants.myInterface.getTestimonial(1);
-            listCall.enqueue(new Callback<Detail>() {
-                @Override
-                public void onResponse(Call<Detail> call, Response<Detail> response) {
-                    try {
-                        if (response.body() != null) {
-
-                            Log.e("Testimonial: ", " - " + response.body());
-                            testimonialList.clear();
-                            Detail detail = response.body();
-                            testimonialList.add(detail);
-                            Log.e("Testimonial List: ", " - " + detail.getTestimonialList());
-                            TestimonialAdapter adapter = new TestimonialAdapter(testimonialList, getContext());
-                            testomonial_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-                            testomonial_recyclerView.setAdapter(adapter);
-
-                            commonDialog.dismiss();
-
-                        } else {
-                            commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----------");
-                        }
-                    } catch (Exception e) {
-                        commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<Detail> call, Throwable t) {
-                    commonDialog.dismiss();
-                    Log.e("onFailure1 : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
-                }
-            });
-        } else {
-            Toast.makeText(getContext(), "No Internet Connection !", Toast.LENGTH_SHORT).show();
-        }
-    }*/
-
-
     private void getCompSlider() {
+
+
         if (Constants.isOnline(getContext())) {
             final CommonDialog commonDialog = new CommonDialog(getContext(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<ArrayList<CompanyModel>> listCall = Constants.myInterface.getCompSlider();
+            Call<ArrayList<CompanyModel>> listCall = Constants.myInterface.getCompSlider(authHeader);
             listCall.enqueue(new Callback<ArrayList<CompanyModel>>() {
                 @Override
                 public void onResponse(Call<ArrayList<CompanyModel>> call, Response<ArrayList<CompanyModel>> response) {
@@ -382,6 +462,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             Log.e("Company responce : ", " - " + response.body());
                             companyList.clear();
                             companyList = response.body();
+
+                            Gson cGson = new Gson();
+                            String cJson = cGson.toJson(response.body());
+                            CustomSharedPreference.putString(getActivity(), CustomSharedPreference.KEY_HOME_COMPANY, cJson);
+
+
                             CompSliderAdapter adapter = new CompSliderAdapter(companyList, getContext());
                             comp_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
                             comp_recyclerView.setAdapter(adapter);
@@ -412,57 +498,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    private void getVideoGallery() {
-        if (Constants.isOnline(getContext())) {
-            final CommonDialog commonDialog = new CommonDialog(getContext(), "Loading", "Please Wait...");
-            commonDialog.show();
-
-            Call<ArrayList<GallaryDetailList>> listCall = Constants.myInterface.getVideoGallery();
-            listCall.enqueue(new Callback<ArrayList<GallaryDetailList>>() {
-                @Override
-                public void onResponse(Call<ArrayList<GallaryDetailList>> call, Response<ArrayList<GallaryDetailList>> response) {
-                    try {
-                        if (response.body() != null) {
-
-                            Log.e("Video responce : ", " -------------------------------------------------- " + response.body());
-                            YoutubeVideosAdapter adapter = new YoutubeVideosAdapter(response.body(), getContext());
-                            video_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-                            video_recyclerView.setAdapter(adapter);
-
-
-                            commonDialog.dismiss();
-
-                        } else {
-                            commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----------");
-                        }
-                    } catch (Exception e) {
-                        commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<ArrayList<GallaryDetailList>> call, Throwable t) {
-                    commonDialog.dismiss();
-                    Log.e("onFailure1 : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
-                }
-            });
-        } else {
-            Toast.makeText(getContext(), "No Internet Connection !", Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
     private void getNewFeed(int langId) {
 
+
         if (Constants.isOnline(getContext())) {
             final CommonDialog commonDialog = new CommonDialog(getContext(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<ArrayList<NewDetail>> listCall = Constants.myInterface.getNewsData(langId);
+            Call<ArrayList<NewDetail>> listCall = Constants.myInterface.getNewsData(langId, authHeader);
             listCall.enqueue(new Callback<ArrayList<NewDetail>>() {
                 @Override
                 public void onResponse(Call<ArrayList<NewDetail>> call, Response<ArrayList<NewDetail>> response) {
@@ -470,6 +513,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         if (response.body() != null) {
 
                             Log.e("NEWS DATA : ", " - " + response.body());
+
+                            Gson mGson = new Gson();
+                            String mJson = mGson.toJson(response.body());
+                            CustomSharedPreference.putString(getActivity(), CustomSharedPreference.KEY_HOME_NEWS, mJson);
+
+
                             newsList.clear();
                             newsList = response.body();
                             // NewDetail newDetail=response.body();
@@ -574,13 +623,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    private void getUpcomingEvent(int languageId) {
+    private void getUpcomingEvent(final int languageId) {
 
         if (Constants.isOnline(getContext())) {
             final CommonDialog commonDialog = new CommonDialog(getContext(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<ArrayList<UpcomingEvent>> listCall = Constants.myInterface.getUpcomingEvent(languageId);
+            Call<ArrayList<UpcomingEvent>> listCall = Constants.myInterface.getHomeNewsAndNotificationNew(languageId, authHeader);
             listCall.enqueue(new Callback<ArrayList<UpcomingEvent>>() {
                 @Override
                 public void onResponse(Call<ArrayList<UpcomingEvent>> call, Response<ArrayList<UpcomingEvent>> response) {
@@ -591,10 +640,74 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             upcomingEventList.clear();
                             upcomingEventList = response.body();
 
+
                             NewsAndNotificationAdapter adapter = new NewsAndNotificationAdapter(upcomingEventList, getContext());
                             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
                             rvNewsAndNotify.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
                             rvNewsAndNotify.setAdapter(adapter);
+
+                            if (upcomingEventList.size() < 10) {
+                                getOldEvent(languageId);
+                            }
+
+                            commonDialog.dismiss();
+
+                        } else {
+                            commonDialog.dismiss();
+                            Log.e("Data Null : ", "-----------");
+                        }
+                    } catch (Exception e) {
+                        commonDialog.dismiss();
+                        Log.e("Exception : ", "-----------" + e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ArrayList<UpcomingEvent>> call, Throwable t) {
+                    commonDialog.dismiss();
+                    Log.e("onFailure : ", "-----------" + t.getMessage());
+                    t.printStackTrace();
+                }
+            });
+        } else {
+            Toast.makeText(getContext(), "No Internet Connection !", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    private void getOldEvent(int languageId) {
+
+        if (Constants.isOnline(getContext())) {
+            final CommonDialog commonDialog = new CommonDialog(getContext(), "Loading", "Please Wait...");
+            commonDialog.show();
+
+            Call<ArrayList<UpcomingEvent>> listCall = Constants.myInterface.getHomeNewsAndNotificationOld(languageId, authHeader);
+            listCall.enqueue(new Callback<ArrayList<UpcomingEvent>>() {
+                @Override
+                public void onResponse(Call<ArrayList<UpcomingEvent>> call, Response<ArrayList<UpcomingEvent>> response) {
+                    try {
+                        if (response.body() != null) {
+
+                            Log.e("UPCOMING EVENT LIST : ", " - " + response.body());
+                            //upcomingEventList.clear();
+                            //upcomingEventList = response.body();
+
+                            ArrayList<UpcomingEvent> tempEventList = new ArrayList<>();
+                            tempEventList = response.body();
+
+                            for (int i = 0; i < tempEventList.size(); i++) {
+                                if (upcomingEventList.size() < 10) {
+                                    upcomingEventList.add(tempEventList.get(i));
+                                }
+                            }
+
+
+                            NewsAndNotificationAdapter adapter = new NewsAndNotificationAdapter(upcomingEventList, getContext());
+                            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+                            rvNewsAndNotify.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                            rvNewsAndNotify.setAdapter(adapter);
+
 
                             commonDialog.dismiss();
 

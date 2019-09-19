@@ -16,6 +16,7 @@ import com.ats.rusa_app.R;
 import com.ats.rusa_app.activity.NewsActivity;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.NewDetail;
+import com.ats.rusa_app.util.ConnectivityDialog;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
@@ -63,9 +64,15 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.MyView
                     Gson gson = new Gson();
                     String str = gson.toJson(model);
 
-                    Intent intent = new Intent(context, NewsActivity.class);
-                    intent.putExtra("model", str);
-                    context.startActivity(intent);
+                    if (!Constants.isOnline(context)) {
+
+                        new ConnectivityDialog(context).show();
+
+                    } else {
+                        Intent intent = new Intent(context, NewsActivity.class);
+                        intent.putExtra("model", str);
+                        context.startActivity(intent);
+                    }
 //                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("" + model.getNewsSourceUrlName()));
 //                    context.startActivity(browserIntent);
                 } catch (Exception e) {

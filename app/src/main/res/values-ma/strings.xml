@@ -68,9 +68,17 @@
     <string name="str_submit">सबमिट करा</string>
     <string name="str_resend_otp">ओटीपी पुन्हा पाठवा</string>
     <string name="str_full_name">पूर्ण नाव*</string>
-    <string name="str_institute_name">कॉलेजचे नाव*</string>
-    <string name="str_university_name">विद्यापीठाचे नाव*</string>
+    <string name="str_university_name">University Name</string>
+    <string name="str_institute_name">Institute Name</string>
     <string name="str_apply">अर्ज करा</string>
     <string name="str_news_and_notification">बातम्या आणि अधिसूचना</string>
+
+    <string name="str_connection_text">आम्ही सर्व्हरशी कनेक्ट करण्यात अक्षम आहोत. कृपया आपल्या कनेक्टिव्हिटी तपासा किंवा नंतर पुन्हा प्रयत्न करा</string>
+    <string name="str_connection_heading">Error</string>
+    <string name="str_select_university">Select University *</string>
+    <string name="str_select_institute">Select Institute *</string>
+    <string name="str_register">Register</string>
+    <string name="str_authorized_person_name">Authorized Person Name *</string>
+
 
 </resources>

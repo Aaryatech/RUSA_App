@@ -14,8 +14,10 @@ import android.widget.TextView;
 
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.activity.MainActivity;
+import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.fragment.GalleryEventDetailsFragment;
 import com.ats.rusa_app.model.Gallery;
+import com.ats.rusa_app.util.ConnectivityDialog;
 
 import java.util.ArrayList;
 
@@ -50,14 +52,21 @@ public class GalleryEventCountAdapter extends RecyclerView.Adapter<GalleryEventC
             @Override
             public void onClick(View v) {
 
-                MainActivity activity = (MainActivity) context;
+                if (!Constants.isOnline(context)) {
 
-                Fragment adf = new GalleryEventDetailsFragment();
-                Bundle args = new Bundle();
-                args.putString("slugName", model.getPageSlug());
-                adf.setArguments(args);
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "PhotoGalleryFragment").commit();
+                    new ConnectivityDialog(context).show();
 
+                } else {
+
+                    MainActivity activity = (MainActivity) context;
+
+                    Fragment adf = new GalleryEventDetailsFragment();
+                    Bundle args = new Bundle();
+                    args.putString("slugName", model.getPageSlug());
+                    adf.setArguments(args);
+                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "PhotoGalleryFragment").commit();
+
+                }
             }
         });
 

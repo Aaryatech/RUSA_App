@@ -33,6 +33,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.content.Context.WIFI_SERVICE;
+import static com.ats.rusa_app.constants.Constants.authHeader;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -100,8 +101,8 @@ public class ContactUsFragment extends Fragment implements View.OnClickListener 
         iv_showLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                double latitude=19.109894; //20.007357
-                double longitude=72.884028; //73.792992
+                double latitude=18.914607; //20.007357
+                double longitude=72.817644; //73.792992
                 String uri = String.format(Locale.ENGLISH, "geo:%f,%f", latitude, longitude);
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
                 startActivity(intent);
@@ -191,7 +192,7 @@ public class ContactUsFragment extends Fragment implements View.OnClickListener 
             final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<ContactUs> listCall = Constants.myInterface.saveContactUs(contactUs);
+            Call<ContactUs> listCall = Constants.myInterface.saveContactUs(contactUs,authHeader);
             listCall.enqueue(new Callback<ContactUs>() {
                 @Override
                 public void onResponse(Call<ContactUs> call, Response<ContactUs> response) {

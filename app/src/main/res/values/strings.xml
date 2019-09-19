@@ -52,28 +52,34 @@
     <string name="str_sign_up_now">Sign Up Now</string>
     <string name="str_skip_login">Skip Login</string>
     <string name="str_registration">:REGISTRATION:</string>
-    <string name="str_name">Name*</string>
+    <string name="str_name">Full Name *</string>
     <string name="str_aishe_code">AISHE Code</string>
-    <string name="str_college_name">College Name*</string>
-    <string name="str_university_affiliated">University Affiliated*</string>
-    <string name="str_designation_of_the_authorized_person">Designation of the authorized Person*</string>
-    <string name="str_name_of_department">Name of Department*</string>
-    <string name="str_name_of_the_authorized_person">Name of the authorized person*</string>
-    <string name="str_mobile_number">Mobile Number*</string>
-    <string name="str_date_of_birth">Date Of Birth*</string>
-    <string name="str_email">Email*</string>
-    <string name="str_alternet_email">Alternet Email</string>
+    <string name="str_college_name">College Name *</string>
+    <string name="str_university_affiliated">University Affiliated *</string>
+    <string name="str_designation_of_the_authorized_person">Designation of Person *</string>
+    <string name="str_name_of_department">Name of Department *</string>
+    <string name="str_name_of_the_authorized_person">Name of the authorized person *</string>
+    <string name="str_mobile_number">Mobile No. *</string>
+    <string name="str_date_of_birth">Date Of Birth *</string>
+    <string name="str_email">Email-ID *</string>
+    <string name="str_alternet_email">Alternet Email-ID</string>
     <string name="str_create_an_account">Create an account</string>
     <string name="str_already_a_user">Already a user ?</string>
     <string name="str_sign_in_now">Sign In Now</string>
     <string name="str_enter_otp">Enter OTP</string>
     <string name="str_submit">Submit</string>
     <string name="str_resend_otp">Resend OTP</string>
-    <string name="str_full_name">Full Name*</string>
-    <string name="str_institute_name">College Name*</string>
-    <string name="str_university_name">University Name*</string>
+    <string name="str_full_name">Full Name *</string>
+    <string name="str_university_name">University Name</string>
+    <string name="str_institute_name">Institute Name</string>
     <string name="str_apply">APPLY</string>
     <string name="str_news_and_notification">News And Notification</string>
+    <string name="str_connection_text">We are unable to connect to the server. Please check your connectivity or try again later</string>
+    <string name="str_connection_heading">Error</string>
+    <string name="str_select_university">Select University *</string>
+    <string name="str_select_institute">Select Institute *</string>
+    <string name="str_register">Register</string>
+    <string name="str_authorized_person_name">Authorized Person Name *</string>
 
 
 </resources>

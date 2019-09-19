@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +36,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.ats.rusa_app.constants.Constants.authHeader;
+
 public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
     public EditText ed_Name, ed_email, ed_alterEmail, ed_clgName, ed_aisheCode, ed_designationPerson, ed_nameDept, ed_nameAuthePerson, ed_DOB, ed_univercityAff, ed_mobile;
     public TextInputLayout tv_Name, tv_email, tv_alterEmail, tv_clgName, tv_aisheCode, tv_designationPerson, tv_nameDept, tv_nameAuthePerson, tv_DOB, tv_univercityAff, tv_mobile;
@@ -49,6 +52,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
     private BroadcastReceiver receiver;
     ArrayList<String> typeNameArray = new ArrayList<>();
+
+    private RadioButton rbIndividual, rbInstitute, rbUniversity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,8 +95,12 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
         typeNameArray.add("Select Type");
         typeNameArray.add("Individual");
-        typeNameArray.add("Colleges");
+        typeNameArray.add("Institute");
         typeNameArray.add("University");
+
+        rbIndividual = findViewById(R.id.rbIndividual);
+        rbInstitute = findViewById(R.id.rbInstitute);
+        rbUniversity = findViewById(R.id.rbUniversity);
 
         final ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_item, typeNameArray);
         spinnerAdapter.setDropDownViewResource(R.layout.spinner_item);
@@ -138,7 +147,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     ed_designationPerson.setText("");
                     ed_mobile.setText("");
                     ed_nameAuthePerson.setText("");
-                } else if (spinnerPosition.equals("Colleges")) {
+
+                } else if (spinnerPosition.equals("Institute")) {
                     ed_Name.setVisibility(View.VISIBLE);
                     tv_Name.setVisibility(View.VISIBLE);
                     ed_Name.setHint(getString(R.string.str_institute_name));
@@ -174,6 +184,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     ed_aisheCode.setText("");
                     ed_mobile.setText("");
                     ed_nameAuthePerson.setText("");
+
                 } else if (spinnerPosition.equals("University")) {
                     ed_Name.setVisibility(View.VISIBLE);
                     tv_Name.setVisibility(View.VISIBLE);
@@ -208,6 +219,42 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     ed_mobile.setText("");
                     ed_aisheCode.setText("");
                     ed_nameAuthePerson.setText("");
+                } else {
+
+                    ed_Name.setVisibility(View.GONE);
+                    tv_Name.setVisibility(View.GONE);
+                    ed_Name.setHint(getString(R.string.str_university_name));
+                    tv_Name.setHint(getString(R.string.str_university_name));
+                    ed_email.setVisibility(View.GONE);
+                    tv_email.setVisibility(View.GONE);
+                    ed_alterEmail.setVisibility(View.GONE);
+                    tv_alterEmail.setVisibility(View.GONE);
+                    ed_clgName.setVisibility(View.GONE);
+                    tv_clgName.setVisibility(View.GONE);
+                    ed_aisheCode.setVisibility(View.GONE);
+                    tv_aisheCode.setVisibility(View.GONE);
+                    ed_designationPerson.setVisibility(View.GONE);
+                    tv_designationPerson.setVisibility(View.GONE);
+                    ed_nameDept.setVisibility(View.GONE);
+                    tv_nameDept.setVisibility(View.GONE);
+                    ed_nameAuthePerson.setVisibility(View.GONE);
+                    tv_nameAuthePerson.setVisibility(View.GONE);
+                    ed_DOB.setVisibility(View.GONE);
+                    tv_DOB.setVisibility(View.GONE);
+                    ed_mobile.setVisibility(View.GONE);
+                    tv_mobile.setVisibility(View.GONE);
+                    ed_univercityAff.setVisibility(View.GONE);
+                    tv_univercityAff.setVisibility(View.GONE);
+
+                    ed_Name.setText("");
+                    ed_email.setText("");
+                    ed_alterEmail.setText("");
+                    ed_designationPerson.setText("");
+                    ed_nameDept.setText("");
+                    ed_mobile.setText("");
+                    ed_aisheCode.setText("");
+                    ed_nameAuthePerson.setText("");
+
                 }
             }
 
@@ -223,7 +270,43 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         if (v.getId() == R.id.btn_registration) {
 
-            if (spinnerPosition.equals("Individual")) {
+            if (!rbIndividual.isChecked() && !rbInstitute.isChecked() && !rbUniversity.isChecked()) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this, R.style.AlertDialogTheme);
+                builder.setTitle("Caution");
+                builder.setMessage("Please Select Registration Type");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+            } else if (rbIndividual.isChecked()) {
+                Intent intent = new Intent(RegistrationActivity.this, IndividualRegActivity.class);
+                intent.putExtra("type",1);
+                startActivity(intent);
+                finish();
+
+            } else if (rbInstitute.isChecked()) {
+                Intent intent = new Intent(RegistrationActivity.this, UnivAndInstRegActivity.class);
+                intent.putExtra("type",2);
+                startActivity(intent);
+                finish();
+
+            } else if (rbUniversity.isChecked()) {
+                Intent intent = new Intent(RegistrationActivity.this, UnivAndInstRegActivity.class);
+                intent.putExtra("type",3);
+                startActivity(intent);
+                finish();
+
+            }
+
+
+           /* if (spinnerPosition.equals("Individual")) {
                 Log.e("SpinnerInd", "-----------------" + spinnerPosition);
                 boolean isValidClgName = false, isValidUniverAff = false, isValidName = false, isValidNameDept = false, isValidNameAuthPer = false, isValidDesigPerson = false;
                 String email, alt_email, fullName, clgName, univercityAff, nameDept, nameAuthPer, dob, mob, designPerName;
@@ -314,7 +397,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 }
 
             }
-            if (spinnerPosition.equals("Colleges")) {
+            if (spinnerPosition.equals("Institute")) {
                 Log.e("Spinnerclg", "-----------------" + spinnerPosition);
                 boolean isValidUniverAff = false, isValidName = false, isValidDesigPerson = false, isValidNameDept = false, isValidNameAuthPer = false;
                 String email, alt_email, institudeName, univercityAff, nameDept, nameAuthPer, designPerName, AISHECode, mob;
@@ -458,12 +541,15 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     getCheckUniqueFieldMobile(mob, email, registration);
 
 
-
                 }
             }
+            */
+
+
         } else if (v.getId() == R.id.tv_signIn) {
             Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
             startActivity(intent);
+            finish();
         } else if (v.getId() == R.id.ed_DOB) {
             int yr, mn, dy;
             if (dateMillis > 0) {
@@ -492,7 +578,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             final CommonDialog commonDialog = new CommonDialog(RegistrationActivity.this, "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<Info> listCall = Constants.myInterface.getCheckUniqueField(inputValue, 1, 0);
+            Call<Info> listCall = Constants.myInterface.getCheckUniqueField(inputValue, 1, 0,authHeader);
             listCall.enqueue(new Callback<Info>() {
                 @Override
                 public void onResponse(Call<Info> call, Response<Info> response) {
@@ -586,7 +672,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             final CommonDialog commonDialog = new CommonDialog(RegistrationActivity.this, "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<Info> listCall = Constants.myInterface.getCheckUniqueField(inputValue, 2, 0);
+            Call<Info> listCall = Constants.myInterface.getCheckUniqueField(inputValue, 2, 0,authHeader);
             listCall.enqueue(new Callback<Info>() {
                 @Override
                 public void onResponse(Call<Info> call, Response<Info> response) {
@@ -706,7 +792,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             final CommonDialog commonDialog = new CommonDialog(RegistrationActivity.this, "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<Reg> listCall = Constants.myInterface.saveRegistration(registration);
+            Call<Reg> listCall = Constants.myInterface.saveRegistration(registration,authHeader);
             listCall.enqueue(new Callback<Reg>() {
                 @Override
                 public void onResponse(Call<Reg> call, Response<Reg> response) {
@@ -726,6 +812,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             intent.putExtra("model", json);
                             // intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
+                            finish();
                             commonDialog.dismiss();
 
                         } else {
@@ -753,4 +840,12 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     }
 
 
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+    }
 }

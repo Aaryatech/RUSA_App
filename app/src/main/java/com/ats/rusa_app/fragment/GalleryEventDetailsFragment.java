@@ -29,6 +29,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.ats.rusa_app.constants.Constants.authHeader;
+
 public class GalleryEventDetailsFragment extends Fragment {
 
     static String slugName;
@@ -69,7 +71,7 @@ public class GalleryEventDetailsFragment extends Fragment {
             final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<PageData> listCall = Constants.myInterface.getGalleryData(slugName, langId);
+            Call<PageData> listCall = Constants.myInterface.getGalleryData(slugName, langId,authHeader);
             listCall.enqueue(new Callback<PageData>() {
                 @Override
                 public void onResponse(Call<PageData> call, Response<PageData> response) {

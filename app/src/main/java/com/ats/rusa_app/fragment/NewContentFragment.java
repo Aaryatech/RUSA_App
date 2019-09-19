@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,6 +41,8 @@ import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.ats.rusa_app.constants.Constants.authHeader;
 
 public class NewContentFragment extends Fragment {
 
@@ -83,7 +86,7 @@ public class NewContentFragment extends Fragment {
             final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<PageData> listCall = Constants.myInterface.getPageData(slugName, langId);
+            Call<PageData> listCall = Constants.myInterface.getPageData(slugName, langId,authHeader);
             listCall.enqueue(new Callback<PageData>() {
                 @Override
                 public void onResponse(Call<PageData> call, Response<PageData> response) {

@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.CompanyModel;
+import com.ats.rusa_app.util.ConnectivityDialog;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -50,8 +51,14 @@ public class CompSliderAdapter extends RecyclerView.Adapter<CompSliderAdapter.My
         myViewHolder.linearLayout_comp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("" + model.getUrlLink()));
-                context.startActivity(browserIntent);
+                if (!Constants.isOnline(context)) {
+
+                    new ConnectivityDialog(context).show();
+
+                } else {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("" + model.getUrlLink()));
+                    context.startActivity(browserIntent);
+                }
 
             }
         });

@@ -53,8 +53,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.e(TAG, "--------------------------------JSON String" + json.toString());
         try {
 
-            String title = json.getString("title");
-            String message = json.getString("body");
+            String title1 = json.getString("title");
+            String message1 = json.getString("body");
+            String title = "RUSA";
+            String message = json.getString("title");
             String imageUrl = "";
             int tag = json.getInt("tag");
 
@@ -66,11 +68,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             if (mNotificationManager.isAppIsInBackground(getApplicationContext())) {
 
-                db.addNotification(title, message, "" + sdf.format(Calendar.getInstance().getTimeInMillis()));
+                db.addNotification(title1, message1, "" + sdf.format(Calendar.getInstance().getTimeInMillis()));
 
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                intent.putExtra("Feedback","fcm");
+                intent.putExtra("Feedback", "fcm");
 
                 mNotificationManager.showSmallNotification(title, message, intent);
 
@@ -78,14 +80,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                intent.putExtra("Feedback","fcm");
+                intent.putExtra("Feedback", "fcm");
 
                 mNotificationManager.showSmallNotification(title, message, intent);
 
 //                MyNotificationManager notificationUtils = new MyNotificationManager(getApplicationContext());
 //                notificationUtils.playNotificationSound();
 
-                db.addNotification(title, message, "" + sdf.format(Calendar.getInstance().getTimeInMillis()));
+                db.addNotification(title1, message1, "" + sdf.format(Calendar.getInstance().getTimeInMillis()));
 
             }
 

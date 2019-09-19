@@ -16,56 +16,21 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tvHead"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_large"
+                android:layout_marginTop="@dimen/margin_x_large"
                 android:fontFamily="@font/lato_bold"
-                android:textColor="@color/colorBlue"
+                android:gravity="center"
                 android:text="Edit Profile"
-                android:layout_marginTop="@dimen/margin_x_large"
-                android:gravity="center"/>
+                android:textColor="@color/colorBlue"
+                android:textSize="@dimen/text_large" />
 
-            <Spinner
-                android:id="@+id/spType"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_x_large"
-                android:layout_marginTop="@dimen/margin_xx_large"
-                android:visibility="gone"
-                android:background="@drawable/spinner_bg"
-                android:layout_marginRight="@dimen/margin_x_large" />
-            <!--android:drawableRight="@drawable/name_icon"-->
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/tv_type"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_marginLeft="@dimen/margin_x_large"
-                android:layout_marginTop="@dimen/margin_small"
-                android:layout_marginRight="@dimen/margin_x_large"
-                android:gravity="bottom"
-                app:passwordToggleEnabled="true">
-
-            <EditText
-                android:id="@+id/ed_type"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="15dp"
-                android:fontFamily="@font/lato_regular"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:enabled="false"
-                android:layout_marginTop="@dimen/margin_x_large"
-                android:inputType="text"
-                android:hint="Type"
-                android:background="@drawable/edittext_background"
-              />
-            </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/tv_name"
+                android:id="@+id/tilName"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:visibility="gone"
                 android:layout_marginLeft="@dimen/margin_x_large"
                 android:layout_marginTop="@dimen/margin_small"
                 android:layout_marginRight="@dimen/margin_x_large"
@@ -73,28 +38,53 @@
                 app:passwordToggleEnabled="true">
 
                 <EditText
-                    android:id="@+id/ed_name"
+                    android:id="@+id/edName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_x_large"
+                    android:editable="false"
+                    android:enabled="false"
+                    android:fontFamily="@font/lato_regular"
+                    android:hint="Full Name"
+                    android:inputType="none"
+                    android:textColor="@color/colorBlack"
+                    android:maxLines="1"
                     android:padding="15dp"
-                    android:fontFamily="@font/lato_regular"
-                    android:maxLines="1"
+                    android:singleLine="true" />
+
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginLeft="@dimen/margin_x_large"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginRight="@dimen/margin_x_large"
+                android:gravity="bottom"
+                app:passwordToggleEnabled="true">
+
+                <EditText
+                    android:id="@+id/edInst"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_x_large"
+                    android:editable="false"
                     android:enabled="false"
-                    android:visibility="gone"
-                    android:singleLine="true"
-                    android:layout_marginTop="@dimen/margin_x_large"
-                    android:inputType="text"
-                    android:hint="@string/str_name"
-                    android:background="@drawable/edittext_background"
-                    />
+                    android:textColor="@color/colorBlack"
+                    android:fontFamily="@font/lato_regular"
+                    android:hint="Institute Name"
+                    android:inputType="none"
+                    android:maxLines="1"
+                    android:padding="15dp"
+                    android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
 
+
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/tv_AISHE_code"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:visibility="gone"
                 android:layout_marginLeft="@dimen/margin_x_large"
                 android:layout_marginTop="@dimen/margin_small"
                 android:layout_marginRight="@dimen/margin_x_large"
@@ -102,54 +92,26 @@
                 app:passwordToggleEnabled="true">
 
                 <EditText
-                    android:id="@+id/ed_AISHE_code"
+                    android:id="@+id/edCode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/margin_medium"
-                    android:fontFamily="@font/lato_regular"
-                    android:maxLines="1"
+                    android:layout_marginTop="@dimen/margin_x_large"
+                    android:editable="false"
                     android:enabled="false"
-                    android:visibility="gone"
-                    android:singleLine="true"
-                    android:layout_marginTop="@dimen/margin_x_large"
-                    android:inputType="text"
-                    android:hint="@string/str_aishe_code"
-                    android:background="@drawable/edittext_background"
-                    />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/tv_clgName"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:visibility="gone"
-                android:layout_marginLeft="@dimen/margin_x_large"
-                android:layout_marginTop="@dimen/margin_small"
-                android:layout_marginRight="@dimen/margin_x_large"
-                android:gravity="bottom"
-                app:passwordToggleEnabled="true">
-
-                <EditText
-                    android:id="@+id/ed_clgName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/margin_medium"
                     android:fontFamily="@font/lato_regular"
+                    android:textColor="@color/colorBlack"
+                    android:hint="AISHE Code"
+                    android:inputType="none"
                     android:maxLines="1"
-                    android:visibility="gone"
-                    android:singleLine="true"
-                    android:layout_marginTop="@dimen/margin_x_large"
-                    android:inputType="text"
-                    android:hint="@string/str_college_name"
-                    android:background="@drawable/edittext_background"
-                    />
+                    android:padding="15dp"
+                    android:singleLine="true" />
+
             </android.support.design.widget.TextInputLayout>
 
+
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/tv_univercityAffil"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:visibility="gone"
                 android:layout_marginLeft="@dimen/margin_x_large"
                 android:layout_marginTop="@dimen/margin_small"
                 android:layout_marginRight="@dimen/margin_x_large"
@@ -157,27 +119,26 @@
                 app:passwordToggleEnabled="true">
 
                 <EditText
-                    android:id="@+id/ed_univercityAffil"
+                    android:id="@+id/edUni"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/margin_medium"
+                    android:layout_marginTop="@dimen/margin_x_large"
+                    android:textColor="@color/colorBlack"
+                    android:editable="false"
+                    android:enabled="false"
                     android:fontFamily="@font/lato_regular"
+                    android:hint="University Name"
+                    android:inputType="none"
                     android:maxLines="1"
-                    android:visibility="gone"
-                    android:singleLine="true"
-                    android:layout_marginTop="@dimen/margin_x_large"
-                    android:inputType="text"
-                    android:hint="@string/str_university_affiliated"
-                    android:background="@drawable/edittext_background"
-                    />
+                    android:padding="15dp"
+                    android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
 
+
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/tv_nameAuthPerson"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:visibility="gone"
                 android:layout_marginLeft="@dimen/margin_x_large"
                 android:layout_marginTop="@dimen/margin_small"
                 android:layout_marginRight="@dimen/margin_x_large"
@@ -185,26 +146,26 @@
                 app:passwordToggleEnabled="true">
 
                 <EditText
-                    android:id="@+id/ed_nameAuthPerson"
+                    android:id="@+id/edEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/margin_medium"
+                    android:layout_marginTop="@dimen/margin_x_large"
+                    android:editable="false"
+                    android:enabled="false"
                     android:fontFamily="@font/lato_regular"
+                    android:hint="Email-ID"
+                    android:textColor="@color/colorBlack"
+                    android:inputType="none"
                     android:maxLines="1"
-                    android:visibility="gone"
-                    android:singleLine="true"
-                    android:layout_marginTop="@dimen/margin_x_large"
-                    android:inputType="text"
-                    android:hint="@string/str_name_of_the_authorized_person"
-                    android:background="@drawable/edittext_background"
-                    />
+                    android:padding="15dp"
+                    android:singleLine="true" />
+
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/tv_designationPerson"
+                android:id="@+id/tilAuthName"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:visibility="gone"
                 android:layout_marginLeft="@dimen/margin_x_large"
                 android:layout_marginTop="@dimen/margin_small"
                 android:layout_marginRight="@dimen/margin_x_large"
@@ -212,26 +173,25 @@
                 app:passwordToggleEnabled="true">
 
                 <EditText
-                    android:id="@+id/ed_designationPerson"
+                    android:id="@+id/edAuthName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/margin_medium"
+                    android:textColor="@color/colorBlack"
+                    android:layout_marginTop="@dimen/margin_x_large"
+                    android:background="@drawable/edittext_background"
                     android:fontFamily="@font/lato_regular"
+                    android:hint="Authorized Person Name"
+                    android:inputType="text"
                     android:maxLines="1"
-                    android:visibility="gone"
-                    android:singleLine="true"
-                    android:layout_marginTop="@dimen/margin_x_large"
-                    android:inputType="text"
-                    android:hint="@string/str_designation_of_the_authorized_person"
-                    android:background="@drawable/edittext_background"
-                    />
+                    android:padding="15dp"
+                    android:singleLine="true" />
+
             </android.support.design.widget.TextInputLayout>
 
+
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/tv_nameDept"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:visibility="gone"
                 android:layout_marginLeft="@dimen/margin_x_large"
                 android:layout_marginTop="@dimen/margin_small"
                 android:layout_marginRight="@dimen/margin_x_large"
@@ -239,27 +199,25 @@
                 app:passwordToggleEnabled="true">
 
                 <EditText
-                    android:id="@+id/ed_nameDept"
+                    android:id="@+id/edDesg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/margin_medium"
+                    android:layout_marginTop="@dimen/margin_x_large"
+                    android:background="@drawable/edittext_background"
                     android:fontFamily="@font/lato_regular"
+                    android:hint="Designation of Person *"
+                    android:inputType="text"
+                    android:textColor="@color/colorBlack"
                     android:maxLines="1"
-                    android:visibility="gone"
-                    android:singleLine="true"
-                    android:layout_marginTop="@dimen/margin_x_large"
-                    android:inputType="text"
-                    android:hint="@string/str_name_of_department"
-                    android:background="@drawable/edittext_background"
-                    />
+                    android:padding="15dp"
+                    android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
 
+
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/tv_mobileNo"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:visibility="gone"
                 android:layout_marginLeft="@dimen/margin_x_large"
                 android:layout_marginTop="@dimen/margin_small"
                 android:layout_marginRight="@dimen/margin_x_large"
@@ -267,28 +225,51 @@
                 app:passwordToggleEnabled="true">
 
                 <EditText
-                    android:id="@+id/ed_mobileNo"
+                    android:id="@+id/edDept"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/margin_medium"
-                    android:fontFamily="@font/lato_regular"
                     android:layout_marginTop="@dimen/margin_x_large"
+                    android:background="@drawable/edittext_background"
+                    android:textColor="@color/colorBlack"
+                    android:fontFamily="@font/lato_regular"
+                    android:hint="Name of Department *"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:padding="15dp"
+                    android:singleLine="true" />
+
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginLeft="@dimen/margin_x_large"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginRight="@dimen/margin_x_large"
+                android:gravity="bottom"
+                app:passwordToggleEnabled="true">
+
+                <EditText
+                    android:id="@+id/edMobile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_x_large"
+                    android:background="@drawable/edittext_background"
+                    android:fontFamily="@font/lato_regular"
+                    android:hint="Mobile No. *"
                     android:inputType="number"
-                    android:visibility="gone"
-                    android:hint="@string/str_mobile_number"
+                    android:textColor="@color/colorBlack"
                     android:maxLength="10"
                     android:maxLines="1"
-                    android:singleLine="true"
-                    android:background="@drawable/edittext_background"
-                    />
+                    android:padding="15dp"
+                    android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/tv_DOB"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:visibility="gone"
                 android:layout_marginLeft="@dimen/margin_x_large"
                 android:layout_marginTop="@dimen/margin_small"
                 android:layout_marginRight="@dimen/margin_x_large"
@@ -296,96 +277,36 @@
                 app:passwordToggleEnabled="true">
 
                 <EditText
-                    android:id="@+id/ed_DOB"
+                    android:id="@+id/edAlterEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/margin_medium"
-                    android:drawableRight="@drawable/ic_action_calender"
-                    android:fontFamily="@font/lato_regular"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:visibility="gone"
-                    android:inputType="none"
                     android:layout_marginTop="@dimen/margin_x_large"
-                    android:hint="@string/str_date_of_birth"
                     android:background="@drawable/edittext_background"
-                    />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/tv_email"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:visibility="gone"
-                android:layout_marginLeft="@dimen/margin_x_large"
-                android:layout_marginTop="@dimen/margin_small"
-                android:layout_marginRight="@dimen/margin_x_large"
-                android:gravity="bottom"
-                app:passwordToggleEnabled="true">
-
-                <EditText
-                    android:id="@+id/ed_email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/margin_medium"
                     android:fontFamily="@font/lato_regular"
-                    android:maxLines="1"
-                    android:visibility="gone"
-                    android:singleLine="true"
-                    android:layout_marginTop="@dimen/margin_x_large"
+                    android:hint="Alternate Email-ID"
                     android:inputType="textEmailAddress"
-                    android:hint="@string/str_email"
-                    android:background="@drawable/edittext_background"
-                    />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/tv_alterEmail"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:visibility="gone"
-                android:layout_marginLeft="@dimen/margin_x_large"
-                android:layout_marginTop="@dimen/margin_small"
-                android:layout_marginRight="@dimen/margin_x_large"
-                android:gravity="bottom"
-                app:passwordToggleEnabled="true">
-
-                <EditText
-                    android:id="@+id/ed_alterEmail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/margin_medium"
-                    android:fontFamily="@font/lato_regular"
                     android:maxLines="1"
-                    android:visibility="gone"
-                    android:singleLine="true"
-                    android:layout_marginTop="@dimen/margin_x_large"
-                    android:inputType="textEmailAddress"
-                    android:hint="@string/str_alternet_email"
-                    android:background="@drawable/edittext_background"
-                    />
+                    android:textColor="@color/colorBlack"
+                    android:padding="15dp"
+                    android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
+
 
             <Button
                 android:id="@+id/btn_registration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/margin_x_large"
                 android:layout_marginLeft="@dimen/margin_x_large"
                 android:layout_marginTop="@dimen/margin_xx_large"
-                android:padding="@dimen/margin_small"
-                android:textSize="@dimen/text_medium"
-                android:fontFamily="@font/lato_bold"
+                android:layout_marginRight="@dimen/margin_x_large"
+                android:layout_marginBottom="@dimen/margin_xx_large"
                 android:background="@drawable/contact_button_background"
+                android:fontFamily="@font/lato_bold"
+                android:padding="@dimen/margin_small"
+                android:text="Save"
                 android:textColor="@color/colorWhite"
-                android:text="Edit Profile"
-                />
-
-
-
+                android:textSize="@dimen/text_medium" />
 
 
         </LinearLayout>

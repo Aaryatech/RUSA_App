@@ -29,6 +29,7 @@ import com.ats.rusa_app.activity.MainActivity;
 import com.ats.rusa_app.activity.WebViewActivity;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.CmsContentList;
+import com.ats.rusa_app.util.ConnectivityDialog;
 import com.ats.rusa_app.util.HtmlHttpImageGetter;
 import com.ats.rusa_app.util.HtmlHttpImageGetterNew;
 import com.ats.rusa_app.util.RvWebView;
@@ -136,8 +137,14 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
         holder.tvPdf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("" + Constants.PDF_URL + model.getDownloadPdf()));
-                context.startActivity(browserIntent);
+                if (!Constants.isOnline(context)) {
+
+                    new ConnectivityDialog(context).show();
+
+                } else {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("" + Constants.PDF_URL + model.getDownloadPdf()));
+                    context.startActivity(browserIntent);
+                }
             }
         });
 

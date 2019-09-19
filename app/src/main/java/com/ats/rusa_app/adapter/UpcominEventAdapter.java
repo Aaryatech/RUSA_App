@@ -14,7 +14,9 @@ import android.widget.TextView;
 
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.activity.EventDetailListActivity;
+import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.UpcomingEvent;
+import com.ats.rusa_app.util.ConnectivityDialog;
 import com.google.gson.Gson;
 
 import org.sufficientlysecure.htmltextview.HtmlTextView;
@@ -82,13 +84,18 @@ public class UpcominEventAdapter extends RecyclerView.Adapter<UpcominEventAdapte
 //                adf.setArguments(args);
 //                activity.getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "EventFragment").commit();
 //
+                if (!Constants.isOnline(context)) {
 
-                Intent intent = new Intent(context, EventDetailListActivity.class);
-                Bundle args = new Bundle();
-                args.putString("model", json);
-                intent.putExtra("model", json);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                context.startActivity(intent);
+                    new ConnectivityDialog(context).show();
+
+                } else {
+                    Intent intent = new Intent(context, EventDetailListActivity.class);
+                    Bundle args = new Bundle();
+                    args.putString("model", json);
+                    intent.putExtra("model", json);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    context.startActivity(intent);
+                }
 
             }
         });

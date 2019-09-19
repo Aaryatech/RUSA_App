@@ -19,6 +19,7 @@ import com.ats.rusa_app.activity.NewsActivity;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.NewDetail;
 import com.ats.rusa_app.model.UpcomingEvent;
+import com.ats.rusa_app.util.ConnectivityDialog;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
@@ -66,11 +67,16 @@ public class NewsAndNotificationAdapter extends RecyclerView.Adapter<NewsAndNoti
                     Gson gson = new Gson();
                     String json = gson.toJson(model);
 
-                    Intent intent = new Intent(context, EventDetailListActivity.class);
-                    intent.putExtra("model", json);
-                   // intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    context.startActivity(intent);
+                    if (!Constants.isOnline(context)) {
 
+                        new ConnectivityDialog(context).show();
+
+                    } else {
+                        Intent intent = new Intent(context, EventDetailListActivity.class);
+                        intent.putExtra("model", json);
+                        // intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        context.startActivity(intent);
+                    }
                 } catch (Exception e) {
                     Log.e("Exception : ", "-----------" + e.getMessage());
                     e.printStackTrace();

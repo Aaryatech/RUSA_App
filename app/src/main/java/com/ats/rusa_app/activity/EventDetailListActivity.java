@@ -48,6 +48,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.ats.rusa_app.constants.Constants.authHeader;
+
 public class EventDetailListActivity extends AppCompatActivity implements View.OnClickListener {
     UpcomingEvent upcomingEvent;
     ImageView imageView;
@@ -249,7 +251,7 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
             final CommonDialog commonDialog = new CommonDialog(getApplicationContext(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<Info> listCall = Constants.myInterface.getAppliedEvents(newsblogsId, regId);
+            Call<Info> listCall = Constants.myInterface.getAppliedEvents(newsblogsId, regId,authHeader);
             listCall.enqueue(new Callback<Info>() {
                 @Override
                 public void onResponse(Call<Info> call, Response<Info> response) {
@@ -312,7 +314,7 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
             final CommonDialog commonDialog = new CommonDialog(EventDetailListActivity.this, "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<EventRegistration> listCall = Constants.myInterface.saveEventRegister(eventRegistration);
+            Call<EventRegistration> listCall = Constants.myInterface.saveEventRegister(eventRegistration,authHeader);
             listCall.enqueue(new Callback<EventRegistration>() {
                 @Override
                 public void onResponse(Call<EventRegistration> call, Response<EventRegistration> response) {
@@ -478,8 +480,9 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", imgFile.getName(), requestFile);
 
         RequestBody imgName = RequestBody.create(MediaType.parse("text/plain"), filename);
+        RequestBody type = RequestBody.create(MediaType.parse("text/plain"), "1");
 
-        Call<JSONObject> call = Constants.myInterface.docUpload(body, imgName);
+        Call<JSONObject> call = Constants.myInterface.docUpload(body, imgName,type,authHeader);
         call.enqueue(new Callback<JSONObject>() {
             @Override
             public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {

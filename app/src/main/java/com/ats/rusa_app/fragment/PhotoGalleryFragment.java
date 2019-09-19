@@ -28,6 +28,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.ats.rusa_app.constants.Constants.authHeader;
+
 public class PhotoGalleryFragment extends Fragment {
 
     private RecyclerView rvEvents;
@@ -60,7 +62,7 @@ public class PhotoGalleryFragment extends Fragment {
             final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<ArrayList<Gallery>> listCall = Constants.myInterface.getCategoryListWithImageCount(sectionId,langId);
+            Call<ArrayList<Gallery>> listCall = Constants.myInterface.getCategoryListWithImageCount(sectionId,langId,authHeader);
             listCall.enqueue(new Callback<ArrayList<Gallery>>() {
                 @Override
                 public void onResponse(Call<ArrayList<Gallery>> call, Response<ArrayList<Gallery>> response) {
@@ -112,7 +114,7 @@ public class PhotoGalleryFragment extends Fragment {
             final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<List<GetGalleryCategory>> listCall = Constants.myInterface.getCatBySection(sectionId);
+            Call<List<GetGalleryCategory>> listCall = Constants.myInterface.getCatBySection(sectionId,authHeader);
             listCall.enqueue(new Callback<List<GetGalleryCategory>>() {
                 @Override
                 public void onResponse(Call<List<GetGalleryCategory>> call, Response<List<GetGalleryCategory>> response) {

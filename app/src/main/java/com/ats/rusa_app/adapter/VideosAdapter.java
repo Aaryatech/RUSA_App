@@ -10,8 +10,10 @@ import android.view.ViewGroup;
 
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.activity.YoutubePlayerActivity;
+import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.GallaryDetailList;
 import com.ats.rusa_app.util.Config;
+import com.ats.rusa_app.util.ConnectivityDialog;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeThumbnailLoader;
 import com.google.android.youtube.player.YouTubeThumbnailView;
@@ -80,9 +82,16 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.MyViewHold
         holder.ytThumb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(context, YoutubePlayerActivity.class);
-                intent.putExtra("video",model.getExVar1());
-                context.startActivity(intent);
+
+                if (!Constants.isOnline(context)) {
+
+                    new ConnectivityDialog(context).show();
+
+                } else {
+                    Intent intent = new Intent(context, YoutubePlayerActivity.class);
+                    intent.putExtra("video", model.getExVar1());
+                    context.startActivity(intent);
+                }
             }
         });
 

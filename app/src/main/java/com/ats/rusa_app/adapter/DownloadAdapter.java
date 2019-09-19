@@ -15,6 +15,7 @@ import com.ats.rusa_app.activity.WebViewActivity;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.DocumentUploadList;
 import com.ats.rusa_app.model.FaqContentList;
+import com.ats.rusa_app.util.ConnectivityDialog;
 
 import org.sufficientlysecure.htmltextview.HtmlTextView;
 
@@ -63,8 +64,14 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.MyView
 //                intent.putExtra("EXTRA_TABLE_HTML", Constants.PDF_URL + model.getFileName());
 //                context.startActivity(intent);
 
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(""+Constants.PDF_URL+model.getFileName()));
-                context.startActivity(browserIntent);
+                if (!Constants.isOnline(context)) {
+
+                    new ConnectivityDialog(context).show();
+
+                } else {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("" + Constants.PDF_URL + model.getFileName()));
+                    context.startActivity(browserIntent);
+                }
 
             }
         });

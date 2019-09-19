@@ -1,5 +1,8 @@
 package com.ats.rusa_app.activity;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,6 +11,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -17,13 +21,23 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,26 +56,41 @@ import com.ats.rusa_app.fragment.NewContentFragment;
 import com.ats.rusa_app.fragment.PhotoGalleryFragment;
 import com.ats.rusa_app.fragment.UpcomingEventDetailFragment;
 import com.ats.rusa_app.fragment.UpcomingEventFragment;
+import com.ats.rusa_app.fragment.UploadDocumentFragment;
 import com.ats.rusa_app.fragment.VideoFragment;
+import com.ats.rusa_app.interfaces.InterfaceApi;
 import com.ats.rusa_app.model.AppToken;
 import com.ats.rusa_app.model.CategoryList;
 import com.ats.rusa_app.model.Login;
 import com.ats.rusa_app.model.MenuGroup;
 import com.ats.rusa_app.model.MenuModel;
 import com.ats.rusa_app.util.CommonDialog;
+import com.ats.rusa_app.util.ConnectivityDialog;
 import com.ats.rusa_app.util.Constant;
 import com.ats.rusa_app.util.CustomSharedPreference;
+import com.ats.rusa_app.util.PermissionsUtil;
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.Cache;
+import okhttp3.CacheControl;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+import static com.ats.rusa_app.constants.Constants.authHeader;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
@@ -87,16 +116,51 @@ public class MainActivity extends AppCompatActivity
 
     private LinearLayout linearLayout_home, linearLayout_aboutUs, linearLayout_gallery, linearLayout_news, linearLayout_contact;
 
+
+    int cacheSize = 10 * 1024 * 1024; // 10 MB
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        expandableListView = findViewById(R.id.expandableListView);
+
+        if (!Constants.isOnline(this)) {
+
+
+            String newsStr1 = CustomSharedPreference.getString(MainActivity.this, CustomSharedPreference.KEY_HOME_NEWS);
+            String compStr1 = CustomSharedPreference.getString(MainActivity.this, CustomSharedPreference.KEY_HOME_COMPANY);
+            String homeStr1 = CustomSharedPreference.getString(MainActivity.this, CustomSharedPreference.KEY_HOME_DATA);
+
+            if (homeStr1 == null && newsStr1 == null && compStr1 == null) {
+                startActivity(new Intent(MainActivity.this, ConnectionCheckActivity.class));
+                finish();
+            } else {
+
+
+                try {
+                    displayOfflineData();
+                } catch (Exception e) {
+                    //Log.e("Offline--", "------------------------- ERROR - " + e.getMessage());
+                    e.printStackTrace();
+                }
+
+            }
+
+            //startActivity(new Intent(MainActivity.this, ConnectionCheckActivity.class));
+            //finish();
+        }
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         setTitle("" + getResources().getString(R.string.app_name));
+
+        if (PermissionsUtil.checkAndRequestPermissions(this)) {
+        }
 
         String langId = CustomSharedPreference.getString(MainActivity.this, CustomSharedPreference.LANGUAGE_SELECTED);
         try {
@@ -111,12 +175,16 @@ public class MainActivity extends AppCompatActivity
         linearLayout_news = findViewById(R.id.linearLayout_news);
         linearLayout_contact = findViewById(R.id.linearLayout_contact);
 
+        try {
+            linearLayout_home.setOnClickListener(this);
+            linearLayout_aboutUs.setOnClickListener(this);
+            linearLayout_gallery.setOnClickListener(this);
+            linearLayout_news.setOnClickListener(this);
+            linearLayout_contact.setOnClickListener(this);
 
-        linearLayout_home.setOnClickListener(this);
-        linearLayout_aboutUs.setOnClickListener(this);
-        linearLayout_gallery.setOnClickListener(this);
-        linearLayout_news.setOnClickListener(this);
-        linearLayout_contact.setOnClickListener(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         String userStr = CustomSharedPreference.getString(getApplicationContext(), CustomSharedPreference.KEY_USER);
         Gson gson = new Gson();
@@ -166,20 +234,22 @@ public class MainActivity extends AppCompatActivity
 
         // Toast.makeText(this, "" + languageId, Toast.LENGTH_SHORT).show();
 
-        expandableListView = findViewById(R.id.expandableListView);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        try {
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.addDrawerListener(toggle);
+            toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView.setNavigationItemSelectedListener(this);
 
-        View header = navigationView.getHeaderView(0);
-        tv_loginUserName = header.findViewById(R.id.loginUserName);
-
+            View header = navigationView.getHeaderView(0);
+            tv_loginUserName = header.findViewById(R.id.loginUserName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         try {
             intent = getIntent();
@@ -190,7 +260,10 @@ public class MainActivity extends AppCompatActivity
                 ft.replace(R.id.content_frame, new EventFragment(), "HomeFragment");
                 ft.commit();
             } else if (strFeedback.equalsIgnoreCase("fcm")) {
-               startActivity(new Intent(MainActivity.this,NotificationActivity.class));
+                startActivity(new Intent(MainActivity.this, NotificationActivity.class));
+//                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//                ft.replace(R.id.content_frame, new HomeFragment(), "Exit");
+//                ft.commit();
             } else {
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.content_frame, new HomeFragment(), "Exit");
@@ -287,22 +360,81 @@ public class MainActivity extends AppCompatActivity
                 homeFragment instanceof EditProfileFragment && homeFragment.isVisible() ||
                 homeFragment instanceof ChangePasswordFragment && homeFragment.isVisible() ||
                 homeFragment instanceof VideoFragment && homeFragment.isVisible() ||
-                homeFragment instanceof PhotoGalleryFragment && homeFragment.isVisible()) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, new HomeFragment(), "Exit");
-            ft.commit();
+                homeFragment instanceof PhotoGalleryFragment && homeFragment.isVisible() ||
+                homeFragment instanceof UploadDocumentFragment && homeFragment.isVisible()) {
+
+
+            if (!Constants.isOnline(MainActivity.this)) {
+
+               /* Intent intent = new Intent(MainActivity.this, ConnectionCheckActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();*/
+
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, new HomeFragment(), "Exit");
+                ft.commit();
+
+            } else {
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, new HomeFragment(), "Exit");
+                ft.commit();
+            }
+
         } else if (eventFragment instanceof UpcomingEventDetailFragment && eventFragment.isVisible()) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, new EventFragment(), "HomeFragment");
-            ft.commit();
+
+            if (!Constants.isOnline(MainActivity.this)) {
+
+               /* Intent intent = new Intent(MainActivity.this, ConnectionCheckActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();*/
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, new HomeFragment(), "Exit");
+                ft.commit();
+
+            } else {
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, new EventFragment(), "HomeFragment");
+                ft.commit();
+            }
+
         } else if (photoGalleryFragment instanceof GalleryEventDetailsFragment && photoGalleryFragment.isVisible()) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, new PhotoGalleryFragment(), "HomeFragment");
-            ft.commit();
+
+            if (!Constants.isOnline(MainActivity.this)) {
+
+                /*Intent intent = new Intent(MainActivity.this, ConnectionCheckActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();*/
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, new HomeFragment(), "Exit");
+                ft.commit();
+
+            } else {
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, new PhotoGalleryFragment(), "HomeFragment");
+                ft.commit();
+            }
+
         } else if (galleryEventDetailFragment instanceof GalleryDisplayFragment && galleryEventDetailFragment.isVisible()) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, new GalleryEventDetailsFragment(), "PhotoGalleryFragment");
-            ft.commit();
+
+            if (!Constants.isOnline(MainActivity.this)) {
+
+                /*Intent intent = new Intent(MainActivity.this, ConnectionCheckActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();*/
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, new HomeFragment(), "Exit");
+                ft.commit();
+
+            } else {
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, new GalleryEventDetailsFragment(), "PhotoGalleryFragment");
+                ft.commit();
+            }
+
         } else {
             super.onBackPressed();
         }
@@ -385,11 +517,12 @@ public class MainActivity extends AppCompatActivity
 
     private void getMenuData(int lnagId) {
 
+
         if (Constants.isOnline(this)) {
             commonDialog = new CommonDialog(MainActivity.this, "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<MenuModel> listCall = Constants.myInterface.getMenuData(lnagId, 1);
+            Call<MenuModel> listCall = Constants.myInterface.getMenuData(lnagId, 1, authHeader);
             listCall.enqueue(new Callback<MenuModel>() {
                 @Override
                 public void onResponse(Call<MenuModel> call, Response<MenuModel> response) {
@@ -400,7 +533,12 @@ public class MainActivity extends AppCompatActivity
 
                             MenuModel model = response.body();
 
-                            menuCatList.clear();
+                            Gson mGson = new Gson();
+                            String mJson = mGson.toJson(model);
+                            CustomSharedPreference.putString(MainActivity.this, CustomSharedPreference.KEY_MENU, mJson);
+
+                            displayMenu(model);
+                           /* menuCatList.clear();
 
                             for (int i = 0; i < model.getCategoryList().size(); i++) {
                                 menuCatList.add(model.getCategoryList().get(i));
@@ -427,8 +565,8 @@ public class MainActivity extends AppCompatActivity
                                                 menuGroup = new MenuGroup(model.getSectionlist().get(i).getSectionName(), false, false, false, "" + model.getSectionlist().get(i).getSectionSlugname());
                                             }
 
-                                            if (model.getSectionlist().get(i).getSectionName().equalsIgnoreCase("Rusa Gallery")){
-                                                menuGroup = new MenuGroup(model.getSectionlist().get(i).getSectionName(), false, false, false, "imgGallary" );
+                                            if (model.getSectionlist().get(i).getSectionName().equalsIgnoreCase("Rusa Gallery")) {
+                                                menuGroup = new MenuGroup(model.getSectionlist().get(i).getSectionName(), false, false, false, "imgGallary");
                                             }
 
                                             headerList.add(menuGroup);
@@ -442,9 +580,9 @@ public class MainActivity extends AppCompatActivity
                                             menuGroup = new MenuGroup(model.getSectionlist().get(i).getSectionName(), true, true, false, "");
                                             headerList.add(menuGroup);
                                         }
-                                       /* if (!menuGroup.hasChildren) {
+                                       *//* if (!menuGroup.hasChildren) {
                                             childList.put(menuGroup, null);
-                                        }*/
+                                        }*//*
 
                                         ArrayList<MenuGroup> childModelsList = new ArrayList<>();
 
@@ -464,7 +602,7 @@ public class MainActivity extends AppCompatActivity
                                                         childModelsList.add(childModel);
                                                     }
 
-                                                    if (model.getCategoryList().get(j).getCatName().equalsIgnoreCase("Rusa Gallery")){
+                                                    if (model.getCategoryList().get(j).getCatName().equalsIgnoreCase("Rusa Gallery")) {
                                                         MenuGroup childModel = new MenuGroup(model.getCategoryList().get(j).getCatName(), false, false, false, "imgGallary");
                                                         childModelsList.add(childModel);
                                                     }
@@ -526,6 +664,9 @@ public class MainActivity extends AppCompatActivity
                                 MenuGroup menuGroup0 = new MenuGroup("Edit Profile", false, false, false, "Profile");
                                 headerList.add(menuGroup0);
 
+                                MenuGroup menuGroup1 = new MenuGroup("Upload Document", false, false, false, "uploadDoc");
+                                headerList.add(menuGroup1);
+
 //                                if(loginUser.getExInt1()!=1) {
 //                                    MenuGroup menuGroup4 = new MenuGroup("Change Password", false, false, "changPass");
 //                                    headerList.add(menuGroup4);
@@ -543,11 +684,7 @@ public class MainActivity extends AppCompatActivity
                             MenuGroup menuGroup2 = new MenuGroup("" + getResources().getString(R.string.str_settings), true, true, false, "Settings");
                             headerList.add(menuGroup2);
 
-//                            if(loginUser!=null) {
-//
-//                                MenuGroup menuGroup3 = new MenuGroup("Logout", false, false, "logout");
-//                                headerList.add(menuGroup3);
-//                            }
+
 
                             ArrayList<MenuGroup> childModelsList = new ArrayList<>();
 
@@ -557,7 +694,7 @@ public class MainActivity extends AppCompatActivity
                             childList.put(menuGroup2, childModelsList);
 
 
-                            populateExpandableList();
+                            populateExpandableList();*/
 
                             commonDialog.dismiss();
 
@@ -586,6 +723,175 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+
+    public void displayMenu(MenuModel model) {
+
+
+        menuCatList.clear();
+
+        for (int i = 0; i < model.getCategoryList().size(); i++) {
+            menuCatList.add(model.getCategoryList().get(i));
+        }
+
+        if (model.getSectionlist().size() > 0) {
+            for (int i = 0; i < model.getSectionlist().size(); i++) {
+                // drawerMenu.add(model.getSectionlist().get(i).getSectionName());
+
+                if (model.getCategoryList().size() > 0) {
+                    //   Menu topChannelMenu = drawerMenu.addSubMenu("" + model.getSectionlist().get(i).getSectionName());
+                    MenuGroup menuGroup = null;
+                    if (model.getSectionlist().get(i).getCatCount() == 0) {
+
+                        if (model.getSectionlist().get(i).getExternalUrl() != null) {
+                            Log.e("MAIN ACT", " *********************************    NOT  NULL");
+
+                            if (model.getSectionlist().get(i).getExternalUrl().equalsIgnoreCase("imgGallary")) {
+                                menuGroup = new MenuGroup(model.getSectionlist().get(i).getSectionName(), false, false, false, "" + model.getSectionlist().get(i).getExternalUrl());
+                            } else {
+                                menuGroup = new MenuGroup(model.getSectionlist().get(i).getSectionName(), false, false, false, "" + model.getSectionlist().get(i).getSectionSlugname());
+                            }
+                        } else {
+                            menuGroup = new MenuGroup(model.getSectionlist().get(i).getSectionName(), false, false, false, "" + model.getSectionlist().get(i).getSectionSlugname());
+                        }
+
+                        if (model.getSectionlist().get(i).getSectionName().equalsIgnoreCase("Rusa Gallery")) {
+                            menuGroup = new MenuGroup(model.getSectionlist().get(i).getSectionName(), false, false, false, "imgGallary");
+                        }
+
+                        headerList.add(menuGroup);
+
+                    }
+
+
+//                                        menuGroup = new MenuGroup(model.getSectionlist().get(i).getSectionName(), false, false, false, "" + model.getSectionlist().get(i).getSectionSlugname());
+//                                        headerList.add(menuGroup);
+                    else {
+                        menuGroup = new MenuGroup(model.getSectionlist().get(i).getSectionName(), true, true, false, "");
+                        headerList.add(menuGroup);
+                    }
+                                       /* if (!menuGroup.hasChildren) {
+                                            childList.put(menuGroup, null);
+                                        }*/
+
+                    ArrayList<MenuGroup> childModelsList = new ArrayList<>();
+
+
+                    for (int j = 0; j < model.getCategoryList().size(); j++) {
+                        if (model.getSectionlist().get(i).getSectionId() == model.getCategoryList().get(j).getSectionId()) {
+                            // topChannelMenu.add("" + model.getCategoryList().get(j).getCatName());
+
+                            if (model.getCategoryList().get(j).getExternalUrl() != null) {
+                                Log.e("MAIN ACT", " *********************************    NOT  NULL");
+
+                                if (model.getCategoryList().get(j).getExternalUrl().equalsIgnoreCase("imgGallary")) {
+                                    MenuGroup childModel = new MenuGroup(model.getCategoryList().get(j).getCatName(), false, false, false, model.getCategoryList().get(j).getExternalUrl());
+                                    childModelsList.add(childModel);
+                                } else {
+                                    MenuGroup childModel = new MenuGroup(model.getCategoryList().get(j).getCatName(), false, false, false, model.getCategoryList().get(j).getSlugName());
+                                    childModelsList.add(childModel);
+                                }
+
+                                if (model.getCategoryList().get(j).getCatName().equalsIgnoreCase("Rusa Gallery")) {
+                                    MenuGroup childModel = new MenuGroup(model.getCategoryList().get(j).getCatName(), false, false, false, "imgGallary");
+                                    childModelsList.add(childModel);
+                                }
+
+                            } else {
+                                MenuGroup childModel = new MenuGroup(model.getCategoryList().get(j).getCatName(), false, false, false, model.getCategoryList().get(j).getSlugName());
+                                childModelsList.add(childModel);
+                            }
+
+                            //MenuGroup childModel = new MenuGroup(model.getCategoryList().get(j).getCatName(), false, false, false, model.getCategoryList().get(j).getSlugName());
+                            // childModelsList.add(childModel);
+
+                            if (model.getSubCatList().size() > 0) {
+                                // SubMenu subChannelMenu;
+                                for (int k = 0; k < model.getSubCatList().size(); k++) {
+                                    if (model.getCategoryList().get(j).getCatId() == model.getSubCatList().get(k).getParentId()) {
+                                        // subChannelMenu = topChannelMenu.addSubMenu("" + model.getCategoryList().get(j).getCatName());
+
+
+                                        if (model.getSubCatList().get(k).getExternalUrl() != null) {
+                                            Log.e("MAIN ACT", " *********************************    NOT  NULL");
+
+                                            if (model.getSubCatList().get(k).getExternalUrl().equalsIgnoreCase("imgGallary")) {
+                                                MenuGroup childModel1 = new MenuGroup(model.getSubCatList().get(k).getSubCatName(), false, false, false, model.getSubCatList().get(k).getExternalUrl());
+                                                childModelsList.add(childModel1);
+                                            } else {
+                                                MenuGroup childModel1 = new MenuGroup(model.getSubCatList().get(k).getSubCatName(), false, false, false, model.getSubCatList().get(k).getSubSlugName());
+                                                childModelsList.add(childModel1);
+                                            }
+                                        } else {
+                                            MenuGroup childModel1 = new MenuGroup(model.getSubCatList().get(k).getSubCatName(), false, false, false, model.getSubCatList().get(k).getSubSlugName());
+                                            childModelsList.add(childModel1);
+                                        }
+
+//                                                            MenuGroup childModel1 = new MenuGroup(model.getSubCatList().get(k).getSubCatName(), false, false, false, model.getSubCatList().get(k).getSubSlugName());
+//                                                            childModelsList.add(childModel1);
+
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+
+                    if (menuGroup.hasChildren) {
+                        Log.e("" + menuGroup.getMenuName(), "--------------");
+                        childList.put(menuGroup, childModelsList);
+                    }
+                }
+
+            }
+        }
+
+        MenuGroup menuGroup = new MenuGroup("Event and Workshop", false, false, false, "Event");
+        headerList.add(menuGroup);
+
+        if (loginUser != null) {
+
+            MenuGroup menuGroup0 = new MenuGroup("Edit Profile", false, false, false, "Profile");
+            headerList.add(menuGroup0);
+
+            MenuGroup menuGroup1 = new MenuGroup("Upload Document", false, false, false, "uploadDoc");
+            headerList.add(menuGroup1);
+
+//                                if(loginUser.getExInt1()!=1) {
+//                                    MenuGroup menuGroup4 = new MenuGroup("Change Password", false, false, "changPass");
+//                                    headerList.add(menuGroup4);
+//                                }
+            MenuGroup menuGroup3 = new MenuGroup("Logout", false, false, false, "logout");
+            headerList.add(menuGroup3);
+
+        }
+
+        if (loginUser == null) {
+            MenuGroup menuGroup1 = new MenuGroup("" + getResources().getString(R.string.str_login), false, false, false, "login");
+            headerList.add(menuGroup1);
+        }
+
+        MenuGroup menuGroup2 = new MenuGroup("" + getResources().getString(R.string.str_settings), true, true, false, "Settings");
+        headerList.add(menuGroup2);
+
+//                            if(loginUser!=null) {
+//
+//                                MenuGroup menuGroup3 = new MenuGroup("Logout", false, false, "logout");
+//                                headerList.add(menuGroup3);
+//                            }
+
+        ArrayList<MenuGroup> childModelsList = new ArrayList<>();
+
+        MenuGroup childModel1 = new MenuGroup("" + getResources().getString(R.string.strMenuLanguage), false, false, false, "lang");
+        childModelsList.add(childModel1);
+
+        childList.put(menuGroup2, childModelsList);
+
+
+        populateExpandableList();
+
+    }
+
+
     private void populateExpandableList() {
 
         expandableListAdapter = new com.ats.rusa_app.adapter.ExpandableListAdapter(this, headerList, childList);
@@ -606,29 +912,71 @@ public class MainActivity extends AppCompatActivity
                     String url = headerList.get(groupPosition).getUrl();
 
                     if (headerList.get(groupPosition).menuName.equalsIgnoreCase("Contact Us")) {
-                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                        ft.replace(R.id.content_frame, new ContactUsFragment(), "HomeFragment");
-                        ft.commit();
+
+                        if (!Constants.isOnline(MainActivity.this)) {
+
+                            new ConnectivityDialog(MainActivity.this).show();
+
+                        } else {
+                            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                            ft.replace(R.id.content_frame, new ContactUsFragment(), "HomeFragment");
+                            ft.commit();
+                        }
 
                     } else if (url.equalsIgnoreCase("ContactUs")) {
-                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                        ft.replace(R.id.content_frame, new ContactUsFragment(), "HomeFragment");
-                        ft.commit();
+
+                        if (!Constants.isOnline(MainActivity.this)) {
+
+                            new ConnectivityDialog(MainActivity.this).show();
+
+                        } else {
+
+                            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                            ft.replace(R.id.content_frame, new ContactUsFragment(), "HomeFragment");
+                            ft.commit();
+                        }
 
                     } else if (url.equalsIgnoreCase("imgGallary")) {
-                        Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
-                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                        ft.replace(R.id.content_frame, new PhotoGalleryFragment(), "HomeFragment");
-                        ft.commit();
 
-                    }else if (headerList.get(groupPosition).getMenuName().equalsIgnoreCase("RUSA GALLERY")) {
-                        Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
-                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                        ft.replace(R.id.content_frame, new PhotoGalleryFragment(), "HomeFragment");
-                        ft.commit();
+                        if (!Constants.isOnline(MainActivity.this)) {
+
+                            new ConnectivityDialog(MainActivity.this).show();
+
+                        } else {
+
+                            Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
+                            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                            ft.replace(R.id.content_frame, new PhotoGalleryFragment(), "HomeFragment");
+                            ft.commit();
+                        }
+
+                    } else if (headerList.get(groupPosition).getMenuName().equalsIgnoreCase("RUSA GALLERY")) {
+                        //Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
+
+                        if (!Constants.isOnline(MainActivity.this)) {
+
+                            new ConnectivityDialog(MainActivity.this).show();
+
+                        } else {
+
+
+                            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                            ft.replace(R.id.content_frame, new PhotoGalleryFragment(), "HomeFragment");
+                            ft.commit();
+
+                        }
 
                     } else if (url.equalsIgnoreCase("login")) {
-                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+
+                        if (!Constants.isOnline(MainActivity.this)) {
+
+                            new ConnectivityDialog(MainActivity.this).show();
+
+                        } else {
+
+                            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+
+                        }
 
                     } else if (url.equalsIgnoreCase("logout")) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialogTheme);
@@ -657,17 +1005,51 @@ public class MainActivity extends AppCompatActivity
 
 
                     } else if (url.equalsIgnoreCase("Event")) {
-                        Fragment adf = new EventFragment();
-                        Bundle args = new Bundle();
-                        args.putString("slugName", url);
-                        adf.setArguments(args);
-                        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+
+
+                        if (!Constants.isOnline(MainActivity.this)) {
+
+                            new ConnectivityDialog(MainActivity.this).show();
+
+                        } else {
+
+                            Fragment adf = new EventFragment();
+                            Bundle args = new Bundle();
+                            args.putString("slugName", url);
+                            adf.setArguments(args);
+                            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+                        }
+
                     } else if (url.equalsIgnoreCase("Profile")) {
-                        Fragment adf = new EditProfileFragment();
-                        Bundle args = new Bundle();
-                        args.putString("slugName", url);
-                        adf.setArguments(args);
-                        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+
+                        if (!Constants.isOnline(MainActivity.this)) {
+
+                            new ConnectivityDialog(MainActivity.this).show();
+
+                        } else {
+
+                            Fragment adf = new EditProfileFragment();
+                            Bundle args = new Bundle();
+                            args.putString("slugName", url);
+                            adf.setArguments(args);
+                            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+
+                        }
+                    } else if (url.equalsIgnoreCase("uploadDoc")) {
+
+                        if (!Constants.isOnline(MainActivity.this)) {
+
+                            new ConnectivityDialog(MainActivity.this).show();
+
+                        } else {
+
+                            Fragment adf = new UploadDocumentFragment();
+                            Bundle args = new Bundle();
+                            args.putString("slugName", url);
+                            adf.setArguments(args);
+                            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+
+                        }
                     }
 //                    else if(url.equalsIgnoreCase("changPass")) {
 //                        Fragment adf = new ChangePasswordFragment();
@@ -677,11 +1059,20 @@ public class MainActivity extends AppCompatActivity
 //                        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
 //                    }
                     else {
-                        Fragment adf = new NewContentFragment();
-                        Bundle args = new Bundle();
-                        args.putString("slugName", url);
-                        adf.setArguments(args);
-                        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+
+                        if (!Constants.isOnline(MainActivity.this)) {
+
+                            new ConnectivityDialog(MainActivity.this).show();
+
+                        } else {
+
+                            Fragment adf = new NewContentFragment();
+                            Bundle args = new Bundle();
+                            args.putString("slugName", url);
+                            adf.setArguments(args);
+                            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+                        }
+
                     }
 
                     // Toast.makeText(MainActivity.this, "" + url, Toast.LENGTH_SHORT).show();
@@ -733,28 +1124,50 @@ public class MainActivity extends AppCompatActivity
 
                     } else if (model.getUrl().equalsIgnoreCase("videos19")) {
 
-                        Fragment adf = new VideoFragment();
-                        Bundle args = new Bundle();
-                        args.putString("slugName", model.getUrl());
-                        adf.setArguments(args);
-                        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+                        if (!Constants.isOnline(MainActivity.this)) {
 
+                            new ConnectivityDialog(MainActivity.this).show();
+
+                        } else {
+
+                            Fragment adf = new VideoFragment();
+                            Bundle args = new Bundle();
+                            args.putString("slugName", model.getUrl());
+                            adf.setArguments(args);
+                            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+                        }
 
                         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                         drawer.closeDrawer(GravityCompat.START);
 
                     } else if (model.getUrl().equalsIgnoreCase("imgGallary")) {
-                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                        ft.replace(R.id.content_frame, new PhotoGalleryFragment(), "HomeFragment");
-                        ft.commit();
+
+                        if (!Constants.isOnline(MainActivity.this)) {
+
+                            new ConnectivityDialog(MainActivity.this).show();
+
+                        } else {
+
+                            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                            ft.replace(R.id.content_frame, new PhotoGalleryFragment(), "HomeFragment");
+                            ft.commit();
+                        }
 
                         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                         drawer.closeDrawer(GravityCompat.START);
 
-                    }else if (model.getMenuName().equalsIgnoreCase("RUSA GALLERY")) {
-                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                        ft.replace(R.id.content_frame, new PhotoGalleryFragment(), "HomeFragment");
-                        ft.commit();
+                    } else if (model.getMenuName().equalsIgnoreCase("RUSA GALLERY")) {
+
+                        if (!Constants.isOnline(MainActivity.this)) {
+
+                            new ConnectivityDialog(MainActivity.this).show();
+
+                        } else {
+
+                            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                            ft.replace(R.id.content_frame, new PhotoGalleryFragment(), "HomeFragment");
+                            ft.commit();
+                        }
 
                         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                         drawer.closeDrawer(GravityCompat.START);
@@ -766,12 +1179,18 @@ public class MainActivity extends AppCompatActivity
 
                         //  Toast.makeText(MainActivity.this, "" + model.getUrl(), Toast.LENGTH_SHORT).show();
 
-                        Fragment adf = new NewContentFragment();
-                        Bundle args = new Bundle();
-                        args.putString("slugName", model.getUrl());
-                        adf.setArguments(args);
-                        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+                        if (!Constants.isOnline(MainActivity.this)) {
 
+                            new ConnectivityDialog(MainActivity.this).show();
+
+                        } else {
+
+                            Fragment adf = new NewContentFragment();
+                            Bundle args = new Bundle();
+                            args.putString("slugName", model.getUrl());
+                            adf.setArguments(args);
+                            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+                        }
 
                         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                         drawer.closeDrawer(GravityCompat.START);
@@ -796,7 +1215,7 @@ public class MainActivity extends AppCompatActivity
             final CommonDialog commonDialog = new CommonDialog(MainActivity.this, "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<AppToken> listCall = Constants.myInterface.saveAppToken(appToken);
+            Call<AppToken> listCall = Constants.myInterface.saveAppToken(appToken, authHeader);
             listCall.enqueue(new Callback<AppToken>() {
                 @Override
                 public void onResponse(Call<AppToken> call, Response<AppToken> response) {
@@ -837,24 +1256,47 @@ public class MainActivity extends AppCompatActivity
     public void onClick(View v) {
         if (v.getId() == R.id.linearLayout_home) {
 
-            Intent intent = new Intent(MainActivity.this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
+            if (!Constants.isOnline(this)) {
+
+                new ConnectivityDialog(MainActivity.this).show();
+
+            } else {
+
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+
+            }
 
 //            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 //            ft.replace(R.id.content_frame, new HomeFragment(), "Exit");
 //            ft.commit();
         } else if (v.getId() == R.id.linearLayout_aboutUs) {
-            Fragment adf = new NewContentFragment();
-            Bundle args = new Bundle();
-            args.putString("slugName", "about-rusa9");
-            adf.setArguments(args);
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+
+            if (!Constants.isOnline(this)) {
+
+                new ConnectivityDialog(MainActivity.this).show();
+
+            } else {
+                Fragment adf = new NewContentFragment();
+                Bundle args = new Bundle();
+                args.putString("slugName", "about-rusa9");
+                adf.setArguments(args);
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+            }
 
         } else if (v.getId() == R.id.linearLayout_gallery) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, new PhotoGalleryFragment(), "HomeFragment");
-            ft.commit();
+
+            if (!Constants.isOnline(this)) {
+
+                new ConnectivityDialog(MainActivity.this).show();
+
+            } else {
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, new PhotoGalleryFragment(), "HomeFragment");
+                ft.commit();
+
+            }
 
         } else if (v.getId() == R.id.linearLayout_news) {
 //            Fragment adf = new NewContentFragment();
@@ -864,9 +1306,16 @@ public class MainActivity extends AppCompatActivity
 //            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
 
         } else if (v.getId() == R.id.linearLayout_contact) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, new ContactUsFragment(), "HomeFragment");
-            ft.commit();
+
+            if (!Constants.isOnline(this)) {
+
+                new ConnectivityDialog(MainActivity.this).show();
+
+            } else {
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, new ContactUsFragment(), "HomeFragment");
+                ft.commit();
+            }
         }
     }
 
@@ -877,4 +1326,52 @@ public class MainActivity extends AppCompatActivity
             commonDialog.dismiss();
         }
     }
+
+
+   /* public class ConnectivityDialog extends Dialog {
+
+        public ConnectivityDialog(@NonNull Context context) {
+            super(context);
+        }
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+            setContentView(R.layout.dialog_connectivity);
+            setCancelable(false);
+
+            Window window = getWindow();
+            WindowManager.LayoutParams wlp = window.getAttributes();
+            wlp.gravity = Gravity.CENTER ;
+            wlp.x = 10;
+            wlp.y = 10;
+            wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
+            window.setAttributes(wlp);
+
+            TextView tvOk = findViewById(R.id.tvOk);
+
+            tvOk.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dismiss();
+                }
+            });
+
+        }
+    }*/
+
+
+    public void displayOfflineData() {
+
+        String menuStr = CustomSharedPreference.getString(MainActivity.this, CustomSharedPreference.KEY_MENU);
+        Gson gson = new Gson();
+        MenuModel model = gson.fromJson(menuStr, MenuModel.class);
+
+        Log.e("Offline--", "------------------------- MENU - " + model);
+        displayMenu(model);
+
+
+    }
+
 }

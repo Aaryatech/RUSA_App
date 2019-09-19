@@ -28,6 +28,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.ats.rusa_app.constants.Constants.authHeader;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -61,7 +63,7 @@ public class PreviousEventFragment extends Fragment implements PreviousEventsInt
             final CommonDialog commonDialog = new CommonDialog(getContext(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<ArrayList<PrevEvent>> listCall = Constants.myInterface.getAllPreviousEventWithApllied(languageId,regId);
+            Call<ArrayList<PrevEvent>> listCall = Constants.myInterface.getAllPreviousEventWithApllied(languageId,regId,authHeader);
             listCall.enqueue(new Callback<ArrayList<PrevEvent>>() {
                 @Override
                 public void onResponse(Call<ArrayList<PrevEvent>> call, Response<ArrayList<PrevEvent>> response) {
