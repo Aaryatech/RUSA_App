@@ -50,7 +50,7 @@ public class NewsActivity extends AppCompatActivity {
 
         if (model != null) {
 
-            setTitle("News");
+            setTitle(""+getResources().getString(R.string.str_latest_news));
             tvTitle.setText(""+model.getHeading());
 
             try {

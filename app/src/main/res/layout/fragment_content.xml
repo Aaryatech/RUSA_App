@@ -96,7 +96,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="No Record Found"
+        android:text="@string/str_no_record_found"
         android:textAlignment="center"
         android:textColor="@color/colorBlack"
         android:textSize="23sp"

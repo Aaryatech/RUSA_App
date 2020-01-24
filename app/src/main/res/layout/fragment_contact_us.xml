@@ -39,7 +39,7 @@
             android:fontFamily="@font/lato_bold"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
-            android:text="Rashtriya Uchchatar Shiksha Abhiyan"
+            android:text="@string/app_name"
             />
 
         <TextView
@@ -50,12 +50,11 @@
             android:textColor="@color/colorBlue"
             android:fontFamily="@font/lato_regular"
             android:layout_marginLeft="20dp"
-            android:text="State Project Directorate (SPD), Maharashtra Rashtriya Uchchatar Shiksha Abhiyan (RUSA), Unit No.2, 18th floor, Centre 1, World Trade Centre Cuffe Parade,
-Colaba, Mumbai-400005
-Phone No.022, 22160959 / 22160 943 "
+            android:text="@string/str_address"
             />
 
         <TextView
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="12dp"
@@ -91,7 +90,7 @@ Phone No.022, 22160959 / 22160 943 "
                 android:textColor="@color/colorPrimaryDark"
                 android:buttonTint="@color/colorPrimaryDark"
                 android:fontFamily="@font/lato_regular"
-                android:text="Query" />
+                android:text="@string/str_query" />
 
             <RadioButton
                 android:id="@+id/rbFeedback"
@@ -104,7 +103,7 @@ Phone No.022, 22160959 / 22160 943 "
                 android:layout_weight="1"
                 android:buttonTint="@color/colorPrimaryDark"
                 android:fontFamily="@font/lato_regular"
-                android:text="Feedback" />
+                android:text="@string/str_feedback" />
 
             <RadioButton
                 android:visibility="gone"
@@ -128,7 +127,7 @@ Phone No.022, 22160959 / 22160 943 "
             android:layout_marginLeft="12dp"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/lato_bold"
-            android:text="Your Name"
+            android:text="@string/str_your_name"
             android:textColor="@color/colorPrimary" />
 
         <EditText
@@ -138,7 +137,7 @@ Phone No.022, 22160959 / 22160 943 "
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
-            android:hint="Name"
+            android:hint="@string/str_name1"
             android:fontFamily="@font/lato_regular"
             android:background="@android:drawable/editbox_background_normal"
             android:drawablePadding="10dp"
@@ -154,7 +153,7 @@ Phone No.022, 22160959 / 22160 943 "
             android:layout_marginLeft="12dp"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/lato_bold"
-            android:text="Your Email"
+            android:text="@string/str_your_email"
             android:textColor="@color/colorPrimary" />
 
         <EditText
@@ -164,7 +163,7 @@ Phone No.022, 22160959 / 22160 943 "
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
-            android:hint="Email"
+            android:hint="@string/str_email1"
             android:fontFamily="@font/lato_regular"
             android:background="@android:drawable/editbox_background_normal"
             android:drawablePadding="10dp"
@@ -180,7 +179,7 @@ Phone No.022, 22160959 / 22160 943 "
             android:layout_marginLeft="12dp"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/lato_bold"
-            android:text="Phone Number"
+            android:text="@string/str_phone_number"
             android:textColor="@color/colorPrimary" />
 
         <EditText
@@ -190,7 +189,7 @@ Phone No.022, 22160959 / 22160 943 "
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
-            android:hint="Mobile Number"
+            android:hint="@string/str_phone_number"
             android:background="@android:drawable/editbox_background_normal"
             android:drawablePadding="10dp"
             android:fontFamily="@font/lato_regular"
@@ -208,7 +207,7 @@ Phone No.022, 22160959 / 22160 943 "
             android:layout_marginLeft="12dp"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/lato_bold"
-            android:text="Your Message"
+            android:text="@string/str_your_message"
             android:textColor="@color/colorPrimary" />
 
         <EditText
@@ -218,7 +217,7 @@ Phone No.022, 22160959 / 22160 943 "
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
-            android:hint="Message"
+            android:hint="@string/str_message"
             android:fontFamily="@font/lato_regular"
             android:background="@android:drawable/editbox_background_normal"
             android:maxLines="5"
@@ -235,7 +234,7 @@ Phone No.022, 22160959 / 22160 943 "
             android:layout_marginTop="10dp"
             android:fontFamily="@font/lato_bold"
             android:background="@drawable/contact_button_background"
-            android:text="Send"
+            android:text="@string/str_send"
             android:textColor="@color/colorWhite"
 
 

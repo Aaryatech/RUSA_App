@@ -43,7 +43,7 @@ public class PreviousEventDetailActivity extends AppCompatActivity {
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
-        setTitle("Previous Event");
+        setTitle(""+getResources().getString(R.string.str_previous_event));
 
         imageView = (ImageView) findViewById(R.id.iv_baner);
         tv_eventName = (TextView) findViewById(R.id.tvEventName);

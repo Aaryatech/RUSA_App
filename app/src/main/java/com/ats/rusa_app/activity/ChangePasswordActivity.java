@@ -36,6 +36,7 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
         edNewPass = (EditText) findViewById(R.id.ed_newPass);
         edConfPass = (EditText) findViewById(R.id.ed_confPass);
         btnChangePass = (Button) findViewById(R.id.btn_changePass);
+        setTitle(""+getResources().getString(R.string.app_name));
 
         String userStr = CustomSharedPreference.getString(getApplicationContext(), CustomSharedPreference.KEY_USER);
         Gson gson = new Gson();

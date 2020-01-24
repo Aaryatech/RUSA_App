@@ -30,6 +30,10 @@ public class SplashActivity extends AppCompatActivity {
 
     private void initLayout() {
         String languageToLoad;
+
+        CustomSharedPreference.putString(SplashActivity.this, CustomSharedPreference.LANGUAGE_SELECTED, CustomSharedPreference.LANGUAGE_ENG_ID);
+
+
         int languageId = Integer.parseInt(CustomSharedPreference.LANGUAGE_ENG_ID);
         if(CustomSharedPreference.getString(SplashActivity.this,CustomSharedPreference.LANGUAGE_ENG)!=null)
         {
@@ -43,7 +47,7 @@ public class SplashActivity extends AppCompatActivity {
                 languageToLoad = CustomSharedPreference.LANGUAGE_ENG;
             }
 
-            Constant.yourLanguage(SplashActivity.this, languageToLoad);
+            Constant.yourLanguage(SplashActivity.this, "en");
              /*Locale locale = new Locale(languageToLoad);
              Locale.setDefault(locale);
              Configuration config = new Configuration();

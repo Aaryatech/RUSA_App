@@ -121,9 +121,9 @@ public class EventFragment extends Fragment {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Upcoming Events";
+                    return ""+mContext.getResources().getString(R.string.str_upcoming_event);
                 case 1:
-                    return "Previous Events";
+                    return ""+mContext.getResources().getString(R.string.str_previous_event);
                 default:
                     return null;
             }

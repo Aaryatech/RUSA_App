@@ -1,6 +1,7 @@
 <resources>
     <string name="app_icon_name">RUSA</string>
-    <string name="app_name">राष्ट्रीय उच्चतर शिक्षा अभियान</string>
+    <!--<string name="app_name">राष्ट्रीय उच्चतर शिक्षा अभियान</string>-->
+    <string name="app_name">Rashtriya Uchchatar Shiksha Abhiyan</string>
     <string name="str_title">Rashtriya Uchchatar Shiksha Abhiyan (RUSA)</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -80,6 +81,37 @@
     <string name="str_select_institute">Select Institute *</string>
     <string name="str_register">Register</string>
     <string name="str_authorized_person_name">Authorized Person Name *</string>
+
+    <string name="str_event_and_workshop">Event and Workshop</string>
+    <string name="str_edit_profile">Edit Profile</string>
+    <string name="str_upload_document">Upload Document</string>
+    <string name="str_logout">Logout</string>
+    <string name="str_previous_event">Previous Events</string>
+    <string name="str_upcoming_event">Upcoming Events</string>
+
+    <string name="str_no_record_found">No Records Found</string>
+    <string name="str_doc_name">Document Name *</string>
+    <string name="str_select_type">Select Type *</string>
+    <string name="str_select_doc">Select Document *</string>
+    <string name="str_browse">Browse</string>
+    <string name="str_upload">Upload</string>
+    <string name="str_uploaded_docs">Uploaded Documents</string>
+    <string name="str_address">State Project Directorate (SPD), Rashtriya Uchchatar Shiksha Abhiyan (RUSA) Maharashtra, 18th Floor, Centre 1, World Trade Centre, Cuffe Parade, Colaba, Mumbai - 400005.
+Email Id: spdrusamah@gmail.com
+Contact no: 022-22160959</string>
+
+    <string name="str_query">Query</string>
+    <string name="str_feedback">Feedback</string>
+    <string name="str_your_name">Your Name</string>
+    <string name="str_name1">Name</string>
+    <string name="str_your_email">Your Email</string>
+    <string name="str_email1">Email</string>
+    <string name="str_phone_number">Phone Number</string>
+    <string name="str_your_message">Your Message</string>
+    <string name="str_message">Message</string>
+    <string name="str_send">Send</string>
+
+
 
 
 </resources>

@@ -82,7 +82,7 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
-        setTitle("Event");
+        setTitle(""+getResources().getString(R.string.str_event_and_workshop));
 
         imageView = (ImageView) findViewById(R.id.iv_baner);
         tv_eventName = (TextView) findViewById(R.id.tvEventName);

@@ -10,6 +10,7 @@ import android.content.res.Configuration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -71,6 +72,7 @@ import com.ats.rusa_app.util.CustomSharedPreference;
 import com.ats.rusa_app.util.PermissionsUtil;
 import com.google.gson.Gson;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -116,14 +118,15 @@ public class MainActivity extends AppCompatActivity
 
     private LinearLayout linearLayout_home, linearLayout_aboutUs, linearLayout_gallery, linearLayout_news, linearLayout_contact;
 
-
     int cacheSize = 10 * 1024 * 1024; // 10 MB
 
+    File folder = new File(Environment.getExternalStorageDirectory() + File.separator, "RUSA_DOCS");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setTitle(""+getResources().getString(R.string.app_name));
 
         expandableListView = findViewById(R.id.expandableListView);
 
@@ -154,13 +157,16 @@ public class MainActivity extends AppCompatActivity
         }
 
 
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        setTitle("" + getResources().getString(R.string.app_name));
+        //setTitle("" + getResources().getString(R.string.app_name));
 
         if (PermissionsUtil.checkAndRequestPermissions(this)) {
         }
+
+        createFolder();
 
         String langId = CustomSharedPreference.getString(MainActivity.this, CustomSharedPreference.LANGUAGE_SELECTED);
         try {
@@ -316,6 +322,13 @@ public class MainActivity extends AppCompatActivity
 
         getMenuData(languageId);
 
+    }
+
+
+    public void createFolder() {
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
     }
 
     @Override
@@ -517,6 +530,8 @@ public class MainActivity extends AppCompatActivity
 
     private void getMenuData(int lnagId) {
 
+
+        Log.e("MAIN_ACT"," *************************************** LANG - "+lnagId);
 
         if (Constants.isOnline(this)) {
             commonDialog = new CommonDialog(MainActivity.this, "Loading", "Please Wait...");
@@ -845,22 +860,22 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
-        MenuGroup menuGroup = new MenuGroup("Event and Workshop", false, false, false, "Event");
+        MenuGroup menuGroup = new MenuGroup(getResources().getString(R.string.str_event_and_workshop), false, false, false, "Event");
         headerList.add(menuGroup);
 
         if (loginUser != null) {
 
-            MenuGroup menuGroup0 = new MenuGroup("Edit Profile", false, false, false, "Profile");
+            MenuGroup menuGroup0 = new MenuGroup(getResources().getString(R.string.str_edit_profile), false, false, false, "Profile");
             headerList.add(menuGroup0);
 
-            MenuGroup menuGroup1 = new MenuGroup("Upload Document", false, false, false, "uploadDoc");
+            MenuGroup menuGroup1 = new MenuGroup(getResources().getString(R.string.str_upload_document), false, false, false, "uploadDoc");
             headerList.add(menuGroup1);
 
 //                                if(loginUser.getExInt1()!=1) {
 //                                    MenuGroup menuGroup4 = new MenuGroup("Change Password", false, false, "changPass");
 //                                    headerList.add(menuGroup4);
 //                                }
-            MenuGroup menuGroup3 = new MenuGroup("Logout", false, false, false, "logout");
+            MenuGroup menuGroup3 = new MenuGroup(getResources().getString(R.string.str_logout), false, false, false, "logout");
             headerList.add(menuGroup3);
 
         }
@@ -944,7 +959,7 @@ public class MainActivity extends AppCompatActivity
 
                         } else {
 
-                            Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
                             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                             ft.replace(R.id.content_frame, new PhotoGalleryFragment(), "HomeFragment");
                             ft.commit();

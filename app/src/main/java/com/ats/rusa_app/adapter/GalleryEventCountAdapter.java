@@ -24,11 +24,18 @@ import java.util.ArrayList;
 public class GalleryEventCountAdapter extends RecyclerView.Adapter<GalleryEventCountAdapter.MyViewHolder> {
     private ArrayList<Gallery> eventList;
     private Context context;
+    private String slug;
 
     public GalleryEventCountAdapter(ArrayList<Gallery> eventList, Context context) {
         this.eventList = eventList;
         this.context = context;
     }
+
+   /* public GalleryEventCountAdapter(ArrayList<Gallery> eventList, Context context, String slug) {
+        this.eventList = eventList;
+        this.context = context;
+        this.slug = slug;
+    }*/
 
     @NonNull
     @Override

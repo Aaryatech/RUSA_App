@@ -197,7 +197,7 @@
                 android:layout_marginLeft="@dimen/margin_medium"
                 android:layout_marginTop="@dimen/home_label_top_margin"
                 android:fontFamily="@font/lato_bold"
-                android:text="Twitter"
+                android:text="@string/str_twitter"
                 android:textColor="@color/colorBlue"
                 android:textSize="@dimen/text_medium" />
 
@@ -239,7 +239,7 @@
                 android:layout_marginLeft="@dimen/margin_medium"
                 android:layout_marginTop="@dimen/home_label_top_margin"
                 android:fontFamily="@font/lato_bold"
-                android:text="Facebook"
+                android:text="@string/str_facebook"
                 android:textColor="@color/colorBlue"
                 android:textSize="@dimen/text_medium" />
 

@@ -80,5 +80,34 @@
     <string name="str_register">Register</string>
     <string name="str_authorized_person_name">Authorized Person Name *</string>
 
+    <string name="str_event_and_workshop">कार्यक्रम आणि कार्यशाळा</string>
+    <string name="str_edit_profile">प्रोफाईल संपादित करा</string>
+    <string name="str_upload_document">दस्तऐवज अपलोड करा</string>
+    <string name="str_logout">बाहेर पडणे</string>
+    <string name="str_previous_event">मागील कार्यक्रम</string>
+    <string name="str_upcoming_event">पुढील कार्यक्रम</string>
+
+    <string name="str_no_record_found">रेकॉर्ड सापडले नाहीत</string>
+    <string name="str_doc_name">दस्तऐवज नाव *</string>
+    <string name="str_select_type">प्रकार निवडा *</string>
+    <string name="str_select_doc">कागदपत्र निवडा *</string>
+    <string name="str_browse">ब्राउझ करा</string>
+    <string name="str_upload">अपलोड करा</string>
+    <string name="str_uploaded_docs">अपलोड केलेले कागदजत्र</string>
+    <string name="str_address">राज्य प्रकल्प संचालनालय (एसपीडी), राष्ट्रीय उच्चतर शिक्षा अभियान (रुसा), महाराष्ट्र, १८ वा मजला, केंद्र १, वर्ल्ड ट्रेड सेंटर , कफ परेड, कुलाबा, मुंबई - ४००००५.
+ई - मेल: spdrusamah@gmail.com
+दूरध्वनी क्रमांक : ०२२-२२१६०९५९</string>
+
+    <string name="str_query"> प्रश्न</string>
+    <string name="str_feedback"> अभिप्राय</string>
+    <string name="str_your_name">आपले नाव</string>
+    <string name="str_name1">नाव</string>
+    <string name="str_your_email">आपला ई-मेल</string>
+    <string name="str_email1">ई-मेल</string>
+    <string name="str_phone_number">फोन नंबर</string>
+    <string name="str_your_message">आपले संदेश</string>
+    <string name="str_message">संदेश</string>
+    <string name="str_send">पाठवा</string>
+
 
 </resources>

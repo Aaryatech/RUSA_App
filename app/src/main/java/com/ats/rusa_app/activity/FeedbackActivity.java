@@ -40,6 +40,9 @@ public class FeedbackActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
+        setTitle(""+getResources().getString(R.string.app_name));
+
+
         rg=(RadioGroup)findViewById(R.id.rg);
         rb_verySatisfied=(RadioButton)findViewById(R.id.rb_verySatisfied);
         rb_satisfied=(RadioButton)findViewById(R.id.rb_Satisfied);

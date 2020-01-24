@@ -32,7 +32,7 @@
         android:layout_below="@id/tvHeading"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="No Record Found"
+        android:text="@string/str_no_record_found"
         android:textAlignment="center"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="@dimen/text_large"

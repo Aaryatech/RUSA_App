@@ -63,7 +63,7 @@ public class TestimonialWebviewActivity extends AppCompatActivity {
 
         if (model != null) {
 
-            setTitle("Testimonials");
+            setTitle(""+getResources().getString(R.string.str_testimonial));
             tvTitle.setText("" + model.getFromName());
 
             try {

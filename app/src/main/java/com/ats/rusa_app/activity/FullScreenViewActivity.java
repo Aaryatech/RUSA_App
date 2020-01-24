@@ -24,6 +24,7 @@ public class FullScreenViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fullscreen_view);
+        setTitle(""+getResources().getString(R.string.app_name));
 
         viewPager = findViewById(R.id.pager);
 

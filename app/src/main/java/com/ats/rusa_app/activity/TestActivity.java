@@ -15,7 +15,7 @@ public class TestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
-
+        setTitle(""+getResources().getString(R.string.app_name));
 
         String temp = "<p><iframe allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen=\"\" frameborder=\"0\" height=\"250\" src=\"https://www.youtube.com/embed/awwz92pVeXc\" width=\"275\"></iframe></p>\n" +
                 "\n" +

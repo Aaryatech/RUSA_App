@@ -4,14 +4,19 @@ package com.ats.rusa_app.fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -28,6 +33,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ats.rusa_app.BuildConfig;
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.activity.EventDetailListActivity;
 import com.ats.rusa_app.activity.IndividualRegActivity;
@@ -43,11 +49,13 @@ import com.ats.rusa_app.model.University;
 import com.ats.rusa_app.util.CommonDialog;
 import com.ats.rusa_app.util.CustomSharedPreference;
 import com.ats.rusa_app.util.PermissionsUtil;
+import com.ats.rusa_app.util.RealPathUtil;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -77,6 +85,12 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
 
     Login loginUser;
 
+    //---------------IMAGE----------------
+    File folder = new File(Environment.getExternalStorageDirectory() + File.separator, "RUSA_DOCS");
+    File f;
+
+    Bitmap myBitmap = null;
+
     private final int RESULT_OK = -1;
     public static String path, imagePath;
 
@@ -100,6 +114,8 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
         if (PermissionsUtil.checkAndRequestPermissions(getActivity())) {
         }
 
+        createFolder();
+
         String userStr = CustomSharedPreference.getString(getActivity(), CustomSharedPreference.KEY_USER);
         Gson gson = new Gson();
         loginUser = gson.fromJson(userStr, Login.class);
@@ -111,6 +127,12 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
         getDocTypeList();
 
         return view;
+    }
+
+    public void createFolder() {
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
     }
 
     @Override
@@ -165,14 +187,48 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
     }
 
     private void showFileChooser() {
-        Intent intent = new Intent();
-        //sets the select file to all types of files
-        intent.setType("*/*");
-        String[] mimetypes = {"application/msword", "application/pdf", "application/vnd.ms-excel", "application/excel", "application/x-excel", "application/x-msexcel"};
-        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);//allows to select data and return it
-        intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
-        //starts new activity to select file and return data
-        startActivityForResult(Intent.createChooser(intent, "Choose File to Upload.."), 1);
+
+
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
+        builder.setTitle("Choose");
+        builder.setPositiveButton("Gallery", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent pictureActionIntent = null;
+                pictureActionIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(pictureActionIntent, 101);
+            }
+        });
+        builder.setNegativeButton("Camera", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                try {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        f = new File(folder + File.separator, "Camera.jpg");
+
+                        String authorities = BuildConfig.APPLICATION_ID + ".provider";
+                        Uri imageUri = FileProvider.getUriForFile(getContext(), authorities, f);
+
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        startActivityForResult(intent, 102);
+
+                    } else {
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        f = new File(folder + File.separator, "Camera.jpg");
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        startActivityForResult(intent, 102);
+
+                    }
+                } catch (Exception e) {
+                    ////Log.e("select camera : ", " Exception : " + e.getMessage());
+                }
+            }
+        });
+        builder.show();
+
     }
 
 
@@ -287,7 +343,117 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
 
     //--------------------------------------------------------------------
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
+    //----NEW-----
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        String realPath;
+        Bitmap bitmap = null;
+
+        if (resultCode == getActivity().RESULT_OK && requestCode == 102) {
+            try {
+                String path = f.getAbsolutePath();
+                File imgFile = new File(path);
+                if (imgFile.exists()) {
+                    myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                    //imageView.setImageBitmap(myBitmap);
+
+                    myBitmap = shrinkBitmap(imgFile.getAbsolutePath(), 720, 720);
+
+                    try {
+                        FileOutputStream out = new FileOutputStream(path);
+                        myBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                        out.flush();
+                        out.close();
+                        Log.e("Image Saved  ", "---------------");
+
+                    } catch (Exception e) {
+                        Log.e("Exception : ", "--------" + e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+                imagePath = f.getAbsolutePath();
+                tvFileName.setText("" + f.getName());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else if (resultCode == getActivity().RESULT_OK && requestCode == 101) {
+            try {
+                realPath = RealPathUtil.getRealPathFromURI_API19(getContext(), data.getData());
+                Uri uriFromPath = Uri.fromFile(new File(realPath));
+                myBitmap = getBitmapFromCameraData(data, getContext());
+
+                //imageView.setImageBitmap(myBitmap);
+                imagePath = uriFromPath.getPath();
+                tvFileName.setText("" + uriFromPath.getPath());
+
+                try {
+
+                    FileOutputStream out = new FileOutputStream(uriFromPath.getPath());
+                    myBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                    out.flush();
+                    out.close();
+                    //Log.e("Image Saved  ", "---------------");
+
+                } catch (Exception e) {
+                    // Log.e("Exception : ", "--------" + e.getMessage());
+                    e.printStackTrace();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                // Log.e("Image Compress : ", "-----Exception : ------" + e.getMessage());
+            }
+        }
+    }
+
+    public static Bitmap shrinkBitmap(String file, int width, int height) {
+        BitmapFactory.Options bmpFactoryOptions = new BitmapFactory.Options();
+        bmpFactoryOptions.inJustDecodeBounds = true;
+        Bitmap bitmap = BitmapFactory.decodeFile(file, bmpFactoryOptions);
+
+        int heightRatio = (int) Math.ceil(bmpFactoryOptions.outHeight / (float) height);
+        int widthRatio = (int) Math.ceil(bmpFactoryOptions.outWidth / (float) width);
+
+        if (heightRatio > 1 || widthRatio > 1) {
+            if (heightRatio > widthRatio) {
+                bmpFactoryOptions.inSampleSize = heightRatio;
+            } else {
+                bmpFactoryOptions.inSampleSize = widthRatio;
+            }
+        }
+
+        bmpFactoryOptions.inJustDecodeBounds = false;
+        bitmap = BitmapFactory.decodeFile(file, bmpFactoryOptions);
+        return bitmap;
+    }
+
+    public static Bitmap getBitmapFromCameraData(Intent data, Context context) {
+        Uri selectedImage = data.getData();
+        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+        Cursor cursor = context.getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+        cursor.moveToFirst();
+
+        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+
+        String picturePath = cursor.getString(columnIndex);
+        path = picturePath;
+        cursor.close();
+
+        Bitmap bitm = shrinkBitmap(picturePath, 720, 720);
+        Log.e("Image Size : ---- ", " " + bitm.getByteCount());
+
+        return bitm;
+        // return BitmapFactory.decodeFile(picturePath, options);
+    }
+
+
+
+    //---OLD------
+    /*@RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -331,7 +497,7 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
                 Log.e("UPLOAD DOC FRG : ", "-----Exception : ------" + e.getMessage());
             }
         }
-    }
+    }*/
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static String getPath(final Context context, final Uri uri) {

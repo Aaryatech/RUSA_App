@@ -22,6 +22,7 @@ import com.ats.rusa_app.model.PageData;
 import com.ats.rusa_app.model.VideoList;
 import com.ats.rusa_app.util.CommonDialog;
 import com.ats.rusa_app.util.CustomSharedPreference;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -94,6 +95,9 @@ public class GalleryEventDetailsFragment extends Fragment {
                                 }
                             }
 
+                            Log.e("GALLERY LIST"," ************ ------ "+piclist);
+
+
                             if (model.getVideoList() != null) {
                                 if (model.getVideoList().size() > 0) {
                                     for (int i = 0; i < model.getVideoList().size(); i++) {
@@ -101,6 +105,10 @@ public class GalleryEventDetailsFragment extends Fragment {
                                     }
                                 }
                             }
+
+                            Log.e("CAT LIST"," ************ ------ "+model.getImageListByCategory());
+
+
 
                             if (model.getImageListByCategory() != null) {
 
@@ -111,6 +119,8 @@ public class GalleryEventDetailsFragment extends Fragment {
                                     }
                                 }
 
+
+
                                 GalleryEventGroupAdapter adapter = new GalleryEventGroupAdapter(catList, piclist, vidlist, getContext());
                                 RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
                                 rvList.setLayoutManager(mLayoutManager);
@@ -119,6 +129,22 @@ public class GalleryEventDetailsFragment extends Fragment {
 
                             }
 
+                            /*Gson gsonPic = new Gson();
+                            Gson gsonVideo = new Gson();
+                            String strGallery = gsonPic.toJson(piclist);
+                            String strVideo = gsonVideo.toJson(vidlist);
+
+                            Log.e("PIC ", "------------------ " + piclist);
+                            Log.e("VID ", "------------------ " + vidlist);
+
+                            Fragment adf = new GalleryDisplayFragment();
+                            Bundle args = new Bundle();
+                            args.putString("title", model.getPageName());
+                            args.putString("gallery", strGallery);
+                            args.putString("video", strVideo);
+                            adf.setArguments(args);
+                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "GalleryEventDetailFragment").commit();
+*/
 
                             commonDialog.dismiss();
 
