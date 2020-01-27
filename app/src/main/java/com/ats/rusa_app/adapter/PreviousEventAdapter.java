@@ -63,8 +63,8 @@ public class PreviousEventAdapter extends RecyclerView.Adapter<PreviousEventAdap
                 myViewHolder.tvDesc.setHtml("" + model.getDescriptions());
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            Log.e("UPCOMING EVE ADPT","------------------ EXCEPTION -"+e.getMessage());
+           // e.printStackTrace();
+           // Log.e("UPCOMING EVE ADPT","------------------ EXCEPTION -"+e.getMessage());
         }
 
         if(model.getApply()==1 && model.getIsFeedback()==0) {

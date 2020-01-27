@@ -118,8 +118,8 @@ public class GalleryEventGroupAdapter extends RecyclerView.Adapter<GalleryEventG
                     }
 
                 } catch (Exception e) {
-                    Log.e("GAL EVENT GRP ADPT", "------------------------ EXCEPTION : " + e.getMessage());
-                    e.printStackTrace();
+                    //Log.e("GAL EVENT GRP ADPT", "------------------------ EXCEPTION : " + e.getMessage());
+                   // e.printStackTrace();
                 }
 
 
@@ -128,8 +128,8 @@ public class GalleryEventGroupAdapter extends RecyclerView.Adapter<GalleryEventG
                 String strGallery = gsonPic.toJson(picList);
                 String strVideo = gsonVideo.toJson(vidList);
 
-                Log.e("PIC ", "------------------ " + picList);
-                Log.e("VID ", "------------------ " + vidList);
+                //Log.e("PIC ", "------------------ " + picList);
+                //Log.e("VID ", "------------------ " + vidList);
 
                 if (!Constants.isOnline(context)) {
 

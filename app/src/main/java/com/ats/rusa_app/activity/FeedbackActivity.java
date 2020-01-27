@@ -55,11 +55,11 @@ public class FeedbackActivity extends AppCompatActivity implements View.OnClickL
         String previousStr = getIntent().getStringExtra("model");
         Gson gson = new Gson();
         previousEvent = gson.fromJson(previousStr, PrevEvent.class);
-        Log.e("responce","-----------------------"+previousEvent);
+        //Log.e("responce","-----------------------"+previousEvent);
 
         String userStr = CustomSharedPreference.getString(getApplicationContext(), CustomSharedPreference.KEY_USER);
         loginUser = gson.fromJson(userStr, Login.class);
-        Log.e("HOME_ACTIVITY : ", "--------USER-------" + loginUser);
+        //Log.e("HOME_ACTIVITY : ", "--------USER-------" + loginUser);
 
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -69,8 +69,8 @@ public class FeedbackActivity extends AppCompatActivity implements View.OnClickL
                 int idx = group.indexOfChild(radioButton);
                 RadioButton r = (RadioButton) group.getChildAt(idx);
                 selectedtext = r.getText().toString();
-                Log.e("Log Radio", "----------" + r.getText());
-                Log.e("Log Radio1", "----------" + selectedtext);
+                //Log.e("Log Radio", "----------" + r.getText());
+                //Log.e("Log Radio1", "----------" + selectedtext);
 
             }
         });
@@ -127,7 +127,7 @@ public class FeedbackActivity extends AppCompatActivity implements View.OnClickL
         }
     }
     private void getFeedbackSave(Integer newsblogsId, Integer regId, String msg, int value) {
-        Log.e("PARAMETERS : ", "        EVENT ID : " + newsblogsId + "      REG ID : " + regId+ "      MSG : " + msg+ "      VALUE : " + value);
+        //Log.e("PARAMETERS : ", "        EVENT ID : " + newsblogsId + "      REG ID : " + regId+ "      MSG : " + msg+ "      VALUE : " + value);
 
         if (Constants.isOnline(getApplicationContext())) {
             final CommonDialog commonDialog = new CommonDialog(FeedbackActivity.this, "Loading", "Please Wait...");
@@ -141,7 +141,7 @@ public class FeedbackActivity extends AppCompatActivity implements View.OnClickL
                         if (response.body() != null) {
 
                            // Toast.makeText(getApplicationContext(), ""+response.message(), Toast.LENGTH_SHORT).show();
-                            Log.e("FEEDBACK SAVE","-----------------------------"+response.body());
+                            //Log.e("FEEDBACK SAVE","-----------------------------"+response.body());
                             AlertDialog.Builder builder = new AlertDialog.Builder(FeedbackActivity.this, R.style.AlertDialogTheme);
                             builder.setTitle("");
                             builder.setMessage("Feedback has being save successfully");
@@ -162,20 +162,20 @@ public class FeedbackActivity extends AppCompatActivity implements View.OnClickL
                             commonDialog.dismiss();
                         }else {
                             commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----------");
+                            //Log.e("Data Null : ", "-----------");
                         }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                        //e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<FeedbackSave> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    ////Log.e("onFailure : ", "-----------" + t.getMessage());
+                    //t.printStackTrace();
                 }
             });
         } else {

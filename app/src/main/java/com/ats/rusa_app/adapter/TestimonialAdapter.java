@@ -47,7 +47,7 @@ public class TestimonialAdapter extends RecyclerView.Adapter<TestimonialAdapter.
     @Override
     public void onBindViewHolder(@NonNull TestimonialAdapter.MyViewHolder myViewHolder, int i) {
         final TestImonialList model = TestimonalList.get(i);
-        Log.e("Model Testimonial", "-------****************************---------" + model);
+        //Log.e("Model Testimonial", "-------****************************---------" + model);
         String imageUri = Constants.GALLERY_URL + model.getImageName();
         try {
             Picasso.with(context).load(imageUri).placeholder(context.getResources().getDrawable(R.drawable.profile_img)).into(myViewHolder.imageView);
@@ -85,7 +85,7 @@ public class TestimonialAdapter extends RecyclerView.Adapter<TestimonialAdapter.
 //                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("" + model.getNewsSourceUrlName()));
 //                    context.startActivity(browserIntent);
                 } catch (Exception e) {
-                    Log.e("Exception : ", "-----------" + e.getMessage());
+                   // Log.e("Exception : ", "-----------" + e.getMessage());
                     e.printStackTrace();
                 }
 

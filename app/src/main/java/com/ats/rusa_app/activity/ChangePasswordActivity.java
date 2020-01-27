@@ -41,7 +41,7 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
         String userStr = CustomSharedPreference.getString(getApplicationContext(), CustomSharedPreference.KEY_USER);
         Gson gson = new Gson();
         loginUser = gson.fromJson(userStr, Login.class);
-        Log.e("LOGIN_ACTIVITY : ", "--------USER-------" + loginUser);
+        //Log.e("LOGIN_ACTIVITY : ", "--------USER-------" + loginUser);
 
         if (loginUser == null) {
             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
@@ -63,7 +63,7 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
             boolean isValidPrevPass = false, isValidNewPass = false, isValidConfirmPass = false;
             strLoginPass = loginUser.getUserPassword();
 
-            Log.e("LoginPass", "---------------" + strLoginPass);
+            //Log.e("LoginPass", "---------------" + strLoginPass);
 
             strPrevPass = edPrevPass.getText().toString();
             strNewPass = edNewPass.getText().toString();
@@ -138,20 +138,20 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
                             commonDialog.dismiss();
                         } else {
                             commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----------");
+                            //Log.e("Data Null : ", "-----------");
                         }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                       // e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Info> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                  //  t.printStackTrace();
                 }
             });
         } else {

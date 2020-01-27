@@ -42,7 +42,7 @@ public class CompSliderAdapter extends RecyclerView.Adapter<CompSliderAdapter.My
     public void onBindViewHolder(@NonNull CompSliderAdapter.MyViewHolder myViewHolder, int i) {
         final CompanyModel model = compList.get(i);
         String imageUri = Constants.BANENR_URL + model.getSliderImage();
-        Log.e("Image", "--------------" + imageUri);
+        //Log.e("Image", "--------------" + imageUri);
         try {
             Picasso.with(context).load(imageUri).placeholder(context.getResources().getDrawable(R.drawable.imp_links_placeholder)).into(myViewHolder.imageView);
 

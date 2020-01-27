@@ -67,7 +67,7 @@ public class ContactUsFragment extends Fragment implements View.OnClickListener 
 
         WifiManager wm = (WifiManager) getContext().getApplicationContext().getSystemService(WIFI_SERVICE);
          ip = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
-        Log.e("IP Address","-----------------"+ip);
+        //Log.e("IP Address","-----------------"+ip);
 
 
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -78,8 +78,8 @@ public class ContactUsFragment extends Fragment implements View.OnClickListener 
                 int idx = group.indexOfChild(radioButton);
                 RadioButton r = (RadioButton) group.getChildAt(idx);
                  selectedtext = r.getText().toString();
-                Log.e("Log Radio", "----------" + r.getText());
-                Log.e("Log Radio1", "----------" + selectedtext);
+                //Log.e("Log Radio", "----------" + r.getText());
+                //Log.e("Log Radio1", "----------" + selectedtext);
 
             }
         });
@@ -187,7 +187,7 @@ public class ContactUsFragment extends Fragment implements View.OnClickListener 
     }
     private void getContact(ContactUs contactUs) {
         if (Constants.isOnline(getActivity())) {
-            Log.e("PARAMETER : ", "---------------- CONTACT : " + contactUs);
+            //Log.e("PARAMETER : ", "---------------- CONTACT : " + contactUs);
 
             final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
             commonDialog.show();
@@ -201,7 +201,7 @@ public class ContactUsFragment extends Fragment implements View.OnClickListener 
 
                             ContactUs model=response.body();
 
-                            Log.e("CONTACT US","-----------------------------"+response.body());
+                            //Log.e("CONTACT US","-----------------------------"+response.body());
                                // DialogOpen();
                             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme);
                             builder.setTitle("");
@@ -221,20 +221,20 @@ public class ContactUsFragment extends Fragment implements View.OnClickListener 
 
                         } else {
                             commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----------");
+                            //Log.e("Data Null : ", "-----------");
                         }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                       // e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ContactUs> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                   // t.printStackTrace();
                 }
             });
         } else {

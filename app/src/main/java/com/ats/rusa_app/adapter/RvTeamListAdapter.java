@@ -41,7 +41,7 @@ public class RvTeamListAdapter extends RecyclerView.Adapter<RvTeamListAdapter.My
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         final TeamList model = teamList.get(i);
-        Log.e("Model TEAM", "----------------" + model);
+       // Log.e("Model TEAM", "----------------" + model);
 
         try {
             String imageUri = Constants.GALLERY_URL + model.getImageName();

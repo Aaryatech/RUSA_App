@@ -119,7 +119,7 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
         String userStr = CustomSharedPreference.getString(getActivity(), CustomSharedPreference.KEY_USER);
         Gson gson = new Gson();
         loginUser = gson.fromJson(userStr, Login.class);
-        Log.e("HOME_ACTIVITY : ", "--------USER-------" + loginUser);
+        //Log.e("HOME_ACTIVITY : ", "--------USER-------" + loginUser);
 
         if (loginUser != null) {
             getUserDocList(loginUser.getRegId());
@@ -252,7 +252,7 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
                     try {
 
 
-                        Log.e("RESPONSE ", "-----------------------------" + response.body());
+                        //Log.e("RESPONSE ", "-----------------------------" + response.body());
 
                         if (response.body() != null) {
 
@@ -272,8 +272,8 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
                         // }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                       // e.printStackTrace();
 
                     }
                 }
@@ -281,8 +281,8 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
                 @Override
                 public void onFailure(Call<ArrayList<DocTypeList>> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                   // t.printStackTrace();
 
                 }
             });
@@ -305,7 +305,7 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
                     try {
 
 
-                        Log.e("RESPONSE ", "-----------------------------" + response.body());
+                        //Log.e("RESPONSE ", "-----------------------------" + response.body());
 
                         docList = response.body();
 
@@ -322,8 +322,8 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
                         // }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        ////Log.e("Exception : ", "-----------" + e.getMessage());
+                       // e.printStackTrace();
 
                     }
                 }
@@ -331,8 +331,8 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
                 @Override
                 public void onFailure(Call<ArrayList<DocUpload>> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                    //t.printStackTrace();
 
                 }
             });
@@ -366,17 +366,17 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
                         myBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
                         out.flush();
                         out.close();
-                        Log.e("Image Saved  ", "---------------");
+                        //Log.e("Image Saved  ", "---------------");
 
                     } catch (Exception e) {
-                        Log.e("Exception : ", "--------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "--------" + e.getMessage());
+                      //  e.printStackTrace();
                     }
                 }
                 imagePath = f.getAbsolutePath();
                 tvFileName.setText("" + f.getName());
             } catch (Exception e) {
-                e.printStackTrace();
+               // e.printStackTrace();
             }
 
         } else if (resultCode == getActivity().RESULT_OK && requestCode == 101) {
@@ -395,15 +395,15 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
                     myBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
                     out.flush();
                     out.close();
-                    //Log.e("Image Saved  ", "---------------");
+                    ////Log.e("Image Saved  ", "---------------");
 
                 } catch (Exception e) {
                     // Log.e("Exception : ", "--------" + e.getMessage());
-                    e.printStackTrace();
+                  //  e.printStackTrace();
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
+              //  e.printStackTrace();
                 // Log.e("Image Compress : ", "-----Exception : ------" + e.getMessage());
             }
         }
@@ -444,7 +444,7 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
         cursor.close();
 
         Bitmap bitm = shrinkBitmap(picturePath, 720, 720);
-        Log.e("Image Size : ---- ", " " + bitm.getByteCount());
+        //Log.e("Image Size : ---- ", " " + bitm.getByteCount());
 
         return bitm;
         // return BitmapFactory.decodeFile(picturePath, options);
@@ -459,7 +459,7 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
         super.onActivityResult(requestCode, resultCode, data);
         String realPath;
 
-        Log.e("EVENT DET LIST ACT", "---------------------- onActivityResult " + requestCode + " - " + resultCode);
+        //Log.e("EVENT DET LIST ACT", "---------------------- onActivityResult " + requestCode + " - " + resultCode);
 
         if (resultCode == RESULT_OK && requestCode == 1) {
             try {
@@ -469,9 +469,9 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
                     return;
                 }
                 Uri selectedFileUri = data.getData();
-                Log.e("UriPath", "----------" + selectedFileUri.getPath());
+                //Log.e("UriPath", "----------" + selectedFileUri.getPath());
 
-                Log.e("DATA PATH", "---------------------- " + getPath(getActivity(), selectedFileUri));
+                //Log.e("DATA PATH", "---------------------- " + getPath(getActivity(), selectedFileUri));
 
                 imagePath = getPath(getActivity(), selectedFileUri);
                 if (getPath(getActivity(), selectedFileUri) == null) {
@@ -493,8 +493,8 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
-                Log.e("UPLOAD DOC FRG : ", "-----Exception : ------" + e.getMessage());
+               // e.printStackTrace();
+                //Log.e("UPLOAD DOC FRG : ", "-----Exception : ------" + e.getMessage());
             }
         }
     }*/
@@ -571,7 +571,7 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
                 commonDialog.dismiss();
                 //  addNewNotification(bean);
                 imagePath = "";
-                Log.e("Response : ", "--" + response.body());
+                //Log.e("Response : ", "--" + response.body());
 
                 saveDoc(docUpload);
 
@@ -579,9 +579,9 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
 
             @Override
             public void onFailure(Call<JSONObject> call, Throwable t) {
-                Log.e("Error : ", "--" + t.getMessage());
+                //Log.e("Error : ", "--" + t.getMessage());
                 commonDialog.dismiss();
-                t.printStackTrace();
+               // t.printStackTrace();
                 //Toast.makeText(EventDetailListActivity.this, "Unable To Process", Toast.LENGTH_SHORT).show();
                 imagePath = "";
                 // getAppliedEvent(eventId, regId, filename);
@@ -623,16 +623,16 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
 
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                       // e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<DocUpload> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                  //  t.printStackTrace();
                 }
             });
         } else {

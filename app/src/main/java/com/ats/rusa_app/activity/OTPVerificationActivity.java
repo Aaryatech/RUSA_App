@@ -54,8 +54,8 @@ public class OTPVerificationActivity extends AppCompatActivity {
         Gson gson = new Gson();
         registrationModel = gson.fromJson(model, Reg.class);
         smsCode = registrationModel.getSmsCode();
-        Log.e("CODE", "------------" + smsCode);
-        Log.e("reg model", "------------" + registrationModel);
+        //Log.e("CODE", "------------" + smsCode);
+        //Log.e("reg model", "------------" + registrationModel);
 //        Log.e("uuId","------------"+uuId);
 
         //getResendOTP(uuId);
@@ -97,7 +97,7 @@ public class OTPVerificationActivity extends AppCompatActivity {
     }
 
     private void getResendOTP(String userUuid) {
-        Log.e("PARA", "----------------" + userUuid);
+        //Log.e("PARA", "----------------" + userUuid);
 
         if (Constants.isOnline(getApplicationContext())) {
             final CommonDialog commonDialog = new CommonDialog(OTPVerificationActivity.this, "Loading", "Please Wait...");
@@ -112,28 +112,28 @@ public class OTPVerificationActivity extends AppCompatActivity {
 
                             // Log.e("RESEND VERIFY : ", " - " + response.body().toString());
                             ResendOTP resendOTP = response.body();
-                            Log.e("RESEND VERIFY LIST : ", " - " + resendOTP);
+                            //Log.e("RESEND VERIFY LIST : ", " - " + resendOTP);
                             smsCode = resendOTP.getReg().getSmsCode();
-                            Log.e("RESEND CODE : ", " - " + smsCode);
+                            //Log.e("RESEND CODE : ", " - " + smsCode);
                             // finish();
                             commonDialog.dismiss();
 
                         } else {
                             commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----------");
+                            //Log.e("Data Null : ", "-----------");
                         }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                      //  e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ResendOTP> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure1 reset : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure1 reset : ", "-----------" + t.getMessage());
+                   // t.printStackTrace();
                 }
             });
         } else {
@@ -154,9 +154,9 @@ public class OTPVerificationActivity extends AppCompatActivity {
                     try {
                         if (response.body() != null) {
 
-                            Log.e("VERIFY : ", " - " + response.body().toString());
+                            //Log.e("VERIFY : ", " - " + response.body().toString());
                             OTPVerification otpVerification = response.body();
-                            Log.e("VERIFY LIST : ", " - " + otpVerification);
+                            //Log.e("VERIFY LIST : ", " - " + otpVerification);
                             Intent intent = new Intent(OTPVerificationActivity.this, LoginActivity.class);
                             //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
@@ -165,20 +165,20 @@ public class OTPVerificationActivity extends AppCompatActivity {
 
                         } else {
                             commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----------");
+                            //Log.e("Data Null : ", "-----------");
                         }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                       // e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<OTPVerification> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure1 : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure1 : ", "-----------" + t.getMessage());
+                   // t.printStackTrace();
                 }
             });
         } else {

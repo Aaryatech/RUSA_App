@@ -47,11 +47,11 @@ private static final int RESULT_OK=100;
         String upcomingStr = getArguments().getString("model");
         Gson gson = new Gson();
         upcomingEvent = gson.fromJson(upcomingStr, UpcomingEvent.class);
-        Log.e("responce","-----------------------"+upcomingEvent);
+       // Log.e("responce","-----------------------"+upcomingEvent);
 
         String userStr = CustomSharedPreference.getString(getActivity(), CustomSharedPreference.KEY_USER);
         loginUser = gson.fromJson(userStr, Login.class);
-        Log.e("LOGIN_ACTIVITY : ", "--------USER-------" + loginUser);
+       // Log.e("LOGIN_ACTIVITY : ", "--------USER-------" + loginUser);
 
         tv_eventName.setText(upcomingEvent.getHeading());
         tv_eventVenu.setText(""+upcomingEvent.getEventLocation());

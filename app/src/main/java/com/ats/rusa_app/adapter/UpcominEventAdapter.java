@@ -46,7 +46,7 @@ public class UpcominEventAdapter extends RecyclerView.Adapter<UpcominEventAdapte
     public void onBindViewHolder(@NonNull UpcominEventAdapter.MyViewHolder myViewHolder, int i) {
         final UpcomingEvent model = upcomingList.get(i);
 
-        Log.e("UPCOMING EVENT : ", "-------------------- " + model);
+       // Log.e("UPCOMING EVENT : ", "-------------------- " + model);
 
         myViewHolder.tv_eventName.setText(model.getHeading());
         myViewHolder.tv_Fromdate.setText("" + model.getEventDateFrom());
@@ -61,8 +61,8 @@ public class UpcominEventAdapter extends RecyclerView.Adapter<UpcominEventAdapte
                 myViewHolder.tvDesc.setHtml("" + model.getDescriptions());
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            Log.e("UPCOMING EVE ADPT","------------------ EXCEPTION -"+e.getMessage());
+           // e.printStackTrace();
+           // Log.e("UPCOMING EVE ADPT","------------------ EXCEPTION -"+e.getMessage());
         }
 
 

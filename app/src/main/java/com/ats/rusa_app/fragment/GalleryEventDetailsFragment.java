@@ -55,8 +55,8 @@ public class GalleryEventDetailsFragment extends Fragment {
         try {
             slugName = getArguments().getString("slugName");
         } catch (Exception e) {
-            Log.e("GALLERY EVENT DET FRG","----------------- EXCEPTION : "+e.getMessage());
-            e.printStackTrace();
+            //Log.e("GALLERY EVENT DET FRG","----------------- EXCEPTION : "+e.getMessage());
+           // e.printStackTrace();
         }
 
         getPageData(slugName, languageId);
@@ -79,7 +79,7 @@ public class GalleryEventDetailsFragment extends Fragment {
                     try {
                         if (response.body() != null) {
 
-                            Log.e("GALLERY DATA : ", " - " + response.body());
+                            //Log.e("GALLERY DATA : ", " - " + response.body());
 
                             PageData model = response.body();
                             model.setSlugName(slugName);
@@ -95,7 +95,7 @@ public class GalleryEventDetailsFragment extends Fragment {
                                 }
                             }
 
-                            Log.e("GALLERY LIST"," ************ ------ "+piclist);
+                            //Log.e("GALLERY LIST"," ************ ------ "+piclist);
 
 
                             if (model.getVideoList() != null) {
@@ -106,7 +106,7 @@ public class GalleryEventDetailsFragment extends Fragment {
                                 }
                             }
 
-                            Log.e("CAT LIST"," ************ ------ "+model.getImageListByCategory());
+                            //Log.e("CAT LIST"," ************ ------ "+model.getImageListByCategory());
 
 
 
@@ -134,8 +134,8 @@ public class GalleryEventDetailsFragment extends Fragment {
                             String strGallery = gsonPic.toJson(piclist);
                             String strVideo = gsonVideo.toJson(vidlist);
 
-                            Log.e("PIC ", "------------------ " + piclist);
-                            Log.e("VID ", "------------------ " + vidlist);
+                            //Log.e("PIC ", "------------------ " + piclist);
+                            //Log.e("VID ", "------------------ " + vidlist);
 
                             Fragment adf = new GalleryDisplayFragment();
                             Bundle args = new Bundle();
@@ -150,20 +150,20 @@ public class GalleryEventDetailsFragment extends Fragment {
 
                         } else {
                             commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----------");
+                            //Log.e("Data Null : ", "-----------");
                         }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                       // e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<PageData> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                   // t.printStackTrace();
                 }
             });
         } else {

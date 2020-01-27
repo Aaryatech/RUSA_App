@@ -25,7 +25,7 @@ public class ImageZoomActivity extends AppCompatActivity {
         try {
 
             image = getIntent().getExtras().getString("image");
-            Log.e("IMAGE PATH : ", " " + image);
+           // Log.e("IMAGE PATH : ", " " + image);
 
             Picasso.with(this).load(image).placeholder(ImageZoomActivity.this.getResources().getDrawable(R.drawable.img_placeholder)).into(zoomageView);
 

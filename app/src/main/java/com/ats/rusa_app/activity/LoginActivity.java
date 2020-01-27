@@ -19,6 +19,10 @@ import com.ats.rusa_app.util.CommonDialog;
 import com.ats.rusa_app.util.CustomSharedPreference;
 import com.google.gson.Gson;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -95,7 +99,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             final CommonDialog commonDialog = new CommonDialog(LoginActivity.this, "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<Login> listCall = Constants.myInterface.getLogin(strUserName, strPass,authHeader);
+            MessageDigest md = null;
+            try {
+                md = MessageDigest.getInstance("MD5");
+            } catch (NoSuchAlgorithmException e) {
+               // e.printStackTrace();
+            }
+            byte[] messageDigest = md.digest(strPass.getBytes());
+            BigInteger number = new BigInteger(1, messageDigest);
+            String hashtext = number.toString(16);
+
+
+            Call<Login> listCall = Constants.myInterface.getLogin(strUserName, hashtext,authHeader);
             listCall.enqueue(new Callback<Login>() {
                 @Override
                 public void onResponse(Call<Login> call, Response<Login> response) {
@@ -104,7 +119,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                             // Log.e("RESEND VERIFY : ", " - " + response.body().toString());
                             Login userDetail = response.body();
-                            Log.e("LOGIN RESPONCE : ", " - " + userDetail);
+                            //Log.e("LOGIN RESPONCE : ", " - " + userDetail);
 
                             if (!userDetail.getError()) {
                                 Gson gson = new Gson();
@@ -143,22 +158,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         } else {
                             commonDialog.dismiss();
                             Toast.makeText(LoginActivity.this, "Invalid Email and Password", Toast.LENGTH_SHORT).show();
-                            Log.e("Data Null : ", "-----------");
+                            //Log.e("Data Null : ", "-----------");
                         }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
                         Toast.makeText(LoginActivity.this, "Invalid Email and Password", Toast.LENGTH_SHORT).show();
-                        e.printStackTrace();
+                      //  e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Login> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure1 reset : ", "-----------" + t.getMessage());
+                    //Log.e("onFailure1 reset : ", "-----------" + t.getMessage());
                     Toast.makeText(LoginActivity.this, "Invalid Email and Password", Toast.LENGTH_SHORT).show();
-                    t.printStackTrace();
+                  //  t.printStackTrace();
                 }
             });
         } else {

@@ -57,7 +57,7 @@ public class GalleryAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         final GallaryDetailList model = galleryList.get(position);
 
-        Log.e("MODEL : ", "- ------ " + model);
+        //Log.e("MODEL : ", "- ------ " + model);
 
         Holder holder = new Holder();
         View rowView;
@@ -69,7 +69,7 @@ public class GalleryAdapter extends BaseAdapter {
         holder.llVideo = rowView.findViewById(R.id.llVideo);
 
         if (model.getTypeVideoImage().equals("3")) {
-            Log.e("TYPE : ", "- ------ 3");
+            //Log.e("TYPE : ", "- ------ 3");
             holder.llImage.setVisibility(View.VISIBLE);
             holder.llVideo.setVisibility(View.GONE);
 
@@ -79,7 +79,7 @@ public class GalleryAdapter extends BaseAdapter {
             }
 
         } else if (model.getTypeVideoImage().equals("4")) {
-            Log.e("TYPE : ", "- ------ 4");
+            //Log.e("TYPE : ", "- ------ 4");
             holder.llImage.setVisibility(View.GONE);
             holder.llVideo.setVisibility(View.VISIBLE);
 

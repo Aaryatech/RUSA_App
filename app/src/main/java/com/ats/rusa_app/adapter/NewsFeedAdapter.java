@@ -76,8 +76,8 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.MyView
 //                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("" + model.getNewsSourceUrlName()));
 //                    context.startActivity(browserIntent);
                 } catch (Exception e) {
-                    Log.e("Exception : ", "-----------" + e.getMessage());
-                    e.printStackTrace();
+                   // Log.e("Exception : ", "-----------" + e.getMessage());
+                   // e.printStackTrace();
                 }
 
 

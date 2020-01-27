@@ -93,7 +93,7 @@ public class TestimonialWebviewActivity extends AppCompatActivity {
                     public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, final YouTubeThumbnailLoader youTubeThumbnailLoader) {
                         youTubeThumbnailLoader.setVideo(code);
 
-                        Log.e("Video model", "----------------" + code);
+                        //Log.e("Video model", "----------------" + code);
                         //model.getExVar1()
                         youTubeThumbnailLoader.setOnThumbnailLoadedListener(new YouTubeThumbnailLoader.OnThumbnailLoadedListener() {
                             @Override

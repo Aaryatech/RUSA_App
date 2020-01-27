@@ -63,7 +63,7 @@ public class VideoFragment extends Fragment {
         rvVideo = view.findViewById(R.id.rvVideo);
 
         ytThumb = view.findViewById(R.id.ytThumb);
-        Log.e("", "");
+        //Log.e("", "");
 
         String langId = CustomSharedPreference.getString(getActivity(), CustomSharedPreference.LANGUAGE_SELECTED);
         try {
@@ -76,8 +76,8 @@ public class VideoFragment extends Fragment {
             slugName = getArguments().getString("slugName");
             getPageData(slugName, languageId);
         } catch (Exception e) {
-            Log.e("ContentFrag : ", " ----------- " + e.getMessage());
-            e.printStackTrace();
+            //Log.e("ContentFrag : ", " ----------- " + e.getMessage());
+           // e.printStackTrace();
         }
 
 
@@ -135,7 +135,7 @@ public class VideoFragment extends Fragment {
                     try {
                         if (response.body() != null) {
 
-                            Log.e("PAGE DATA : ", " - " + response.body());
+                            //Log.e("PAGE DATA : ", " - " + response.body());
 
                             PageData model = response.body();
                             model.setSlugName(slugName);
@@ -151,20 +151,20 @@ public class VideoFragment extends Fragment {
 
 
                                         String iframeStr = model.getCmsContentList().get(i).getPageDesc();
-                                        Log.e("STRING ", "---------- " + iframeStr);
+                                        //Log.e("STRING ", "---------- " + iframeStr);
 
                                         int index = (iframeStr.lastIndexOf("src"));
-                                        Log.e("FIRST INDEX : ", "-------------------- " + index);
+                                        //Log.e("FIRST INDEX : ", "-------------------- " + index);
                                         int firstIndex = (iframeStr.indexOf('"', index)) + 1;
-                                        Log.e("LAST INDEX : ", "-------------------- " + firstIndex);
+                                        //Log.e("LAST INDEX : ", "-------------------- " + firstIndex);
                                         int lastIndex = iframeStr.indexOf('"', firstIndex);
 
 
-                                        Log.e("VIDEO URL : ", "------------------------ " + iframeStr.substring(firstIndex, lastIndex));
+                                        //Log.e("VIDEO URL : ", "------------------------ " + iframeStr.substring(firstIndex, lastIndex));
 
                                         final String code = extractYTId(iframeStr.substring(firstIndex, lastIndex)).replace("\\", "");
 
-                                        Log.e("VIDEO CODE : ", "------------------------ " + code);
+                                        //Log.e("VIDEO CODE : ", "------------------------ " + code);
 
                                         GallaryDetailList videoModel = new GallaryDetailList(1, 1, 1, 1, "1", "video 1", "aa", "", "", 1, "", "", 1, 1, 1, 1, 1, 1, "" + code, "");
                                         videoList.add(videoModel);
@@ -189,13 +189,13 @@ public class VideoFragment extends Fragment {
 
                         } else {
                             commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----------");
+                            //Log.e("Data Null : ", "-----------");
                             tvNoRecord.setVisibility(View.VISIBLE);
                         }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                      //  e.printStackTrace();
                         tvNoRecord.setVisibility(View.VISIBLE);
                     }
                 }
@@ -203,8 +203,8 @@ public class VideoFragment extends Fragment {
                 @Override
                 public void onFailure(Call<PageData> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                   // t.printStackTrace();
                     tvNoRecord.setVisibility(View.VISIBLE);
                 }
             });

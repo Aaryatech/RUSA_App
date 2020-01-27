@@ -68,7 +68,7 @@ public class YoutubeVideosAdapter extends RecyclerView.Adapter<YoutubeVideosAdap
 
                         @Override
                         public void onThumbnailError(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader.ErrorReason errorReason) {
-                            Log.e("YOUTUBE","******************************  ERROR");
+                           // Log.e("YOUTUBE","******************************  ERROR");
                             holder.ytThumb.setBackground(context.getResources().getDrawable(R.drawable.logo_new));
                             holder.ytThumb.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
                         }

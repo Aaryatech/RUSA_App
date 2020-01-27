@@ -70,7 +70,7 @@ public class VideosFragment extends Fragment implements VideosInterface {
 
                 String code =video.getFileName() ;
 
-                Log.e("VIDEO CODE : ", "------------------------ " + code);
+                //Log.e("VIDEO CODE : ", "------------------------ " + code);
 
                 GallaryDetailList videoModel = new GallaryDetailList(1, 1, 1, 1, "1", "video 1", "aa", "", "", 1, "", "", 1, 1, 1, 1, 1, 1, "" + code, "");
                 videoList.add(videoModel);
@@ -84,8 +84,8 @@ public class VideosFragment extends Fragment implements VideosInterface {
 
 
         } catch (Exception e) {
-            Log.e("Videos FRAG", "----------- EXCEPTION : " + e.getMessage());
-            e.printStackTrace();
+            //Log.e("Videos FRAG", "----------- EXCEPTION : " + e.getMessage());
+           // e.printStackTrace();
         }
 
 

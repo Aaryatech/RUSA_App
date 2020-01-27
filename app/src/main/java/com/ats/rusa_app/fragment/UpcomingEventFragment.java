@@ -67,7 +67,7 @@ int languageId;
                     try {
                         if (response.body() != null) {
 
-                            Log.e("UPCOMING EVENT LIST : ", " - " + response.body());
+                            //Log.e("UPCOMING EVENT LIST : ", " - " + response.body());
                             upcomingEventList.clear();
                             upcomingEventList = response.body();
 
@@ -81,20 +81,20 @@ int languageId;
 
                         } else {
                             commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----------");
+                            //Log.e("Data Null : ", "-----------");
                         }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                       // e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ArrayList<UpcomingEvent>> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                   // t.printStackTrace();
                 }
             });
         } else {

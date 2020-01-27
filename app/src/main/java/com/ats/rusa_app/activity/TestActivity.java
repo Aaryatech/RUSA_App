@@ -21,14 +21,14 @@ public class TestActivity extends AppCompatActivity {
                 "\n" +
                 "<p><iframe allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen=\"\" frameborder=\"0\" height=\"250\" src=\"https://www.youtube.com/embed/awwz92pVeXc\" width=\"275\"></iframe></p>\n";
 
-        Log.e("OLD STR ", "--------------------------" + temp);
+        //Log.e("OLD STR ", "--------------------------" + temp);
 
 
-        Log.e("NEW STR ", "--------------------------" + temp.replace("\\", ""));
+        //Log.e("NEW STR ", "--------------------------" + temp.replace("\\", ""));
 
-        Log.e("SRC LOC ", "-------------------------- " + temp.lastIndexOf("src"));
+        //Log.e("SRC LOC ", "-------------------------- " + temp.lastIndexOf("src"));
 
-        Log.e("STR AT 147 ", "-------------------------- " + temp.substring(147));
+        //Log.e("STR AT 147 ", "-------------------------- " + temp.substring(147));
 
         //    Log.e("GET INDEX ","--------------------------- "+temp.indexOf('"',147));
         //    Log.e("GET LAST INDEX ","--------------------------- "+temp.indexOf('"',(temp.indexOf('"',147)+1)));

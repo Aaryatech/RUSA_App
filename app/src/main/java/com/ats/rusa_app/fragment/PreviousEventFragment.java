@@ -70,7 +70,7 @@ public class PreviousEventFragment extends Fragment implements PreviousEventsInt
                     try {
                         if (response.body() != null) {
 
-                            Log.e("PREVIOUS EVENT LIST : ", " - " + response.body());
+                            //Log.e("PREVIOUS EVENT LIST : ", " - " + response.body());
                             previousEventList.clear();
                             previousEventList = response.body();
 
@@ -84,20 +84,20 @@ public class PreviousEventFragment extends Fragment implements PreviousEventsInt
 
                         } else {
                             commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----------");
+                            //Log.e("Data Null : ", "-----------");
                         }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                       // e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ArrayList<PrevEvent>> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                   // t.printStackTrace();
                 }
             });
         } else {
@@ -122,8 +122,8 @@ public class PreviousEventFragment extends Fragment implements PreviousEventsInt
             getPrevoiusEvent(languageId, regId);
         }catch (Exception e)
         {
-            Log.e("onFailure : ", "-----------" + e.getMessage());
-            e.printStackTrace();
+            //Log.e("onFailure : ", "-----------" + e.getMessage());
+           // e.printStackTrace();
         }
     }
 }

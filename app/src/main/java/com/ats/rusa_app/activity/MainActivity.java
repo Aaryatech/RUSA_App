@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity
                     displayOfflineData();
                 } catch (Exception e) {
                     //Log.e("Offline--", "------------------------- ERROR - " + e.getMessage());
-                    e.printStackTrace();
+                   // e.printStackTrace();
                 }
 
             }
@@ -189,25 +189,25 @@ public class MainActivity extends AppCompatActivity
             linearLayout_contact.setOnClickListener(this);
 
         } catch (Exception e) {
-            e.printStackTrace();
+           // e.printStackTrace();
         }
 
         String userStr = CustomSharedPreference.getString(getApplicationContext(), CustomSharedPreference.KEY_USER);
         Gson gson = new Gson();
         loginUser = gson.fromJson(userStr, Login.class);
-        Log.e("HOME_ACTIVITY : ", "--------USER-------" + loginUser);
+        //Log.e("HOME_ACTIVITY : ", "--------USER-------" + loginUser);
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 
         try {
             String token = SharedPrefManager.getmInstance(MainActivity.this).getDeviceToken();
-            Log.e("Token : ", "---------" + token);
+            //Log.e("Token : ", "---------" + token);
 
             String str = CustomSharedPreference.getString(MainActivity.this, CustomSharedPreference.PREFERENCE_TOKEN);
             Gson gson2 = new Gson();
             AppToken appToken = gson2.fromJson(str, AppToken.class);
-            Log.e("APP TOKEN", "-------------- " + appToken);
+            //Log.e("APP TOKEN", "-------------- " + appToken);
 
             if (appToken != null) {
                 if (appToken.getApptokenId() > 0) {
@@ -232,11 +232,11 @@ public class MainActivity extends AppCompatActivity
             }
 
         } catch (Exception e) {
-            Log.e("Exception : ", "-----------" + e.getMessage());
+            //Log.e("Exception : ", "-----------" + e.getMessage());
         }
 
 
-        Log.e("MAC", "---------------- " + getMacAddress());
+        //Log.e("MAC", "---------------- " + getMacAddress());
 
         // Toast.makeText(this, "" + languageId, Toast.LENGTH_SHORT).show();
 
@@ -254,13 +254,13 @@ public class MainActivity extends AppCompatActivity
             View header = navigationView.getHeaderView(0);
             tv_loginUserName = header.findViewById(R.id.loginUserName);
         } catch (Exception e) {
-            e.printStackTrace();
+           // e.printStackTrace();
         }
 
         try {
             intent = getIntent();
             String strFeedback = intent.getStringExtra("Feedback");
-            Log.e("Feedback", "-----------" + strFeedback);
+            //Log.e("Feedback", "-----------" + strFeedback);
             if (strFeedback.equals("Feedback")) {
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.content_frame, new EventFragment(), "HomeFragment");
@@ -277,8 +277,8 @@ public class MainActivity extends AppCompatActivity
             }
 
         } catch (Exception e) {
-            Log.e("MAIN ACT ", "------------ EXCEPTION----------------- " + e.getMessage());
-            e.printStackTrace();
+            //Log.e("MAIN ACT ", "------------ EXCEPTION----------------- " + e.getMessage());
+           // e.printStackTrace();
 
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, new HomeFragment(), "Exit");
@@ -288,7 +288,7 @@ public class MainActivity extends AppCompatActivity
        /* try {
             intent = getIntent();
             final String skipLogin = intent.getStringExtra("code");
-            Log.e("Skip", "-----------" + skipLogin);
+            //Log.e("Skip", "-----------" + skipLogin);
             if (skipLogin == (null)) {
                 if (loginUser == null) {
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
@@ -296,12 +296,12 @@ public class MainActivity extends AppCompatActivity
                 }
             } else if (loginUser == null) {
                 if (!skipLogin.equals("SkipLogin")) {
-                    Log.e("Skip", "");
+                    //Log.e("Skip", "");
                 }
             }
         } catch (Exception e) {
-            Log.e("MAIN ACT ", "------------ EXCEPTION----------------- " + e.getMessage());
-            e.printStackTrace();
+            //Log.e("MAIN ACT ", "------------ EXCEPTION----------------- " + e.getMessage());
+           // e.printStackTrace();
         }*/
 
         try {
@@ -314,7 +314,7 @@ public class MainActivity extends AppCompatActivity
             }
 
         } catch (Exception e) {
-            Log.e("Exception User : ", "-----------" + e.getMessage());
+            //Log.e("Exception User : ", "-----------" + e.getMessage());
         }
 
         // drawerMenu = navigationView.getMenu();
@@ -517,7 +517,7 @@ public class MainActivity extends AppCompatActivity
 
         for (int i = 0; i < menuCatList.size(); i++) {
             if (item.toString().equalsIgnoreCase(menuCatList.get(i).getCatName())) {
-                Log.e("MENU  : ", "------------- " + menuCatList.get(i).getPageId());
+                //Log.e("MENU  : ", "------------- " + menuCatList.get(i).getPageId());
                 Toast.makeText(this, "" + menuCatList.get(i).getCatName(), Toast.LENGTH_SHORT).show();
             }
         }
@@ -531,7 +531,7 @@ public class MainActivity extends AppCompatActivity
     private void getMenuData(int lnagId) {
 
 
-        Log.e("MAIN_ACT"," *************************************** LANG - "+lnagId);
+        //Log.e("MAIN_ACT"," *************************************** LANG - "+lnagId);
 
         if (Constants.isOnline(this)) {
             commonDialog = new CommonDialog(MainActivity.this, "Loading", "Please Wait...");
@@ -544,7 +544,7 @@ public class MainActivity extends AppCompatActivity
                     try {
                         if (response.body() != null) {
 
-                            Log.e("MENU DATA : ", " - " + response.body());
+                            //Log.e("MENU DATA : ", " - " + response.body());
 
                             MenuModel model = response.body();
 
@@ -715,21 +715,21 @@ public class MainActivity extends AppCompatActivity
 
                         } else {
                             commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----------");
+                            //Log.e("Data Null : ", "-----------");
                         }
                     } catch (
                             Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                      //  e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<MenuModel> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                   // t.printStackTrace();
                 }
             });
         } else {
@@ -758,7 +758,7 @@ public class MainActivity extends AppCompatActivity
                     if (model.getSectionlist().get(i).getCatCount() == 0) {
 
                         if (model.getSectionlist().get(i).getExternalUrl() != null) {
-                            Log.e("MAIN ACT", " *********************************    NOT  NULL");
+                            //Log.e("MAIN ACT", " *********************************    NOT  NULL");
 
                             if (model.getSectionlist().get(i).getExternalUrl().equalsIgnoreCase("imgGallary")) {
                                 menuGroup = new MenuGroup(model.getSectionlist().get(i).getSectionName(), false, false, false, "" + model.getSectionlist().get(i).getExternalUrl());
@@ -796,7 +796,7 @@ public class MainActivity extends AppCompatActivity
                             // topChannelMenu.add("" + model.getCategoryList().get(j).getCatName());
 
                             if (model.getCategoryList().get(j).getExternalUrl() != null) {
-                                Log.e("MAIN ACT", " *********************************    NOT  NULL");
+                                //Log.e("MAIN ACT", " *********************************    NOT  NULL");
 
                                 if (model.getCategoryList().get(j).getExternalUrl().equalsIgnoreCase("imgGallary")) {
                                     MenuGroup childModel = new MenuGroup(model.getCategoryList().get(j).getCatName(), false, false, false, model.getCategoryList().get(j).getExternalUrl());
@@ -827,7 +827,7 @@ public class MainActivity extends AppCompatActivity
 
 
                                         if (model.getSubCatList().get(k).getExternalUrl() != null) {
-                                            Log.e("MAIN ACT", " *********************************    NOT  NULL");
+                                            //Log.e("MAIN ACT", " *********************************    NOT  NULL");
 
                                             if (model.getSubCatList().get(k).getExternalUrl().equalsIgnoreCase("imgGallary")) {
                                                 MenuGroup childModel1 = new MenuGroup(model.getSubCatList().get(k).getSubCatName(), false, false, false, model.getSubCatList().get(k).getExternalUrl());
@@ -852,7 +852,7 @@ public class MainActivity extends AppCompatActivity
                     }
 
                     if (menuGroup.hasChildren) {
-                        Log.e("" + menuGroup.getMenuName(), "--------------");
+                        //Log.e("" + menuGroup.getMenuName(), "--------------");
                         childList.put(menuGroup, childModelsList);
                     }
                 }
@@ -922,7 +922,7 @@ public class MainActivity extends AppCompatActivity
                 }
 
                 if (!headerList.get(groupPosition).isGroup) {
-                    Log.e("Header ------------- ", " ---" + headerList.get(groupPosition).getUrl());
+                    //Log.e("Header ------------- ", " ---" + headerList.get(groupPosition).getUrl());
 
                     String url = headerList.get(groupPosition).getUrl();
 
@@ -1244,20 +1244,20 @@ public class MainActivity extends AppCompatActivity
                             commonDialog.dismiss();
                         } else {
                             commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----------");
+                            //Log.e("Data Null : ", "-----------");
                         }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                      //  e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<AppToken> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                   // t.printStackTrace();
                 }
             });
         } else {
@@ -1383,7 +1383,7 @@ public class MainActivity extends AppCompatActivity
         Gson gson = new Gson();
         MenuModel model = gson.fromJson(menuStr, MenuModel.class);
 
-        Log.e("Offline--", "------------------------- MENU - " + model);
+        //Log.e("Offline--", "------------------------- MENU - " + model);
         displayMenu(model);
 
 

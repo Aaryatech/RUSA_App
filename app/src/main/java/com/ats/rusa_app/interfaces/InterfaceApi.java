@@ -21,6 +21,7 @@ import com.ats.rusa_app.model.NewDetail;
 import com.ats.rusa_app.model.NewReg;
 import com.ats.rusa_app.model.OTPVerification;
 import com.ats.rusa_app.model.PageData;
+import com.ats.rusa_app.model.ParameterModel;
 import com.ats.rusa_app.model.PrevEvent;
 import com.ats.rusa_app.model.PrevEventFeedback;
 import com.ats.rusa_app.model.PreviousEvent;
@@ -135,7 +136,7 @@ public interface InterfaceApi {
     @POST("docUpload")
     Call<JSONObject> docUpload(@Part MultipartBody.Part filePath, @Part("docName") RequestBody docName,@Part("type") RequestBody type,@Header("Authorization") String authHeader);
 
-    @POST("allPreviousEventWithApllied ")
+    @POST("allPreviousEventWithApllied")
     Call<ArrayList<PrevEvent>> getAllPreviousEventWithApllied(@Query("langId") int langId, @Query("userId") int userId,@Header("Authorization") String authHeader);
 
     @POST("updateEventFeedback")
@@ -144,8 +145,13 @@ public interface InterfaceApi {
     @POST("checkUniqueField")
     Call<Info> getCheckUniqueField(@Query("inputValue") String inputValue, @Query("valueType") int valueType, @Query("primaryKey") int primaryKey,@Header("Authorization") String authHeader);
 
-    @POST("getPrevRecordByRegId ")
+    @POST("getPrevRecordByRegId")
     Call<PreviousRecord> getPrevRecordByRegId(@Query("regId") int regId,@Header("Authorization") String authHeader);
+
+
+    @POST("getPrevRecordByRegIdForApp")
+    Call<PreviousRecord> getPrevRecordByRegId(@Body ParameterModel model, @Header("Authorization") String authHeader);
+
 
     @POST("getFeedbackByUserIdAndNewsblogsId ")
     Call<PrevEventFeedback> getFeedbackByUserIdAndNewsblogsId(@Query("userId") int userId, @Query("newsblogsId") int newsblogsId,@Header("Authorization") String authHeader);

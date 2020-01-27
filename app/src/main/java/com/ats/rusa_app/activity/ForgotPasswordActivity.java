@@ -115,30 +115,30 @@ TextView tv_backToLogin;
 
                             // Log.e("RESEND VERIFY : ", " - " + response.body().toString());
                             Login resendOTP=response.body();
-                            Log.e("FORGOT PASS : ", " - " + resendOTP);
+                            //Log.e("FORGOT PASS : ", " - " + resendOTP);
                             Intent intent=new Intent(ForgotPasswordActivity.this,LoginActivity.class);
                             startActivity(intent);
                             commonDialog.dismiss();
 
                         } else {
                             commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----------");
+                            //Log.e("Data Null : ", "-----------");
                             Toast.makeText(ForgotPasswordActivity.this, "Invalid Email and Mobile Number", Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
                         Toast.makeText(ForgotPasswordActivity.this, "Invalid Email and Mobile Number", Toast.LENGTH_SHORT).show();
-                        e.printStackTrace();
+                       // e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Login> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure1 reset : ", "-----------" + t.getMessage());
+                    //Log.e("onFailure1 reset : ", "-----------" + t.getMessage());
                     Toast.makeText(ForgotPasswordActivity.this, "Invalid Email and Mobile Number", Toast.LENGTH_SHORT).show();
-                    t.printStackTrace();
+                  //  t.printStackTrace();
                 }
             });
         } else {

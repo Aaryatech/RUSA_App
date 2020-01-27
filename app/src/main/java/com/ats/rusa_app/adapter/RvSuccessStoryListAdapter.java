@@ -38,7 +38,7 @@ public class RvSuccessStoryListAdapter extends RecyclerView.Adapter<RvSuccessSto
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         final SuccessList model = successLists.get(i);
-        Log.e("Model Success Story", "----------------" + model);
+       // Log.e("Model Success Story", "----------------" + model);
 
         try {
             String imageUri = Constants.GALLERY_URL + model.getImageName();

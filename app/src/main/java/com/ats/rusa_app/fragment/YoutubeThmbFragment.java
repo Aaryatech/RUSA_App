@@ -44,7 +44,7 @@ public class YoutubeThmbFragment extends Fragment {
                         try {
                             Toast.makeText(getActivity(), "Not a valid youtube url.", Toast.LENGTH_SHORT).show();
                         } catch (Exception ex) {
-                            ex.printStackTrace();
+                            //ex.printStackTrace();
                         }
                     }
                 });

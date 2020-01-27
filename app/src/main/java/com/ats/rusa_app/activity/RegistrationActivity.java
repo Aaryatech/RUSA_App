@@ -307,7 +307,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
 
            /* if (spinnerPosition.equals("Individual")) {
-                Log.e("SpinnerInd", "-----------------" + spinnerPosition);
+                //Log.e("SpinnerInd", "-----------------" + spinnerPosition);
                 boolean isValidClgName = false, isValidUniverAff = false, isValidName = false, isValidNameDept = false, isValidNameAuthPer = false, isValidDesigPerson = false;
                 String email, alt_email, fullName, clgName, univercityAff, nameDept, nameAuthPer, dob, mob, designPerName;
                 fullName = ed_Name.getText().toString().trim();
@@ -324,13 +324,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-                Log.e("Email", "----------------------" + email);
-                Log.e("alt_email", "----------------------" + alt_email);
-                Log.e("clgName", "----------------------" + clgName);
-                Log.e("univercityAff", "----------------------" + univercityAff);
-                Log.e("nameDept", "----------------------" + nameDept);
-                Log.e("nameAuthPer", "----------------------" + nameAuthPer);
-                Log.e("uniqueId", "----------------------" + uniqueId);
+                //Log.e("Email", "----------------------" + email);
+                //Log.e("alt_email", "----------------------" + alt_email);
+                //Log.e("clgName", "----------------------" + clgName);
+                //Log.e("univercityAff", "----------------------" + univercityAff);
+                //Log.e("nameDept", "----------------------" + nameDept);
+                //Log.e("nameAuthPer", "----------------------" + nameAuthPer);
+                //Log.e("uniqueId", "----------------------" + uniqueId);
 
 
                 if (fullName.isEmpty()) {
@@ -572,7 +572,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void getCheckUniqueFieldMobile(String inputValue, final String email, final Reg reg) {
-        Log.e("PARAMETERS : ", "        INPUT VALUE : " + inputValue + "      VALUE TYPE : " + 1 + "      PRIMARY KEY : " + 0);
+        //Log.e("PARAMETERS : ", "        INPUT VALUE : " + inputValue + "      VALUE TYPE : " + 1 + "      PRIMARY KEY : " + 0);
 
         if (Constants.isOnline(getApplicationContext())) {
             final CommonDialog commonDialog = new CommonDialog(RegistrationActivity.this, "Loading", "Please Wait...");
@@ -583,7 +583,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 @Override
                 public void onResponse(Call<Info> call, Response<Info> response) {
                     try {
-                        Log.e("RESPONCE UNICE", "-----------------------------" + response.body());
+                        //Log.e("RESPONCE UNICE", "-----------------------------" + response.body());
 
                         if (response.body() == null) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this, R.style.AlertDialogTheme);
@@ -622,8 +622,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         // }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                     //   e.printStackTrace();
                         AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this, R.style.AlertDialogTheme);
                         builder.setTitle("Error");
                         builder.setMessage("something went wrong, please try again later");
@@ -642,8 +642,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 @Override
                 public void onFailure(Call<Info> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                   // t.printStackTrace();
                     AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this, R.style.AlertDialogTheme);
                     builder.setTitle("Error");
                     builder.setMessage("something went wrong, please try again later");
@@ -666,7 +666,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
 
     private void getCheckUniqueFieldEmail(String inputValue, final Reg reg) {
-        Log.e("PARAMETERS : ", "        INPUT VALUE : " + inputValue + "      VALUE TYPE : " + 2 + "      PRIMARY KEY : " + 0);
+        //Log.e("PARAMETERS : ", "        INPUT VALUE : " + inputValue + "      VALUE TYPE : " + 2 + "      PRIMARY KEY : " + 0);
 
         if (Constants.isOnline(getApplicationContext())) {
             final CommonDialog commonDialog = new CommonDialog(RegistrationActivity.this, "Loading", "Please Wait...");
@@ -677,7 +677,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 @Override
                 public void onResponse(Call<Info> call, Response<Info> response) {
                     try {
-                        Log.e("RESPONCE UNICE", "-----------------------------" + response.body());
+                        //Log.e("RESPONCE UNICE", "-----------------------------" + response.body());
 
                         if (response.body() == null) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this, R.style.AlertDialogTheme);
@@ -716,8 +716,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         // }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                      //  e.printStackTrace();
                         AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this, R.style.AlertDialogTheme);
                         builder.setTitle("Error");
                         builder.setMessage("something went wrong, please try again later");
@@ -736,8 +736,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 @Override
                 public void onFailure(Call<Info> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                  //  t.printStackTrace();
                     AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this, R.style.AlertDialogTheme);
                     builder.setTitle("Error");
                     builder.setMessage("something went wrong, please try again later");
@@ -787,7 +787,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private void getRegistration(Reg registration) {
 
         if (Constants.isOnline(getApplicationContext())) {
-            Log.e("PARAMETER : ", "---------------- REGISTRATION : " + registration);
+            //Log.e("PARAMETER : ", "---------------- REGISTRATION : " + registration);
 
             final CommonDialog commonDialog = new CommonDialog(RegistrationActivity.this, "Loading", "Please Wait...");
             commonDialog.show();
@@ -803,8 +803,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             Gson gson = new Gson();
                             String json = gson.toJson(model);
 
-                            Log.e("SAVE REGISTRATION", "-----------------------------" + response.body());
-                            Log.e("SAVE REGISTRATION MODEL", "-----------------------------" + model);
+                            ////Log.e("SAVE REGISTRATION", "-----------------------------" + response.body());
+                            ////Log.e("SAVE REGISTRATION MODEL", "-----------------------------" + model);
                             Intent intent = new Intent(RegistrationActivity.this, OTPVerificationActivity.class);
                             intent.putExtra("code", smsCode);
                             Bundle args = new Bundle();
@@ -817,20 +817,20 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                         } else {
                             commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----REG------");
+                            //Log.e("Data Null : ", "-----REG------");
                         }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                       // e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Reg> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                  //  t.printStackTrace();
                 }
             });
         } else {

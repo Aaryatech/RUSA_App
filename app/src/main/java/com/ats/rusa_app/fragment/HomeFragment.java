@@ -155,7 +155,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 }.getType();
                 companyList.clear();
                 companyList = cGson.fromJson(compStr, cType);
-                Log.e("HOME------", "---------OFFLINE------------------- COMP - " + companyList);
+                //Log.e("HOME------", "---------OFFLINE------------------- COMP - " + companyList);
 
                 if (companyList != null) {
                     CompSliderAdapter cAdapter = new CompSliderAdapter(companyList, getContext());
@@ -179,7 +179,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         videoList.add(videoModel);
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                  //  e.printStackTrace();
                 }
 
                 if (videoList != null) {
@@ -215,8 +215,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
 
             } catch (Exception e) {
-                Log.e("Offline--", "------------------------- ERROR - " + e.getMessage());
-                e.printStackTrace();
+               // Log.e("Offline--", "------------------------- ERROR - " + e.getMessage());
+               // e.printStackTrace();
             }
 
             //startActivity(new Intent(MainActivity.this, ConnectionCheckActivity.class));
@@ -295,7 +295,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     try {
                         if (response.body() != null) {
 
-                            Log.e("HOME DATA : ", " - " + response.body());
+                            //Log.e("HOME DATA : ", " - " + response.body());
                             homeList.clear();
                             Detail detail = response.body();
 
@@ -312,34 +312,34 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                     VideoList video = detail.getVideoList().get(i);
 
                                    /* String iframeStr = video.getFileName();
-                                    Log.e("STRING ", "---------- " + iframeStr);
+                                    //Log.e("STRING ", "---------- " + iframeStr);
 
                                     int index = (iframeStr.lastIndexOf("src"));
-                                    Log.e("FIRST INDEX : ", "-------------------- " + index);
+                                    //Log.e("FIRST INDEX : ", "-------------------- " + index);
                                     int firstIndex = (iframeStr.indexOf('"', index)) + 1;
-                                    Log.e("LAST INDEX : ", "-------------------- " + firstIndex);
+                                    //Log.e("LAST INDEX : ", "-------------------- " + firstIndex);
                                     int lastIndex = iframeStr.indexOf('"', firstIndex);
 
 
-                                    Log.e("VIDEO URL : ", "------------------------ " + iframeStr.substring(firstIndex, lastIndex));
+                                    //Log.e("VIDEO URL : ", "------------------------ " + iframeStr.substring(firstIndex, lastIndex));
 
                                     String code = extractYTId(iframeStr.substring(firstIndex, lastIndex)).replace("\\", "");
                                    // String code = video.getFileName();
 
-                                    Log.e("VIDEO CODE : ", "------------------------ " + code);
+                                    //Log.e("VIDEO CODE : ", "------------------------ " + code);
 
                                     GallaryDetailList videoModel = new GallaryDetailList(1, 1, 1, 1, "1", "video 1", "aa", "", "", 1, "", "", 1, 1, 1, 1, 1, 1, "" + code, "");
                                     videoList.add(videoModel);*/
 
                                     String code = video.getFileName();
 
-                                    Log.e("VIDEO CODE : ", "------------------------ " + code);
+                                   // Log.e("VIDEO CODE : ", "------------------------ " + code);
 
                                     GallaryDetailList videoModel = new GallaryDetailList(1, 1, 1, 1, "1", "video 1", "aa", "", "", 1, "", "", 1, 1, 1, 1, 1, 1, "" + code, "");
                                     videoList.add(videoModel);
                                 }
                             } catch (Exception e) {
-                                e.printStackTrace();
+                               // e.printStackTrace();
                             }
 
 
@@ -357,7 +357,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                 }
                             }
 
-                            Log.e("Testimonial List: ", " -**************************************** " + detail.getTestimonialList());
+                            //Log.e("Testimonial List: ", " -**************************************** " + detail.getTestimonialList());
                             TestimonialAdapter tAdapter = new TestimonialAdapter(testimonialList, getContext());
                             testomonial_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
                             testomonial_recyclerView.setAdapter(tAdapter);
@@ -369,13 +369,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                     galleryList.add(detail.getPhotoList().get(i));
                                 }
                             }
-                            Log.e("Gallery List: ", " -**************************************** " + detail.getPhotoList());
+                            //Log.e("Gallery List: ", " -**************************************** " + detail.getPhotoList());
                             imageSlider(galleryList);
 
 
                             if (detail.getBaner() != null) {
                                 String imageUri = Constants.BANENR_URL + detail.getBaner().getSliderImage();
-                                Log.e("URI11111", "-----------" + imageUri);
+                                //Log.e("URI11111", "-----------" + imageUri);
                                 try {
                                     Picasso.with(getContext()).load(imageUri).placeholder(R.drawable.slider).into(iv_baner);
                                 } catch (Exception e) {
@@ -389,7 +389,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                 }
                             }
 
-                            Log.e("News List: ", " -**************************************** " + detail.getNewsList());
+                            //Log.e("News List: ", " -**************************************** " + detail.getNewsList());
                             NewsFeedAdapter nAdapter = new NewsFeedAdapter(newsList, getContext());
                             new_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
                             new_recyclerView.setAdapter(nAdapter);
@@ -399,31 +399,31 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                     companyList.add(detail.getCompanyList().get(i));
                                 }
                             }
-                            Log.e("Company List: ", " -**************************************** " + detail.getCompanyList());
+                            //Log.e("Company List: ", " -**************************************** " + detail.getCompanyList());
                             CompSliderAdapter cAdapter = new CompSliderAdapter(companyList, getContext());
                             comp_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
                             comp_recyclerView.setAdapter(cAdapter);
 
                             // homeList = response.body();
-                            Log.e("HOME LIST", "-------------------" + detail);
+                            //Log.e("HOME LIST", "-------------------" + detail);
                             commonDialog.dismiss();
 
                         } else {
                             commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----------");
+                            //Log.e("Data Null : ", "-----------");
                         }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                       // e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Detail> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure1 : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                   // Log.e("onFailure1 : ", "-----------" + t.getMessage());
+                   // t.printStackTrace();
                 }
             });
         } else {
@@ -459,7 +459,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     try {
                         if (response.body() != null) {
 
-                            Log.e("Company responce : ", " - " + response.body());
+                            //Log.e("Company responce : ", " - " + response.body());
                             companyList.clear();
                             companyList = response.body();
 
@@ -475,20 +475,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
                         } else {
                             commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----------");
+                           // Log.e("Data Null : ", "-----------");
                         }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                       // Log.e("Exception : ", "-----------" + e.getMessage());
+                       // e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ArrayList<CompanyModel>> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure1 : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure1 : ", "-----------" + t.getMessage());
+                   // t.printStackTrace();
                 }
             });
         } else {
@@ -512,7 +512,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     try {
                         if (response.body() != null) {
 
-                            Log.e("NEWS DATA : ", " - " + response.body());
+                            //Log.e("NEWS DATA : ", " - " + response.body());
 
                             Gson mGson = new Gson();
                             String mJson = mGson.toJson(response.body());
@@ -534,20 +534,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
                         } else {
                             commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----------");
+                          //  Log.e("Data Null : ", "-----------");
                         }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                      //  Log.e("Exception : ", "-----------" + e.getMessage());
+                      //  e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ArrayList<NewDetail>> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure1 : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                  //  Log.e("onFailure1 : ", "-----------" + t.getMessage());
+                   // t.printStackTrace();
                 }
             });
         } else {
@@ -592,7 +592,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             String title = galleryList.get(i).getTitle();
             //String title = gallaryDetailLists.get(i).getTitle();
             url_maps.put(title, image);
-            Log.e("Gallery", "----------" + url_maps);
+            //Log.e("Gallery", "----------" + url_maps);
         }
 
 
@@ -636,7 +636,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     try {
                         if (response.body() != null) {
 
-                            Log.e("UPCOMING EVENT LIST : ", " - " + response.body());
+                            //Log.e("UPCOMING EVENT LIST : ", " - " + response.body());
                             upcomingEventList.clear();
                             upcomingEventList = response.body();
 
@@ -654,20 +654,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
                         } else {
                             commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----------");
+                          //  Log.e("Data Null : ", "-----------");
                         }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                       // Log.e("Exception : ", "-----------" + e.getMessage());
+                       // e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ArrayList<UpcomingEvent>> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                   // Log.e("onFailure : ", "-----------" + t.getMessage());
+                   // t.printStackTrace();
                 }
             });
         } else {
@@ -689,7 +689,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     try {
                         if (response.body() != null) {
 
-                            Log.e("UPCOMING EVENT LIST : ", " - " + response.body());
+                            //Log.e("UPCOMING EVENT LIST : ", " - " + response.body());
                             //upcomingEventList.clear();
                             //upcomingEventList = response.body();
 
@@ -713,20 +713,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
                         } else {
                             commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----------");
+                           // //Log.e("Data Null : ", "-----------");
                         }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                      //  Log.e("Exception : ", "-----------" + e.getMessage());
+                      //  e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ArrayList<UpcomingEvent>> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                  //  Log.e("onFailure : ", "-----------" + t.getMessage());
+                  //  t.printStackTrace();
                 }
             });
         } else {

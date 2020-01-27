@@ -22,29 +22,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Constants {
 
-    // public static final String BASE_URL = "http://ats.aaryatechindia.in:6435/atswebapi/";
 
-    //public static final String BASE_URL = "http://192.168.2.6:8095/";
+  //  public static final String BASE_URL = "http://192.168.2.19:8094/";
 
-    //public static final String BASE_URL = "http://ats.aaryatechindia.in:15063/rusawebapi/";
-    //public static final String BASE_URL = "http://198.12.156.31:8080/RusaWebapi/";
     public static final String BASE_URL = "http://115.124.111.54:8080/RusaWebapi/";
-
-    // public static final String PDF_URL = "http://tomcat.aaryatechindia.in:6435/media/pdf/";
-   /* public static final String PDF_URL = "http://ats.aaryatechindia.in:15063/media/pdf/";
-    public static final String DOC_URL = "http://ats.aaryatechindia.in:15063/media/userdocument/";
-*/
 
     public static final String PDF_URL = "http://115.124.111.54:8080/mediarusa/pdf/";
     public static final String DOC_URL = "http://115.124.111.54:8080/mediarusa/userdocument/";
-
-
-    // public static final String GALLERY_URL = "http://tomcat.aaryatechindia.in:6435/media/gallery/";
-   // public static final String GALLERY_URL = "http://ats.aaryatechindia.in:15063/media/gallery/";
     public static final String GALLERY_URL = "http://115.124.111.54:8080/mediarusa/gallery/";
-
-    //public static final String BANENR_URL = "http://tomcat.aaryatechindia.in:6435/media/banenr/";
-    //public static final String BANENR_URL = "http://ats.aaryatechindia.in:15063/media/banenr/";
     public static final String BANENR_URL = "http://115.124.111.54:8080/mediarusa/banenr/";
 
     public static final String userName = "aaryatech";

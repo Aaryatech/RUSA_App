@@ -104,11 +104,11 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
         String upcomingStr = getIntent().getStringExtra("model");
         Gson gson = new Gson();
         upcomingEvent = gson.fromJson(upcomingStr, UpcomingEvent.class);
-        Log.e("responce", "-----------------------" + upcomingEvent);
+        //Log.e("responce", "-----------------------" + upcomingEvent);
 
         String userStr = CustomSharedPreference.getString(EventDetailListActivity.this, CustomSharedPreference.KEY_USER);
         loginUser = gson.fromJson(userStr, Login.class);
-        Log.e("LOGIN_ACTIVITY : ", "--------USER-------" + loginUser);
+        //Log.e("LOGIN_ACTIVITY : ", "--------USER-------" + loginUser);
 
         tv_eventName.setText(upcomingEvent.getHeading());
         tv_eventVenu.setText("" + upcomingEvent.getEventLocation());
@@ -117,10 +117,10 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
 
         try {
             String imageUri = Constants.GALLERY_URL + "" + upcomingEvent.getFeaturedImage();
-            Log.e("URI", "-----------" + imageUri);
+            //Log.e("URI", "-----------" + imageUri);
             Picasso.with(getApplicationContext()).load(imageUri).placeholder(getResources().getDrawable(R.drawable.logo_new)).into(imageView);
         } catch (Exception e) {
-            Log.e("Exception  : ", "-----------" + e.getMessage());
+            //Log.e("Exception  : ", "-----------" + e.getMessage());
         }
 
         try {
@@ -129,7 +129,7 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
             }
 
         } catch (Exception e) {
-            Log.e("Exception User : ", "-----------" + e.getMessage());
+            //Log.e("Exception User : ", "-----------" + e.getMessage());
         }
 
     }
@@ -157,13 +157,13 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
                 } else {
 
                     String Values = upcomingEvent.getExVar2().toString();
-                    Log.e("Values", "-------------" + Values);
+                    //Log.e("Values", "-------------" + Values);
 
                     List<String> items = new ArrayList<>();
 
                     items = Arrays.asList(Values.split("\\s*,\\s*"));
 
-                    Log.e("Values1", "-------------" + items);
+                    //Log.e("Values1", "-------------" + items);
 
                     String userType = String.valueOf(loginUser.getUserType());
 
@@ -221,8 +221,8 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
 
 
             } catch (Exception e) {
-                Log.e("Exception1 : ", "-----------" + e.getMessage());
-                e.printStackTrace();
+                //Log.e("Exception1 : ", "-----------" + e.getMessage());
+               // e.printStackTrace();
                 // Toast.makeText(EventDetailListActivity.this, "Not Apply For This Event", Toast.LENGTH_SHORT).show();
 
 
@@ -256,10 +256,10 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
                 @Override
                 public void onResponse(Call<Info> call, Response<Info> response) {
                     try {
-                        Log.e("ERROR : ", " - " + response.body().getError());
+                        //Log.e("ERROR : ", " - " + response.body().getError());
                         if (response.body().getError().equals(true)) {
 
-                            Log.e("APPLIED EVENT LIST : ", " - " + response.body());
+                            //Log.e("APPLIED EVENT LIST : ", " - " + response.body());
 
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                             EventRegistration eventRegistration = new EventRegistration(1, loginUser.getRegId(), sdf.format(System.currentTimeMillis()), upcomingEvent.getNewsblogsId(), 0, null, 0, fileName, 0, 1, 1, 0, 0, "", "");
@@ -268,7 +268,7 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
 
                         } else if (response.body().getError().equals(false)) {
 
-                            Log.e("APPLIED EVENT LIST1 : ", " - " + response.body());
+                            //Log.e("APPLIED EVENT LIST1 : ", " - " + response.body());
                             // Toast.makeText(EventDetailListActivity.this, "Already Applied For This Event", Toast.LENGTH_SHORT).show();
 
                             AlertDialog.Builder builder = new AlertDialog.Builder(EventDetailListActivity.this, R.style.AlertDialogTheme);
@@ -289,16 +289,16 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
 
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                       // e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Info> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                   // t.printStackTrace();
                 }
             });
         } else {
@@ -309,7 +309,7 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
 
     private void getEventRegistration(EventRegistration eventRegistration) {
         if (Constants.isOnline(getApplicationContext())) {
-            Log.e("PARAMETER : ", "---------------- EVENT REGISTRATION : " + eventRegistration);
+            //Log.e("PARAMETER : ", "---------------- EVENT REGISTRATION : " + eventRegistration);
 
             final CommonDialog commonDialog = new CommonDialog(EventDetailListActivity.this, "Loading", "Please Wait...");
             commonDialog.show();
@@ -323,8 +323,8 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
 
                             EventRegistration model = response.body();
 
-                            Log.e("EVENT REGISTRATION", "-----------------------------" + response.body());
-                            Log.e("EVENT REG MODEL", "-----------------------------" + model);
+                            //Log.e("EVENT REGISTRATION", "-----------------------------" + response.body());
+                            //Log.e("EVENT REG MODEL", "-----------------------------" + model);
 
                             //Toast.makeText(EventDetailListActivity.this, "Applied for this Event", Toast.LENGTH_SHORT).show();
 
@@ -344,20 +344,20 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
 
                         } else {
                             commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----------");
+                            //Log.e("Data Null : ", "-----------");
                         }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                       // e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<EventRegistration> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                   // t.printStackTrace();
                 }
             });
         } else {
@@ -374,7 +374,7 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
         super.onActivityResult(requestCode, resultCode, data);
         String realPath;
 
-        Log.e("EVENT DET LIST ACT", "---------------------- onActivityResult " + requestCode + " - " + resultCode);
+        //Log.e("EVENT DET LIST ACT", "---------------------- onActivityResult " + requestCode + " - " + resultCode);
 
         if (resultCode == RESULT_OK && requestCode == 1) {
             try {
@@ -384,12 +384,12 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
                     return;
                 }
                 Uri selectedFileUri = data.getData();
-                Log.e("UriPath", "----------" + selectedFileUri.getPath());
+                //Log.e("UriPath", "----------" + selectedFileUri.getPath());
 
-                Log.e("FILE URI ", "********************* " + getContentResolver().openInputStream(selectedFileUri).toString());
+                //Log.e("FILE URI ", "********************* " + getContentResolver().openInputStream(selectedFileUri).toString());
 
 
-                Log.e("DATA PATH", "---------------------- " + getPath(EventDetailListActivity.this, selectedFileUri));
+                //Log.e("DATA PATH", "---------------------- " + getPath(EventDetailListActivity.this, selectedFileUri));
 
                 imagePath = getPath(EventDetailListActivity.this, selectedFileUri);
                 if (getPath(EventDetailListActivity.this, selectedFileUri) == null) {
@@ -411,8 +411,8 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
-                Log.e("EVENT DET LIST ACT : ", "-----Exception : ------" + e.getMessage());
+               // e.printStackTrace();
+                //Log.e("EVENT DET LIST ACT : ", "-----Exception : ------" + e.getMessage());
             }
         }
     }
@@ -489,7 +489,7 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
                 commonDialog.dismiss();
                 //  addNewNotification(bean);
                 imagePath = "";
-                Log.e("Response : ", "--" + response.body());
+                //Log.e("Response : ", "--" + response.body());
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(EventDetailListActivity.this, R.style.AlertDialogTheme);
                 builder.setTitle("Alert");
@@ -515,9 +515,9 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
 
             @Override
             public void onFailure(Call<JSONObject> call, Throwable t) {
-                Log.e("Error : ", "--" + t.getMessage());
+                //Log.e("Error : ", "--" + t.getMessage());
                 commonDialog.dismiss();
-                t.printStackTrace();
+              //  t.printStackTrace();
                 //Toast.makeText(EventDetailListActivity.this, "Unable To Process", Toast.LENGTH_SHORT).show();
                 imagePath = "";
                // getAppliedEvent(eventId, regId, filename);

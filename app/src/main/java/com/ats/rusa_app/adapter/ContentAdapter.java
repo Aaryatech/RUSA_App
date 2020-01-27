@@ -83,7 +83,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.MyViewHo
 
             if (model.getCmsContentList() != null) {
                 holder.cmsRecyclerView.setVisibility(View.VISIBLE);
-                Log.e("CONTENT ADAPTER","**********************************************************");
+                //Log.e("CONTENT ADAPTER","**********************************************************");
 
                 ArrayList<CmsContentList> cmsList = new ArrayList<>();
                 for (int i = 0; i < model.getCmsContentList().size(); i++) {
@@ -186,7 +186,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.MyViewHo
                     teamList.add(model.getTeamList().get(i));
                 }
 
-                Log.e("TEAM LIST","-------------------- "+teamList);
+                //Log.e("TEAM LIST","-------------------- "+teamList);
 
                 RvTeamListAdapter adapter = new RvTeamListAdapter(teamList, context);
                 RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
@@ -205,7 +205,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.MyViewHo
                     successLists.add(model.getSuccessList().get(i));
                 }
 
-                Log.e("SUCCESS STORY LIST","-------------------- "+successLists);
+                //Log.e("SUCCESS STORY LIST","-------------------- "+successLists);
 
                 RvSuccessStoryListAdapter adapter = new RvSuccessStoryListAdapter(successLists, context);
                 RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);

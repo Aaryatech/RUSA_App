@@ -57,7 +57,7 @@ public class PhotoGalleryFragment extends Fragment {
 
     private void getCategoryListWithImageCount(int sectionId, int langId) {
         if (Constants.isOnline(getActivity())) {
-            Log.e("PARAMETER : ", "---------------- SECTION ID : " + sectionId+ "langId" +langId);
+            //Log.e("PARAMETER : ", "---------------- SECTION ID : " + sectionId+ "langId" +langId);
 
             final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
             commonDialog.show();
@@ -71,8 +71,8 @@ public class PhotoGalleryFragment extends Fragment {
 
                             List<Gallery> model = response.body();
                             eventListCount= response.body();
-                            Log.e("GALLERY CAT LIST COUNT", "-----------------------------" + model);
-                            Log.e("GALLERY CAT LIST COUNT1", "-----------------------------" + eventListCount);
+                            //Log.e("GALLERY CAT LIST COUNT", "-----------------------------" + model);
+                            //Log.e("GALLERY CAT LIST COUNT1", "-----------------------------" + eventListCount);
 
                             GalleryEventCountAdapter adapter = new GalleryEventCountAdapter(eventListCount, getContext());
                             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
@@ -85,20 +85,20 @@ public class PhotoGalleryFragment extends Fragment {
 
                         } else {
                             commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----------");
+                            //Log.e("Data Null : ", "-----------");
                         }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                      //  e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ArrayList<Gallery>> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                   // t.printStackTrace();
                 }
             });
         } else {
@@ -109,7 +109,7 @@ public class PhotoGalleryFragment extends Fragment {
 
     private void getCatBySection(int sectionId) {
         if (Constants.isOnline(getActivity())) {
-            Log.e("PARAMETER : ", "---------------- SECTION ID : " + sectionId);
+            //Log.e("PARAMETER : ", "---------------- SECTION ID : " + sectionId);
 
             final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
             commonDialog.show();
@@ -123,7 +123,7 @@ public class PhotoGalleryFragment extends Fragment {
 
                             List<GetGalleryCategory> model = response.body();
 
-                            Log.e("GALLERY CAT LIST", "-----------------------------" + model);
+                            //Log.e("GALLERY CAT LIST", "-----------------------------" + model);
 
                             if (model != null) {
                                 ArrayList<GetGalleryCategory> eventList = new ArrayList<>();
@@ -147,20 +147,20 @@ public class PhotoGalleryFragment extends Fragment {
 
                         } else {
                             commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----------");
+                            //Log.e("Data Null : ", "-----------");
                         }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                       // e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<List<GetGalleryCategory>> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                   // t.printStackTrace();
                 }
             });
         } else {

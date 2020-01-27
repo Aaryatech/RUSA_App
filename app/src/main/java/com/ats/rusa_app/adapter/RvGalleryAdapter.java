@@ -62,7 +62,7 @@ public class RvGalleryAdapter extends RecyclerView.Adapter<RvGalleryAdapter.MyVi
         final GallaryDetailList model = galleryList.get(position);
 
         if (model.getTypeVideoImage().equals("3")) {
-            Log.e("TYPE : ", "- ------ 3");
+            //Log.e("TYPE : ", "- ------ 3");
             holder.llImage.setVisibility(View.VISIBLE);
             holder.llVideo.setVisibility(View.GONE);
 
@@ -72,7 +72,7 @@ public class RvGalleryAdapter extends RecyclerView.Adapter<RvGalleryAdapter.MyVi
             }
 
         } else if (model.getTypeVideoImage().equals("4")) {
-            Log.e("TYPE : ", "- ------ 4");
+            //Log.e("TYPE : ", "- ------ 4");
             holder.llImage.setVisibility(View.GONE);
             holder.llVideo.setVisibility(View.VISIBLE);
 

@@ -48,9 +48,9 @@ public class GalleryDisplayFragment extends Fragment {
             Type typePic = new TypeToken<ArrayList<GallaryDetailList>>() {
             }.getType();
             staticPhotosList = gson.fromJson(picStr, typePic);
-            Log.e("GAL DISP FRAG - "," ------------PIC-------------- "+staticPhotosList);
+            //Log.e("GAL DISP FRAG - "," ------------PIC-------------- "+staticPhotosList);
         } catch (Exception e) {
-            Log.e("GAL DISP FRAG", "----------PIC------------- EXCEPTION : " + e.getMessage());
+            //Log.e("GAL DISP FRAG", "----------PIC------------- EXCEPTION : " + e.getMessage());
         }
 
         try {
@@ -59,9 +59,9 @@ public class GalleryDisplayFragment extends Fragment {
             Type typeVid = new TypeToken<ArrayList<VideoList>>() {
             }.getType();
             staticVideosList = gson.fromJson(vidStr, typeVid);
-            Log.e("GAL DISP FRAG - "," -----------VID--------------- "+staticVideosList);
+            //Log.e("GAL DISP FRAG - "," -----------VID--------------- "+staticVideosList);
         } catch (Exception e) {
-            Log.e("GAL DISP FRAG", "-------------VID---------- EXCEPTION : " + e.getMessage());
+            //Log.e("GAL DISP FRAG", "-------------VID---------- EXCEPTION : " + e.getMessage());
         }
 
 

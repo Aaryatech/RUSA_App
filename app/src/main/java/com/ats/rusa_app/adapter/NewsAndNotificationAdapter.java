@@ -78,8 +78,8 @@ public class NewsAndNotificationAdapter extends RecyclerView.Adapter<NewsAndNoti
                         context.startActivity(intent);
                     }
                 } catch (Exception e) {
-                    Log.e("Exception : ", "-----------" + e.getMessage());
-                    e.printStackTrace();
+                   // Log.e("Exception : ", "-----------" + e.getMessage());
+                   // e.printStackTrace();
                 }
 
 

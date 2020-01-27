@@ -72,8 +72,8 @@ public class NewContentFragment extends Fragment {
             slugName = getArguments().getString("slugName");
             getPageData(slugName, languageId);
         } catch (Exception e) {
-            Log.e("ContentFrag : ", " ----------- " + e.getMessage());
-            e.printStackTrace();
+            //Log.e("ContentFrag : ", " ----------- " + e.getMessage());
+          //  e.printStackTrace();
         }
 
         return view;
@@ -93,7 +93,7 @@ public class NewContentFragment extends Fragment {
                     try {
                         if (response.body() != null) {
 
-                            Log.e("PAGE DATA : ", " - " + response.body());
+                            //Log.e("PAGE DATA : ", " - " + response.body());
 
                             PageData model = response.body();
                             model.setSlugName(slugName);
@@ -153,7 +153,7 @@ public class NewContentFragment extends Fragment {
                                         flag = true;
                                     }
                                 }else if (model.getTeamList() != null) {
-                                    Log.e("NEW CONTENT FRG","------------------ TEAM");
+                                    //Log.e("NEW CONTENT FRG","------------------ TEAM");
                                     if (model.getTeamList().size() == 0) {
                                         tvNoRecord.setVisibility(View.VISIBLE);
                                         flag = false;
@@ -161,7 +161,7 @@ public class NewContentFragment extends Fragment {
                                         flag = true;
                                     }
                                 }else if (model.getSuccessList() != null) {
-                                    Log.e("NEW CONTENT FRG","------------------ Success Stories");
+                                    //Log.e("NEW CONTENT FRG","------------------ Success Stories");
                                     if (model.getSuccessList().size() == 0) {
                                         tvNoRecord.setVisibility(View.VISIBLE);
                                         flag = false;
@@ -186,13 +186,13 @@ public class NewContentFragment extends Fragment {
 
                         } else {
                             commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----------");
+                            //Log.e("Data Null : ", "-----------");
                             tvNoRecord.setVisibility(View.VISIBLE);
                         }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                       // e.printStackTrace();
                         tvNoRecord.setVisibility(View.VISIBLE);
                     }
                 }
@@ -200,8 +200,8 @@ public class NewContentFragment extends Fragment {
                 @Override
                 public void onFailure(Call<PageData> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                   // t.printStackTrace();
                     tvNoRecord.setVisibility(View.VISIBLE);
                 }
             });

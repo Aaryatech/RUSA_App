@@ -57,7 +57,7 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.MyViewHold
             public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, final YouTubeThumbnailLoader youTubeThumbnailLoader) {
                 youTubeThumbnailLoader.setVideo(model.getExVar1());
 
-                Log.e("Vedio model","----------------"+model.getFileName());
+               // Log.e("Vedio model","----------------"+model.getFileName());
                 //model.getExVar1()
                 youTubeThumbnailLoader.setOnThumbnailLoadedListener(new YouTubeThumbnailLoader.OnThumbnailLoadedListener() {
                     @Override

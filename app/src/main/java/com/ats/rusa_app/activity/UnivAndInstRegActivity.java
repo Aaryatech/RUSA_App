@@ -194,7 +194,7 @@ public class UnivAndInstRegActivity extends AppCompatActivity implements View.On
 
 
                 Reg registration = new Reg(0, uniqueId, userType, strEmail, strAlterEmail, "0", strInst, strCode, String.valueOf(instId), String.valueOf(uniId), strDesg, strDept, strMobile, "", null, "", "", "Android", 0, 1, sdf.format(System.currentTimeMillis()), null, 0, 0, 0, "", "", "", 0, "", 0, 0);
-                Log.e("Registration", "--------------" + registration);
+                //Log.e("Registration", "--------------" + registration);
 //                    getRegistration(registration);
 
                 if (isReg == 1) {
@@ -234,7 +234,7 @@ public class UnivAndInstRegActivity extends AppCompatActivity implements View.On
                     try {
 
 
-                        Log.e("RESPONSE ", "-----------------------------" + response.body());
+                        //Log.e("RESPONSE ", "-----------------------------" + response.body());
 
                         if (response.body() != null) {
 
@@ -266,8 +266,8 @@ public class UnivAndInstRegActivity extends AppCompatActivity implements View.On
                         // }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                       // e.printStackTrace();
                         edUniName.setText("");
                         edInstName.setText("");
 
@@ -290,8 +290,8 @@ public class UnivAndInstRegActivity extends AppCompatActivity implements View.On
                 @Override
                 public void onFailure(Call<Institute> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                   // t.printStackTrace();
                     edUniName.setText("");
                     edInstName.setText("");
 
@@ -316,7 +316,7 @@ public class UnivAndInstRegActivity extends AppCompatActivity implements View.On
 
 
     private void getCheckUniqueFieldMobile(String inputValue, final String email, final Reg reg) {
-        Log.e("PARAMETERS : ", "        INPUT VALUE : " + inputValue + "      VALUE TYPE : " + 1 + "      PRIMARY KEY : " + 0);
+        //Log.e("PARAMETERS : ", "        INPUT VALUE : " + inputValue + "      VALUE TYPE : " + 1 + "      PRIMARY KEY : " + 0);
 
         if (Constants.isOnline(getApplicationContext())) {
             final CommonDialog commonDialog = new CommonDialog(UnivAndInstRegActivity.this, "Loading", "Please Wait...");
@@ -327,7 +327,7 @@ public class UnivAndInstRegActivity extends AppCompatActivity implements View.On
                 @Override
                 public void onResponse(Call<Info> call, Response<Info> response) {
                     try {
-                        Log.e("RESPONCE UNICE", "-----------------------------" + response.body());
+                        //Log.e("RESPONCE UNICE", "-----------------------------" + response.body());
 
                         if (response.body() == null) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(UnivAndInstRegActivity.this, R.style.AlertDialogTheme);
@@ -366,8 +366,8 @@ public class UnivAndInstRegActivity extends AppCompatActivity implements View.On
                         // }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                       // e.printStackTrace();
                         AlertDialog.Builder builder = new AlertDialog.Builder(UnivAndInstRegActivity.this, R.style.AlertDialogTheme);
                         builder.setTitle("Error");
                         builder.setMessage("something went wrong, please try again later");
@@ -386,8 +386,8 @@ public class UnivAndInstRegActivity extends AppCompatActivity implements View.On
                 @Override
                 public void onFailure(Call<Info> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                   // t.printStackTrace();
                     AlertDialog.Builder builder = new AlertDialog.Builder(UnivAndInstRegActivity.this, R.style.AlertDialogTheme);
                     builder.setTitle("Error");
                     builder.setMessage("something went wrong, please try again later");
@@ -410,7 +410,7 @@ public class UnivAndInstRegActivity extends AppCompatActivity implements View.On
 
 
     private void getCheckUniqueFieldEmail(String inputValue, final Reg reg) {
-        Log.e("PARAMETERS : ", "        INPUT VALUE : " + inputValue + "      VALUE TYPE : " + 2 + "      PRIMARY KEY : " + 0);
+        //Log.e("PARAMETERS : ", "        INPUT VALUE : " + inputValue + "      VALUE TYPE : " + 2 + "      PRIMARY KEY : " + 0);
 
         if (Constants.isOnline(getApplicationContext())) {
             final CommonDialog commonDialog = new CommonDialog(UnivAndInstRegActivity.this, "Loading", "Please Wait...");
@@ -421,7 +421,7 @@ public class UnivAndInstRegActivity extends AppCompatActivity implements View.On
                 @Override
                 public void onResponse(Call<Info> call, Response<Info> response) {
                     try {
-                        Log.e("RESPONCE UNICE", "-----------------------------" + response.body());
+                        //Log.e("RESPONCE UNICE", "-----------------------------" + response.body());
 
                         if (response.body() == null) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(UnivAndInstRegActivity.this, R.style.AlertDialogTheme);
@@ -460,8 +460,8 @@ public class UnivAndInstRegActivity extends AppCompatActivity implements View.On
                         // }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                       // e.printStackTrace();
                         AlertDialog.Builder builder = new AlertDialog.Builder(UnivAndInstRegActivity.this, R.style.AlertDialogTheme);
                         builder.setTitle("Error");
                         builder.setMessage("something went wrong, please try again later");
@@ -480,8 +480,8 @@ public class UnivAndInstRegActivity extends AppCompatActivity implements View.On
                 @Override
                 public void onFailure(Call<Info> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                   // t.printStackTrace();
                     AlertDialog.Builder builder = new AlertDialog.Builder(UnivAndInstRegActivity.this, R.style.AlertDialogTheme);
                     builder.setTitle("Error");
                     builder.setMessage("something went wrong, please try again later");
@@ -513,7 +513,7 @@ public class UnivAndInstRegActivity extends AppCompatActivity implements View.On
     private void getRegistration(Reg registration) {
 
         if (Constants.isOnline(getApplicationContext())) {
-            Log.e("PARAMETER : ", "---------------- REGISTRATION : " + registration);
+            //Log.e("PARAMETER : ", "---------------- REGISTRATION : " + registration);
 
             final CommonDialog commonDialog = new CommonDialog(UnivAndInstRegActivity.this, "Loading", "Please Wait...");
             commonDialog.show();
@@ -530,8 +530,8 @@ public class UnivAndInstRegActivity extends AppCompatActivity implements View.On
                             Gson gson = new Gson();
                             String json = gson.toJson(model);
 
-                            Log.e("SAVE REGISTRATION", "-----------------------------" + response.body());
-                            Log.e("SAVE REGISTRATION MODEL", "-----------------------------" + model);
+                            //Log.e("SAVE REGISTRATION", "-----------------------------" + response.body());
+                            //Log.e("SAVE REGISTRATION MODEL", "-----------------------------" + model);
 
                             Intent intent = new Intent(UnivAndInstRegActivity.this, OTPVerificationActivity.class);
                             intent.putExtra("code", smsCode);
@@ -545,20 +545,20 @@ public class UnivAndInstRegActivity extends AppCompatActivity implements View.On
 
                         } else {
                             commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----REG------");
+                            //Log.e("Data Null : ", "-----REG------");
                         }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                       // e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Reg> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                   // t.printStackTrace();
                 }
             });
         } else {

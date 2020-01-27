@@ -110,8 +110,8 @@ public class ContentFragment extends Fragment implements Html.ImageGetter {
             slugName = getArguments().getString("slugName");
             getPageData(slugName,languageId);
         } catch (Exception e) {
-            Log.e("ContentFrag : ", " ----------- " + e.getMessage());
-            e.printStackTrace();
+            //Log.e("ContentFrag : ", " ----------- " + e.getMessage());
+           // e.printStackTrace();
         }
 
         return view;
@@ -130,7 +130,7 @@ public class ContentFragment extends Fragment implements Html.ImageGetter {
                     try {
                         if (response.body() != null) {
 
-                            Log.e("PAGE DATA : ", " - " + response.body());
+                            //Log.e("PAGE DATA : ", " - " + response.body());
 
                             PageData model = response.body();
 
@@ -190,7 +190,7 @@ public class ContentFragment extends Fragment implements Html.ImageGetter {
                                     try {
                                         tvHtmlTxt.setHtml(htmlText, new HtmlHttpImageGetter(tvHtmlTxt));
                                     } catch (Exception e) {
-                                        Log.e("Hello", "-------------Hii");
+                                        //Log.e("Hello", "-------------Hii");
                                         llHtml.setVisibility(View.GONE);
                                         llWebview.setVisibility(View.VISIBLE);
 
@@ -295,20 +295,20 @@ public class ContentFragment extends Fragment implements Html.ImageGetter {
 
                         } else {
                             commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----------");
+                            //Log.e("Data Null : ", "-----------");
                         }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                       // e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<PageData> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                   // t.printStackTrace();
                 }
             });
         } else {
@@ -338,24 +338,24 @@ public class ContentFragment extends Fragment implements Html.ImageGetter {
         protected Bitmap doInBackground(Object... params) {
             String source = (String) params[0];
             mDrawable = (LevelListDrawable) params[1];
-            Log.d(TAG, "doInBackground " + source);
+            //Log.d(TAG, "doInBackground " + source);
             try {
                 InputStream is = new URL(source).openStream();
                 return BitmapFactory.decodeStream(is);
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
+               // e.printStackTrace();
             } catch (MalformedURLException e) {
-                e.printStackTrace();
+               // e.printStackTrace();
             } catch (IOException e) {
-                e.printStackTrace();
+               // e.printStackTrace();
             }
             return null;
         }
 
         @Override
         protected void onPostExecute(Bitmap bitmap) {
-            Log.d(TAG, "onPostExecute drawable " + mDrawable);
-            Log.d(TAG, "onPostExecute bitmap " + bitmap);
+            //Log.d(TAG, "onPostExecute drawable " + mDrawable);
+            //Log.d(TAG, "onPostExecute bitmap " + bitmap);
             if (bitmap != null) {
                 BitmapDrawable d = new BitmapDrawable(bitmap);
                 mDrawable.addLevel(1, 1, d);

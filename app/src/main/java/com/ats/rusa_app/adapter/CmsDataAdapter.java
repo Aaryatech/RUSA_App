@@ -98,7 +98,7 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         final CmsContentList model = cmsList.get(position);
-        Log.e("CMS", "------------------------ " + model);
+        //Log.e("CMS", "------------------------ " + model);
 
         holder.llHtml.setVisibility(View.VISIBLE);
 
@@ -119,7 +119,7 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
                 try {
                     holder.ivImg.setVisibility(View.VISIBLE);
                     Picasso.with(context).load(Constants.GALLERY_URL + model.getFeaturedImage()).placeholder(R.drawable.img_placeholder).into(holder.ivImg);
-                    Log.e("ImageStruct", "-------------------" + Constants.GALLERY_URL + model.getFeaturedImage());
+                    //Log.e("ImageStruct", "-------------------" + Constants.GALLERY_URL + model.getFeaturedImage());
                 } catch (Exception e) {
                 }
             }
@@ -192,7 +192,7 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
         holder.tvHtmlTxt.setListIndentPx(metrics.density * 10);
 
         if (htmlText.contains("src")) {
-            Log.e("Hiii", "--------------");
+            //Log.e("Hiii", "--------------");
         }
 
         try {
@@ -240,11 +240,11 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
 //            holder.tvHtmlTxt.setListIndentPx(metrics.density * 10);
 
 
-            Log.e("CMS DATA ADPT ", "----------------- WIDTH  = " + smallestWidth);
+            //Log.e("CMS DATA ADPT ", "----------------- WIDTH  = " + smallestWidth);
 
             if (smallestWidth > 600) {
                 //Device is a 7" tablet
-                Log.e("CMS DATA ADPT", "-------------------------------- 7 inch");
+                //Log.e("CMS DATA ADPT", "-------------------------------- 7 inch");
 
                 String temp = htmlText;
 
@@ -253,7 +253,7 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
                         "</html>";
 
                 holder.tvHtmlTxt.setHtml(temp, new HtmlHttpImageGetter(holder.tvHtmlTxt));
-                Log.e("html Text", "---------------------" + temp);
+                //Log.e("html Text", "---------------------" + temp);
 
             } else {
 
@@ -266,7 +266,7 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
                             "</html>";
 
                     holder.tvHtmlTxt.setHtml(temp, new HtmlHttpImageGetter(holder.tvHtmlTxt));
-                    Log.e("html Text", "---------------------" + temp);
+                    //Log.e("html Text", "---------------------" + temp);
 
                 } else {
 
@@ -278,7 +278,7 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
                                 "</html>";
 
                         holder.tvHtmlTxt.setHtml(temp, new HtmlHttpImageGetter(holder.tvHtmlTxt));
-                        Log.e("html Text", "---------------------" + temp);
+                        //Log.e("html Text", "---------------------" + temp);
 
                     } else {
 
@@ -296,7 +296,7 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
                                 "</html>";
 
                         holder.tvHtmlTxt.setHtml(temp, new HtmlHttpImageGetterNew(holder.tvHtmlTxt));
-                        Log.e("html Text", "---------------------" + temp);
+                        //Log.e("html Text", "---------------------" + temp);
                     }
 
                 }
@@ -306,16 +306,16 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
 
 
         } catch (Exception e) {
-            Log.e("Hello", "-------------Hii");
+            //Log.e("Hello", "-------------Hii");
             holder.llHtml.setVisibility(View.GONE);
             holder.llWebview.setVisibility(View.VISIBLE);
 
-            e.printStackTrace();
+           // e.printStackTrace();
 
         }
 
         if (htmlText.contains("iframe")) {
-            Log.e("CMS DATA ADPT ", "*****************************************  IFRAME");
+            //Log.e("CMS DATA ADPT ", "*****************************************  IFRAME");
             holder.llHtml.setVisibility(View.GONE);
             holder.llWebview.setVisibility(View.VISIBLE);
 
@@ -350,24 +350,24 @@ public class CmsDataAdapter extends RecyclerView.Adapter<CmsDataAdapter.MyViewHo
         protected Bitmap doInBackground(Object... params) {
             String source = (String) params[0];
             mDrawable = (LevelListDrawable) params[1];
-            Log.d(TAG, "doInBackground " + source);
+            //Log.d(TAG, "doInBackground " + source);
             try {
                 InputStream is = new URL(source).openStream();
                 return BitmapFactory.decodeStream(is);
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
+               // e.printStackTrace();
             } catch (MalformedURLException e) {
-                e.printStackTrace();
+               // e.printStackTrace();
             } catch (IOException e) {
-                e.printStackTrace();
+               // e.printStackTrace();
             }
             return null;
         }
 
         @Override
         protected void onPostExecute(Bitmap bitmap) {
-            Log.d(TAG, "onPostExecute drawable " + mDrawable);
-            Log.d(TAG, "onPostExecute bitmap " + bitmap);
+            //Log.d(TAG, "onPostExecute drawable " + mDrawable);
+            //Log.d(TAG, "onPostExecute bitmap " + bitmap);
             if (bitmap != null) {
                 BitmapDrawable d = new BitmapDrawable(bitmap);
                 mDrawable.addLevel(1, 1, d);

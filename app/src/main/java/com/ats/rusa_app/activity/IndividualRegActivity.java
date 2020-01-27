@@ -202,7 +202,7 @@ public class IndividualRegActivity extends AppCompatActivity implements View.OnC
                 int uniId = uniIdList.get(spUniversity.getSelectedItemPosition());
 
                 Reg registration = new Reg(0, uniqueId, 1, strEmail, strAlterEmail, "0", strName, strCode, String.valueOf(instId), String.valueOf(uniId), strDesg, strDept, strMobile, "", null, "", "", "Android", 0, 1, sdf.format(System.currentTimeMillis()), null, 0, 0, 0, "", "", "", 0, "", 0, 0);
-                Log.e("Registration", "--------------" + registration);
+                //Log.e("Registration", "--------------" + registration);
 //                    getRegistration(registration);
 
                 getCheckUniqueFieldMobile(strMobile, strEmail, registration);
@@ -240,7 +240,7 @@ public class IndividualRegActivity extends AppCompatActivity implements View.OnC
 
                         edCode.setText("");
 
-                        Log.e("RESPONSE ", "-----------------------------" + response.body());
+                        //Log.e("RESPONSE ", "-----------------------------" + response.body());
 
                         if (response.body() != null) {
 
@@ -262,8 +262,8 @@ public class IndividualRegActivity extends AppCompatActivity implements View.OnC
                         // }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                       // e.printStackTrace();
 
                     }
                 }
@@ -271,8 +271,8 @@ public class IndividualRegActivity extends AppCompatActivity implements View.OnC
                 @Override
                 public void onFailure(Call<ArrayList<University>> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                   // t.printStackTrace();
 
                 }
             });
@@ -298,7 +298,7 @@ public class IndividualRegActivity extends AppCompatActivity implements View.OnC
                         instIdList.add(0);
                         instNameList.add("Select Institute");
 
-                        Log.e("RESPONSE ", "-----------------------------" + response.body());
+                        //Log.e("RESPONSE ", "-----------------------------" + response.body());
 
                         if (response.body() != null) {
 
@@ -318,8 +318,8 @@ public class IndividualRegActivity extends AppCompatActivity implements View.OnC
                         // }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                       // e.printStackTrace();
 
                     }
                 }
@@ -327,8 +327,8 @@ public class IndividualRegActivity extends AppCompatActivity implements View.OnC
                 @Override
                 public void onFailure(Call<ArrayList<Institute>> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                   // t.printStackTrace();
 
                 }
             });
@@ -338,7 +338,7 @@ public class IndividualRegActivity extends AppCompatActivity implements View.OnC
 
 
     private void getCheckUniqueFieldMobile(String inputValue, final String email, final Reg reg) {
-        Log.e("PARAMETERS : ", "        INPUT VALUE : " + inputValue + "      VALUE TYPE : " + 1 + "      PRIMARY KEY : " + 0);
+        //Log.e("PARAMETERS : ", "        INPUT VALUE : " + inputValue + "      VALUE TYPE : " + 1 + "      PRIMARY KEY : " + 0);
 
         if (Constants.isOnline(getApplicationContext())) {
             final CommonDialog commonDialog = new CommonDialog(IndividualRegActivity.this, "Loading", "Please Wait...");
@@ -349,7 +349,7 @@ public class IndividualRegActivity extends AppCompatActivity implements View.OnC
                 @Override
                 public void onResponse(Call<Info> call, Response<Info> response) {
                     try {
-                        Log.e("RESPONCE UNICE", "-----------------------------" + response.body());
+                        //Log.e("RESPONCE UNICE", "-----------------------------" + response.body());
 
                         if (response.body() == null) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(IndividualRegActivity.this, R.style.AlertDialogTheme);
@@ -388,8 +388,8 @@ public class IndividualRegActivity extends AppCompatActivity implements View.OnC
                         // }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                       // e.printStackTrace();
                         AlertDialog.Builder builder = new AlertDialog.Builder(IndividualRegActivity.this, R.style.AlertDialogTheme);
                         builder.setTitle("Error");
                         builder.setMessage("something went wrong, please try again later");
@@ -408,8 +408,8 @@ public class IndividualRegActivity extends AppCompatActivity implements View.OnC
                 @Override
                 public void onFailure(Call<Info> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                  //  t.printStackTrace();
                     AlertDialog.Builder builder = new AlertDialog.Builder(IndividualRegActivity.this, R.style.AlertDialogTheme);
                     builder.setTitle("Error");
                     builder.setMessage("something went wrong, please try again later");
@@ -432,7 +432,7 @@ public class IndividualRegActivity extends AppCompatActivity implements View.OnC
 
 
     private void getCheckUniqueFieldEmail(String inputValue, final Reg reg) {
-        Log.e("PARAMETERS : ", "        INPUT VALUE : " + inputValue + "      VALUE TYPE : " + 2 + "      PRIMARY KEY : " + 0);
+        //Log.e("PARAMETERS : ", "        INPUT VALUE : " + inputValue + "      VALUE TYPE : " + 2 + "      PRIMARY KEY : " + 0);
 
         if (Constants.isOnline(getApplicationContext())) {
             final CommonDialog commonDialog = new CommonDialog(IndividualRegActivity.this, "Loading", "Please Wait...");
@@ -443,7 +443,7 @@ public class IndividualRegActivity extends AppCompatActivity implements View.OnC
                 @Override
                 public void onResponse(Call<Info> call, Response<Info> response) {
                     try {
-                        Log.e("RESPONCE UNICE", "-----------------------------" + response.body());
+                        //Log.e("RESPONCE UNICE", "-----------------------------" + response.body());
 
                         if (response.body() == null) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(IndividualRegActivity.this, R.style.AlertDialogTheme);
@@ -482,8 +482,8 @@ public class IndividualRegActivity extends AppCompatActivity implements View.OnC
                         // }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                      //  e.printStackTrace();
                         AlertDialog.Builder builder = new AlertDialog.Builder(IndividualRegActivity.this, R.style.AlertDialogTheme);
                         builder.setTitle("Error");
                         builder.setMessage("something went wrong, please try again later");
@@ -502,8 +502,8 @@ public class IndividualRegActivity extends AppCompatActivity implements View.OnC
                 @Override
                 public void onFailure(Call<Info> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                  //  t.printStackTrace();
                     AlertDialog.Builder builder = new AlertDialog.Builder(IndividualRegActivity.this, R.style.AlertDialogTheme);
                     builder.setTitle("Error");
                     builder.setMessage("something went wrong, please try again later");
@@ -535,7 +535,7 @@ public class IndividualRegActivity extends AppCompatActivity implements View.OnC
     private void getRegistration(Reg registration) {
 
         if (Constants.isOnline(getApplicationContext())) {
-            Log.e("PARAMETER : ", "---------------- REGISTRATION : " + registration);
+            //Log.e("PARAMETER : ", "---------------- REGISTRATION : " + registration);
 
             final CommonDialog commonDialog = new CommonDialog(IndividualRegActivity.this, "Loading", "Please Wait...");
             commonDialog.show();
@@ -552,8 +552,8 @@ public class IndividualRegActivity extends AppCompatActivity implements View.OnC
                             Gson gson = new Gson();
                             String json = gson.toJson(model);
 
-                            Log.e("SAVE REGISTRATION", "-----------------------------" + response.body());
-                            Log.e("SAVE REGISTRATION MODEL", "-----------------------------" + model);
+                            //Log.e("SAVE REGISTRATION", "-----------------------------" + response.body());
+                            //Log.e("SAVE REGISTRATION MODEL", "-----------------------------" + model);
 
                             Intent intent = new Intent(IndividualRegActivity.this, OTPVerificationActivity.class);
                             intent.putExtra("code", smsCode);
@@ -567,20 +567,20 @@ public class IndividualRegActivity extends AppCompatActivity implements View.OnC
 
                         } else {
                             commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----REG------");
+                            //Log.e("Data Null : ", "-----REG------");
                         }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                      //  e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Reg> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                  //  t.printStackTrace();
                 }
             });
         } else {

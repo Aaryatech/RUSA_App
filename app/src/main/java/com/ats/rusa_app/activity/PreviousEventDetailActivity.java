@@ -56,11 +56,11 @@ public class PreviousEventDetailActivity extends AppCompatActivity {
         String previousStr = getIntent().getStringExtra("model");
         Gson gson = new Gson();
         previousEvent = gson.fromJson(previousStr, PrevEvent.class);
-        Log.e("responce","-----------------------"+previousEvent);
+        //Log.e("responce","-----------------------"+previousEvent);
 
         String userStr = CustomSharedPreference.getString(getApplicationContext(), CustomSharedPreference.KEY_USER);
         loginUser = gson.fromJson(userStr, Login.class);
-        Log.e("HOME_ACTIVITY : ", "--------USER-------" + loginUser);
+        //Log.e("HOME_ACTIVITY : ", "--------USER-------" + loginUser);
 
         getPrevEvetFeedback(loginUser.getRegId(),previousEvent.getNewsblogsId());
 
@@ -71,17 +71,17 @@ public class PreviousEventDetailActivity extends AppCompatActivity {
 
         try {
             String imageUri = Constants.GALLERY_URL + "" + previousEvent.getFeaturedImage();
-            Log.e("URI", "-----------" + imageUri);
+            //Log.e("URI", "-----------" + imageUri);
             Picasso.with(getApplicationContext()).load(imageUri).placeholder(getResources().getDrawable(R.drawable.logo_new)).into(imageView);
         } catch (Exception e) {
-            Log.e("Exception  : ", "-----------" + e.getMessage());
+            //Log.e("Exception  : ", "-----------" + e.getMessage());
         }
 
     }
     private void getPrevEvetFeedback(int regId, Integer newsblogsId) {
 
         if (Constants.isOnline(getApplicationContext())) {
-            Log.e("PARAMETER : ", "---------------- REG : " + regId+ "      Event : " + newsblogsId);
+            //Log.e("PARAMETER : ", "---------------- REG : " + regId+ "      Event : " + newsblogsId);
 
             final CommonDialog commonDialog = new CommonDialog(PreviousEventDetailActivity.this, "Loading", "Please Wait...");
             commonDialog.show();
@@ -115,28 +115,28 @@ public class PreviousEventDetailActivity extends AppCompatActivity {
                             {
                                 tv_eventFeedbackValue.setText("Very Satisfied");
                             }
-                            Log.e("EVENT FEEDBACK", "-----------------------------" + response.body());
-                            Log.e("EVENT FEEDBACK MODEL", "-----------------------------" + model);
+                            //Log.e("EVENT FEEDBACK", "-----------------------------" + response.body());
+                            //Log.e("EVENT FEEDBACK MODEL", "-----------------------------" + model);
                             tv_eventFeedback.setText("" +model.getExVar1());
                             commonDialog.dismiss();
                             //Toast.makeText(EventDetailListActivity.this, "Applied for this Event", Toast.LENGTH_SHORT).show();
 
                         } else {
                             commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----------");
+                            //Log.e("Data Null : ", "-----------");
                         }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                       // e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<PrevEventFeedback> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    ////Log.e("onFailure : ", "-----------" + t.getMessage());
+                   // t.printStackTrace();
                 }
             });
         } else {

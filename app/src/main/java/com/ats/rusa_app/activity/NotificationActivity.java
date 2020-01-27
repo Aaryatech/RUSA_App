@@ -80,7 +80,7 @@ public class NotificationActivity extends AppCompatActivity {
         notificationList = db.getAllNotification();
         adapter.notifyDataSetChanged();
 
-        Log.e("NOTIFICATION ACT","------------------- ON_RESUME");
+       // Log.e("NOTIFICATION ACT","------------------- ON_RESUME");
 
         LocalBroadcastManager.getInstance(NotificationActivity.this).registerReceiver(mBroadcastReceiver,
                 new IntentFilter("REFRESH_NOTIFICATION"));
@@ -89,7 +89,7 @@ public class NotificationActivity extends AppCompatActivity {
 
 
     private void handlePushNotification1(Intent intent) {
-        Log.e("handlePushNotification1", "------------------------------------**********");
+       // Log.e("handlePushNotification1", "------------------------------------**********");
 
         notificationList.clear();
         notificationList=db.getAllNotification();

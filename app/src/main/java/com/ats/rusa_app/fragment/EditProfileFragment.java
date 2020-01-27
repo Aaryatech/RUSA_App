@@ -20,6 +20,7 @@ import com.ats.rusa_app.R;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.Login;
 import com.ats.rusa_app.model.NewReg;
+import com.ats.rusa_app.model.ParameterModel;
 import com.ats.rusa_app.model.PreviousRecord;
 import com.ats.rusa_app.model.Reg;
 import com.ats.rusa_app.util.CommonDialog;
@@ -77,7 +78,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         String userStr = CustomSharedPreference.getString(getActivity(), CustomSharedPreference.KEY_USER);
         Gson gson = new Gson();
         loginUser = gson.fromJson(userStr, Login.class);
-        Log.e("HOME_ACTIVITY : ", "--------USER-------" + loginUser);
+        //Log.e("HOME_ACTIVITY : ", "--------USER-------" + loginUser);
 
 
         if (loginUser != null) {
@@ -112,7 +113,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
     private void getRegDetailById(Integer regId) {
         if (Constants.isOnline(getActivity())) {
-            Log.e("PARAMETER : ", "---------------- regId : " + regId);
+            //Log.e("PARAMETER : ", "---------------- regId : " + regId);
 
             final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
             commonDialog.show();
@@ -151,25 +152,25 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                             edAlterEmail.setText("" + newRegModel.getAlternateEmail());
                             edAuthName.setText("" + newRegModel.getAuthorizedPerson());
 
-                            Log.e("Register By id", "-----------------------------" + newRegModel);
+                            //Log.e("Register By id", "-----------------------------" + newRegModel);
                             commonDialog.dismiss();
 
                         } else {
                             commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----------");
+                            //Log.e("Data Null : ", "-----------");
                         }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                       // e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<NewReg> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    ////Log.e("onFailure : ", "-----------" + t.getMessage());
+                   // t.printStackTrace();
                 }
             });
         } else {
@@ -179,7 +180,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
     private void getRegById(Integer regId) {
         if (Constants.isOnline(getActivity())) {
-            Log.e("PARAMETER : ", "---------------- regId : " + regId);
+            //Log.e("PARAMETER : ", "---------------- regId : " + regId);
 
             final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
             commonDialog.show();
@@ -192,25 +193,25 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                         if (response.body() != null) {
                             RegModel = response.body();
 
-                            Log.e("Register By id", "-----------------------------" + RegModel);
+                            //Log.e("Register By id", "-----------------------------" + RegModel);
                             commonDialog.dismiss();
 
                         } else {
                             commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----------");
+                            //Log.e("Data Null : ", "-----------");
                         }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                      //  e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Reg> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                   // t.printStackTrace();
                 }
             });
         } else {
@@ -224,7 +225,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
             //Individual
             if (loginUser.getUserType() == 1) {
-                Log.e("SpinnerInd", "-----------------" + loginUser.getUserType());
+                //Log.e("SpinnerInd", "-----------------" + loginUser.getUserType());
                 boolean isValidAlterEmail = false, isValidNameDept = false, isDesignationPer = false, isValidMob = false;
                 String alt_email, nameDept, designationPer, mob;
                 alt_email = edAlterEmail.getText().toString().trim();
@@ -413,18 +414,21 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
     private void getPreviousRecord(Integer regId, final Reg registration) {
 
-        Log.e("PARAMETERS : ", "        REG ID : " + regId + "      REGISTARION BIN : " + registration);
+        //Log.e("PARAMETERS : ", "        REG ID : " + regId + "      REGISTARION BIN : " + registration);
 
         if (Constants.isOnline(getActivity())) {
             final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<PreviousRecord> listCall = Constants.myInterface.getPrevRecordByRegId(regId,authHeader);
+            ParameterModel model=new ParameterModel();
+            model.setRegId(regId);
+
+            Call<PreviousRecord> listCall = Constants.myInterface.getPrevRecordByRegId(model,authHeader);
             listCall.enqueue(new Callback<PreviousRecord>() {
                 @Override
                 public void onResponse(Call<PreviousRecord> call, Response<PreviousRecord> response) {
                     try {
-                        Log.e("Record", "-----------------------------" + response.body());
+                        //Log.e("Record", "-------xxxx----------------------" + response.body());
                         PreviousRecord previousRecord = response.body();
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                         if (response.body() != null) {
@@ -433,12 +437,12 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
                                 ObjectMapper objectMapper = new ObjectMapper();
                                 String jsonStr = objectMapper.writeValueAsString(registration);
-                                Log.e("JSON STRING", "-------------------" + jsonStr);
+                                //Log.e("JSON STRING", "-------------------" + jsonStr);
                                 previousRecord.setRecord(jsonStr);
 
                                 PreviousRecord previousRecord1 = new PreviousRecord(previousRecord.getPrevId(), RegModel.getRegId(), previousRecord.getRecord(), sdf.format(System.currentTimeMillis()), previousRecord.getExtraVar1());
 
-                                Log.e("PREV REC : ", "-************************************************************- TRUE");
+                                //Log.e("PREV REC : ", "-************************************************************- TRUE");
                                 getSavePreviousRecord(previousRecord1);
 
                             } else {
@@ -480,7 +484,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 //                                String error=jsonObject.getString("error");
 
                                 Reg regPrevious = new Reg(regId, userUuid, userType, emails, alternateEmail, userPassword, name, aisheCode, collegeName, unversityName, designationName, departmentName, mobileNumber, authorizedPerson, dob, imageName, tokenId, registerVia, isActive, delStatus, addDate, editDate, editByUserId, exInt1, exInt2, exVar1, exVar2, emailCode, emailVerified, smsCode, smsVerified, editByAdminuserId);
-                                Log.e("JSON STRING", "-------------------" + regPrevious);
+                                //Log.e("JSON STRING", "-------------------" + regPrevious);
 
                                 String email, alt_email, clgName, univercityAff, nameDept, nameAuthPer, designationPer, mob;
                                 email = edEmail.getText().toString().trim();
@@ -492,12 +496,12 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                                 designationPer = edDesg.getText().toString().trim();
                                 mob = edMobile.getText().toString().trim();
 
-                                Log.e("email", "------------------" + email);
-                                Log.e("clgName", "------------------" + clgName);
-                                Log.e("univercityAff", "------------------" + univercityAff);
-                                Log.e("nameDept", "------------------" + nameDept);
-                                Log.e("nameAuthPer", "------------------" + nameAuthPer);
-                                Log.e("designationPer", "------------------" + designationPer);
+                                //Log.e("email", "------------------" + email);
+                                //Log.e("clgName", "------------------" + clgName);
+                                //Log.e("univercityAff", "------------------" + univercityAff);
+                                //Log.e("nameDept", "------------------" + nameDept);
+                                //Log.e("nameAuthPer", "------------------" + nameAuthPer);
+                                //Log.e("designationPer", "------------------" + designationPer);
 
                                 if (loginUser.getUserType() == 1) {
 
@@ -521,12 +525,12 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
                                         ObjectMapper objectMapper = new ObjectMapper();
                                         String jsonStr = objectMapper.writeValueAsString(regPrevious);
-                                        Log.e("JSON STRING", "-------regPrevious------------" + jsonStr);
+                                        //Log.e("JSON STRING", "-------regPrevious------------" + jsonStr);
                                         previousRecord.setRecord(jsonStr);
 
                                         PreviousRecord previousRecord1 = new PreviousRecord(previousRecord.getPrevId(), previousRecord.getRegId(), previousRecord.getRecord(), sdf.format(System.currentTimeMillis()), previousRecord.getExtraVar1());
 
-                                        Log.e("PREV REC : ", "-************************************************************- FALSE ----- 1");
+                                        //Log.e("PREV REC : ", "-************************************************************- FALSE ----- 1");
                                         getSavePreviousRecord(previousRecord1);
 
 
@@ -557,12 +561,12 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
                                         ObjectMapper objectMapper = new ObjectMapper();
                                         String jsonStr = objectMapper.writeValueAsString(regPrevious);
-                                        Log.e("JSON STRING", "-------regPrevious------------" + jsonStr);
+                                        //Log.e("JSON STRING", "-------regPrevious------------" + jsonStr);
                                         previousRecord.setRecord(jsonStr);
 
                                         PreviousRecord previousRecord1 = new PreviousRecord(previousRecord.getPrevId(), previousRecord.getRegId(), previousRecord.getRecord(), sdf.format(System.currentTimeMillis()), previousRecord.getExtraVar1());
 
-                                        Log.e("PREV REC : ", "-************************************************************- FALSE ----- 2");
+                                        //Log.e("PREV REC : ", "-************************************************************- FALSE ----- 2");
                                         getSavePreviousRecord(previousRecord1);
 
                                     } else {
@@ -592,12 +596,12 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
                                         ObjectMapper objectMapper = new ObjectMapper();
                                         String jsonStr = objectMapper.writeValueAsString(regPrevious);
-                                        Log.e("JSON STRING", "-------regPrevious------------" + jsonStr);
+                                        //Log.e("JSON STRING", "-------regPrevious------------" + jsonStr);
                                         previousRecord.setRecord(jsonStr);
 
                                         PreviousRecord previousRecord1 = new PreviousRecord(previousRecord.getPrevId(), previousRecord.getRegId(), previousRecord.getRecord(), sdf.format(System.currentTimeMillis()), previousRecord.getExtraVar1());
 
-                                        Log.e("PREV REC : ", "-************************************************************- FALSE ----- 3");
+                                        //Log.e("PREV REC : ", "-************************************************************- FALSE ----- 3");
                                         getSavePreviousRecord(previousRecord1);
 
                                     } else {
@@ -621,8 +625,8 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                     } catch (Exception e) {
                         Toast.makeText(getActivity(), "Unable to process", Toast.LENGTH_SHORT).show();
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----RECORD1------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----RECORD1------" + e.getMessage());
+                       // e.printStackTrace();
                     }
                 }
 
@@ -630,8 +634,8 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                 public void onFailure(Call<PreviousRecord> call, Throwable t) {
                     Toast.makeText(getActivity(), "Unable to process", Toast.LENGTH_SHORT).show();
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "------RECORD-----" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure : ", "------RECORD-----" + t.getMessage());
+                   // t.printStackTrace();
 
                 }
             });
@@ -643,7 +647,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
     private void getSavePreviousRecord(PreviousRecord previousRecord) {
         if (Constants.isOnline(getActivity())) {
-            Log.e("PARAMETER : ", "---------------- SAVE PREVIOUS : " + previousRecord);
+            //Log.e("PARAMETER : ", "---------------- SAVE PREVIOUS : " + previousRecord);
 
             final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
             commonDialog.show();
@@ -655,7 +659,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                     try {
                         if (response.body() != null) {
                             PreviousRecord model = response.body();
-                            Log.e("Save prev Record", "-----------------------------" + model);
+                            //Log.e("Save prev Record", "-----------------------------" + model);
 
 
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -709,13 +713,13 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                         } else {
                             Toast.makeText(getActivity(), "Unable to process", Toast.LENGTH_SHORT).show();
                             commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----------");
+                            //Log.e("Data Null : ", "-----------");
                         }
                     } catch (Exception e) {
                         Toast.makeText(getActivity(), "Unable to process", Toast.LENGTH_SHORT).show();
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
-                        e.printStackTrace();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                       // e.printStackTrace();
                     }
                 }
 
@@ -723,8 +727,8 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                 public void onFailure(Call<PreviousRecord> call, Throwable t) {
                     Toast.makeText(getActivity(), "Unable to process", Toast.LENGTH_SHORT).show();
                     commonDialog.dismiss();
-                    Log.e("onFailure : ", "-----------" + t.getMessage());
-                    t.printStackTrace();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                   // t.printStackTrace();
                 }
             });
         } else {
@@ -790,7 +794,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
     private void getRegistration(Reg registration) {
 
         if (Constants.isOnline(getActivity())) {
-            Log.e("PARAMETER : ", "---------------- REGISTRATION : " + registration);
+            //Log.e("PARAMETER : ", "---------------- REGISTRATION : " + registration);
 
             if (registration.getDob() != null) {
                 //if (registration.getDob().isEmpty()) {
@@ -809,7 +813,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                         if (response.body() != null) {
                             // Reg model = response.body();
 
-                            Log.e("Save Registration", "-----------------------------" + response.body());
+                            //Log.e("Save Registration", "-----------------------------" + response.body());
                             Toast.makeText(getActivity(), "Updated Successfully ", Toast.LENGTH_SHORT).show();
                             commonDialog.dismiss();
 
@@ -819,23 +823,23 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
                         } else {
                             commonDialog.dismiss();
-                            Log.e("Data Null : ", "-----------");
+                            //Log.e("Data Null : ", "-----------");
                             Toast.makeText(getActivity(), "Unable to process", Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        Log.e("Exception : ", "-----------" + e.getMessage());
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
                         Toast.makeText(getActivity(), "Unable to process", Toast.LENGTH_SHORT).show();
-                        e.printStackTrace();
+                       // e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Reg> call, Throwable t) {
                     commonDialog.dismiss();
-                    Log.e("onFailure1 : ", "------REG-----" + t.getMessage());
+                    //Log.e("onFailure1 : ", "------REG-----" + t.getMessage());
                     Toast.makeText(getActivity(), "Unable to process", Toast.LENGTH_SHORT).show();
-                    t.printStackTrace();
+                  //  t.printStackTrace();
                 }
             });
         } else {

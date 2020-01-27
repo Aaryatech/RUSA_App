@@ -45,7 +45,7 @@ public class WebViewActivity extends AppCompatActivity {
 
         webView.loadData(tableData, "text/html", "utf-8");
 
-        Log.e("Table Data : ", "----------- " + tableData);
+      //  Log.e("Table Data : ", "----------- " + tableData);
 
     }
 }
