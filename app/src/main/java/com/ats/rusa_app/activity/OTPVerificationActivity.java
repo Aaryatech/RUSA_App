@@ -161,7 +161,7 @@ public class OTPVerificationActivity extends AppCompatActivity {
 
                                 AlertDialog.Builder builder = new AlertDialog.Builder(OTPVerificationActivity.this, R.style.AlertDialogTheme);
                                 builder.setTitle("Alert");
-                                builder.setMessage("OTP Not Matched!");
+                                builder.setMessage(""+otpVerification.getMsg());
                                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
