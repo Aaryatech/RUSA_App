@@ -126,6 +126,7 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
         }
     }
 
+
     private void getChangePass(Integer regId, String strNewPass) {
 
         MessageDigest md = null;
