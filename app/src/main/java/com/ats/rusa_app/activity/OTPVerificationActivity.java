@@ -76,12 +76,12 @@ public class OTPVerificationActivity extends AppCompatActivity {
 
                 if (isValidOTP) {
 
-                    if (smsCode.equals(userCode)) {
+                    //if (smsCode.equals(userCode)) {
                         getVerifyOTP(userCode, UserUuid);
 
-                    } else {
-                        Toast.makeText(OTPVerificationActivity.this, "Failed Verify OTP", Toast.LENGTH_SHORT).show();
-                    }
+                    //} else {
+                    //    Toast.makeText(OTPVerificationActivity.this, "Failed Verify OTP", Toast.LENGTH_SHORT).show();
+                    //}
                 }
             }
         });
@@ -103,14 +103,14 @@ public class OTPVerificationActivity extends AppCompatActivity {
             final CommonDialog commonDialog = new CommonDialog(OTPVerificationActivity.this, "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<ResendOTP> listCall = Constants.myInterface.verifyResendOtpResponse(userUuid,authHeader);
+            Call<ResendOTP> listCall = Constants.myInterface.verifyResendOtpResponse(userUuid, authHeader);
             listCall.enqueue(new Callback<ResendOTP>() {
                 @Override
                 public void onResponse(Call<ResendOTP> call, Response<ResendOTP> response) {
                     try {
                         if (response.body() != null) {
 
-                            // Log.e("RESEND VERIFY : ", " - " + response.body().toString());
+                             //Log.e("RESEND VERIFY : ", " - " + response.body().toString());
                             ResendOTP resendOTP = response.body();
                             //Log.e("RESEND VERIFY LIST : ", " - " + resendOTP);
                             smsCode = resendOTP.getReg().getSmsCode();
@@ -125,7 +125,7 @@ public class OTPVerificationActivity extends AppCompatActivity {
                     } catch (Exception e) {
                         commonDialog.dismiss();
                         //Log.e("Exception : ", "-----------" + e.getMessage());
-                      //  e.printStackTrace();
+                        //  e.printStackTrace();
                     }
                 }
 
@@ -133,7 +133,7 @@ public class OTPVerificationActivity extends AppCompatActivity {
                 public void onFailure(Call<ResendOTP> call, Throwable t) {
                     commonDialog.dismiss();
                     //Log.e("onFailure1 reset : ", "-----------" + t.getMessage());
-                   // t.printStackTrace();
+                    // t.printStackTrace();
                 }
             });
         } else {
@@ -147,7 +147,7 @@ public class OTPVerificationActivity extends AppCompatActivity {
             final CommonDialog commonDialog = new CommonDialog(OTPVerificationActivity.this, "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<OTPVerification> listCall = Constants.myInterface.verifyOtpResponse(userCode, userUuid,authHeader);
+            Call<OTPVerification> listCall = Constants.myInterface.verifyOtpResponse(userCode, userUuid, authHeader);
             listCall.enqueue(new Callback<OTPVerification>() {
                 @Override
                 public void onResponse(Call<OTPVerification> call, Response<OTPVerification> response) {
@@ -156,11 +156,32 @@ public class OTPVerificationActivity extends AppCompatActivity {
 
                             //Log.e("VERIFY : ", " - " + response.body().toString());
                             OTPVerification otpVerification = response.body();
-                            //Log.e("VERIFY LIST : ", " - " + otpVerification);
-                            Intent intent = new Intent(OTPVerificationActivity.this, LoginActivity.class);
-                            //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(intent);
-                             finish();
+
+                            if (otpVerification.getError()) {
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(OTPVerificationActivity.this, R.style.AlertDialogTheme);
+                                builder.setTitle("Alert");
+                                builder.setMessage("OTP Not Matched!");
+                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+
+                            } else {
+
+
+                                //Log.e("VERIFY LIST : ", " - " + otpVerification);
+                                Intent intent = new Intent(OTPVerificationActivity.this, LoginActivity.class);
+                                //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                finish();
+
+                            }
                             commonDialog.dismiss();
 
                         } else {
@@ -170,7 +191,7 @@ public class OTPVerificationActivity extends AppCompatActivity {
                     } catch (Exception e) {
                         commonDialog.dismiss();
                         //Log.e("Exception : ", "-----------" + e.getMessage());
-                       // e.printStackTrace();
+                        // e.printStackTrace();
                     }
                 }
 
@@ -178,7 +199,7 @@ public class OTPVerificationActivity extends AppCompatActivity {
                 public void onFailure(Call<OTPVerification> call, Throwable t) {
                     commonDialog.dismiss();
                     //Log.e("onFailure1 : ", "-----------" + t.getMessage());
-                   // t.printStackTrace();
+                    // t.printStackTrace();
                 }
             });
         } else {

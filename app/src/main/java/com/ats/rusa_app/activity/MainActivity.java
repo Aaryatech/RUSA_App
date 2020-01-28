@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.res.Configuration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -42,6 +43,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ats.rusa_app.BuildConfig;
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.fcm.SharedPrefManager;
@@ -129,6 +131,20 @@ public class MainActivity extends AppCompatActivity
         setTitle(""+getResources().getString(R.string.app_name));
 
         expandableListView = findViewById(R.id.expandableListView);
+
+
+      /*  if( (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0){
+            Log.e("FLAG_DEBUGGABLE","****************** TRUE");
+        }else{
+            Log.e("FLAG_DEBUGGABLE","****************** FALSE");
+        }
+
+        if(BuildConfig.DEBUG) {
+            Log.e("FLAG_DEBUGGABLE","*********BuildConfig********* TRUE");
+        }else{
+            Log.e("FLAG_DEBUGGABLE","*********BuildConfig********* FALSE");
+        }*/
+
 
         if (!Constants.isOnline(this)) {
 
@@ -867,6 +883,9 @@ public class MainActivity extends AppCompatActivity
 
             MenuGroup menuGroup0 = new MenuGroup(getResources().getString(R.string.str_edit_profile), false, false, false, "Profile");
             headerList.add(menuGroup0);
+
+            MenuGroup menuGroupchPass = new MenuGroup(getResources().getString(R.string.str_change_pass), false, false, false, "Profile");
+            headerList.add(menuGroupchPass);
 
             MenuGroup menuGroup1 = new MenuGroup(getResources().getString(R.string.str_upload_document), false, false, false, "uploadDoc");
             headerList.add(menuGroup1);

@@ -27,6 +27,7 @@ public class CustomSharedPreference
     public static String KEY_HOME_NEWS = "HomeNews";
     public static String KEY_HOME_COMPANY = "HomeCompany";
     public static String KEY_HOME_DATA = "HomeData";
+    public static String KEY_LOGIN_TOKEN = "loginToken";
 
     private static String PREFERENCE_NAME = "UserInfo";
     public static String PREFERENCE_TOKEN = "appToken";

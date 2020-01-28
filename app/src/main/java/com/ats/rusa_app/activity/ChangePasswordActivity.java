@@ -17,6 +17,10 @@ import com.ats.rusa_app.util.CommonDialog;
 import com.ats.rusa_app.util.CustomSharedPreference;
 import com.google.gson.Gson;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -72,9 +76,11 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
 
             if (strPrevPass.isEmpty()) {
                 edPrevPass.setError("required");
-            } else if (!strLoginPass.equals(strPrevPass)) {
+            }
+            /*else if (!strLoginPass.equals(strPrevPass)) {
                 edPrevPass.setError("Wrong Password");
-            } else {
+            }*/
+            else {
                 edPrevPass.setError(null);
                 isValidPrevPass = true;
             }
@@ -121,11 +127,22 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
     }
 
     private void getChangePass(Integer regId, String strNewPass) {
+
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            // e.printStackTrace();
+        }
+        byte[] messageDigest = md.digest(strNewPass.getBytes());
+        BigInteger number = new BigInteger(1, messageDigest);
+        String hashtext = number.toString(16);
+
         if (Constants.isOnline(getApplicationContext())) {
             final CommonDialog commonDialog = new CommonDialog(ChangePasswordActivity.this, "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<Info> listCall = Constants.myInterface.changePassword(regId, strNewPass,authHeader);
+            Call<Info> listCall = Constants.myInterface.changePassword(regId, hashtext,authHeader);
             listCall.enqueue(new Callback<Info>() {
                 @Override
                 public void onResponse(Call<Info> call, Response<Info> response) {

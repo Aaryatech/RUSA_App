@@ -2,10 +2,13 @@ package com.ats.rusa_app.fragment;
 
 
 import android.content.BroadcastReceiver;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ats.rusa_app.R;
+import com.ats.rusa_app.activity.MainActivity;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.Login;
 import com.ats.rusa_app.model.NewReg;
@@ -118,7 +122,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
             final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<NewReg> listCall = Constants.myInterface.getRegUserDetailbyRegId(regId,authHeader);
+            Call<NewReg> listCall = Constants.myInterface.getRegUserDetailbyRegId(regId, authHeader);
             listCall.enqueue(new Callback<NewReg>() {
                 @Override
                 public void onResponse(Call<NewReg> call, Response<NewReg> response) {
@@ -143,8 +147,8 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
                             edName.setText("" + newRegModel.getName());
                             edCode.setText("" + newRegModel.getAisheCode());
-                             edUni.setText("" + newRegModel.getUniName());
-                             edInst.setText("" + newRegModel.getInstName());
+                            edUni.setText("" + newRegModel.getUniName());
+                            edInst.setText("" + newRegModel.getInstName());
                             edEmail.setText("" + newRegModel.getEmails());
                             edDesg.setText("" + newRegModel.getDesignationName());
                             edDept.setText("" + newRegModel.getDepartmentName());
@@ -162,7 +166,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                     } catch (Exception e) {
                         commonDialog.dismiss();
                         //Log.e("Exception : ", "-----------" + e.getMessage());
-                       // e.printStackTrace();
+                        // e.printStackTrace();
                     }
                 }
 
@@ -170,7 +174,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                 public void onFailure(Call<NewReg> call, Throwable t) {
                     commonDialog.dismiss();
                     ////Log.e("onFailure : ", "-----------" + t.getMessage());
-                   // t.printStackTrace();
+                    // t.printStackTrace();
                 }
             });
         } else {
@@ -185,7 +189,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
             final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<Reg> listCall = Constants.myInterface.getRegUserbyRegId(regId,authHeader);
+            Call<Reg> listCall = Constants.myInterface.getRegUserbyRegId(regId, authHeader);
             listCall.enqueue(new Callback<Reg>() {
                 @Override
                 public void onResponse(Call<Reg> call, Response<Reg> response) {
@@ -203,7 +207,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                     } catch (Exception e) {
                         commonDialog.dismiss();
                         //Log.e("Exception : ", "-----------" + e.getMessage());
-                      //  e.printStackTrace();
+                        //  e.printStackTrace();
                     }
                 }
 
@@ -211,7 +215,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                 public void onFailure(Call<Reg> call, Throwable t) {
                     commonDialog.dismiss();
                     //Log.e("onFailure : ", "-----------" + t.getMessage());
-                   // t.printStackTrace();
+                    // t.printStackTrace();
                 }
             });
         } else {
@@ -420,15 +424,18 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
             final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            ParameterModel model=new ParameterModel();
-            model.setRegId(regId);
+            String token = CustomSharedPreference.getString(getContext(), CustomSharedPreference.KEY_LOGIN_TOKEN) ;
 
-            Call<PreviousRecord> listCall = Constants.myInterface.getPrevRecordByRegId(model,authHeader);
+           // Log.e("PARAMETERS : ", "        REG ID : " + regId + " TOKEN : " + token + "        REGISTARION BIN : " + registration);
+//            ParameterModel model=new ParameterModel();
+//            model.setRegId(regId);
+
+            Call<PreviousRecord> listCall = Constants.myInterface.getPrevRecordByRegId(regId, token, authHeader);
             listCall.enqueue(new Callback<PreviousRecord>() {
                 @Override
                 public void onResponse(Call<PreviousRecord> call, Response<PreviousRecord> response) {
                     try {
-                        //Log.e("Record", "-------xxxx----------------------" + response.body());
+                       // Log.e("Record", "-------xxxx----------------------" + response.body());
                         PreviousRecord previousRecord = response.body();
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                         if (response.body() != null) {
@@ -443,7 +450,28 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                                 PreviousRecord previousRecord1 = new PreviousRecord(previousRecord.getPrevId(), RegModel.getRegId(), previousRecord.getRecord(), sdf.format(System.currentTimeMillis()), previousRecord.getExtraVar1());
 
                                 //Log.e("PREV REC : ", "-************************************************************- TRUE");
-                                getSavePreviousRecord(previousRecord1);
+                                // getSavePreviousRecord(previousRecord1);
+
+                                if (response.body().getMessage().equalsIgnoreCase("unauthorized User")) {
+
+                                    // Toast.makeText(getContext(), ""+response.body().getMessage(), Toast.LENGTH_SHORT).show();
+
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
+                                    builder.setTitle("Alert");
+                                    builder.setMessage("" + response.body().getMessage());
+                                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+
+                                    AlertDialog dialog = builder.create();
+                                    dialog.show();
+
+                                } else {
+                                    getSavePreviousRecord(previousRecord1);
+                                }
 
                             } else {
 
@@ -626,7 +654,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                         Toast.makeText(getActivity(), "Unable to process", Toast.LENGTH_SHORT).show();
                         commonDialog.dismiss();
                         //Log.e("Exception : ", "-----RECORD1------" + e.getMessage());
-                       // e.printStackTrace();
+                        // e.printStackTrace();
                     }
                 }
 
@@ -635,7 +663,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                     Toast.makeText(getActivity(), "Unable to process", Toast.LENGTH_SHORT).show();
                     commonDialog.dismiss();
                     //Log.e("onFailure : ", "------RECORD-----" + t.getMessage());
-                   // t.printStackTrace();
+                    // t.printStackTrace();
 
                 }
             });
@@ -652,7 +680,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
             final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<PreviousRecord> listCall = Constants.myInterface.savePreviousRecord(previousRecord,authHeader);
+            Call<PreviousRecord> listCall = Constants.myInterface.savePreviousRecord(previousRecord, authHeader);
             listCall.enqueue(new Callback<PreviousRecord>() {
                 @Override
                 public void onResponse(Call<PreviousRecord> call, Response<PreviousRecord> response) {
@@ -719,7 +747,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                         Toast.makeText(getActivity(), "Unable to process", Toast.LENGTH_SHORT).show();
                         commonDialog.dismiss();
                         //Log.e("Exception : ", "-----------" + e.getMessage());
-                       // e.printStackTrace();
+                        // e.printStackTrace();
                     }
                 }
 
@@ -728,7 +756,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                     Toast.makeText(getActivity(), "Unable to process", Toast.LENGTH_SHORT).show();
                     commonDialog.dismiss();
                     //Log.e("onFailure : ", "-----------" + t.getMessage());
-                   // t.printStackTrace();
+                    // t.printStackTrace();
                 }
             });
         } else {
@@ -798,14 +826,14 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
             if (registration.getDob() != null) {
                 //if (registration.getDob().isEmpty()) {
-                    registration.setDob(null);
+                registration.setDob(null);
                 //}
             }
 
             final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<Reg> listCall = Constants.myInterface.editProfile(registration,authHeader);
+            Call<Reg> listCall = Constants.myInterface.editProfile(registration, authHeader);
             listCall.enqueue(new Callback<Reg>() {
                 @Override
                 public void onResponse(Call<Reg> call, Response<Reg> response) {
@@ -830,7 +858,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                         commonDialog.dismiss();
                         //Log.e("Exception : ", "-----------" + e.getMessage());
                         Toast.makeText(getActivity(), "Unable to process", Toast.LENGTH_SHORT).show();
-                       // e.printStackTrace();
+                        // e.printStackTrace();
                     }
                 }
 
@@ -839,7 +867,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                     commonDialog.dismiss();
                     //Log.e("onFailure1 : ", "------REG-----" + t.getMessage());
                     Toast.makeText(getActivity(), "Unable to process", Toast.LENGTH_SHORT).show();
-                  //  t.printStackTrace();
+                    //  t.printStackTrace();
                 }
             });
         } else {

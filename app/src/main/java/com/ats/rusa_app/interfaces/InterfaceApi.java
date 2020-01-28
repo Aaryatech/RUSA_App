@@ -74,10 +74,10 @@ public interface InterfaceApi {
     @GET("getLastFiveTestImonials")
     Call<ArrayList<Testomonial>> getTestimonial();
 
-    @POST("saveReg")
+    @POST("saveRegForApp")
     Call<Reg> saveRegistration(@Body Reg registration,@Header("Authorization") String authHeader);
 
-    @POST("saveRegistration")
+    @POST("saveRegistrationForApp")
     Call<Reg> editProfile(@Body Reg registration,@Header("Authorization") String authHeader);
 
     @POST("savePreviousRecord")
@@ -93,17 +93,22 @@ public interface InterfaceApi {
     @POST("saveAppTokens")
     Call<AppToken> saveAppToken(@Body AppToken appToken,@Header("Authorization") String authHeader);
 
-    @POST("verifyOtpResponse")
+    @POST("verifyOtpResponseForApp")
     Call<OTPVerification> verifyOtpResponse(@Query("userOtp") String userOtp, @Query("uuid") String uuid,@Header("Authorization") String authHeader);
 
     @POST("getAllHomeData")
     Call<Detail> getAllHomeData(@Query("langId") int langId,@Header("Authorization") String authHeader);
 
-    @POST("verifyResendOtpResponse")
+    @POST("verifyResendOtpResponseForApp")
     Call<ResendOTP> verifyResendOtpResponse(@Query("uuid") String uuid,@Header("Authorization") String authHeader);
 
-    @POST("loginFrontEnd")
-    Call<Login> getLogin(@Query("userName") String userName, @Query("password") String password,@Header("Authorization") String authHeader);
+//    @POST("loginFrontEnd")
+//    Call<Login> getLogin(@Query("userName") String userName, @Query("password") String password,@Header("Authorization") String authHeader);
+
+    @POST("loginFrontEndForApp")
+    Call<Login> getLogin(@Query("userName") String userName, @Query("password") String password, @Query("token") String token,@Header("Authorization") String authHeader);
+
+
 
     @POST("forgetPassword")
     Call<Login> getForgotPass(@Query("email") String email, @Query("mobileNumber") String mobileNumber,@Header("Authorization") String authHeader);
@@ -150,7 +155,7 @@ public interface InterfaceApi {
 
 
     @POST("getPrevRecordByRegIdForApp")
-    Call<PreviousRecord> getPrevRecordByRegId(@Body ParameterModel model, @Header("Authorization") String authHeader);
+    Call<PreviousRecord> getPrevRecordByRegId(@Query("regId") int regId,@Query("token") String token, @Header("Authorization") String authHeader);
 
 
     @POST("getFeedbackByUserIdAndNewsblogsId ")

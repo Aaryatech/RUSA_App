@@ -27,7 +27,7 @@ public class CommonDialog {
         try {
             hud.show();
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
 
         }
     }
@@ -38,7 +38,7 @@ public class CommonDialog {
                 hud.dismiss();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 

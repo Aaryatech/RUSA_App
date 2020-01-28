@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -75,7 +76,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 isValidPass = true;
             }
             if (isValidUserName && isValidPass) {
-                doLogin(strUserName, strPass);
+
+
+                String token= UUID.randomUUID().toString();
+
+                doLogin(strUserName, strPass,token);
+
+
             }
         } else if (v.getId() == R.id.tv_forgotPassword) {
             Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
@@ -94,7 +101,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-    private void doLogin(String strUserName, String strPass) {
+    private void doLogin(String strUserName, String strPass, final String token) {
+        //Log.e("PARAM --------- ","strUserName  -"+strUserName+"  strPass - "+strPass+"       token - "+token);
         if (Constants.isOnline(getApplicationContext())) {
             final CommonDialog commonDialog = new CommonDialog(LoginActivity.this, "Loading", "Please Wait...");
             commonDialog.show();
@@ -110,33 +118,37 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             String hashtext = number.toString(16);
 
 
-            Call<Login> listCall = Constants.myInterface.getLogin(strUserName, hashtext,authHeader);
+            Call<Login> listCall = Constants.myInterface.getLogin(strUserName, hashtext,token,authHeader);
             listCall.enqueue(new Callback<Login>() {
                 @Override
                 public void onResponse(Call<Login> call, Response<Login> response) {
+
+                    //Log.e("OUTPUT ----","---------------"+response.body());
+
                     try {
                         if (response.body() != null) {
 
                             // Log.e("RESEND VERIFY : ", " - " + response.body().toString());
                             Login userDetail = response.body();
-                            //Log.e("LOGIN RESPONCE : ", " - " + userDetail);
+                           // Log.e("LOGIN RESPONCE : ", " - " + userDetail);
 
                             if (!userDetail.getError()) {
                                 Gson gson = new Gson();
                                 String json = gson.toJson(userDetail);
                                 CustomSharedPreference.putString(LoginActivity.this, CustomSharedPreference.KEY_USER, json);
+                                CustomSharedPreference.putString(LoginActivity.this, CustomSharedPreference.KEY_LOGIN_TOKEN, token);
 
-                                if (userDetail.getExInt1() != 1) {
+                               /* if (userDetail.getExInt1() != 1) {
                                     Intent intent1 = new Intent(LoginActivity.this, ChangePasswordActivity.class);
                                     intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     startActivity(intent1);
                                     commonDialog.dismiss();
-                                } else {
+                                } else {*/
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     startActivity(intent);
                                     commonDialog.dismiss();
-                                }
+                               // }
 
                             } else {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this, R.style.AlertDialogTheme);
