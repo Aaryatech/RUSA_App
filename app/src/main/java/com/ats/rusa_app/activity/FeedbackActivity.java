@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +17,7 @@ import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.FeedbackSave;
 import com.ats.rusa_app.model.Login;
 import com.ats.rusa_app.model.PrevEvent;
+import com.ats.rusa_app.sqlite.DatabaseHandler;
 import com.ats.rusa_app.util.CommonDialog;
 import com.ats.rusa_app.util.CustomSharedPreference;
 import com.google.gson.Gson;
@@ -35,6 +35,7 @@ public class FeedbackActivity extends AppCompatActivity implements View.OnClickL
     Button btn_save;
     PrevEvent previousEvent;
     Login loginUser;
+    DatabaseHandler dbHelper;
     public RadioButton rb_verySatisfied,rb_satisfied,rb_neutral,rb_dissatisfied,rb_veryDissatisfied;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,13 +53,26 @@ public class FeedbackActivity extends AppCompatActivity implements View.OnClickL
         ed_msg=(EditText)findViewById(R.id.ed_Msg);
         btn_save=(Button)findViewById(R.id.btn_saveFeedback);
 
+        dbHelper=new DatabaseHandler(FeedbackActivity.this);
+
         String previousStr = getIntent().getStringExtra("model");
         Gson gson = new Gson();
         previousEvent = gson.fromJson(previousStr, PrevEvent.class);
         //Log.e("responce","-----------------------"+previousEvent);
 
-        String userStr = CustomSharedPreference.getString(getApplicationContext(), CustomSharedPreference.KEY_USER);
-        loginUser = gson.fromJson(userStr, Login.class);
+//        String userStr = CustomSharedPreference.getString(getApplicationContext(), CustomSharedPreference.KEY_USER);
+//        loginUser = gson.fromJson(userStr, Login.class);
+
+        try {
+            loginUser = dbHelper.getLoginData();
+            //Log.e("HOME_ACTIVITY : ", "--------USER-------" + loginUser);
+
+        }catch (Exception e)
+        {
+            //e.printStackTrace();
+        }
+
+
         //Log.e("HOME_ACTIVITY : ", "--------USER-------" + loginUser);
 
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -133,7 +147,9 @@ public class FeedbackActivity extends AppCompatActivity implements View.OnClickL
             final CommonDialog commonDialog = new CommonDialog(FeedbackActivity.this, "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<FeedbackSave> listCall = Constants.myInterface.getUpdateEventFeedback(newsblogsId,regId,msg,value,authHeader);
+            String token = CustomSharedPreference.getString(FeedbackActivity.this, CustomSharedPreference.KEY_LOGIN_TOKEN) ;
+
+            Call<FeedbackSave> listCall = Constants.myInterface.getUpdateEventFeedback(newsblogsId,regId,msg,value,token,authHeader);
             listCall.enqueue(new Callback<FeedbackSave>() {
                 @Override
                 public void onResponse(Call<FeedbackSave> call, Response<FeedbackSave> response) {
@@ -142,22 +158,58 @@ public class FeedbackActivity extends AppCompatActivity implements View.OnClickL
 
                            // Toast.makeText(getApplicationContext(), ""+response.message(), Toast.LENGTH_SHORT).show();
                             //Log.e("FEEDBACK SAVE","-----------------------------"+response.body());
-                            AlertDialog.Builder builder = new AlertDialog.Builder(FeedbackActivity.this, R.style.AlertDialogTheme);
-                            builder.setTitle("");
-                            builder.setMessage("Feedback has being save successfully");
-                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    //finish();
-                                    Intent intent = new Intent(FeedbackActivity.this, MainActivity.class);
-                                    intent.putExtra("Feedback", "Feedback");
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    startActivity(intent);
-                                    dialog.dismiss();
-                                }
-                            });
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
+
+                            if(!response.body().getError()) {
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(FeedbackActivity.this, R.style.AlertDialogTheme);
+                                builder.setTitle("");
+                                builder.setMessage("Feedback has being save successfully");
+                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        //finish();
+                                        Intent intent = new Intent(FeedbackActivity.this, MainActivity.class);
+                                        intent.putExtra("Feedback", "Feedback");
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent);
+                                        dialog.dismiss();
+                                    }
+                                });
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+
+                            }else{
+
+                                if (response.body().getRetmsg().equalsIgnoreCase("Unauthorized User")) {
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(FeedbackActivity.this, R.style.AlertDialogTheme);
+                                        builder.setTitle("Alert");
+                                        builder.setMessage("" + response.body().getRetmsg());
+                                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+
+                                        AlertDialog dialog = builder.create();
+                                        dialog.show();
+                                    }else if(response.body().getMsg().equalsIgnoreCase("updated failed"))
+                                     {
+                                         AlertDialog.Builder builder = new AlertDialog.Builder(FeedbackActivity.this, R.style.AlertDialogTheme);
+                                         builder.setTitle("Alert");
+                                         builder.setMessage("" + response.body().getMsg());
+                                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                             @Override
+                                             public void onClick(DialogInterface dialog, int which) {
+                                                 dialog.dismiss();
+                                             }
+                                         });
+
+                                         AlertDialog dialog = builder.create();
+                                         dialog.show();
+                                     }
+
+                            }
 
                             commonDialog.dismiss();
                         }else {

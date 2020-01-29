@@ -1,10 +1,11 @@
 package com.ats.rusa_app.fragment;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +18,13 @@ import com.ats.rusa_app.activity.LoginActivity;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.Info;
 import com.ats.rusa_app.model.Login;
+import com.ats.rusa_app.sqlite.DatabaseHandler;
 import com.ats.rusa_app.util.CommonDialog;
 import com.ats.rusa_app.util.CustomSharedPreference;
-import com.google.gson.Gson;
+
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,6 +40,7 @@ public class ChangePasswordFragment extends Fragment implements View.OnClickList
    EditText edPrevPass,edNewPass,edConfPass;
    Button btnChangePass;
    Login loginUser;
+   DatabaseHandler dbHelper;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -45,10 +51,21 @@ public class ChangePasswordFragment extends Fragment implements View.OnClickList
         edConfPass=(EditText) view.findViewById(R.id.ed_confPass);
         btnChangePass=(Button)view.findViewById(R.id.btn_changePass);
 
-        String userStr = CustomSharedPreference.getString(getActivity(), CustomSharedPreference.KEY_USER);
-        Gson gson = new Gson();
-        loginUser = gson.fromJson(userStr, Login.class);
+        dbHelper=new DatabaseHandler(getActivity());
+
+//        String userStr = CustomSharedPreference.getString(getActivity(), CustomSharedPreference.KEY_USER);
+//        Gson gson = new Gson();
+//        loginUser = gson.fromJson(userStr, Login.class);
         //Log.e("LOGIN_ACTIVITY : ", "--------USER-------" + loginUser);
+
+        try {
+            loginUser = dbHelper.getLoginData();
+            //Log.e("HOME_ACTIVITY : ", "--------USER-------" + loginUser);
+
+        }catch (Exception e)
+        {
+            //e.printStackTrace();
+        }
 
         if (loginUser == null) {
             startActivity(new Intent(getActivity(), LoginActivity.class));
@@ -72,13 +89,24 @@ public class ChangePasswordFragment extends Fragment implements View.OnClickList
             strPrevPass=edPrevPass.getText().toString();
             strNewPass=edNewPass.getText().toString();
             strConfPass=edConfPass.getText().toString();
-            if(!strLoginPass.equals(strPrevPass))
+
+//            if(!strLoginPass.equals(strPrevPass))
+//            {
+//               edPrevPass.setError("Wrong Password");
+//            }else{
+//                edPrevPass.setError(null);
+//                isValidPrevPass=true;
+//            }
+
+            if(strPrevPass.isEmpty())
             {
-               edPrevPass.setError("Wrong Password");
+               edPrevPass.setError("Enter Password");
+               edPrevPass.requestFocus();
             }else{
                 edPrevPass.setError(null);
                 isValidPrevPass=true;
             }
+
             if(!strNewPass.equals(strConfPass))
             {
                 edNewPass.setError("New Password and Confirme password Not Match");
@@ -89,17 +117,99 @@ public class ChangePasswordFragment extends Fragment implements View.OnClickList
             }
             if (isValidPrevPass && isValidNewPass)
             {
-                getChangePass(loginUser.getRegId(),strNewPass);
+                MessageDigest md = null;
+                try {
+                    md = MessageDigest.getInstance("MD5");
+                } catch (NoSuchAlgorithmException e) {
+                    // e.printStackTrace();
+                }
+                byte[] messageDigest = md.digest(strPrevPass.getBytes());
+                BigInteger number = new BigInteger(1, messageDigest);
+                String hashtext = number.toString(16);
+
+                getCheckPass(loginUser.getRegId(),hashtext,strNewPass);
+                //getChangePass(loginUser.getRegId(),strNewPass);
             }
+        }
+    }
+
+    private void getCheckPass(Integer regId, String hashtext, final String strNewPass) {
+        if (Constants.isOnline(getActivity())) {
+            final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
+            commonDialog.show();
+
+            String token = CustomSharedPreference.getString(getContext(), CustomSharedPreference.KEY_LOGIN_TOKEN) ;
+
+            Call<Info> listCall = Constants.myInterface.checkPasswordByUserId(regId,hashtext,token,authHeader);
+            listCall.enqueue(new Callback<Info>() {
+                @Override
+                public void onResponse(Call<Info> call, Response<Info> response) {
+                    try {
+                        if (response.body() != null) {
+
+                            if(!response.body().getError()) {
+
+                                getChangePass(loginUser.getRegId(), strNewPass);
+
+                            }else{
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
+                                builder.setTitle("Alert");
+                                builder.setMessage("" + response.body().getMsg());
+                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+
+                            }
+
+                            commonDialog.dismiss();
+                        }else {
+                            commonDialog.dismiss();
+                            //Log.e("Data Null : ", "-----------");
+                        }
+                    } catch (Exception e) {
+                        commonDialog.dismiss();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                        //  e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Info> call, Throwable t) {
+                    commonDialog.dismiss();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                    // t.printStackTrace();
+                }
+            });
+        } else {
+            Toast.makeText(getActivity(), "No Internet Connection !", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void getChangePass(Integer regId, String strNewPass) {
         if (Constants.isOnline(getActivity())) {
+
+            MessageDigest md = null;
+            try {
+                md = MessageDigest.getInstance("MD5");
+            } catch (NoSuchAlgorithmException e) {
+                // e.printStackTrace();
+            }
+            byte[] messageDigest = md.digest(strNewPass.getBytes());
+            BigInteger number = new BigInteger(1, messageDigest);
+            String hashtext = number.toString(16);
+
             final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<Info> listCall = Constants.myInterface.changePassword(regId,strNewPass,authHeader);
+            String token = CustomSharedPreference.getString(getContext(), CustomSharedPreference.KEY_LOGIN_TOKEN) ;
+
+            Call<Info> listCall = Constants.myInterface.changePassword(regId,hashtext,token,authHeader);
             listCall.enqueue(new Callback<Info>() {
                 @Override
                 public void onResponse(Call<Info> call, Response<Info> response) {

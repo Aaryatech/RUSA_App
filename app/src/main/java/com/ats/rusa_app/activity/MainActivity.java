@@ -1,19 +1,14 @@
 package com.ats.rusa_app.activity;
 
-import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.content.res.Configuration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -23,27 +18,15 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ats.rusa_app.BuildConfig;
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.fcm.SharedPrefManager;
@@ -61,12 +44,13 @@ import com.ats.rusa_app.fragment.UpcomingEventDetailFragment;
 import com.ats.rusa_app.fragment.UpcomingEventFragment;
 import com.ats.rusa_app.fragment.UploadDocumentFragment;
 import com.ats.rusa_app.fragment.VideoFragment;
-import com.ats.rusa_app.interfaces.InterfaceApi;
 import com.ats.rusa_app.model.AppToken;
 import com.ats.rusa_app.model.CategoryList;
 import com.ats.rusa_app.model.Login;
 import com.ats.rusa_app.model.MenuGroup;
 import com.ats.rusa_app.model.MenuModel;
+import com.ats.rusa_app.model.UpdateToken;
+import com.ats.rusa_app.sqlite.DatabaseHandler;
 import com.ats.rusa_app.util.CommonDialog;
 import com.ats.rusa_app.util.ConnectivityDialog;
 import com.ats.rusa_app.util.Constant;
@@ -75,24 +59,15 @@ import com.ats.rusa_app.util.PermissionsUtil;
 import com.google.gson.Gson;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
-import okhttp3.Cache;
-import okhttp3.CacheControl;
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.ats.rusa_app.constants.Constants.authHeader;
 
@@ -117,6 +92,7 @@ public class MainActivity extends AppCompatActivity
     HashMap<MenuGroup, ArrayList<MenuGroup>> childList = new HashMap<>();
 
     int languageId;
+    DatabaseHandler dbHelper;
 
     private LinearLayout linearLayout_home, linearLayout_aboutUs, linearLayout_gallery, linearLayout_news, linearLayout_contact;
 
@@ -132,6 +108,7 @@ public class MainActivity extends AppCompatActivity
 
         expandableListView = findViewById(R.id.expandableListView);
 
+        dbHelper = new DatabaseHandler(MainActivity.this);
 
       /*  if( (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0){
             Log.e("FLAG_DEBUGGABLE","****************** TRUE");
@@ -208,10 +185,23 @@ public class MainActivity extends AppCompatActivity
            // e.printStackTrace();
         }
 
-        String userStr = CustomSharedPreference.getString(getApplicationContext(), CustomSharedPreference.KEY_USER);
-        Gson gson = new Gson();
-        loginUser = gson.fromJson(userStr, Login.class);
-        //Log.e("HOME_ACTIVITY : ", "--------USER-------" + loginUser);
+//        String userStr = CustomSharedPreference.getString(getApplicationContext(), CustomSharedPreference.KEY_USER);
+//        Gson gson = new Gson();
+//        loginUser = gson.fromJson(userStr, Login.class);
+
+        // String userStr = CustomSharedPreference.getString(getApplicationContext(), CustomSharedPreference.KEY_USER);
+
+        try {
+           // loginUser=null;
+            loginUser = dbHelper.getLoginData();
+           // Log.e("HOME_ACTIVITY : ", "--------USER-------" + loginUser);
+
+
+        }catch (Exception e)
+        {
+            //e.printStackTrace();
+        }
+
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -884,7 +874,7 @@ public class MainActivity extends AppCompatActivity
             MenuGroup menuGroup0 = new MenuGroup(getResources().getString(R.string.str_edit_profile), false, false, false, "Profile");
             headerList.add(menuGroup0);
 
-            MenuGroup menuGroupchPass = new MenuGroup(getResources().getString(R.string.str_change_pass), false, false, false, "Profile");
+            MenuGroup menuGroupchPass = new MenuGroup(getResources().getString(R.string.str_change_passs), false, false, false, "Profile");
             headerList.add(menuGroupchPass);
 
             MenuGroup menuGroup1 = new MenuGroup(getResources().getString(R.string.str_upload_document), false, false, false, "uploadDoc");
@@ -1020,11 +1010,12 @@ public class MainActivity extends AppCompatActivity
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
-                                CustomSharedPreference.deletePreference(MainActivity.this);
-                                Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
-                                finish();
+                                updateToken(loginUser.getRegId());
+//                                CustomSharedPreference.deletePreference(MainActivity.this);
+//                                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+//                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                                startActivity(intent);
+//                                finish();
 
                             }
                         });
@@ -1062,11 +1053,15 @@ public class MainActivity extends AppCompatActivity
 
                         } else {
 
-                            Fragment adf = new EditProfileFragment();
-                            Bundle args = new Bundle();
-                            args.putString("slugName", url);
-                            adf.setArguments(args);
-                            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+//                            Fragment adf = new EditProfileFragment();
+//                            Bundle args = new Bundle();
+//                            args.putString("slugName", url);
+//                            adf.setArguments(args);
+//                            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+
+                            Intent intent = new Intent(MainActivity.this, ChangePasswordActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
 
                         }
                     } else if (url.equalsIgnoreCase("uploadDoc")) {
@@ -1234,6 +1229,71 @@ public class MainActivity extends AppCompatActivity
                 return false;
             }
         });
+    }
+
+    private void updateToken(Integer regId) {
+      //  Log.e("PARAMETER","       REG ID   "+regId);
+        if (Constants.isOnline(MainActivity.this)) {
+
+            final CommonDialog commonDialog = new CommonDialog(MainActivity.this, "Loading", "Please Wait...");
+            commonDialog.show();
+
+            String token = "NULL";
+
+            Call<UpdateToken> listCall = Constants.myInterface.updateToken(regId,token,authHeader);
+            listCall.enqueue(new Callback<UpdateToken>() {
+                @Override
+                public void onResponse(Call<UpdateToken> call, Response<UpdateToken> response) {
+                   // Log.e("RESPONCE","----------------------UPDATE TOKEN-------------------"+response.body());
+                    try {
+                        if (response.body() != null) {
+                            if(!response.body().getError()) {
+
+                                dbHelper.deleteData("user_data");
+                                loginUser=null;
+                                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                finish();
+
+                            }else {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialogTheme);
+                                builder.setTitle("Alert");
+                                builder.setMessage("" + response.body().getMsg());
+                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+
+                            }
+
+                            commonDialog.dismiss();
+                        }else {
+                            commonDialog.dismiss();
+                            //Log.e("Data Null : ", "-----------");
+                        }
+                    } catch (Exception e) {
+                        commonDialog.dismiss();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                        //  e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<UpdateToken> call, Throwable t) {
+                    commonDialog.dismiss();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                    // t.printStackTrace();
+                }
+            });
+        } else {
+            Toast.makeText(MainActivity.this, "No Internet Connection !", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public String getMacAddress() {

@@ -3,7 +3,6 @@ package com.ats.rusa_app.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,7 @@ import android.widget.Toast;
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.model.Login;
 import com.ats.rusa_app.model.UpcomingEvent;
-import com.ats.rusa_app.util.CustomSharedPreference;
+import com.ats.rusa_app.sqlite.DatabaseHandler;
 import com.ats.rusa_app.util.PermissionsUtil;
 import com.google.gson.Gson;
 
@@ -28,6 +27,7 @@ ImageView imageView;
 TextView tv_eventName,tv_eventVenu,tv_eventDate;
 Button btn_apply;
 Login loginUser;
+DatabaseHandler dbHelper;
 private static final int RESULT_OK=100;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,6 +41,8 @@ private static final int RESULT_OK=100;
         tv_eventDate=(TextView)view.findViewById(R.id.tvEventDate);
         btn_apply=(Button)view.findViewById(R.id.btn_apply);
 
+        dbHelper=new DatabaseHandler(getActivity());
+
         if (PermissionsUtil.checkAndRequestPermissions(getActivity())) {
         }
 
@@ -49,8 +51,15 @@ private static final int RESULT_OK=100;
         upcomingEvent = gson.fromJson(upcomingStr, UpcomingEvent.class);
        // Log.e("responce","-----------------------"+upcomingEvent);
 
-        String userStr = CustomSharedPreference.getString(getActivity(), CustomSharedPreference.KEY_USER);
-        loginUser = gson.fromJson(userStr, Login.class);
+//        String userStr = CustomSharedPreference.getString(getActivity(), CustomSharedPreference.KEY_USER);
+//        loginUser = gson.fromJson(userStr, Login.class);
+        try {
+            loginUser = dbHelper.getLoginData();
+        }catch (Exception e)
+        {
+           // e.printStackTrace();
+        }
+
        // Log.e("LOGIN_ACTIVITY : ", "--------USER-------" + loginUser);
 
         tv_eventName.setText(upcomingEvent.getHeading());

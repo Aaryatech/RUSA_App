@@ -49,6 +49,12 @@ public class PrevEventFeedback {
     @SerializedName("exVar2")
     @Expose
     private String exVar2;
+    @SerializedName("message")
+    @Expose
+    private String message;
+    @SerializedName("error")
+    @Expose
+    private Boolean error;
 
     public Integer getEventRegId() {
         return eventRegId;
@@ -170,6 +176,22 @@ public class PrevEventFeedback {
         this.exVar2 = exVar2;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public Boolean getError() {
+        return error;
+    }
+
+    public void setError(Boolean error) {
+        this.error = error;
+    }
+
     @Override
     public String toString() {
         return "PrevEventFeedback{" +
@@ -188,6 +210,8 @@ public class PrevEventFeedback {
                 ", exInt2=" + exInt2 +
                 ", exVar1='" + exVar1 + '\'' +
                 ", exVar2='" + exVar2 + '\'' +
+                ", message='" + message + '\'' +
+                ", error=" + error +
                 '}';
     }
 }

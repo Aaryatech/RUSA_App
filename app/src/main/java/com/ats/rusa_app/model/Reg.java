@@ -101,7 +101,12 @@ public class Reg {
     @SerializedName("editByAdminuserId")
     @Expose
     private int editByAdminuserId;
-
+    @SerializedName("msg")
+    @Expose
+    private String msg;
+    @SerializedName("error")
+    @Expose
+    private Boolean error;
 
     public Reg(int regId, String userUuid, int userType, String emails, String alternateEmail, String userPassword, String name, String aisheCode, String collegeName, String unversityName, String designationName, String departmentName, String mobileNumber, String authorizedPerson, String dob, String imageName, String tokenId, String registerVia, int isActive, int delStatus, String addDate, String editDate, int editByUserId, int exInt1, int exInt2, String exVar1, String exVar2, String emailCode, int emailVerified, String smsCode, int smsVerified, int editByAdminuserId) {
         this.regId = regId;
@@ -397,6 +402,22 @@ public class Reg {
         this.editByAdminuserId = editByAdminuserId;
     }
 
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public Boolean getError() {
+        return error;
+    }
+
+    public void setError(Boolean error) {
+        this.error = error;
+    }
+
     @Override
     public String toString() {
         return "Reg{" +
@@ -432,6 +453,8 @@ public class Reg {
                 ", smsCode='" + smsCode + '\'' +
                 ", smsVerified=" + smsVerified +
                 ", editByAdminuserId=" + editByAdminuserId +
+                ", msg='" + msg + '\'' +
+                ", error=" + error +
                 '}';
     }
 }

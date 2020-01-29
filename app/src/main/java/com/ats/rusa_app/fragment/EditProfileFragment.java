@@ -1,42 +1,34 @@
 package com.ats.rusa_app.fragment;
 
 
-import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ats.rusa_app.R;
-import com.ats.rusa_app.activity.MainActivity;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.Login;
 import com.ats.rusa_app.model.NewReg;
-import com.ats.rusa_app.model.ParameterModel;
 import com.ats.rusa_app.model.PreviousRecord;
 import com.ats.rusa_app.model.Reg;
+import com.ats.rusa_app.sqlite.DatabaseHandler;
 import com.ats.rusa_app.util.CommonDialog;
 import com.ats.rusa_app.util.CustomSharedPreference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -54,6 +46,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
     Login loginUser;
     public TextView tvHead;
     Reg RegModel;
+    DatabaseHandler dbHelper;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -77,11 +70,24 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         tilAuthName = view.findViewById(R.id.tilAuthName);
         tilName = view.findViewById(R.id.tilName);
 
+        dbHelper=new DatabaseHandler(getActivity());
+
         btn_registration.setOnClickListener(this);
 
-        String userStr = CustomSharedPreference.getString(getActivity(), CustomSharedPreference.KEY_USER);
-        Gson gson = new Gson();
-        loginUser = gson.fromJson(userStr, Login.class);
+//        String userStr = CustomSharedPreference.getString(getActivity(), CustomSharedPreference.KEY_USER);
+//        Gson gson = new Gson();
+//        loginUser = gson.fromJson(userStr, Login.class);
+
+
+        try {
+            loginUser = dbHelper.getLoginData();
+            //Log.e("HOME_ACTIVITY : ", "--------USER-------" + loginUser);
+
+        }catch (Exception e)
+        {
+            //e.printStackTrace();
+        }
+
         //Log.e("HOME_ACTIVITY : ", "--------USER-------" + loginUser);
 
 
@@ -122,41 +128,62 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
             final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<NewReg> listCall = Constants.myInterface.getRegUserDetailbyRegId(regId, authHeader);
+            String token = CustomSharedPreference.getString(getContext(), CustomSharedPreference.KEY_LOGIN_TOKEN) ;
+
+
+            Call<NewReg> listCall = Constants.myInterface.getRegUserDetailbyRegId(regId,token, authHeader);
             listCall.enqueue(new Callback<NewReg>() {
                 @Override
                 public void onResponse(Call<NewReg> call, Response<NewReg> response) {
                     try {
                         if (response.body() != null) {
-                            NewReg newRegModel = response.body();
 
-                            if (newRegModel.getUserType() == 1) {
-                                tvHead.setText("Edit Profile (Individual)");
-                                tilAuthName.setVisibility(View.GONE);
-                                tilName.setVisibility(View.VISIBLE);
-                            } else {
+                            if(!response.body().getError()) {
+                                NewReg newRegModel = response.body();
 
-                                if (newRegModel.getUserType() == 2) {
-                                    tvHead.setText("Edit Profile (Institute)");
-                                } else if (newRegModel.getUserType() == 1) {
-                                    tvHead.setText("Edit Profile (University)");
+                                if (newRegModel.getUserType() == 1) {
+                                    tvHead.setText("Edit Profile (Individual)");
+                                    tilAuthName.setVisibility(View.GONE);
+                                    tilName.setVisibility(View.VISIBLE);
+                                } else {
+
+                                    if (newRegModel.getUserType() == 2) {
+                                        tvHead.setText("Edit Profile (Institute)");
+                                    } else if (newRegModel.getUserType() == 1) {
+                                        tvHead.setText("Edit Profile (University)");
+                                    }
+                                    tilAuthName.setVisibility(View.VISIBLE);
+                                    tilName.setVisibility(View.GONE);
                                 }
-                                tilAuthName.setVisibility(View.VISIBLE);
-                                tilName.setVisibility(View.GONE);
+
+                                edName.setText("" + newRegModel.getName());
+                                edCode.setText("" + newRegModel.getAisheCode());
+                                edUni.setText("" + newRegModel.getUniName());
+                                edInst.setText("" + newRegModel.getInstName());
+                                edEmail.setText("" + newRegModel.getEmails());
+                                edDesg.setText("" + newRegModel.getDesignationName());
+                                edDept.setText("" + newRegModel.getDepartmentName());
+                                edMobile.setText("" + newRegModel.getMobileNumber());
+                                edAlterEmail.setText("" + newRegModel.getAlternateEmail());
+                                edAuthName.setText("" + newRegModel.getAuthorizedPerson());
+
+                                //Log.e("Register By id", "-----------------------------" + newRegModel);
+                            }else{
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
+                                builder.setTitle("Alert");
+                                builder.setMessage("" + response.body().getMsg());
+                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+
                             }
-
-                            edName.setText("" + newRegModel.getName());
-                            edCode.setText("" + newRegModel.getAisheCode());
-                            edUni.setText("" + newRegModel.getUniName());
-                            edInst.setText("" + newRegModel.getInstName());
-                            edEmail.setText("" + newRegModel.getEmails());
-                            edDesg.setText("" + newRegModel.getDesignationName());
-                            edDept.setText("" + newRegModel.getDepartmentName());
-                            edMobile.setText("" + newRegModel.getMobileNumber());
-                            edAlterEmail.setText("" + newRegModel.getAlternateEmail());
-                            edAuthName.setText("" + newRegModel.getAuthorizedPerson());
-
-                            //Log.e("Register By id", "-----------------------------" + newRegModel);
                             commonDialog.dismiss();
 
                         } else {
@@ -189,13 +216,32 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
             final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<Reg> listCall = Constants.myInterface.getRegUserbyRegId(regId, authHeader);
+            String token = CustomSharedPreference.getString(getContext(), CustomSharedPreference.KEY_LOGIN_TOKEN) ;
+
+            Call<Reg> listCall = Constants.myInterface.getRegUserbyRegId(regId,token, authHeader);
             listCall.enqueue(new Callback<Reg>() {
                 @Override
                 public void onResponse(Call<Reg> call, Response<Reg> response) {
                     try {
                         if (response.body() != null) {
-                            RegModel = response.body();
+
+                            if(!response.body().getError()) {
+                                RegModel = response.body();
+                            }else {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
+                                builder.setTitle("Alert");
+                                builder.setMessage("" + response.body().getMsg());
+                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+
+                            }
 
                             //Log.e("Register By id", "-----------------------------" + RegModel);
                             commonDialog.dismiss();

@@ -7,6 +7,9 @@ public class FeedbackSave {
     @SerializedName("msg")
     @Expose
     private String msg;
+    @SerializedName("retmsg")
+    @Expose
+    private String retmsg;
     @SerializedName("error")
     @Expose
     private Boolean error;
@@ -17,6 +20,14 @@ public class FeedbackSave {
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    public String getRetmsg() {
+        return retmsg;
+    }
+
+    public void setRetmsg(String retmsg) {
+        this.retmsg = retmsg;
     }
 
     public Boolean getError() {
@@ -31,6 +42,7 @@ public class FeedbackSave {
     public String toString() {
         return "FeedbackSave{" +
                 "msg='" + msg + '\'' +
+                ", retmsg='" + retmsg + '\'' +
                 ", error=" + error +
                 '}';
     }

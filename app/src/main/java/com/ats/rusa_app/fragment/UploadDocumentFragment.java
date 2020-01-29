@@ -15,14 +15,10 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,22 +31,16 @@ import android.widget.Toast;
 
 import com.ats.rusa_app.BuildConfig;
 import com.ats.rusa_app.R;
-import com.ats.rusa_app.activity.EventDetailListActivity;
-import com.ats.rusa_app.activity.IndividualRegActivity;
 import com.ats.rusa_app.adapter.DocListAdapter;
-import com.ats.rusa_app.adapter.RvGalleryAdapter;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.DocTypeList;
 import com.ats.rusa_app.model.DocUpload;
-import com.ats.rusa_app.model.EventRegistration;
-import com.ats.rusa_app.model.Info;
 import com.ats.rusa_app.model.Login;
-import com.ats.rusa_app.model.University;
+import com.ats.rusa_app.sqlite.DatabaseHandler;
 import com.ats.rusa_app.util.CommonDialog;
 import com.ats.rusa_app.util.CustomSharedPreference;
 import com.ats.rusa_app.util.PermissionsUtil;
 import com.ats.rusa_app.util.RealPathUtil;
-import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
@@ -68,7 +58,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.ats.rusa_app.constants.Constants.authHeader;
-import static com.ats.rusa_app.fragment.GalleryDisplayFragment.staticPhotosList;
 
 public class UploadDocumentFragment extends Fragment implements View.OnClickListener {
 
@@ -84,6 +73,7 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
     public ArrayList<DocUpload> docList = new ArrayList<>();
 
     Login loginUser;
+    DatabaseHandler dbHelper;
 
     //---------------IMAGE----------------
     File folder = new File(Environment.getExternalStorageDirectory() + File.separator, "RUSA_DOCS");
@@ -110,15 +100,27 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
 
         recyclerView = view.findViewById(R.id.recyclerView);
 
+        dbHelper=new DatabaseHandler(getActivity());
+
 
         if (PermissionsUtil.checkAndRequestPermissions(getActivity())) {
         }
 
         createFolder();
 
-        String userStr = CustomSharedPreference.getString(getActivity(), CustomSharedPreference.KEY_USER);
-        Gson gson = new Gson();
-        loginUser = gson.fromJson(userStr, Login.class);
+//        String userStr = CustomSharedPreference.getString(getActivity(), CustomSharedPreference.KEY_USER);
+//        Gson gson = new Gson();
+//        loginUser = gson.fromJson(userStr, Login.class);
+
+        try {
+            loginUser = dbHelper.getLoginData();
+            //Log.e("HOME_ACTIVITY : ", "--------USER-------" + loginUser);
+
+        }catch (Exception e)
+        {
+            //e.printStackTrace();
+        }
+
         //Log.e("HOME_ACTIVITY : ", "--------USER-------" + loginUser);
 
         if (loginUser != null) {
@@ -292,18 +294,20 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
 
 
     private void getUserDocList(int id) {
+       // Log.e("PARAMETER","          ID       "+id);
 
         if (Constants.isOnline(getContext())) {
             final CommonDialog commonDialog = new CommonDialog(getContext(), "Loading", "Please Wait...");
             commonDialog.show();
 
+            String token = CustomSharedPreference.getString(getContext(), CustomSharedPreference.KEY_LOGIN_TOKEN) ;
 
-            Call<ArrayList<DocUpload>> listCall = Constants.myInterface.getDocList(id,authHeader);
+
+            Call<ArrayList<DocUpload>> listCall = Constants.myInterface.getDocList(id,token,authHeader);
             listCall.enqueue(new Callback<ArrayList<DocUpload>>() {
                 @Override
                 public void onResponse(Call<ArrayList<DocUpload>> call, Response<ArrayList<DocUpload>> response) {
                     try {
-
 
                         //Log.e("RESPONSE ", "-----------------------------" + response.body());
 

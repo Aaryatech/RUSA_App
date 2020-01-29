@@ -11,7 +11,6 @@ import android.provider.DocumentsContract;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -25,6 +24,7 @@ import com.ats.rusa_app.model.EventRegistration;
 import com.ats.rusa_app.model.Info;
 import com.ats.rusa_app.model.Login;
 import com.ats.rusa_app.model.UpcomingEvent;
+import com.ats.rusa_app.sqlite.DatabaseHandler;
 import com.ats.rusa_app.util.CommonDialog;
 import com.ats.rusa_app.util.CustomSharedPreference;
 import com.ats.rusa_app.util.HtmlHttpImageGetter;
@@ -70,8 +70,11 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
     private String selectedFilePath;
     private static int RESULT_LOAD_IMAGE = 1;
 
+
     File folder = new File(Environment.getExternalStorageDirectory() + File.separator, "rusa_folder");
     File f;
+
+    DatabaseHandler dbHelper;
 
     public static String path, imagePath;
 
@@ -96,6 +99,8 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
         btn_upload.setOnClickListener(this);
         tvEventDesc = findViewById(R.id.tvEventDesc);
 
+        dbHelper=new DatabaseHandler(EventDetailListActivity.this);
+
         if (PermissionsUtil.checkAndRequestPermissions(EventDetailListActivity.this)) {
         }
 
@@ -106,8 +111,18 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
         upcomingEvent = gson.fromJson(upcomingStr, UpcomingEvent.class);
         //Log.e("responce", "-----------------------" + upcomingEvent);
 
-        String userStr = CustomSharedPreference.getString(EventDetailListActivity.this, CustomSharedPreference.KEY_USER);
-        loginUser = gson.fromJson(userStr, Login.class);
+//        String userStr = CustomSharedPreference.getString(EventDetailListActivity.this, CustomSharedPreference.KEY_USER);
+//        loginUser = gson.fromJson(userStr, Login.class);
+
+        try {
+            loginUser = dbHelper.getLoginData();
+            //Log.e("HOME_ACTIVITY : ", "--------USER-------" + loginUser);
+
+        }catch (Exception e)
+        {
+            //e.printStackTrace();
+        }
+
         //Log.e("LOGIN_ACTIVITY : ", "--------USER-------" + loginUser);
 
         tv_eventName.setText(upcomingEvent.getHeading());
@@ -251,13 +266,15 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
             final CommonDialog commonDialog = new CommonDialog(getApplicationContext(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<Info> listCall = Constants.myInterface.getAppliedEvents(newsblogsId, regId,authHeader);
+            String token = CustomSharedPreference.getString(EventDetailListActivity.this, CustomSharedPreference.KEY_LOGIN_TOKEN) ;
+
+            Call<Info> listCall = Constants.myInterface.getAppliedEvents(newsblogsId, regId,token,authHeader);
             listCall.enqueue(new Callback<Info>() {
                 @Override
                 public void onResponse(Call<Info> call, Response<Info> response) {
                     try {
                         //Log.e("ERROR : ", " - " + response.body().getError());
-                        if (response.body().getError().equals(true)) {
+                        if (response.body().getError().equals(true) && response.body().getMsg().equalsIgnoreCase("Record Not Found")) {
 
                             //Log.e("APPLIED EVENT LIST : ", " - " + response.body());
 
@@ -284,6 +301,22 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
                             AlertDialog dialog = builder.create();
                             dialog.show();
                             //commonDialog.dismiss();
+
+                        }else if(response.body().getError().equals(true) && response.body().getRetmsg().equalsIgnoreCase("Unauthorized User"))
+                        {
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(EventDetailListActivity.this, R.style.AlertDialogTheme);
+                            builder.setTitle("Alert");
+                            builder.setMessage("" + response.body().getRetmsg());
+                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
 
                         }
 

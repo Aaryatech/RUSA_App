@@ -48,13 +48,13 @@ public class Login {
     private String authorizedPerson;
     @SerializedName("dob")
     @Expose
-    private Object dob;
+    private String dob;
     @SerializedName("imageName")
     @Expose
-    private Object imageName;
+    private String imageName;
     @SerializedName("tokenId")
     @Expose
-    private Object tokenId;
+    private String tokenId;
     @SerializedName("registerVia")
     @Expose
     private String registerVia;
@@ -81,19 +81,19 @@ public class Login {
     private Integer exInt2;
     @SerializedName("exVar1")
     @Expose
-    private Object exVar1;
+    private String exVar1;
     @SerializedName("exVar2")
     @Expose
-    private Object exVar2;
+    private String exVar2;
     @SerializedName("emailCode")
     @Expose
-    private Object emailCode;
+    private String emailCode;
     @SerializedName("emailVerified")
     @Expose
     private Integer emailVerified;
     @SerializedName("smsCode")
     @Expose
-    private Object smsCode;
+    private String smsCode;
     @SerializedName("smsVerified")
     @Expose
     private Integer smsVerified;
@@ -219,27 +219,27 @@ public class Login {
         this.authorizedPerson = authorizedPerson;
     }
 
-    public Object getDob() {
+    public String getDob() {
         return dob;
     }
 
-    public void setDob(Object dob) {
+    public void setDob(String dob) {
         this.dob = dob;
     }
 
-    public Object getImageName() {
+    public String getImageName() {
         return imageName;
     }
 
-    public void setImageName(Object imageName) {
+    public void setImageName(String imageName) {
         this.imageName = imageName;
     }
 
-    public Object getTokenId() {
+    public String getTokenId() {
         return tokenId;
     }
 
-    public void setTokenId(Object tokenId) {
+    public void setTokenId(String tokenId) {
         this.tokenId = tokenId;
     }
 
@@ -307,27 +307,27 @@ public class Login {
         this.exInt2 = exInt2;
     }
 
-    public Object getExVar1() {
+    public String getExVar1() {
         return exVar1;
     }
 
-    public void setExVar1(Object exVar1) {
+    public void setExVar1(String exVar1) {
         this.exVar1 = exVar1;
     }
 
-    public Object getExVar2() {
+    public String getExVar2() {
         return exVar2;
     }
 
-    public void setExVar2(Object exVar2) {
+    public void setExVar2(String exVar2) {
         this.exVar2 = exVar2;
     }
 
-    public Object getEmailCode() {
+    public String getEmailCode() {
         return emailCode;
     }
 
-    public void setEmailCode(Object emailCode) {
+    public void setEmailCode(String emailCode) {
         this.emailCode = emailCode;
     }
 
@@ -339,11 +339,11 @@ public class Login {
         this.emailVerified = emailVerified;
     }
 
-    public Object getSmsCode() {
+    public String getSmsCode() {
         return smsCode;
     }
 
-    public void setSmsCode(Object smsCode) {
+    public void setSmsCode(String smsCode) {
         this.smsCode = smsCode;
     }
 

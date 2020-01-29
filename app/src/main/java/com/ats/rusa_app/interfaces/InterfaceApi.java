@@ -21,7 +21,6 @@ import com.ats.rusa_app.model.NewDetail;
 import com.ats.rusa_app.model.NewReg;
 import com.ats.rusa_app.model.OTPVerification;
 import com.ats.rusa_app.model.PageData;
-import com.ats.rusa_app.model.ParameterModel;
 import com.ats.rusa_app.model.PrevEvent;
 import com.ats.rusa_app.model.PrevEventFeedback;
 import com.ats.rusa_app.model.PreviousEvent;
@@ -31,6 +30,7 @@ import com.ats.rusa_app.model.ResendOTP;
 import com.ats.rusa_app.model.Testomonial;
 import com.ats.rusa_app.model.University;
 import com.ats.rusa_app.model.UpcomingEvent;
+import com.ats.rusa_app.model.UpdateToken;
 
 import org.json.JSONObject;
 
@@ -83,11 +83,11 @@ public interface InterfaceApi {
     @POST("savePreviousRecord")
     Call<PreviousRecord> savePreviousRecord(@Body PreviousRecord previousRecord,@Header("Authorization") String authHeader);
 
-    @POST("getRegUserbyRegId")
-    Call<Reg> getRegUserbyRegId(@Query("regId") int regId,@Header("Authorization") String authHeader);
+    @POST("getRegUserbyRegIdForApp")
+    Call<Reg> getRegUserbyRegId(@Query("regId") int regId,@Query("token") String token,@Header("Authorization") String authHeader);
 
-    @POST("getRegUserDetailbyRegId")
-    Call<NewReg> getRegUserDetailbyRegId(@Query("regId") int regId,@Header("Authorization") String authHeader);
+    @POST("getRegUserDetailbyRegIdForApp")
+    Call<NewReg> getRegUserDetailbyRegId(@Query("regId") int regId,@Query("token") String token,@Header("Authorization") String authHeader);
     //saveRegistration
 
     @POST("saveAppTokens")
@@ -109,7 +109,6 @@ public interface InterfaceApi {
     Call<Login> getLogin(@Query("userName") String userName, @Query("password") String password, @Query("token") String token,@Header("Authorization") String authHeader);
 
 
-
     @POST("forgetPassword")
     Call<Login> getForgotPass(@Query("email") String email, @Query("mobileNumber") String mobileNumber,@Header("Authorization") String authHeader);
 
@@ -122,11 +121,11 @@ public interface InterfaceApi {
     @POST("saveEventRegister")
     Call<EventRegistration> saveEventRegister(@Body EventRegistration eventRegistration,@Header("Authorization") String authHeader);
 
-    @POST("getAppliedEvents")
-    Call<Info> getAppliedEvents(@Query("newsblogsId") int newsblogsId, @Query("userId") int userId,@Header("Authorization") String authHeader);
+    @POST("getAppliedEventsForApp")
+    Call<Info> getAppliedEvents(@Query("newsblogsId") int newsblogsId, @Query("userId") int userId,@Query("token") String token,@Header("Authorization") String authHeader);
 
-    @POST("changePassword")
-    Call<Info> changePassword(@Query("regId") int regId, @Query("password") String password,@Header("Authorization") String authHeader);
+    @POST("changePasswordForApp")
+    Call<Info> changePassword(@Query("regId") int regId, @Query("password") String password,@Query("token") String token,@Header("Authorization") String authHeader);
 
     @POST("saveContactUs")
     Call<ContactUs> saveContactUs(@Body ContactUs contactUs,@Header("Authorization") String authHeader);
@@ -141,11 +140,11 @@ public interface InterfaceApi {
     @POST("docUpload")
     Call<JSONObject> docUpload(@Part MultipartBody.Part filePath, @Part("docName") RequestBody docName,@Part("type") RequestBody type,@Header("Authorization") String authHeader);
 
-    @POST("allPreviousEventWithApllied")
-    Call<ArrayList<PrevEvent>> getAllPreviousEventWithApllied(@Query("langId") int langId, @Query("userId") int userId,@Header("Authorization") String authHeader);
+    @POST("allPreviousEventWithAplliedForApp")
+    Call<ArrayList<PrevEvent>> getAllPreviousEventWithApllied(@Query("langId") int langId, @Query("userId") int userId,@Query("token") String token,@Header("Authorization") String authHeader);
 
-    @POST("updateEventFeedback")
-    Call<FeedbackSave> getUpdateEventFeedback(@Query("eventId") int eventId, @Query("userId") int userId, @Query("messge") String messge, @Query("value") int value,@Header("Authorization") String authHeader);
+    @POST("updateEventFeedbackForApp")
+    Call<FeedbackSave> getUpdateEventFeedback(@Query("eventId") int eventId, @Query("userId") int userId, @Query("messge") String messge, @Query("value") int value,@Query("token") String token,@Header("Authorization") String authHeader);
 
     @POST("checkUniqueField")
     Call<Info> getCheckUniqueField(@Query("inputValue") String inputValue, @Query("valueType") int valueType, @Query("primaryKey") int primaryKey,@Header("Authorization") String authHeader);
@@ -158,8 +157,8 @@ public interface InterfaceApi {
     Call<PreviousRecord> getPrevRecordByRegId(@Query("regId") int regId,@Query("token") String token, @Header("Authorization") String authHeader);
 
 
-    @POST("getFeedbackByUserIdAndNewsblogsId ")
-    Call<PrevEventFeedback> getFeedbackByUserIdAndNewsblogsId(@Query("userId") int userId, @Query("newsblogsId") int newsblogsId,@Header("Authorization") String authHeader);
+    @POST("getFeedbackByUserIdAndNewsblogsIdForApp")
+    Call<PrevEventFeedback> getFeedbackByUserIdAndNewsblogsId(@Query("userId") int userId, @Query("newsblogsId") int newsblogsId,@Query("token") String token,@Header("Authorization") String authHeader);
 
     @POST("getCategoryListWithImageCount")
     Call<ArrayList<Gallery>> getCategoryListWithImageCount(@Query("sectionId") int sectionId, @Query("langId") int langId,@Header("Authorization") String authHeader);
@@ -190,8 +189,13 @@ public interface InterfaceApi {
     @POST("saveUploadDocument")
     Call<DocUpload> saveDocument(@Body DocUpload docUpload,@Header("Authorization") String authHeader);
 
-    @POST("getDocumentByRegId")
-    Call<ArrayList<DocUpload>> getDocList(@Query("regId") int regId,@Header("Authorization") String authHeader);
+    @POST("getDocumentByRegIdForApp")
+    Call<ArrayList<DocUpload>> getDocList(@Query("regId") int regId,@Query("token") String token,@Header("Authorization") String authHeader);
 
+    @POST("checkPasswordByUserIdForApp")
+    Call<Info> checkPasswordByUserId(@Query("userId") int userId, @Query("pass") String pass,@Query("token") String token,@Header("Authorization") String authHeader);
+
+    @POST("updateToken")
+    Call<UpdateToken> updateToken(@Query("regId") int regId, @Query("token") String token,@Header("Authorization") String authHeader);
 
 }

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +14,7 @@ import android.widget.Toast;
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.Login;
+import com.ats.rusa_app.sqlite.DatabaseHandler;
 import com.ats.rusa_app.util.CommonDialog;
 import com.ats.rusa_app.util.CustomSharedPreference;
 import com.google.gson.Gson;
@@ -34,6 +34,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public EditText ed_userName, ed_password;
     public Button btn_login;
     public TextView tv_forgotPass, tv_signUp, tv_skipLogin;
+    DatabaseHandler dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         tv_signUp = (TextView) findViewById(R.id.tv_signUp);
         tv_skipLogin = (TextView) findViewById(R.id.tv_skipLogin);
         btn_login = (Button) findViewById(R.id.btn_login);
+
+        dbHelper=new DatabaseHandler(LoginActivity.this);
 
         tv_forgotPass.setOnClickListener(this);
         tv_signUp.setOnClickListener(this);
@@ -123,7 +126,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 @Override
                 public void onResponse(Call<Login> call, Response<Login> response) {
 
-                    //Log.e("OUTPUT ----","---------------"+response.body());
+                   // Log.e("OUTPUT ----","---------------"+response.body());
 
                     try {
                         if (response.body() != null) {
@@ -135,8 +138,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             if (!userDetail.getError()) {
                                 Gson gson = new Gson();
                                 String json = gson.toJson(userDetail);
-                                CustomSharedPreference.putString(LoginActivity.this, CustomSharedPreference.KEY_USER, json);
+                              // CustomSharedPreference.putString(LoginActivity.this, CustomSharedPreference.KEY_USER, json);
                                 CustomSharedPreference.putString(LoginActivity.this, CustomSharedPreference.KEY_LOGIN_TOKEN, token);
+
+                                dbHelper.removeUserData();
+                                dbHelper.insertUserData(userDetail);
+
 
                                /* if (userDetail.getExInt1() != 1) {
                                     Intent intent1 = new Intent(LoginActivity.this, ChangePasswordActivity.class);
@@ -170,13 +177,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         } else {
                             commonDialog.dismiss();
                             Toast.makeText(LoginActivity.this, "Invalid Email and Password", Toast.LENGTH_SHORT).show();
-                            //Log.e("Data Null : ", "-----------");
+                           // Log.e("Data Null : ", "-----------");
                         }
                     } catch (Exception e) {
                         commonDialog.dismiss();
-                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                       // Log.e("Exception : ", "-----------" + e.getMessage());
                         Toast.makeText(LoginActivity.this, "Invalid Email and Password", Toast.LENGTH_SHORT).show();
-                      //  e.printStackTrace();
+                        e.printStackTrace();
+
                     }
                 }
 

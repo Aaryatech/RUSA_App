@@ -9,10 +9,6 @@ import android.widget.Toast;
 import com.ats.rusa_app.interfaces.InterfaceApi;
 
 import java.io.IOException;
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
@@ -28,6 +24,7 @@ public class Constants {
    //public static final String BASE_URL = "http://192.168.2.22:8094/";
 
     public static final String BASE_URL = "http://115.124.111.54:8080/RusaWebapi/";
+    //public static final String BASE_URL = "http://192.168.2.18:8094/";
 
     public static final String PDF_URL = "http://115.124.111.54:8080/mediarusa/pdf/";
     public static final String DOC_URL = "http://115.124.111.54:8080/mediarusa/userdocument/";
@@ -39,8 +36,6 @@ public class Constants {
 
     public static final String base = userName + ":" + password;
     public static final String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP);
-
-
 
 
     public static OkHttpClient client = new OkHttpClient.Builder()

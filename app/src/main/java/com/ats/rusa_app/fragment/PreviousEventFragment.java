@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +17,9 @@ import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.interfaces.PreviousEventsInterface;
 import com.ats.rusa_app.model.Login;
 import com.ats.rusa_app.model.PrevEvent;
+import com.ats.rusa_app.sqlite.DatabaseHandler;
 import com.ats.rusa_app.util.CommonDialog;
 import com.ats.rusa_app.util.CustomSharedPreference;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -37,6 +36,7 @@ public class PreviousEventFragment extends Fragment implements PreviousEventsInt
     public RecyclerView recyclerView;
     int languageId;
     Login loginUser;
+    DatabaseHandler dbHelper;
     ArrayList<PrevEvent> previousEventList = new ArrayList<>();
 
     @Override
@@ -45,6 +45,8 @@ public class PreviousEventFragment extends Fragment implements PreviousEventsInt
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_previous_event, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+
+        dbHelper=new DatabaseHandler(getActivity());
 
         String langId = CustomSharedPreference.getString(getActivity(), CustomSharedPreference.LANGUAGE_SELECTED);
         try {
@@ -63,7 +65,10 @@ public class PreviousEventFragment extends Fragment implements PreviousEventsInt
             final CommonDialog commonDialog = new CommonDialog(getContext(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<ArrayList<PrevEvent>> listCall = Constants.myInterface.getAllPreviousEventWithApllied(languageId,regId,authHeader);
+            String token = CustomSharedPreference.getString(getContext(), CustomSharedPreference.KEY_LOGIN_TOKEN) ;
+
+
+            Call<ArrayList<PrevEvent>> listCall = Constants.myInterface.getAllPreviousEventWithApllied(languageId,regId,token,authHeader);
             listCall.enqueue(new Callback<ArrayList<PrevEvent>>() {
                 @Override
                 public void onResponse(Call<ArrayList<PrevEvent>> call, Response<ArrayList<PrevEvent>> response) {
@@ -115,9 +120,12 @@ public class PreviousEventFragment extends Fragment implements PreviousEventsInt
         }
 
         try {
-            String userStr = CustomSharedPreference.getString(getActivity(), CustomSharedPreference.KEY_USER);
-            Gson gson = new Gson();
-            loginUser = gson.fromJson(userStr, Login.class);
+//            String userStr = CustomSharedPreference.getString(getActivity(), CustomSharedPreference.KEY_USER);
+//            Gson gson = new Gson();
+//            loginUser = gson.fromJson(userStr, Login.class);
+                loginUser = dbHelper.getLoginData();
+                //Log.e("HOME_ACTIVITY : ", "--------USER-------" + loginUser);
+
             int regId = loginUser.getRegId();
             getPrevoiusEvent(languageId, regId);
         }catch (Exception e)

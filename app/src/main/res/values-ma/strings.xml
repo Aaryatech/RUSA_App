@@ -86,7 +86,7 @@
     <string name="str_logout">बाहेर पडणे</string>
     <string name="str_previous_event">मागील कार्यक्रम</string>
     <string name="str_upcoming_event">पुढील कार्यक्रम</string>
-    <string name="str_change_pass">संकेतशब्द बदल</string>
+    <string name="str_change_passs">संकेतशब्द बदल</string>
 
     <string name="str_no_record_found">रेकॉर्ड सापडले नाहीत</string>
     <string name="str_doc_name">दस्तऐवज नाव *</string>
