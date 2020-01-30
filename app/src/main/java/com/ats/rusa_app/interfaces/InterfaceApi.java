@@ -32,8 +32,6 @@ import com.ats.rusa_app.model.University;
 import com.ats.rusa_app.model.UpcomingEvent;
 import com.ats.rusa_app.model.UpdateToken;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -138,7 +136,7 @@ public interface InterfaceApi {
 
     @Multipart
     @POST("docUploadForApp")
-    Call<JSONObject> docUpload(@Part MultipartBody.Part filePath, @Part("docName") RequestBody docName, @Part("type") RequestBody type, @Query("regId") int regId, @Query("token") String token, @Header("Authorization") String authHeader);
+    Call<Info> docUpload(@Part MultipartBody.Part filePath, @Part("docName") RequestBody docName, @Part("type") RequestBody type, @Query("regId") int regId, @Query("token") String token, @Header("Authorization") String authHeader);
 
     @POST("allPreviousEventWithAplliedForApp")
     Call<ArrayList<PrevEvent>> getAllPreviousEventWithApllied(@Query("langId") int langId, @Query("userId") int userId,@Query("token") String token,@Header("Authorization") String authHeader);

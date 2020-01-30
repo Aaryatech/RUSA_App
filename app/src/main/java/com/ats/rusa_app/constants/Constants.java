@@ -23,8 +23,8 @@ public class Constants {
 
    //public static final String BASE_URL = "http://192.168.2.22:8094/";
 
-    public static final String BASE_URL = "http://115.124.111.54:8080/RusaWebapi/";
-   // public static final String BASE_URL = "http://192.168.2.18:8094/";
+  //  public static final String BASE_URL = "http://115.124.111.54:8080/RusaWebapi/";
+    public static final String BASE_URL = "http://192.168.2.18:8094/";
 
     public static final String PDF_URL = "http://115.124.111.54:8080/mediarusa/pdf/";
     public static final String DOC_URL = "http://115.124.111.54:8080/mediarusa/userdocument/";

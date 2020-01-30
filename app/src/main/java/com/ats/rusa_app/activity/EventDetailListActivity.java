@@ -32,7 +32,6 @@ import com.ats.rusa_app.util.PermissionsUtil;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONObject;
 import org.sufficientlysecure.htmltextview.HtmlTextView;
 
 import java.io.File;
@@ -518,18 +517,17 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
         String token = CustomSharedPreference.getString(EventDetailListActivity.this, CustomSharedPreference.KEY_LOGIN_TOKEN) ;
 
 
-        Call<JSONObject> call = Constants.myInterface.docUpload(body, imgName,type,loginUser.getRegId(),token,authHeader);
-        call.enqueue(new Callback<JSONObject>() {
+        Call<Info> call = Constants.myInterface.docUpload(body, imgName,type,loginUser.getRegId(),token,authHeader);
+        call.enqueue(new Callback<Info>() {
             @Override
-            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
+            public void onResponse(Call<Info> call, Response<Info> response) {
                 commonDialog.dismiss();
                 //  addNewNotification(bean);
                 imagePath = "";
                // Log.e("Response : ", "--" + response.body());
 
-
-               // if(!response.body().getError())
-               // {
+                if(!response.body().getError())
+                {
                     AlertDialog.Builder builder = new AlertDialog.Builder(EventDetailListActivity.this, R.style.AlertDialogTheme);
                     builder.setTitle("Alert");
                     builder.setMessage("Are You sure you want to apply");
@@ -549,37 +547,37 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
                     AlertDialog dialog = builder.create();
                     dialog.show();
 
-//                }else {
-//                    if (response.body().getMsg().equalsIgnoreCase("File upload failed")) {
-//                        AlertDialog.Builder builder = new AlertDialog.Builder(EventDetailListActivity.this, R.style.AlertDialogTheme);
-//                        builder.setTitle("Alert");
-//                        builder.setMessage("" + response.body().getMsg());
-//                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dialog.dismiss();
-//                            }
-//                        });
-//
-//                        AlertDialog dialog = builder.create();
-//                        dialog.show();
-//
-//                    } else if (response.body().getRetmsg().equalsIgnoreCase("Unauthorized User")) {
-//                        AlertDialog.Builder builder = new AlertDialog.Builder(EventDetailListActivity.this, R.style.AlertDialogTheme);
-//                        builder.setTitle("Alert");
-//                        builder.setMessage("" + response.body().getRetmsg());
-//                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dialog.dismiss();
-//                            }
-//                        });
-//
-//                        AlertDialog dialog = builder.create();
-//                        dialog.show();
-//
-//                    }
-              //  }
+                }else {
+                    if (response.body().getMsg().equalsIgnoreCase("File upload failed")) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(EventDetailListActivity.this, R.style.AlertDialogTheme);
+                        builder.setTitle("Alert");
+                        builder.setMessage("" + response.body().getMsg());
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+
+                    } else if (response.body().getRetmsg().equalsIgnoreCase("Unauthorized User")) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(EventDetailListActivity.this, R.style.AlertDialogTheme);
+                        builder.setTitle("Alert");
+                        builder.setMessage("" + response.body().getRetmsg());
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+
+                    }
+                }
 
 
 
@@ -587,7 +585,7 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
             }
 
             @Override
-            public void onFailure(Call<JSONObject> call, Throwable t) {
+            public void onFailure(Call<Info> call, Throwable t) {
                 //Log.e("Error : ", "--" + t.getMessage());
                 commonDialog.dismiss();
               //  t.printStackTrace();

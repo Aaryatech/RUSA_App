@@ -16,6 +16,7 @@ import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,14 +36,13 @@ import com.ats.rusa_app.adapter.DocListAdapter;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.DocTypeList;
 import com.ats.rusa_app.model.DocUpload;
+import com.ats.rusa_app.model.Info;
 import com.ats.rusa_app.model.Login;
 import com.ats.rusa_app.sqlite.DatabaseHandler;
 import com.ats.rusa_app.util.CommonDialog;
 import com.ats.rusa_app.util.CustomSharedPreference;
 import com.ats.rusa_app.util.PermissionsUtil;
 import com.ats.rusa_app.util.RealPathUtil;
-
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -571,58 +571,59 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
         String token = CustomSharedPreference.getString(getContext(), CustomSharedPreference.KEY_LOGIN_TOKEN) ;
         //JSONObject
 
-        Call<JSONObject> call = Constants.myInterface.docUpload(body, imgName, type,loginUser.getRegId(),token,authHeader);
-        call.enqueue(new Callback<JSONObject>() {
+        Call<Info> call = Constants.myInterface.docUpload(body, imgName, type,loginUser.getRegId(),token,authHeader);
+        call.enqueue(new Callback<Info>() {
             @Override
-            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
+            public void onResponse(Call<Info> call, Response<Info> response) {
                 commonDialog.dismiss();
                 //  addNewNotification(bean);
                 imagePath = "";
                // Log.e("Response : ", "--" + response.body());
-               // if(!response.body().getError())
-              //  {
+
+                if(!response.body().getError()) {
+
                     saveDoc(docUpload);
 
-//                }else{
-//                    if(response.body().getMsg().equalsIgnoreCase("File upload failed"))
-//                    {
-//                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
-//                        builder.setTitle("Alert");
-//                        builder.setMessage("" + response.body().getMsg());
-//                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dialog.dismiss();
-//                            }
-//                        });
-//
-//                        AlertDialog dialog = builder.create();
-//                        dialog.show();
-//
-//                    }else if(response.body().getRetmsg().equalsIgnoreCase("Unauthorized User"))
-//                    {
-//                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
-//                        builder.setTitle("Alert");
-//                        builder.setMessage("" + response.body().getRetmsg());
-//                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dialog.dismiss();
-//                            }
-//                        });
-//
-//                        AlertDialog dialog = builder.create();
-//                        dialog.show();
-//
-//                    }
-//                }
+                }else{
+                    if(response.body().getMsg().equalsIgnoreCase("File upload failed"))
+                    {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
+                        builder.setTitle("Alert");
+                        builder.setMessage("" + response.body().getMsg());
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+
+                    }else if(response.body().getRetmsg().equalsIgnoreCase("Unauthorized User"))
+                    {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
+                        builder.setTitle("Alert");
+                        builder.setMessage("" + response.body().getRetmsg());
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+
+                    }
+                }
 
 
 
             }
 
             @Override
-            public void onFailure(Call<JSONObject> call, Throwable t) {
+            public void onFailure(Call<Info> call, Throwable t) {
                 //Log.e("Error : ", "--" + t.getMessage());
                 commonDialog.dismiss();
                // t.printStackTrace();
