@@ -137,8 +137,8 @@ public interface InterfaceApi {
     Call<PageData> getGalleryData(@Query("slugName") String slugName, @Query("langId") int langId,@Header("Authorization") String authHeader);
 
     @Multipart
-    @POST("docUpload")
-    Call<JSONObject> docUpload(@Part MultipartBody.Part filePath, @Part("docName") RequestBody docName,@Part("type") RequestBody type,@Header("Authorization") String authHeader);
+    @POST("docUploadForApp")
+    Call<JSONObject> docUpload(@Part MultipartBody.Part filePath, @Part("docName") RequestBody docName, @Part("type") RequestBody type, @Query("regId") int regId, @Query("token") String token, @Header("Authorization") String authHeader);
 
     @POST("allPreviousEventWithAplliedForApp")
     Call<ArrayList<PrevEvent>> getAllPreviousEventWithApllied(@Query("langId") int langId, @Query("userId") int userId,@Query("token") String token,@Header("Authorization") String authHeader);

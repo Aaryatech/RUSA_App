@@ -874,7 +874,7 @@ public class MainActivity extends AppCompatActivity
             MenuGroup menuGroup0 = new MenuGroup(getResources().getString(R.string.str_edit_profile), false, false, false, "Profile");
             headerList.add(menuGroup0);
 
-            MenuGroup menuGroupchPass = new MenuGroup(getResources().getString(R.string.str_change_passs), false, false, false, "Profile");
+            MenuGroup menuGroupchPass = new MenuGroup(getResources().getString(R.string.str_change_passs), false, false, false, "ProfileChange");
             headerList.add(menuGroupchPass);
 
             MenuGroup menuGroup1 = new MenuGroup(getResources().getString(R.string.str_upload_document), false, false, false, "uploadDoc");
@@ -1053,18 +1053,38 @@ public class MainActivity extends AppCompatActivity
 
                         } else {
 
-//                            Fragment adf = new EditProfileFragment();
-//                            Bundle args = new Bundle();
-//                            args.putString("slugName", url);
-//                            adf.setArguments(args);
-//                            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+                            Fragment adf = new EditProfileFragment();
+                            Bundle args = new Bundle();
+                            args.putString("slugName", url);
+                            adf.setArguments(args);
+                            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
 
-                            Intent intent = new Intent(MainActivity.this, ChangePasswordActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(intent);
+//                            Intent intent = new Intent(MainActivity.this, ChangePasswordActivity.class);
+//                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                            startActivity(intent);
 
                         }
-                    } else if (url.equalsIgnoreCase("uploadDoc")) {
+                    }else if (url.equalsIgnoreCase("ProfileChange")) {
+
+                        if (!Constants.isOnline(MainActivity.this)) {
+
+                            new ConnectivityDialog(MainActivity.this).show();
+
+                        } else {
+
+                            Fragment adf = new ChangePasswordFragment();
+                            Bundle args = new Bundle();
+                            args.putString("slugName", url);
+                            adf.setArguments(args);
+                            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+
+//                            Intent intent = new Intent(MainActivity.this, ChangePasswordActivity.class);
+//                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                            startActivity(intent);
+
+                        }
+                    }
+                    else if (url.equalsIgnoreCase("uploadDoc")) {
 
                         if (!Constants.isOnline(MainActivity.this)) {
 

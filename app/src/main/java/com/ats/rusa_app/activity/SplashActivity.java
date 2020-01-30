@@ -6,11 +6,14 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
 import com.ats.rusa_app.R;
+import com.ats.rusa_app.model.Login;
+import com.ats.rusa_app.sqlite.DatabaseHandler;
 import com.ats.rusa_app.util.Constant;
 import com.ats.rusa_app.util.CustomSharedPreference;
 
 public class SplashActivity extends AppCompatActivity {
-
+Login loginUser;
+DatabaseHandler dbHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +29,12 @@ public class SplashActivity extends AppCompatActivity {
         }, 3000);
 
         initLayout();
+
+//        String token= UUID.randomUUID().toString();
+//
+//        getUpdateToken(loginUser.getRegId(),token);
     }
+
 
     private void initLayout() {
         String languageToLoad;

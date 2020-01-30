@@ -515,33 +515,73 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
         RequestBody imgName = RequestBody.create(MediaType.parse("text/plain"), filename);
         RequestBody type = RequestBody.create(MediaType.parse("text/plain"), "1");
 
-        Call<JSONObject> call = Constants.myInterface.docUpload(body, imgName,type,authHeader);
+        String token = CustomSharedPreference.getString(EventDetailListActivity.this, CustomSharedPreference.KEY_LOGIN_TOKEN) ;
+
+
+        Call<JSONObject> call = Constants.myInterface.docUpload(body, imgName,type,loginUser.getRegId(),token,authHeader);
         call.enqueue(new Callback<JSONObject>() {
             @Override
             public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
                 commonDialog.dismiss();
                 //  addNewNotification(bean);
                 imagePath = "";
-                //Log.e("Response : ", "--" + response.body());
+               // Log.e("Response : ", "--" + response.body());
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(EventDetailListActivity.this, R.style.AlertDialogTheme);
-                builder.setTitle("Alert");
-                builder.setMessage("Are You sure you want to apply");
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        getAppliedEvent(eventId, regId, filename);
-                        dialog.dismiss();
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
+
+               // if(!response.body().getError())
+               // {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(EventDetailListActivity.this, R.style.AlertDialogTheme);
+                    builder.setTitle("Alert");
+                    builder.setMessage("Are You sure you want to apply");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            getAppliedEvent(eventId, regId, filename);
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+
+//                }else {
+//                    if (response.body().getMsg().equalsIgnoreCase("File upload failed")) {
+//                        AlertDialog.Builder builder = new AlertDialog.Builder(EventDetailListActivity.this, R.style.AlertDialogTheme);
+//                        builder.setTitle("Alert");
+//                        builder.setMessage("" + response.body().getMsg());
+//                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dialog.dismiss();
+//                            }
+//                        });
+//
+//                        AlertDialog dialog = builder.create();
+//                        dialog.show();
+//
+//                    } else if (response.body().getRetmsg().equalsIgnoreCase("Unauthorized User")) {
+//                        AlertDialog.Builder builder = new AlertDialog.Builder(EventDetailListActivity.this, R.style.AlertDialogTheme);
+//                        builder.setTitle("Alert");
+//                        builder.setMessage("" + response.body().getRetmsg());
+//                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dialog.dismiss();
+//                            }
+//                        });
+//
+//                        AlertDialog dialog = builder.create();
+//                        dialog.show();
+//
+//                    }
+              //  }
+
+
 
 
             }

@@ -568,16 +568,56 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
         RequestBody imgName = RequestBody.create(MediaType.parse("text/plain"), filename);
         RequestBody type = RequestBody.create(MediaType.parse("text/plain"), "2");
 
-        Call<JSONObject> call = Constants.myInterface.docUpload(body, imgName, type,authHeader);
+        String token = CustomSharedPreference.getString(getContext(), CustomSharedPreference.KEY_LOGIN_TOKEN) ;
+        //JSONObject
+
+        Call<JSONObject> call = Constants.myInterface.docUpload(body, imgName, type,loginUser.getRegId(),token,authHeader);
         call.enqueue(new Callback<JSONObject>() {
             @Override
             public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
                 commonDialog.dismiss();
                 //  addNewNotification(bean);
                 imagePath = "";
-                //Log.e("Response : ", "--" + response.body());
+               // Log.e("Response : ", "--" + response.body());
+               // if(!response.body().getError())
+              //  {
+                    saveDoc(docUpload);
 
-                saveDoc(docUpload);
+//                }else{
+//                    if(response.body().getMsg().equalsIgnoreCase("File upload failed"))
+//                    {
+//                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
+//                        builder.setTitle("Alert");
+//                        builder.setMessage("" + response.body().getMsg());
+//                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dialog.dismiss();
+//                            }
+//                        });
+//
+//                        AlertDialog dialog = builder.create();
+//                        dialog.show();
+//
+//                    }else if(response.body().getRetmsg().equalsIgnoreCase("Unauthorized User"))
+//                    {
+//                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
+//                        builder.setTitle("Alert");
+//                        builder.setMessage("" + response.body().getRetmsg());
+//                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dialog.dismiss();
+//                            }
+//                        });
+//
+//                        AlertDialog dialog = builder.create();
+//                        dialog.show();
+//
+//                    }
+//                }
+
+
 
             }
 
