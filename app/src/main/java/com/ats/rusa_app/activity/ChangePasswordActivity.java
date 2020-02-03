@@ -240,7 +240,7 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
                         if (response.body() != null) {
 
                             //Toast.makeText(getApplicationContext(), "Update Password", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(intent);
                             commonDialog.dismiss();
                         } else {
