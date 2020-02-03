@@ -76,10 +76,10 @@ public interface InterfaceApi {
     Call<Reg> saveRegistration(@Body Reg registration,@Header("Authorization") String authHeader);
 
     @POST("saveRegistrationForApp")
-    Call<Reg> editProfile(@Body Reg registration,@Header("Authorization") String authHeader);
+    Call<Reg> editProfile(@Body Reg registration,@Query("token") String token,@Header("Authorization") String authHeader);
 
-    @POST("savePreviousRecord")
-    Call<PreviousRecord> savePreviousRecord(@Body PreviousRecord previousRecord,@Header("Authorization") String authHeader);
+    @POST("savePreviousRecordForApp")
+    Call<PreviousRecord> savePreviousRecord(@Body PreviousRecord previousRecord,@Query("token") String token,@Header("Authorization") String authHeader);
 
     @POST("getRegUserbyRegIdForApp")
     Call<Reg> getRegUserbyRegId(@Query("regId") int regId,@Query("token") String token,@Header("Authorization") String authHeader);
@@ -88,8 +88,8 @@ public interface InterfaceApi {
     Call<NewReg> getRegUserDetailbyRegId(@Query("regId") int regId,@Query("token") String token,@Header("Authorization") String authHeader);
     //saveRegistration
 
-    @POST("saveAppTokens")
-    Call<AppToken> saveAppToken(@Body AppToken appToken,@Header("Authorization") String authHeader);
+    @POST("saveAppTokensForApp")
+    Call<AppToken> saveAppToken(@Body AppToken appToken,@Query("token") String token,@Header("Authorization") String authHeader);
 
     @POST("verifyOtpResponseForApp")
     Call<OTPVerification> verifyOtpResponse(@Query("userOtp") String userOtp, @Query("uuid") String uuid,@Header("Authorization") String authHeader);
@@ -116,8 +116,9 @@ public interface InterfaceApi {
     @POST("getAllPreviousEvents")
     Call<ArrayList<PreviousEvent>> getPreviousEvent(@Query("langId") int langId,@Header("Authorization") String authHeader);
 
-    @POST("saveEventRegister")
-    Call<EventRegistration> saveEventRegister(@Body EventRegistration eventRegistration,@Header("Authorization") String authHeader);
+    @POST("saveEventRegisterForApp")
+    Call<Info> saveEventRegister(@Body EventRegistration eventRegistration,@Query("token") String token,@Header("Authorization") String authHeader);
+   // EventRegistration
 
     @POST("getAppliedEventsForApp")
     Call<Info> getAppliedEvents(@Query("newsblogsId") int newsblogsId, @Query("userId") int userId,@Query("token") String token,@Header("Authorization") String authHeader);
@@ -184,8 +185,9 @@ public interface InterfaceApi {
     @GET("getDocTypeList")
     Call<ArrayList<DocTypeList>> getDocTypeList(@Header("Authorization") String authHeader);
 
-    @POST("saveUploadDocument")
-    Call<DocUpload> saveDocument(@Body DocUpload docUpload,@Header("Authorization") String authHeader);
+    @POST("saveUploadDocumentForApp")
+    Call<Info> saveDocument(@Body DocUpload docUpload,@Query("token") String token,@Header("Authorization") String authHeader);
+   // DocUpload
 
     @POST("getDocumentByRegIdForApp")
     Call<ArrayList<DocUpload>> getDocList(@Query("regId") int regId,@Query("token") String token,@Header("Authorization") String authHeader);

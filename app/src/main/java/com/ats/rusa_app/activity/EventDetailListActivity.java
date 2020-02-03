@@ -346,16 +346,18 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
             final CommonDialog commonDialog = new CommonDialog(EventDetailListActivity.this, "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<EventRegistration> listCall = Constants.myInterface.saveEventRegister(eventRegistration,authHeader);
-            listCall.enqueue(new Callback<EventRegistration>() {
+            String token = CustomSharedPreference.getString(EventDetailListActivity.this, CustomSharedPreference.KEY_LOGIN_TOKEN) ;
+
+            Call<Info> listCall = Constants.myInterface.saveEventRegister(eventRegistration,token,authHeader);
+            listCall.enqueue(new Callback<Info>() {
                 @Override
-                public void onResponse(Call<EventRegistration> call, Response<EventRegistration> response) {
+                public void onResponse(Call<Info> call, Response<Info> response) {
                     try {
                         if (response.body() != null) {
 
-                            EventRegistration model = response.body();
+                            Info model = response.body();
 
-                            //Log.e("EVENT REGISTRATION", "-----------------------------" + response.body());
+                           // Log.e("EVENT REGISTRATION", "-----------------------------" + response.body());
                             //Log.e("EVENT REG MODEL", "-----------------------------" + model);
 
                             //Toast.makeText(EventDetailListActivity.this, "Applied for this Event", Toast.LENGTH_SHORT).show();
@@ -386,7 +388,7 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
                 }
 
                 @Override
-                public void onFailure(Call<EventRegistration> call, Throwable t) {
+                public void onFailure(Call<Info> call, Throwable t) {
                     commonDialog.dismiss();
                     //Log.e("onFailure : ", "-----------" + t.getMessage());
                    // t.printStackTrace();

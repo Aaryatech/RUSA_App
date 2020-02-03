@@ -126,7 +126,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 @Override
                 public void onResponse(Call<Login> call, Response<Login> response) {
 
-                   // Log.e("OUTPUT ----","---------------"+response.body());
+                 //  Log.e("OUTPUT ----","---------------"+response.body());
 
                     try {
                         if (response.body() != null) {

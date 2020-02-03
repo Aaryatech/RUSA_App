@@ -643,10 +643,13 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
             final CommonDialog commonDialog = new CommonDialog(getContext(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<DocUpload> listCall = Constants.myInterface.saveDocument(docUpload,authHeader);
-            listCall.enqueue(new Callback<DocUpload>() {
+            String token = CustomSharedPreference.getString(getContext(), CustomSharedPreference.KEY_LOGIN_TOKEN) ;
+
+            Call<Info> listCall = Constants.myInterface.saveDocument(docUpload,token,authHeader);
+            listCall.enqueue(new Callback<Info>() {
                 @Override
-                public void onResponse(Call<DocUpload> call, Response<DocUpload> response) {
+                public void onResponse(Call<Info> call, Response<Info> response) {
+                   // Log.e("Responce","--------------------------------------------------"+response.body());
                     try {
                         if (response.body() == null) {
 
@@ -674,7 +677,7 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
                 }
 
                 @Override
-                public void onFailure(Call<DocUpload> call, Throwable t) {
+                public void onFailure(Call<Info> call, Throwable t) {
                     commonDialog.dismiss();
                     //Log.e("onFailure : ", "-----------" + t.getMessage());
                   //  t.printStackTrace();

@@ -1329,7 +1329,9 @@ public class MainActivity extends AppCompatActivity
             final CommonDialog commonDialog = new CommonDialog(MainActivity.this, "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<AppToken> listCall = Constants.myInterface.saveAppToken(appToken, authHeader);
+            String token = CustomSharedPreference.getString(MainActivity.this, CustomSharedPreference.KEY_LOGIN_TOKEN) ;
+
+            Call<AppToken> listCall = Constants.myInterface.saveAppToken(appToken,token,authHeader);
             listCall.enqueue(new Callback<AppToken>() {
                 @Override
                 public void onResponse(Call<AppToken> call, Response<AppToken> response) {

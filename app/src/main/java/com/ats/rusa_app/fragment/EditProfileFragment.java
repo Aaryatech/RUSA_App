@@ -726,7 +726,9 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
             final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<PreviousRecord> listCall = Constants.myInterface.savePreviousRecord(previousRecord, authHeader);
+            String token = CustomSharedPreference.getString(getContext(), CustomSharedPreference.KEY_LOGIN_TOKEN) ;
+
+            Call<PreviousRecord> listCall = Constants.myInterface.savePreviousRecord(previousRecord,token, authHeader);
             listCall.enqueue(new Callback<PreviousRecord>() {
                 @Override
                 public void onResponse(Call<PreviousRecord> call, Response<PreviousRecord> response) {
@@ -734,7 +736,6 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                         if (response.body() != null) {
                             PreviousRecord model = response.body();
                             //Log.e("Save prev Record", "-----------------------------" + model);
-
 
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
@@ -879,7 +880,9 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
             final CommonDialog commonDialog = new CommonDialog(getActivity(), "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<Reg> listCall = Constants.myInterface.editProfile(registration, authHeader);
+            String token = CustomSharedPreference.getString(getContext(), CustomSharedPreference.KEY_LOGIN_TOKEN) ;
+
+            Call<Reg> listCall = Constants.myInterface.editProfile(registration, token,authHeader);
             listCall.enqueue(new Callback<Reg>() {
                 @Override
                 public void onResponse(Call<Reg> call, Response<Reg> response) {
