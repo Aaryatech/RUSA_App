@@ -3,7 +3,6 @@ package com.ats.rusa_app.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,7 +11,7 @@ import android.widget.Toast;
 
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.constants.Constants;
-import com.ats.rusa_app.model.Login;
+import com.ats.rusa_app.model.Info;
 import com.ats.rusa_app.util.CommonDialog;
 
 import retrofit2.Call;
@@ -106,15 +105,15 @@ TextView tv_backToLogin;
             final CommonDialog commonDialog = new CommonDialog(ForgotPasswordActivity.this, "Loading", "Please Wait...");
             commonDialog.show();
 
-            Call<Login> listCall = Constants.myInterface.getForgotPass(email,mob,authHeader);
-            listCall.enqueue(new Callback<Login>() {
+            Call<Info> listCall = Constants.myInterface.getForgotPass(email,mob,authHeader);
+            listCall.enqueue(new Callback<Info>() {
                 @Override
-                public void onResponse(Call<Login> call, Response<Login> response) {
+                public void onResponse(Call<Info> call, Response<Info> response) {
                     try {
-                        if (response.body() != null) {
+                        if (!response.body().getError()) {
 
                             // Log.e("RESEND VERIFY : ", " - " + response.body().toString());
-                            Login resendOTP=response.body();
+                            Info resendOTP=response.body();
                             //Log.e("FORGOT PASS : ", " - " + resendOTP);
                             Intent intent=new Intent(ForgotPasswordActivity.this,LoginActivity.class);
                             startActivity(intent);
@@ -134,7 +133,7 @@ TextView tv_backToLogin;
                 }
 
                 @Override
-                public void onFailure(Call<Login> call, Throwable t) {
+                public void onFailure(Call<Info> call, Throwable t) {
                     commonDialog.dismiss();
                     //Log.e("onFailure1 reset : ", "-----------" + t.getMessage());
                     Toast.makeText(ForgotPasswordActivity.this, "Invalid Email and Mobile Number", Toast.LENGTH_SHORT).show();

@@ -107,8 +107,9 @@ public interface InterfaceApi {
     Call<Login> getLogin(@Query("userName") String userName, @Query("password") String password, @Query("token") String token,@Header("Authorization") String authHeader);
 
 
-    @POST("forgetPassword")
-    Call<Login> getForgotPass(@Query("email") String email, @Query("mobileNumber") String mobileNumber,@Header("Authorization") String authHeader);
+    @POST("forgetPasswordForApp")
+    Call<Info> getForgotPass(@Query("email") String email, @Query("mobileNumber") String mobileNumber,@Header("Authorization") String authHeader);
+    //Login
 
     @POST("getAllUpcomingEvents")
     Call<ArrayList<UpcomingEvent>> getUpcomingEvent(@Query("langId") int langId,@Header("Authorization") String authHeader);
