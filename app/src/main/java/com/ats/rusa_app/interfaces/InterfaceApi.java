@@ -149,9 +149,8 @@ public interface InterfaceApi {
     @POST("checkUniqueField")
     Call<Info> getCheckUniqueField(@Query("inputValue") String inputValue, @Query("valueType") int valueType, @Query("primaryKey") int primaryKey,@Header("Authorization") String authHeader);
 
-    @POST("getPrevRecordByRegId")
-    Call<PreviousRecord> getPrevRecordByRegId(@Query("regId") int regId,@Header("Authorization") String authHeader);
-
+//    @POST("getPrevRecordByRegId")
+//    Call<PreviousRecord> getPrevRecordByRegId(@Query("regId") int regId,@Header("Authorization") String authHeader);
 
     @POST("getPrevRecordByRegIdForApp")
     Call<PreviousRecord> getPrevRecordByRegId(@Query("regId") int regId,@Query("token") String token, @Header("Authorization") String authHeader);
@@ -179,7 +178,10 @@ public interface InterfaceApi {
     @POST("getInstituteInfoById")
     Call<Institute> getInstituteInfo(@Query("instiId") int instiId,@Header("Authorization") String authHeader);
 
-    @POST("getInstitgetPrevRecordByRegIduteInfoByAsheCode")
+//    @POST("getInstitgetPrevRecordByRegIduteInfoByAsheCode")
+//    Call<Institute> getInstituteInfoByCode(@Query("asheCode") String asheCode,@Header("Authorization") String authHeader);
+
+    @POST("getInstituteInfoByAsheCode")
     Call<Institute> getInstituteInfoByCode(@Query("asheCode") String asheCode,@Header("Authorization") String authHeader);
 
 
