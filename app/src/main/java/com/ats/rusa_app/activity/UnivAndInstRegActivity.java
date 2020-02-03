@@ -168,7 +168,7 @@ public class UnivAndInstRegActivity extends AppCompatActivity implements View.On
 
                 if (!isValidEmailAddress(strAlterEmail)) {
                     edAlterEmail.setError("invalid email address");
-                    flag = 0;
+                    flag = 0 ;
                 }
             } else {
                     edAlterEmail.setError(null);
