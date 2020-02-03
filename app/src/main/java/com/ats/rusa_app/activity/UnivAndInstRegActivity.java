@@ -1,22 +1,16 @@
 package com.ats.rusa_app.activity;
 
-import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ats.rusa_app.R;
@@ -24,12 +18,10 @@ import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.Info;
 import com.ats.rusa_app.model.Institute;
 import com.ats.rusa_app.model.Reg;
-import com.ats.rusa_app.model.University;
 import com.ats.rusa_app.util.CommonDialog;
 import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.UUID;
 
 import retrofit2.Call;
@@ -99,6 +91,7 @@ public class UnivAndInstRegActivity extends AppCompatActivity implements View.On
 
         } else if (v.getId() == R.id.btnRegister) {
 
+            int flag=0;
             String strCode = edCode.getText().toString().trim();
             String strName = edName.getText().toString().trim();
             String strDesg = edDesg.getText().toString().trim();
@@ -175,47 +168,92 @@ public class UnivAndInstRegActivity extends AppCompatActivity implements View.On
 
                 if (!isValidEmailAddress(strAlterEmail)) {
                     edAlterEmail.setError("invalid email address");
-                } else {
-                    edAlterEmail.setError(null);
+                    flag = 0;
                 }
             } else {
+                    edAlterEmail.setError(null);
+                    flag=1;
 
-                edCode.setError(null);
-                edUniName.setError(null);
-                edInstName.setError(null);
-                edName.setError(null);
-                edDept.setError(null);
-                edDesg.setError(null);
-                edMobile.setError(null);
-                edEmail.setError(null);
-                edAlterEmail.setError(null);
+                    edCode.setError(null);
+                    edUniName.setError(null);
+                    edInstName.setError(null);
+                    edName.setError(null);
+                    edDept.setError(null);
+                    edDesg.setError(null);
+                    edMobile.setError(null);
+                    edEmail.setError(null);
+                    edAlterEmail.setError(null);
 
-                String uniqueId = UUID.randomUUID().toString();
+                    String uniqueId = UUID.randomUUID().toString();
 
+                    Log.e("Success","-----------------------------------------------");
 
-                Reg registration = new Reg(0, uniqueId, userType, strEmail, strAlterEmail, "0", strInst, strCode, String.valueOf(instId), String.valueOf(uniId), strDesg, strDept, strMobile, "", null, "", "", "Android", 0, 1, sdf.format(System.currentTimeMillis()), null, 0, 0, 0, "", "", "", 0, "", 0, 0);
-                //Log.e("Registration", "--------------" + registration);
+                    Reg registration = new Reg(0, uniqueId, userType, strEmail, strAlterEmail, "0", strInst, strCode, String.valueOf(instId), String.valueOf(uniId), strDesg, strDept, strMobile, "", null, "", "", "Android", 0, 1, sdf.format(System.currentTimeMillis()), null, 0, 0, 0, "", "", "", 0, "", 0, 0);
+                    //Log.e("Registration", "--------------" + registration);
 //                    getRegistration(registration);
 
-                if (isReg == 1) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(UnivAndInstRegActivity.this, R.style.AlertDialogTheme);
-                    builder.setTitle("Alert");
-                    builder.setMessage("Institute Registered!");
-                    builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
+                    if (isReg == 1) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(UnivAndInstRegActivity.this, R.style.AlertDialogTheme);
+                        builder.setTitle("Alert");
+                        builder.setMessage("Institute Registered!");
+                        builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
 
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                } else {
-                    getCheckUniqueFieldMobile(strMobile, strEmail, registration);
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                    } else {
+                        Log.e("Success","-------------------11111111111111----------------------------");
+                         getDataByAisheCodeReg(strCode,strMobile,strEmail,registration);
+                        //getCheckUniqueFieldMobile(strMobile, strEmail, registration);
+                    }
+
                 }
+           // }
+//            else {
+
+//                edCode.setError(null);
+//                edUniName.setError(null);
+//                edInstName.setError(null);
+//                edName.setError(null);
+//                edDept.setError(null);
+//                edDesg.setError(null);
+//                edMobile.setError(null);
+//                edEmail.setError(null);
+//                edAlterEmail.setError(null);
+//
+//                String uniqueId = UUID.randomUUID().toString();
+//
+//                Log.e("Success","-----------------------------------------------");
+//
+//                Reg registration = new Reg(0, uniqueId, userType, strEmail, strAlterEmail, "0", strInst, strCode, String.valueOf(instId), String.valueOf(uniId), strDesg, strDept, strMobile, "", null, "", "", "Android", 0, 1, sdf.format(System.currentTimeMillis()), null, 0, 0, 0, "", "", "", 0, "", 0, 0);
+//                //Log.e("Registration", "--------------" + registration);
+////                    getRegistration(registration);
+//
+//                if (isReg == 1) {
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(UnivAndInstRegActivity.this, R.style.AlertDialogTheme);
+//                    builder.setTitle("Alert");
+//                    builder.setMessage("Institute Registered!");
+//                    builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            dialog.dismiss();
+//                        }
+//                    });
+//
+//                    AlertDialog dialog = builder.create();
+//                    dialog.show();
+//                } else {
+//                    Log.e("Success","-------------------11111111111111----------------------------");
+//                  //  getDataByAisheCodeReg(strCode,strMobile,strEmail,registration);
+//                    getCheckUniqueFieldMobile(strMobile, strEmail, registration);
+//                }
 
 
-            }
+//            }
 
 
         }
@@ -232,7 +270,6 @@ public class UnivAndInstRegActivity extends AppCompatActivity implements View.On
                 @Override
                 public void onResponse(Call<Institute> call, Response<Institute> response) {
                     try {
-
 
                         //Log.e("RESPONSE ", "-----------------------------" + response.body());
 
@@ -315,6 +352,118 @@ public class UnivAndInstRegActivity extends AppCompatActivity implements View.On
     }
 
 
+    private void getDataByAisheCodeReg(String code, final String inputValue, final String email,final Reg reg) {
+
+        if (Constants.isOnline(getApplicationContext())) {
+            final CommonDialog commonDialog = new CommonDialog(UnivAndInstRegActivity.this, "Loading", "Please Wait...");
+            commonDialog.show();
+
+            Call<Institute> listCall = Constants.myInterface.getInstituteInfoByCode(code,authHeader);
+            listCall.enqueue(new Callback<Institute>() {
+                @Override
+                public void onResponse(Call<Institute> call, Response<Institute> response) {
+                    try {
+
+                        Log.e("RESPONSE ", "-----------------------------" + response.body());
+
+                        if (response.body() != null) {
+
+                            if (response.body().getMhInstId() > 0) {
+                                if (response.body().getInsName() == null) {
+                                    edInstName.setText("");
+                                } else {
+                                    edInstName.setText("" + response.body().getInsName());
+                                }
+
+                                if (response.body().getUniName() == null) {
+                                    edUniName.setText("");
+                                } else {
+                                    edUniName.setText("" + response.body().getUniName());
+                                }
+
+                                isReg = response.body().getYesNo();
+                                instId = response.body().getMhInstId();
+                                uniId = response.body().getAffUniversity();
+
+                                if (response.body().getYesNo() == 1) {
+                                    edCode.setError("Institute Registered");
+                                } else {
+                                    edCode.setError(null);
+                                }
+
+                                getCheckUniqueFieldMobile(inputValue, email, reg);
+                            } else {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(UnivAndInstRegActivity.this, R.style.AlertDialogTheme);
+                                builder.setTitle("Alert");
+                                builder.setMessage("Invalid AISHE Code");
+                                builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+                            }
+                        }
+
+
+                        commonDialog.dismiss();
+                        // }
+                    } catch (Exception e) {
+                        commonDialog.dismiss();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                        // e.printStackTrace();
+                        edUniName.setText("");
+                        edInstName.setText("");
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(UnivAndInstRegActivity.this, R.style.AlertDialogTheme);
+                        builder.setTitle("Alert");
+                        builder.setMessage("Invalid AISHE Code");
+                        builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Institute> call, Throwable t) {
+                    commonDialog.dismiss();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                    // t.printStackTrace();
+                    edUniName.setText("");
+                    edInstName.setText("");
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(UnivAndInstRegActivity.this, R.style.AlertDialogTheme);
+                    builder.setTitle("Alert");
+                    builder.setMessage("Invalid AISHE Code");
+                    builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+
+                }
+            });
+        }
+
+    }
+
+
+
+
     private void getCheckUniqueFieldMobile(String inputValue, final String email, final Reg reg) {
         //Log.e("PARAMETERS : ", "        INPUT VALUE : " + inputValue + "      VALUE TYPE : " + 1 + "      PRIMARY KEY : " + 0);
 
@@ -327,7 +476,7 @@ public class UnivAndInstRegActivity extends AppCompatActivity implements View.On
                 @Override
                 public void onResponse(Call<Info> call, Response<Info> response) {
                     try {
-                        //Log.e("RESPONCE UNICE", "-----------------------------" + response.body());
+                        Log.e("RESPONCE UNICE", "-----------------------------" + response.body());
 
                         if (response.body() == null) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(UnivAndInstRegActivity.this, R.style.AlertDialogTheme);
@@ -421,7 +570,7 @@ public class UnivAndInstRegActivity extends AppCompatActivity implements View.On
                 @Override
                 public void onResponse(Call<Info> call, Response<Info> response) {
                     try {
-                        //Log.e("RESPONCE UNICE", "-----------------------------" + response.body());
+                        Log.e("RESPONCE UNICE", "--------EMAIL---------------------" + response.body());
 
                         if (response.body() == null) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(UnivAndInstRegActivity.this, R.style.AlertDialogTheme);
@@ -513,7 +662,7 @@ public class UnivAndInstRegActivity extends AppCompatActivity implements View.On
     private void getRegistration(Reg registration) {
 
         if (Constants.isOnline(getApplicationContext())) {
-            //Log.e("PARAMETER : ", "---------------- REGISTRATION : " + registration);
+            Log.e("PARAMETER : ", "---------------- REGISTRATION : " + registration);
 
             final CommonDialog commonDialog = new CommonDialog(UnivAndInstRegActivity.this, "Loading", "Please Wait...");
             commonDialog.show();

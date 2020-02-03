@@ -3,11 +3,9 @@ package com.ats.rusa_app.activity;
 import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.design.widget.TextInputLayout;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -119,7 +117,7 @@ public class IndividualRegActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btnRegister) {
-
+            int flag=0;
             String strCode = edCode.getText().toString().trim();
             String strName = edName.getText().toString().trim();
             String strDesg = edDesg.getText().toString().trim();
@@ -185,30 +183,47 @@ public class IndividualRegActivity extends AppCompatActivity implements View.OnC
                 edMobile.setError(null);
 
                 edEmail.setError("invalid email address");
-            } else if (!strAlterEmail.isEmpty()) {
+            }
+            else if (!strAlterEmail.isEmpty()) {
 
                 edEmail.setError(null);
 
                 if (!isValidEmailAddress(strAlterEmail)) {
                     edAlterEmail.setError("invalid email address");
-                } else {
-                    edAlterEmail.setError(null);
+                    flag = 0;
                 }
             } else {
+                    edAlterEmail.setError(null);
+                    flag=1;
 
-                String uniqueId = UUID.randomUUID().toString();
+                    String uniqueId = UUID.randomUUID().toString();
 
-                int instId = instIdList.get(spInstitute.getSelectedItemPosition());
-                int uniId = uniIdList.get(spUniversity.getSelectedItemPosition());
+                    int instId = instIdList.get(spInstitute.getSelectedItemPosition());
+                    int uniId = uniIdList.get(spUniversity.getSelectedItemPosition());
 
-                Reg registration = new Reg(0, uniqueId, 1, strEmail, strAlterEmail, "0", strName, strCode, String.valueOf(instId), String.valueOf(uniId), strDesg, strDept, strMobile, "", null, "", "", "Android", 0, 1, sdf.format(System.currentTimeMillis()), null, 0, 0, 0, "", "", "", 0, "", 0, 0);
-                //Log.e("Registration", "--------------" + registration);
+                    Reg registration = new Reg(0, uniqueId, 1, strEmail, strAlterEmail, "0", strName, strCode, String.valueOf(instId), String.valueOf(uniId), strDesg, strDept, strMobile, "", null, "", "", "Android", 0, 1, sdf.format(System.currentTimeMillis()), null, 0, 0, 0, "", "", "", 0, "", 0, 0);
+                    //Log.e("Registration", "--------------" + registration);
 //                    getRegistration(registration);
 
-                getCheckUniqueFieldMobile(strMobile, strEmail, registration);
+                    getCheckUniqueFieldMobile(strMobile, strEmail, registration);
+
+                }
+           // }
+//            else {
+
+//                String uniqueId = UUID.randomUUID().toString();
+//
+//                int instId = instIdList.get(spInstitute.getSelectedItemPosition());
+//                int uniId = uniIdList.get(spUniversity.getSelectedItemPosition());
+//
+//                Reg registration = new Reg(0, uniqueId, 1, strEmail, strAlterEmail, "0", strName, strCode, String.valueOf(instId), String.valueOf(uniId), strDesg, strDept, strMobile, "", null, "", "", "Android", 0, 1, sdf.format(System.currentTimeMillis()), null, 0, 0, 0, "", "", "", 0, "", 0, 0);
+//                //Log.e("Registration", "--------------" + registration);
+////                    getRegistration(registration);
+//
+//                getCheckUniqueFieldMobile(strMobile, strEmail, registration);
 
 
-            }
+//            }
 
 
         }

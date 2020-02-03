@@ -76,7 +76,8 @@ public interface InterfaceApi {
     Call<Reg> saveRegistration(@Body Reg registration,@Header("Authorization") String authHeader);
 
     @POST("saveRegistrationForApp")
-    Call<Reg> editProfile(@Body Reg registration,@Query("token") String token,@Header("Authorization") String authHeader);
+    Call<Info> editProfile(@Body Reg registration,@Query("token") String token,@Header("Authorization") String authHeader);
+    //Reg
 
     @POST("savePreviousRecordForApp")
     Call<PreviousRecord> savePreviousRecord(@Body PreviousRecord previousRecord,@Query("token") String token,@Header("Authorization") String authHeader);

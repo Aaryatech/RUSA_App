@@ -163,6 +163,34 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginLeft="@dimen/margin_x_large"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginRight="@dimen/margin_x_large"
+                android:gravity="bottom"
+                app:passwordToggleEnabled="true">
+
+                <EditText
+                    android:id="@+id/edMobile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_x_large"
+                    android:fontFamily="@font/lato_regular"
+                    android:hint="Mobile No"
+                    android:inputType="none"
+                    android:editable="false"
+                    android:enabled="false"
+                    android:textColor="@color/colorBlack"
+                    android:maxLength="10"
+                    android:maxLines="1"
+                    android:padding="15dp"
+                    android:singleLine="true" />
+
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
                 android:id="@+id/tilAuthName"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
@@ -241,31 +269,6 @@
             </android.support.design.widget.TextInputLayout>
 
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_marginLeft="@dimen/margin_x_large"
-                android:layout_marginTop="@dimen/margin_small"
-                android:layout_marginRight="@dimen/margin_x_large"
-                android:gravity="bottom"
-                app:passwordToggleEnabled="true">
-
-                <EditText
-                    android:id="@+id/edMobile"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_x_large"
-                    android:background="@drawable/edittext_background"
-                    android:fontFamily="@font/lato_regular"
-                    android:hint="Mobile No. *"
-                    android:inputType="number"
-                    android:textColor="@color/colorBlack"
-                    android:maxLength="10"
-                    android:maxLines="1"
-                    android:padding="15dp"
-                    android:singleLine="true" />
-
-            </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"

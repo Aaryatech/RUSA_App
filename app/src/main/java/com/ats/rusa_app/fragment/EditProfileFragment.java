@@ -7,6 +7,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.constants.Constants;
+import com.ats.rusa_app.model.Info;
 import com.ats.rusa_app.model.Login;
 import com.ats.rusa_app.model.NewReg;
 import com.ats.rusa_app.model.PreviousRecord;
@@ -81,7 +83,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
         try {
             loginUser = dbHelper.getLoginData();
-            //Log.e("HOME_ACTIVITY : ", "--------USER-------" + loginUser);
+            Log.e("HOME_ACTIVITY : ", "--------USER EDIT-------" + loginUser);
 
         }catch (Exception e)
         {
@@ -882,12 +884,12 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
             String token = CustomSharedPreference.getString(getContext(), CustomSharedPreference.KEY_LOGIN_TOKEN) ;
 
-            Call<Reg> listCall = Constants.myInterface.editProfile(registration, token,authHeader);
-            listCall.enqueue(new Callback<Reg>() {
+            Call<Info> listCall = Constants.myInterface.editProfile(registration, token,authHeader);
+            listCall.enqueue(new Callback<Info>() {
                 @Override
-                public void onResponse(Call<Reg> call, Response<Reg> response) {
+                public void onResponse(Call<Info> call, Response<Info> response) {
                     try {
-                        if (response.body() != null) {
+                        if (!response.body().getError()) {
                             // Reg model = response.body();
 
                             //Log.e("Save Registration", "-----------------------------" + response.body());
@@ -912,7 +914,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                 }
 
                 @Override
-                public void onFailure(Call<Reg> call, Throwable t) {
+                public void onFailure(Call<Info> call, Throwable t) {
                     commonDialog.dismiss();
                     //Log.e("onFailure1 : ", "------REG-----" + t.getMessage());
                     Toast.makeText(getActivity(), "Unable to process", Toast.LENGTH_SHORT).show();
