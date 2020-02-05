@@ -18,7 +18,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -196,7 +195,7 @@ public class MainActivity extends AppCompatActivity
         try {
            // loginUser=null;
             loginUser = dbHelper.getLoginData();
-            Log.e("HOME_ACTIVITY : ", "--------USER-------" + loginUser);
+           // Log.e("HOME_ACTIVITY : ", "--------USER-------" + loginUser);
 
 
         }catch (Exception e)
