@@ -1365,7 +1365,7 @@ public class MainActivity extends AppCompatActivity
                                 String str = gson1.toJson(response.body());
 
                                 CustomSharedPreference.putString(MainActivity.this, CustomSharedPreference.PREFERENCE_TOKEN, str);
-                            }else{
+                            }else {
 
                                // Toast.makeText(MainActivity.this, "Login......", Toast.LENGTH_SHORT).show();
 
