@@ -303,19 +303,11 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
 
                         }else if(response.body().getError().equals(true) && response.body().getRetmsg().equalsIgnoreCase("Unauthorized User"))
                         {
-
-                            AlertDialog.Builder builder = new AlertDialog.Builder(EventDetailListActivity.this, R.style.AlertDialogTheme);
-                            builder.setTitle("Alert");
-                            builder.setMessage("" + response.body().getRetmsg());
-                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
+                            dbHelper.deleteData("user_data");
+                            Intent intent = new Intent(EventDetailListActivity.this, LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                            finish();
 
                         }
 
@@ -355,26 +347,57 @@ public class EventDetailListActivity extends AppCompatActivity implements View.O
                     try {
                         if (response.body() != null) {
 
-                            Info model = response.body();
+                            if(!response.body().getError()) {
 
-                           // Log.e("EVENT REGISTRATION", "-----------------------------" + response.body());
-                            //Log.e("EVENT REG MODEL", "-----------------------------" + model);
+                                Info model = response.body();
 
-                            //Toast.makeText(EventDetailListActivity.this, "Applied for this Event", Toast.LENGTH_SHORT).show();
+                                // Log.e("EVENT REGISTRATION", "-----------------------------" + response.body());
+                                //Log.e("EVENT REG MODEL", "-----------------------------" + model);
 
-                            AlertDialog.Builder builder = new AlertDialog.Builder(EventDetailListActivity.this, R.style.AlertDialogTheme);
-                            builder.setTitle("");
-                            builder.setMessage("Succesfully Applied for this Event");
-                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    finish();
-                                    dialog.dismiss();
+                                //Toast.makeText(EventDetailListActivity.this, "Applied for this Event", Toast.LENGTH_SHORT).show();
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(EventDetailListActivity.this, R.style.AlertDialogTheme);
+                                builder.setTitle("");
+                                builder.setMessage("Succesfully Applied for this Event");
+                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        finish();
+                                        dialog.dismiss();
+                                    }
+                                });
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+
+                            }else{
+                                if (response.body().getRetmsg().equalsIgnoreCase("Unauthorized User")) {
+
+
+                                            dbHelper.deleteData("user_data");
+                                            Intent intent = new Intent(EventDetailListActivity.this, LoginActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                            finish();
+
+
+                                }else{
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(EventDetailListActivity.this, R.style.AlertDialogTheme);
+                                    builder.setTitle("Alert");
+                                    builder.setMessage("" + response.body().getMsg());
+                                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+
+                                        }
+                                    });
+
+                                    AlertDialog dialog = builder.create();
+                                    dialog.show();
+
                                 }
-                            });
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
 
+                            }
 
                         } else {
                             commonDialog.dismiss();

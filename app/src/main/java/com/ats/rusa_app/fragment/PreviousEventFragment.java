@@ -1,8 +1,10 @@
 package com.ats.rusa_app.fragment;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +19,7 @@ import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.interfaces.PreviousEventsInterface;
 import com.ats.rusa_app.model.Login;
 import com.ats.rusa_app.model.PrevEvent;
+import com.ats.rusa_app.model.TokenInfo;
 import com.ats.rusa_app.sqlite.DatabaseHandler;
 import com.ats.rusa_app.util.CommonDialog;
 import com.ats.rusa_app.util.CustomSharedPreference;
@@ -75,6 +78,7 @@ public class PreviousEventFragment extends Fragment implements PreviousEventsInt
                     try {
                         if (response.body() != null) {
 
+
                             //Log.e("PREVIOUS EVENT LIST : ", " - " + response.body());
                             previousEventList.clear();
                             previousEventList = response.body();
@@ -127,11 +131,74 @@ public class PreviousEventFragment extends Fragment implements PreviousEventsInt
                 //Log.e("HOME_ACTIVITY : ", "--------USER-------" + loginUser);
 
             int regId = loginUser.getRegId();
-            getPrevoiusEvent(languageId, regId);
+            String token = CustomSharedPreference.getString(getContext(), CustomSharedPreference.KEY_LOGIN_TOKEN) ;
+
+            getCheckToken(loginUser.getRegId(),token);
+
+            //getPrevoiusEvent(languageId, regId);
+
         }catch (Exception e)
         {
             //Log.e("onFailure : ", "-----------" + e.getMessage());
            // e.printStackTrace();
         }
+    }
+
+    private void getCheckToken(final Integer regId, String token) {
+
+        if (Constants.isOnline(getContext())) {
+            final CommonDialog commonDialog = new CommonDialog(getContext(), "Loading", "Please Wait...");
+            commonDialog.show();
+
+            Call<TokenInfo> listCall = Constants.myInterface.tokenConfirmation(regId,token,authHeader);
+            listCall.enqueue(new Callback<TokenInfo>() {
+                @Override
+                public void onResponse(Call<TokenInfo> call, Response<TokenInfo> response) {
+                    // Log.e("Responce","--------------------------------------------------"+response.body());
+                    try {
+                        //if (response.body() == null) {
+
+                            if(!response.body().getError()) {
+
+                                getPrevoiusEvent(languageId, regId);
+
+                            }else{
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
+                                    builder.setTitle("Alert");
+                                    builder.setMessage("" + response.body().getMsg());
+                                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+
+                                        }
+                                    });
+
+                                    AlertDialog dialog = builder.create();
+                                    dialog.show();
+                                }
+
+
+                       // }
+                        commonDialog.dismiss();
+
+                    } catch (Exception e) {
+                        commonDialog.dismiss();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                        // e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<TokenInfo> call, Throwable t) {
+                    commonDialog.dismiss();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                    //  t.printStackTrace();
+                }
+            });
+        } else {
+            Toast.makeText(getContext(), "No Internet Connection !", Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

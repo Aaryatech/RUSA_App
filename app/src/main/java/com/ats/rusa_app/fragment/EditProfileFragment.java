@@ -2,6 +2,7 @@ package com.ats.rusa_app.fragment;
 
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ats.rusa_app.R;
+import com.ats.rusa_app.activity.LoginActivity;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.Info;
 import com.ats.rusa_app.model.Login;
@@ -171,19 +173,30 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
                                 //Log.e("Register By id", "-----------------------------" + newRegModel);
                             }else{
+                                if (response.body().getMsg().equalsIgnoreCase("Unauthorized User")) {
 
-                                AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
-                                builder.setTitle("Alert");
-                                builder.setMessage("" + response.body().getMsg());
-                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
+                                            dbHelper.deleteData("user_data");
+                                            Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                            getActivity().finish();
 
-                                AlertDialog dialog = builder.create();
-                                dialog.show();
+
+                                }else {
+
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
+                                    builder.setTitle("Alert");
+                                    builder.setMessage("" + response.body().getMsg());
+                                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+
+                                    AlertDialog dialog = builder.create();
+                                    dialog.show();
+                                }
 
                             }
                             commonDialog.dismiss();
@@ -229,19 +242,32 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
                             if(!response.body().getError()) {
                                 RegModel = response.body();
-                            }else {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
-                                builder.setTitle("Alert");
-                                builder.setMessage("" + response.body().getMsg());
-                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
 
-                                AlertDialog dialog = builder.create();
-                                dialog.show();
+                            }else {
+
+                                if (response.body().getMsg().equalsIgnoreCase("Unauthorized User")) {
+
+                                            dbHelper.deleteData("user_data");
+                                            Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                            getActivity().finish();
+
+
+                                }else {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
+                                    builder.setTitle("Alert");
+                                    builder.setMessage("" + response.body().getMsg());
+                                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+
+                                    AlertDialog dialog = builder.create();
+                                    dialog.show();
+                                }
 
                             }
 
@@ -504,18 +530,13 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
                                     // Toast.makeText(getContext(), ""+response.body().getMessage(), Toast.LENGTH_SHORT).show();
 
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
-                                    builder.setTitle("Alert");
-                                    builder.setMessage("" + response.body().getMessage());
-                                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                        }
-                                    });
 
-                                    AlertDialog dialog = builder.create();
-                                    dialog.show();
+                                            dbHelper.deleteData("user_data");
+                                            Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                            getActivity().finish();
+
 
                                 } else {
                                     getSavePreviousRecord(previousRecord1);
@@ -736,51 +757,81 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                 public void onResponse(Call<PreviousRecord> call, Response<PreviousRecord> response) {
                     try {
                         if (response.body() != null) {
-                            PreviousRecord model = response.body();
-                            //Log.e("Save prev Record", "-----------------------------" + model);
+                            if(!response.body().getError()) {
+                                PreviousRecord model = response.body();
+                                //Log.e("Save prev Record", "-----------------------------" + model);
 
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
-                            if (loginUser.getUserType() == 1) {
-                                String alt_email, nameDept, designationPer, mob;
+                                if (loginUser.getUserType() == 1) {
+                                    String alt_email, nameDept, designationPer, mob;
 
-                                alt_email = edAlterEmail.getText().toString().trim();
-                                nameDept = edDept.getText().toString().trim();
-                                designationPer = edDesg.getText().toString().trim();
-                                mob = edMobile.getText().toString().trim();
-
-
-                                Reg reg = new Reg(RegModel.getRegId(), RegModel.getUserUuid(), 1, RegModel.getEmails(), alt_email, RegModel.getUserPassword(), RegModel.getName(), RegModel.getAisheCode(), RegModel.getCollegeName(), RegModel.getUnversityName(), designationPer, nameDept, mob, RegModel.getAuthorizedPerson(), RegModel.getDob(), RegModel.getImageName(), RegModel.getTokenId(), RegModel.getRegisterVia(), RegModel.getIsActive(), RegModel.getDelStatus(), RegModel.getAddDate(), sdf.format(System.currentTimeMillis()), RegModel.getEditByUserId(), RegModel.getExInt1(), RegModel.getExInt2(), RegModel.getExVar1(), RegModel.getExVar2(), RegModel.getEmailCode(), RegModel.getEmailVerified(), RegModel.getSmsCode(), RegModel.getSmsVerified(), RegModel.getEditByAdminuserId());
-                                getRegistration(reg);
-
-                            } else if (loginUser.getUserType() == 2) {
-
-                                String alt_email, nameDept, nameAuthPer, designPerName, mob;
+                                    alt_email = edAlterEmail.getText().toString().trim();
+                                    nameDept = edDept.getText().toString().trim();
+                                    designationPer = edDesg.getText().toString().trim();
+                                    mob = edMobile.getText().toString().trim();
 
 
-                                alt_email = edAlterEmail.getText().toString().trim();
-                                designPerName = edDesg.getText().toString().trim();
-                                nameDept = edDept.getText().toString().trim();
-                                nameAuthPer = edAuthName.getText().toString().trim();
-                                mob = edMobile.getText().toString().trim();
+                                    Reg reg = new Reg(RegModel.getRegId(), RegModel.getUserUuid(), 1, RegModel.getEmails(), alt_email, RegModel.getUserPassword(), RegModel.getName(), RegModel.getAisheCode(), RegModel.getCollegeName(), RegModel.getUnversityName(), designationPer, nameDept, mob, RegModel.getAuthorizedPerson(), RegModel.getDob(), RegModel.getImageName(), RegModel.getTokenId(), RegModel.getRegisterVia(), RegModel.getIsActive(), RegModel.getDelStatus(), RegModel.getAddDate(), sdf.format(System.currentTimeMillis()), RegModel.getEditByUserId(), RegModel.getExInt1(), RegModel.getExInt2(), RegModel.getExVar1(), RegModel.getExVar2(), RegModel.getEmailCode(), RegModel.getEmailVerified(), RegModel.getSmsCode(), RegModel.getSmsVerified(), RegModel.getEditByAdminuserId());
+                                    getRegistration(reg);
 
-                                Reg reg = new Reg(RegModel.getRegId(), RegModel.getUserUuid(), 2, RegModel.getEmails(), alt_email, RegModel.getUserPassword(), RegModel.getName(), RegModel.getAisheCode(), RegModel.getCollegeName(), RegModel.getUnversityName(), designPerName, nameDept, mob, nameAuthPer, RegModel.getDob(), RegModel.getImageName(), RegModel.getTokenId(), RegModel.getRegisterVia(), RegModel.getIsActive(), RegModel.getDelStatus(), RegModel.getAddDate(), sdf.format(System.currentTimeMillis()), RegModel.getEditByUserId(), RegModel.getExInt1(), RegModel.getExInt2(), RegModel.getExVar1(), RegModel.getExVar2(), RegModel.getEmailCode(), RegModel.getEmailVerified(), RegModel.getSmsCode(), RegModel.getSmsVerified(), RegModel.getEditByAdminuserId());
-                                getRegistration(reg);
+                                } else if (loginUser.getUserType() == 2) {
+
+                                    String alt_email, nameDept, nameAuthPer, designPerName, mob;
 
 
-                            } else if (loginUser.getUserType() == 3) {
+                                    alt_email = edAlterEmail.getText().toString().trim();
+                                    designPerName = edDesg.getText().toString().trim();
+                                    nameDept = edDept.getText().toString().trim();
+                                    nameAuthPer = edAuthName.getText().toString().trim();
+                                    mob = edMobile.getText().toString().trim();
 
-                                String alt_email, nameDept, nameAuthPer, designPerName, mob;
+                                    Reg reg = new Reg(RegModel.getRegId(), RegModel.getUserUuid(), 2, RegModel.getEmails(), alt_email, RegModel.getUserPassword(), RegModel.getName(), RegModel.getAisheCode(), RegModel.getCollegeName(), RegModel.getUnversityName(), designPerName, nameDept, mob, nameAuthPer, RegModel.getDob(), RegModel.getImageName(), RegModel.getTokenId(), RegModel.getRegisterVia(), RegModel.getIsActive(), RegModel.getDelStatus(), RegModel.getAddDate(), sdf.format(System.currentTimeMillis()), RegModel.getEditByUserId(), RegModel.getExInt1(), RegModel.getExInt2(), RegModel.getExVar1(), RegModel.getExVar2(), RegModel.getEmailCode(), RegModel.getEmailVerified(), RegModel.getSmsCode(), RegModel.getSmsVerified(), RegModel.getEditByAdminuserId());
+                                    getRegistration(reg);
 
 
-                                alt_email = edAlterEmail.getText().toString().trim();
-                                designPerName = edDesg.getText().toString().trim();
-                                nameDept = edDept.getText().toString().trim();
-                                nameAuthPer = edAuthName.getText().toString().trim();
-                                mob = edMobile.getText().toString().trim();
+                                } else if (loginUser.getUserType() == 3) {
 
-                                Reg reg = new Reg(RegModel.getRegId(), RegModel.getUserUuid(), 3, RegModel.getEmails(), alt_email, RegModel.getUserPassword(), RegModel.getName(), RegModel.getAisheCode(), RegModel.getCollegeName(), RegModel.getUnversityName(), designPerName, nameDept, mob, nameAuthPer, RegModel.getDob(), RegModel.getImageName(), RegModel.getTokenId(), RegModel.getRegisterVia(), RegModel.getIsActive(), RegModel.getDelStatus(), RegModel.getAddDate(), sdf.format(System.currentTimeMillis()), RegModel.getEditByUserId(), RegModel.getExInt1(), RegModel.getExInt2(), RegModel.getExVar1(), RegModel.getExVar2(), RegModel.getEmailCode(), RegModel.getEmailVerified(), RegModel.getSmsCode(), RegModel.getSmsVerified(), RegModel.getEditByAdminuserId());
-                                getRegistration(reg);
+                                    String alt_email, nameDept, nameAuthPer, designPerName, mob;
+
+
+                                    alt_email = edAlterEmail.getText().toString().trim();
+                                    designPerName = edDesg.getText().toString().trim();
+                                    nameDept = edDept.getText().toString().trim();
+                                    nameAuthPer = edAuthName.getText().toString().trim();
+                                    mob = edMobile.getText().toString().trim();
+
+                                    Reg reg = new Reg(RegModel.getRegId(), RegModel.getUserUuid(), 3, RegModel.getEmails(), alt_email, RegModel.getUserPassword(), RegModel.getName(), RegModel.getAisheCode(), RegModel.getCollegeName(), RegModel.getUnversityName(), designPerName, nameDept, mob, nameAuthPer, RegModel.getDob(), RegModel.getImageName(), RegModel.getTokenId(), RegModel.getRegisterVia(), RegModel.getIsActive(), RegModel.getDelStatus(), RegModel.getAddDate(), sdf.format(System.currentTimeMillis()), RegModel.getEditByUserId(), RegModel.getExInt1(), RegModel.getExInt2(), RegModel.getExVar1(), RegModel.getExVar2(), RegModel.getEmailCode(), RegModel.getEmailVerified(), RegModel.getSmsCode(), RegModel.getSmsVerified(), RegModel.getEditByAdminuserId());
+                                    getRegistration(reg);
+
+                                }
+                            }else{
+                                if (response.body().getMessage().equalsIgnoreCase("Unauthorized User")) {
+
+
+                                            dbHelper.deleteData("user_data");
+                                            Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                            getActivity().finish();
+
+
+                                }else{
+
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
+                                    builder.setTitle("Alert");
+                                    builder.setMessage("" + response.body().getMessage());
+                                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+
+                                        }
+                                    });
+
+                                    AlertDialog dialog = builder.create();
+                                    dialog.show();
+                                }
 
                             }
 
@@ -901,7 +952,35 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                             ft.commit();
 
                         } else {
-                            commonDialog.dismiss();
+
+                            if (response.body().getRetmsg().equalsIgnoreCase("Unauthorized User")) {
+
+
+                                        dbHelper.deleteData("user_data");
+                                        Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent);
+                                        getActivity().finish();
+
+
+                            }else{
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
+                                builder.setTitle("Alert");
+                                builder.setMessage("" + response.body().getMsg());
+                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+
+                                    }
+                                });
+
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+                            }
+
+
+                                commonDialog.dismiss();
                             //Log.e("Data Null : ", "-----------");
                             Toast.makeText(getActivity(), "Unable to process", Toast.LENGTH_SHORT).show();
                         }

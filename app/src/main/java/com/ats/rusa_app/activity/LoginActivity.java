@@ -158,19 +158,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                // }
 
                             } else {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this, R.style.AlertDialogTheme);
-                                builder.setTitle("");
-                                builder.setMessage("" + userDetail.getMsg());
-                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                        commonDialog.dismiss();
-                                    }
-                                });
-                                AlertDialog dialog = builder.create();
-                                dialog.show();
-                                commonDialog.dismiss();
+
+                                if (response.body().getMsg().equalsIgnoreCase("Unauthorized User")) {
+
+                                            dbHelper.deleteData("user_data");
+                                            Intent intent = new Intent(LoginActivity.this, LoginActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                            finish();
+
+                                }else {
+
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this, R.style.AlertDialogTheme);
+                                    builder.setTitle("");
+                                    builder.setMessage("" + userDetail.getMsg());
+                                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                            commonDialog.dismiss();
+                                        }
+                                    });
+                                    AlertDialog dialog = builder.create();
+                                    dialog.show();
+                                    commonDialog.dismiss();
+                                }
                             }
 
 

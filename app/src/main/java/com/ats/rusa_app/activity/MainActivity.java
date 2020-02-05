@@ -49,6 +49,7 @@ import com.ats.rusa_app.model.CategoryList;
 import com.ats.rusa_app.model.Login;
 import com.ats.rusa_app.model.MenuGroup;
 import com.ats.rusa_app.model.MenuModel;
+import com.ats.rusa_app.model.TokenInfo;
 import com.ats.rusa_app.model.UpdateToken;
 import com.ats.rusa_app.sqlite.DatabaseHandler;
 import com.ats.rusa_app.util.CommonDialog;
@@ -1053,11 +1054,13 @@ public class MainActivity extends AppCompatActivity
 
                         } else {
 
-                            Fragment adf = new EditProfileFragment();
-                            Bundle args = new Bundle();
-                            args.putString("slugName", url);
-                            adf.setArguments(args);
-                            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+                            getCheckToken(loginUser.getRegId(),"EditProfile",url);
+
+//                            Fragment adf = new EditProfileFragment();
+//                            Bundle args = new Bundle();
+//                            args.putString("slugName", url);
+//                            adf.setArguments(args);
+//                            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
 
 //                            Intent intent = new Intent(MainActivity.this, ChangePasswordActivity.class);
 //                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -1072,11 +1075,13 @@ public class MainActivity extends AppCompatActivity
 
                         } else {
 
-                            Fragment adf = new ChangePasswordFragment();
-                            Bundle args = new Bundle();
-                            args.putString("slugName", url);
-                            adf.setArguments(args);
-                            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+                            getCheckToken(loginUser.getRegId(),"ProfileChange",url);
+
+//                            Fragment adf = new ChangePasswordFragment();
+//                            Bundle args = new Bundle();
+//                            args.putString("slugName", url);
+//                            adf.setArguments(args);
+//                            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
 
 //                            Intent intent = new Intent(MainActivity.this, ChangePasswordActivity.class);
 //                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -1092,11 +1097,13 @@ public class MainActivity extends AppCompatActivity
 
                         } else {
 
-                            Fragment adf = new UploadDocumentFragment();
-                            Bundle args = new Bundle();
-                            args.putString("slugName", url);
-                            adf.setArguments(args);
-                            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+                            getCheckToken(loginUser.getRegId(),"uploadDoc",url);
+
+//                            Fragment adf = new UploadDocumentFragment();
+//                            Bundle args = new Bundle();
+//                            args.putString("slugName", url);
+//                            adf.setArguments(args);
+//                            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
 
                         }
                     }
@@ -1277,18 +1284,31 @@ public class MainActivity extends AppCompatActivity
                                 finish();
 
                             }else {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialogTheme);
-                                builder.setTitle("Alert");
-                                builder.setMessage("" + response.body().getMsg());
-                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
 
-                                AlertDialog dialog = builder.create();
-                                dialog.show();
+                                if (response.body().getMsg().equalsIgnoreCase("Unauthorized User")) {
+
+                                            dbHelper.deleteData("user_data");
+                                            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                            finish();
+
+
+                                }else {
+
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialogTheme);
+                                    builder.setTitle("Alert");
+                                    builder.setMessage("" + response.body().getMsg());
+                                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+
+                                    AlertDialog dialog = builder.create();
+                                    dialog.show();
+                                }
 
                             }
 
@@ -1338,10 +1358,39 @@ public class MainActivity extends AppCompatActivity
                     try {
                         if (response.body() != null) {
 
-                            Gson gson1 = new Gson();
-                            String str = gson1.toJson(response.body());
+                            if(!response.body().getError()) {
 
-                            CustomSharedPreference.putString(MainActivity.this, CustomSharedPreference.PREFERENCE_TOKEN, str);
+                                Gson gson1 = new Gson();
+                                String str = gson1.toJson(response.body());
+
+                                CustomSharedPreference.putString(MainActivity.this, CustomSharedPreference.PREFERENCE_TOKEN, str);
+                            }else{
+                                if (response.body().getMsg().equalsIgnoreCase("Unauthorized User")) {
+
+                                            dbHelper.deleteData("user_data");
+                                            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                            finish();
+
+
+                                }else{
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialogTheme);
+                                    builder.setTitle("Alert");
+                                    builder.setMessage("" + response.body().getMsg());
+                                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+
+                                        }
+                                    });
+
+                                    AlertDialog dialog = builder.create();
+                                    dialog.show();
+                                }
+
+                            }
                             commonDialog.dismiss();
                         } else {
                             commonDialog.dismiss();
@@ -1442,6 +1491,85 @@ public class MainActivity extends AppCompatActivity
             commonDialog.dismiss();
         }
     }
+
+
+    private void getCheckToken(final Integer regId, final String str, final String url) {
+       // Log.e("PARAMETER","         REG ID     "+regId+"         STR   "+str+"     URL    "+url);
+        if (Constants.isOnline(MainActivity.this)) {
+            final CommonDialog commonDialog = new CommonDialog(MainActivity.this, "Loading", "Please Wait...");
+            commonDialog.show();
+
+            String token = CustomSharedPreference.getString(MainActivity.this, CustomSharedPreference.KEY_LOGIN_TOKEN) ;
+
+            Call<TokenInfo> listCall = Constants.myInterface.tokenConfirmation(regId,token,authHeader);
+            listCall.enqueue(new Callback<TokenInfo>() {
+                @Override
+                public void onResponse(Call<TokenInfo> call, Response<TokenInfo> response) {
+                   // Log.e("Responce","--------------------------------------------------"+response.body());
+                    try {
+                            if(!response.body().getError()) {
+                              //  Log.e("ERROR","----------------------------------------------");
+
+                                if(str.equalsIgnoreCase("EditProfile"))
+                                {
+                                  //  Log.e("EDIT PROFILE","----------------------------------------------");
+                                    Fragment adf = new EditProfileFragment();
+                                    Bundle args = new Bundle();
+                                    args.putString("slugName", url);
+                                    adf.setArguments(args);
+                                    getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+                                }else if(str.equalsIgnoreCase("ProfileChange"))
+                                {
+                                   // Log.e("CHANGE PROFILE","----------------------------------------------");
+                                    Fragment adf = new ChangePasswordFragment();
+                                    Bundle args = new Bundle();
+                                    args.putString("slugName", url);
+                                    adf.setArguments(args);
+                                    getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+
+                                }else if(str.equalsIgnoreCase("uploadDoc"))
+                                {
+                                   // Log.e("UPLOAD DOC","----------------------------------------------");
+                                    Fragment adf = new UploadDocumentFragment();
+                                    Bundle args = new Bundle();
+                                    args.putString("slugName", url);
+                                    adf.setArguments(args);
+                                    getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+
+                                }
+
+
+                            }else{
+
+                                dbHelper.deleteData("user_data");
+                                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                finish();
+
+                        }
+                        commonDialog.dismiss();
+
+                    } catch (Exception e) {
+                        commonDialog.dismiss();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                        // e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<TokenInfo> call, Throwable t) {
+                    commonDialog.dismiss();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                    //  t.printStackTrace();
+                }
+            });
+        } else {
+            Toast.makeText(MainActivity.this, "No Internet Connection !", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
 
 
    /* public class ConnectivityDialog extends Dialog {

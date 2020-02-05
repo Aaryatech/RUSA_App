@@ -32,12 +32,14 @@ import android.widget.Toast;
 
 import com.ats.rusa_app.BuildConfig;
 import com.ats.rusa_app.R;
+import com.ats.rusa_app.activity.LoginActivity;
 import com.ats.rusa_app.adapter.DocListAdapter;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.DocTypeList;
 import com.ats.rusa_app.model.DocUpload;
 import com.ats.rusa_app.model.Info;
 import com.ats.rusa_app.model.Login;
+import com.ats.rusa_app.model.TokenInfo;
 import com.ats.rusa_app.sqlite.DatabaseHandler;
 import com.ats.rusa_app.util.CommonDialog;
 import com.ats.rusa_app.util.CustomSharedPreference;
@@ -124,7 +126,9 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
         //Log.e("HOME_ACTIVITY : ", "--------USER-------" + loginUser);
 
         if (loginUser != null) {
-            getUserDocList(loginUser.getRegId());
+            String token = CustomSharedPreference.getString(getContext(), CustomSharedPreference.KEY_LOGIN_TOKEN) ;
+            getCheckToken(loginUser.getRegId(),token);
+           // getUserDocList(loginUser.getRegId());
         }
         getDocTypeList();
 
@@ -189,7 +193,6 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
     }
 
     private void showFileChooser() {
-
 
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
         builder.setTitle("Choose");
@@ -292,6 +295,63 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
 
     }
 
+    private void getCheckToken(final Integer regId, String token) {
+
+        if (Constants.isOnline(getContext())) {
+            final CommonDialog commonDialog = new CommonDialog(getContext(), "Loading", "Please Wait...");
+            commonDialog.show();
+
+            Call<TokenInfo> listCall = Constants.myInterface.tokenConfirmation(regId,token,authHeader);
+            listCall.enqueue(new Callback<TokenInfo>() {
+                @Override
+                public void onResponse(Call<TokenInfo> call, Response<TokenInfo> response) {
+                    // Log.e("Responce","--------------------------------------------------"+response.body());
+                    try {
+                        //if (response.body() == null) {
+
+                            if(!response.body().getError()) {
+
+                                getUserDocList(regId);
+
+                            }else{
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
+                                builder.setTitle("Alert");
+                                builder.setMessage("" + response.body().getMsg());
+                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+
+                                    }
+                                });
+
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+                            }
+
+
+                      //  }
+                        commonDialog.dismiss();
+
+                    } catch (Exception e) {
+                        commonDialog.dismiss();
+                        //Log.e("Exception : ", "-----------" + e.getMessage());
+                        // e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<TokenInfo> call, Throwable t) {
+                    commonDialog.dismiss();
+                    //Log.e("onFailure : ", "-----------" + t.getMessage());
+                    //  t.printStackTrace();
+                }
+            });
+        } else {
+            Toast.makeText(getContext(), "No Internet Connection !", Toast.LENGTH_SHORT).show();
+        }
+
+    }
 
     private void getUserDocList(int id) {
        // Log.e("PARAMETER","          ID       "+id);
@@ -657,14 +717,44 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
 
                         } else {
 
-                            Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
+                            if(!response.body().getError()) {
 
-                            Fragment adf = new UploadDocumentFragment();
-                            Bundle args = new Bundle();
-                            args.putString("slugName", "uploadDoc");
-                            adf.setArguments(args);
-                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+                                Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
 
+                                Fragment adf = new UploadDocumentFragment();
+                                Bundle args = new Bundle();
+                                args.putString("slugName", "uploadDoc");
+                                adf.setArguments(args);
+                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, adf, "HomeFragment").commit();
+
+                            }else{
+                                if (response.body().getRetmsg().equalsIgnoreCase("Unauthorized User")) {
+
+                                            dbHelper.deleteData("user_data");
+                                            Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                            getActivity().finish();
+
+
+                                }else{
+
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
+                                    builder.setTitle("Alert");
+                                    builder.setMessage("" + response.body().getMsg());
+                                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+
+                                        }
+                                    });
+
+                                    AlertDialog dialog = builder.create();
+                                    dialog.show();
+                                }
+
+                            }
 
                         }
                         commonDialog.dismiss();

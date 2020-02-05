@@ -12,6 +12,8 @@ public class AppToken {
     private int extraInt2;
     private String extraVar1;
     private String extraVar2;
+    private String msg;
+    private Boolean error;
 
 
     public AppToken(int apptokenId, String deviceName, String macId, String token, int registerId, String addDate) {
@@ -103,6 +105,22 @@ public class AppToken {
         this.extraVar2 = extraVar2;
     }
 
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public Boolean getError() {
+        return error;
+    }
+
+    public void setError(Boolean error) {
+        this.error = error;
+    }
+
     @Override
     public String toString() {
         return "AppToken{" +
@@ -116,6 +134,8 @@ public class AppToken {
                 ", extraInt2=" + extraInt2 +
                 ", extraVar1='" + extraVar1 + '\'' +
                 ", extraVar2='" + extraVar2 + '\'' +
+                ", msg='" + msg + '\'' +
+                ", error=" + error +
                 '}';
     }
 }

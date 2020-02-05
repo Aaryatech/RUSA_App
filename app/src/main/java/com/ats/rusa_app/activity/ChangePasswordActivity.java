@@ -173,18 +173,31 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
                                 getChangePass(loginUser.getRegId(), strNewPass);
 
                             }else{
-                                AlertDialog.Builder builder = new AlertDialog.Builder(ChangePasswordActivity.this, R.style.AlertDialogTheme);
-                                builder.setTitle("Alert");
-                                builder.setMessage("" + response.body().getMsg());
-                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
 
-                                AlertDialog dialog = builder.create();
-                                dialog.show();
+                                if (response.body().getRetmsg().equalsIgnoreCase("Unauthorized User")) {
+
+                                            dbHelper.deleteData("user_data");
+                                            Intent intent = new Intent(ChangePasswordActivity.this, LoginActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                            finish();
+
+
+                                }else {
+
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(ChangePasswordActivity.this, R.style.AlertDialogTheme);
+                                    builder.setTitle("Alert");
+                                    builder.setMessage("" + response.body().getMsg());
+                                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+
+                                    AlertDialog dialog = builder.create();
+                                    dialog.show();
+                                }
 
                             }
 
@@ -239,10 +252,39 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
                     try {
                         if (response.body() != null) {
 
-                            //Toast.makeText(getApplicationContext(), "Update Password", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                            startActivity(intent);
-                            commonDialog.dismiss();
+                            if(!response.body().getError()) {
+                                //Toast.makeText(getApplicationContext(), "Update Password", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(intent);
+                                commonDialog.dismiss();
+                            }else{
+
+                                if (response.body().getRetmsg().equalsIgnoreCase("Unauthorized User")) {
+
+                                            dbHelper.deleteData("user_data");
+                                            Intent intent = new Intent(ChangePasswordActivity.this, LoginActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                            finish();
+
+
+                                }else{
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(ChangePasswordActivity.this, R.style.AlertDialogTheme);
+                                    builder.setTitle("Alert");
+                                    builder.setMessage("" + response.body().getMsg());
+                                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+
+
+                                        }
+                                    });
+                                }
+
+                                commonDialog.dismiss();
+
+                            }
                         } else {
                             commonDialog.dismiss();
                             //Log.e("Data Null : ", "-----------");

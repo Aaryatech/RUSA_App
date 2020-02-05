@@ -107,7 +107,7 @@ public class NewReg {
     private String instName;
     @SerializedName("msg")
     @Expose
-    private Object msg;
+    private String msg;
     @SerializedName("error")
     @Expose
     private Boolean error;
@@ -385,11 +385,11 @@ public class NewReg {
         this.instName = instName;
     }
 
-    public Object getMsg() {
+    public String getMsg() {
         return msg;
     }
 
-    public void setMsg(Object msg) {
+    public void setMsg(String msg) {
         this.msg = msg;
     }
 
@@ -438,7 +438,7 @@ public class NewReg {
                 ", editByAdminuserId=" + editByAdminuserId +
                 ", uniName='" + uniName + '\'' +
                 ", instName='" + instName + '\'' +
-                ", msg=" + msg +
+                ", msg='" + msg + '\'' +
                 ", error=" + error +
                 '}';
     }

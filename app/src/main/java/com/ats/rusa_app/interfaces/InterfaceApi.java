@@ -28,6 +28,7 @@ import com.ats.rusa_app.model.PreviousRecord;
 import com.ats.rusa_app.model.Reg;
 import com.ats.rusa_app.model.ResendOTP;
 import com.ats.rusa_app.model.Testomonial;
+import com.ats.rusa_app.model.TokenInfo;
 import com.ats.rusa_app.model.University;
 import com.ats.rusa_app.model.UpcomingEvent;
 import com.ats.rusa_app.model.UpdateToken;
@@ -63,7 +64,7 @@ public interface InterfaceApi {
     @GET("getLastTenPhotos")
     Call<ArrayList<GallaryDetailList>> getImageGallery();
 
-    @GET("getAllImageLinkList")
+    @GET("getAllIgetRegUserbyRegIdForAppmageLinkList")
     Call<ArrayList<CompanyModel>> getCompSlider(@Header("Authorization") String authHeader);
 
     @GET("getLastSliderImagesByStatus")
@@ -202,4 +203,6 @@ public interface InterfaceApi {
     @POST("updateToken")
     Call<UpdateToken> updateToken(@Query("regId") int regId, @Query("token") String token,@Header("Authorization") String authHeader);
 
+    @POST("tokenConfirmation")
+    Call<TokenInfo> tokenConfirmation(@Query("regId") int regId, @Query("token") String token, @Header("Authorization") String authHeader);
 }

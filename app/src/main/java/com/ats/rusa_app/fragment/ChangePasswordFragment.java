@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.ats.rusa_app.R;
 import com.ats.rusa_app.activity.LoginActivity;
+import com.ats.rusa_app.activity.MainActivity;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.Info;
 import com.ats.rusa_app.model.Login;
@@ -152,18 +153,30 @@ public class ChangePasswordFragment extends Fragment implements View.OnClickList
                                 getChangePass(loginUser.getRegId(), strNewPass);
 
                             }else{
-                                AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
-                                builder.setTitle("Alert");
-                                builder.setMessage("" + response.body().getMsg());
-                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
 
-                                AlertDialog dialog = builder.create();
-                                dialog.show();
+                                if (response.body().getRetmsg().equalsIgnoreCase("Unauthorized User")) {
+
+                                            dbHelper.deleteData("user_data");
+                                            Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                            getActivity().finish();
+
+
+                                }else {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
+                                    builder.setTitle("Alert");
+                                    builder.setMessage("" + response.body().getMsg());
+                                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+
+                                    AlertDialog dialog = builder.create();
+                                    dialog.show();
+                                }
 
                             }
 
@@ -215,11 +228,38 @@ public class ChangePasswordFragment extends Fragment implements View.OnClickList
                 public void onResponse(Call<Info> call, Response<Info> response) {
                     try {
                         if (response.body() != null) {
+                            if(!response.body().getError()) {
+                                Toast.makeText(getActivity(), "Update Password", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getActivity(), MainActivity.class);
+                                startActivity(intent);
+                                commonDialog.dismiss();
+                            }else{
+                                if (response.body().getRetmsg().equalsIgnoreCase("Unauthorized User")) {
 
-                            Toast.makeText(getActivity(), "Update Password", Toast.LENGTH_SHORT).show();
-                            Intent intent=new Intent(getActivity(), LoginActivity.class);
-                            startActivity(intent);
-                            commonDialog.dismiss();
+                                            dbHelper.deleteData("user_data");
+                                            Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                            getActivity().finish();
+
+
+                                }else{
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme);
+                                    builder.setTitle("Alert");
+                                    builder.setMessage("" + response.body().getMsg());
+                                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+
+
+                                        }
+                                    });
+                                }
+
+                                commonDialog.dismiss();
+
+                            }
                         }else {
                             commonDialog.dismiss();
                             //Log.e("Data Null : ", "-----------");

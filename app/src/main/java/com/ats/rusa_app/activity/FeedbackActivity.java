@@ -181,18 +181,13 @@ public class FeedbackActivity extends AppCompatActivity implements View.OnClickL
                             }else{
 
                                 if (response.body().getRetmsg().equalsIgnoreCase("Unauthorized User")) {
-                                        AlertDialog.Builder builder = new AlertDialog.Builder(FeedbackActivity.this, R.style.AlertDialogTheme);
-                                        builder.setTitle("Alert");
-                                        builder.setMessage("" + response.body().getRetmsg());
-                                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.dismiss();
-                                            }
-                                        });
 
-                                        AlertDialog dialog = builder.create();
-                                        dialog.show();
+                                                dbHelper.deleteData("user_data");
+                                                Intent intent = new Intent(FeedbackActivity.this, LoginActivity.class);
+                                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                startActivity(intent);
+                                                finish();
+
                                     }else if(response.body().getMsg().equalsIgnoreCase("updated failed"))
                                      {
                                          AlertDialog.Builder builder = new AlertDialog.Builder(FeedbackActivity.this, R.style.AlertDialogTheme);

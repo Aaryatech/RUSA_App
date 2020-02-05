@@ -1,6 +1,7 @@
 package com.ats.rusa_app.activity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -138,18 +139,31 @@ public class PreviousEventDetailActivity extends AppCompatActivity {
 
                             }else{
 
-                                AlertDialog.Builder builder = new AlertDialog.Builder(PreviousEventDetailActivity.this, R.style.AlertDialogTheme);
-                                builder.setTitle("Alert");
-                                builder.setMessage("" + response.body().getMessage());
-                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
+                                if (response.body().getMessage().equalsIgnoreCase("Unauthorized User")) {
 
-                                AlertDialog dialog = builder.create();
-                                dialog.show();
+
+                                            dbHelper.deleteData("user_data");
+                                            Intent intent = new Intent(PreviousEventDetailActivity.this, LoginActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                            finish();
+
+
+                                }else {
+
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(PreviousEventDetailActivity.this, R.style.AlertDialogTheme);
+                                    builder.setTitle("Alert");
+                                    builder.setMessage("" + response.body().getMessage());
+                                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+
+                                    AlertDialog dialog = builder.create();
+                                    dialog.show();
+                                }
 
 
                             }
