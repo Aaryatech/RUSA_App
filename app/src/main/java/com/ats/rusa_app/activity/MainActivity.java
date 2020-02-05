@@ -150,8 +150,6 @@ public class MainActivity extends AppCompatActivity
             //finish();
         }
 
-
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -560,6 +558,7 @@ public class MainActivity extends AppCompatActivity
                             CustomSharedPreference.putString(MainActivity.this, CustomSharedPreference.KEY_MENU, mJson);
 
                             displayMenu(model);
+
                            /* menuCatList.clear();
 
                             for (int i = 0; i < model.getCategoryList().size(); i++) {
@@ -1283,7 +1282,7 @@ public class MainActivity extends AppCompatActivity
                                 startActivity(intent);
                                 finish();
 
-                            }else {
+                            }else{
 
                                 if (response.body().getMsg().equalsIgnoreCase("Unauthorized User")) {
 
@@ -1294,7 +1293,7 @@ public class MainActivity extends AppCompatActivity
                                             finish();
 
 
-                                }else {
+                                }else{
 
                                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialogTheme);
                                     builder.setTitle("Alert");
