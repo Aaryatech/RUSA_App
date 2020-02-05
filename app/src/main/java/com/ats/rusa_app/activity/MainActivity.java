@@ -18,6 +18,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -195,7 +196,7 @@ public class MainActivity extends AppCompatActivity
         try {
            // loginUser=null;
             loginUser = dbHelper.getLoginData();
-           // Log.e("HOME_ACTIVITY : ", "--------USER-------" + loginUser);
+            Log.e("HOME_ACTIVITY : ", "--------USER-------" + loginUser);
 
 
         }catch (Exception e)
@@ -1358,23 +1359,27 @@ public class MainActivity extends AppCompatActivity
                     try {
                         if (response.body() != null) {
 
-                            if(!response.body().getError()) {
+                           if(!response.body().getError()) {
 
                                 Gson gson1 = new Gson();
                                 String str = gson1.toJson(response.body());
 
                                 CustomSharedPreference.putString(MainActivity.this, CustomSharedPreference.PREFERENCE_TOKEN, str);
                             }else{
-                                if (response.body().getMsg().equalsIgnoreCase("Unauthorized User")) {
 
-                                            dbHelper.deleteData("user_data");
-                                            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                            startActivity(intent);
-                                            finish();
+                               // Toast.makeText(MainActivity.this, "Login......", Toast.LENGTH_SHORT).show();
 
+//                                if (response.body().getMsg().equalsIgnoreCase("Unauthorized User")) {
+//
+//                                            dbHelper.deleteData("user_data");
+//                                            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+//                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                                            startActivity(intent);
+//                                            finish();
+//
+//
+//                                }else{
 
-                                }else{
                                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialogTheme);
                                     builder.setTitle("Alert");
                                     builder.setMessage("" + response.body().getMsg());
@@ -1388,7 +1393,7 @@ public class MainActivity extends AppCompatActivity
 
                                     AlertDialog dialog = builder.create();
                                     dialog.show();
-                                }
+//                                }
 
                             }
                             commonDialog.dismiss();
