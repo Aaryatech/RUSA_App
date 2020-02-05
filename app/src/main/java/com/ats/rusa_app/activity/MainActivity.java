@@ -1380,19 +1380,19 @@ public class MainActivity extends AppCompatActivity
 //
 //                                }else{
 
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialogTheme);
-                                    builder.setTitle("Alert");
-                                    builder.setMessage("" + response.body().getMsg());
-                                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-
-                                        }
-                                    });
-
-                                    AlertDialog dialog = builder.create();
-                                    dialog.show();
+//                                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialogTheme);
+//                                    builder.setTitle("Alert");
+//                                    builder.setMessage("" + response.body().getMsg());
+//                                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(DialogInterface dialog, int which) {
+//                                            dialog.dismiss();
+//
+//                                        }
+//                                    });
+//
+//                                    AlertDialog dialog = builder.create();
+//                                    dialog.show();
 //                                }
 
                             }
