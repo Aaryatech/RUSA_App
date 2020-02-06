@@ -27,19 +27,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 JSONObject json = new JSONObject(remoteMessage.getData());
                 // JSONObject json1 = new JSONObject(remoteMessage.getNotification().toString());
 
-                Log.e("JSON DATA", "-----------------------------" + json);
+               // Log.e("JSON DATA", "-----------------------------" + json);
                 // Log.e("JSON NOTIFICATION", "-----------------------------" + json1);
 
                 sendPushNotification(json);
             } catch (Exception e) {
-                Log.e(TAG, "-----------------------------Exception: " + e.getMessage());
+               // Log.e(TAG, "-----------------------------Exception: " + e.getMessage());
                 e.printStackTrace();
             }
 
             super.onMessageReceived(remoteMessage);
 
         } else {
-            Log.e("FIREBASE", "----------------------------------");
+           // Log.e("FIREBASE", "----------------------------------");
         }
     }
 
@@ -50,7 +50,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private void sendPushNotification(JSONObject json) {
 
-        Log.e(TAG, "--------------------------------JSON String" + json.toString());
+       // Log.e(TAG, "--------------------------------JSON String" + json.toString());
         try {
 
             String title1 = json.getString("title");
@@ -97,10 +97,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
         } catch (JSONException e) {
-            Log.e(TAG, "Json Exception: -----------" + e.getMessage());
+           // Log.e(TAG, "Json Exception: -----------" + e.getMessage());
             e.printStackTrace();
         } catch (Exception e) {
-            Log.e(TAG, "Exception: ------------" + e.getMessage());
+           // Log.e(TAG, "Exception: ------------" + e.getMessage());
             e.printStackTrace();
         }
 

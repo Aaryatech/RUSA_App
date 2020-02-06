@@ -47,7 +47,7 @@ public class MyNotificationManager {
         PendingIntent resultPendingIntent = PendingIntent.getActivity(mCtx, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Log.e("ANDROID","----------------------------------O");
+           // Log.e("ANDROID","----------------------------------O");
             NotificationManager notificationManager = (NotificationManager) mCtx.getSystemService(NOTIFICATION_SERVICE);
             String id = "id_product";
             int importance = NotificationManager.IMPORTANCE_HIGH;
@@ -79,7 +79,7 @@ public class MyNotificationManager {
 
 
         } else {
-            Log.e("ANDROID","---------------------------------- < O");
+          //  Log.e("ANDROID","---------------------------------- < O");
 
             NotificationCompat.BigTextStyle bigPictureStyle1 = new NotificationCompat.BigTextStyle();
             bigPictureStyle1.setBigContentTitle(title);
@@ -112,7 +112,7 @@ public class MyNotificationManager {
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Log.e("ANDROID","----------------------------------O");
+          //  Log.e("ANDROID","----------------------------------O");
             NotificationManager notificationManager = (NotificationManager) mCtx.getSystemService(NOTIFICATION_SERVICE);
             String id = "id_product";
             int importance = NotificationManager.IMPORTANCE_HIGH;
@@ -140,7 +140,7 @@ public class MyNotificationManager {
 
 
         } else {
-            Log.e("ANDROID","---------------------------------- < O");
+          //  Log.e("ANDROID","---------------------------------- < O");
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(mCtx)
                     .setAutoCancel(true)
@@ -216,7 +216,7 @@ public class MyNotificationManager {
             r.play();
             Vibrator v = (Vibrator) mCtx.getSystemService(Context.VIBRATOR_SERVICE);
             v.vibrate(500);
-            Log.e("playNotificationSound","----------------------------");
+          //  Log.e("playNotificationSound","----------------------------");
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -132,7 +132,7 @@ public class HtmlHttpImageGetter implements ImageGetter {
         @Override
         protected void onPostExecute(Drawable result) {
             if (result == null) {
-                Log.w("HTMLIMAGEGETTER", "Drawable result is null! (source: " + source + ")");
+               // Log.w("HTMLIMAGEGETTER", "Drawable result is null! (source: " + source + ")");
                 return;
             }
             final HtmlHttpImageGetter.UrlDrawable urlDrawable = drawableReference.get();
@@ -155,7 +155,7 @@ public class HtmlHttpImageGetter implements ImageGetter {
             // re-set text to fix images overlapping text
             imageGetter.container.setText(imageGetter.container.getText());
 
-            Log.e("HTML----", "----------------------------------------------");
+           // Log.e("HTML----", "----------------------------------------------");
         }
 
         /**
@@ -167,8 +167,8 @@ public class HtmlHttpImageGetter implements ImageGetter {
                 Drawable drawable = new BitmapDrawable(res, is);
                 scale = getScale(drawable);
 
-                Log.e("WIDTH", "--------*******************----------" + (int) (drawable.getIntrinsicWidth() * scale));
-                Log.e("HEIGHT", "--------******************----------" + (int) (drawable.getIntrinsicHeight() * scale));
+              //  Log.e("WIDTH", "--------*******************----------" + (int) (drawable.getIntrinsicWidth() * scale));
+              //  Log.e("HEIGHT", "--------******************----------" + (int) (drawable.getIntrinsicHeight() * scale));
 
                 ((BitmapDrawable) drawable).setGravity(Gravity.CENTER_HORIZONTAL);
 
