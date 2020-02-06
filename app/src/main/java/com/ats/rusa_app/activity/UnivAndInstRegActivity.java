@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -186,7 +185,7 @@ public class UnivAndInstRegActivity extends AppCompatActivity implements View.On
 
                     String uniqueId = UUID.randomUUID().toString();
 
-                    Log.e("Success","-----------------------------------------------");
+                  //  Log.e("Success","-----------------------------------------------");
 
                     Reg registration = new Reg(0, uniqueId, userType, strEmail, strAlterEmail, "0", strInst, strCode, String.valueOf(instId), String.valueOf(uniId), strDesg, strDept, strMobile, "", null, "", "", "Android", 0, 1, sdf.format(System.currentTimeMillis()), null, 0, 0, 0, "", "", "", 0, "", 0, 0);
                     //Log.e("Registration", "--------------" + registration);
@@ -206,7 +205,7 @@ public class UnivAndInstRegActivity extends AppCompatActivity implements View.On
                         AlertDialog dialog = builder.create();
                         dialog.show();
                     } else {
-                        Log.e("Success","-------------------11111111111111----------------------------");
+                      //  Log.e("Success","-------------------11111111111111----------------------------");
                          getDataByAisheCodeReg(strCode,strMobile,strEmail,registration);
                         //getCheckUniqueFieldMobile(strMobile, strEmail, registration);
                     }
@@ -364,7 +363,7 @@ public class UnivAndInstRegActivity extends AppCompatActivity implements View.On
                 public void onResponse(Call<Institute> call, Response<Institute> response) {
                     try {
 
-                        Log.e("RESPONSE ", "-----------------------------" + response.body());
+                      //  Log.e("RESPONSE ", "-----------------------------" + response.body());
 
                         if (response.body() != null) {
 
@@ -476,7 +475,7 @@ public class UnivAndInstRegActivity extends AppCompatActivity implements View.On
                 @Override
                 public void onResponse(Call<Info> call, Response<Info> response) {
                     try {
-                        Log.e("RESPONCE UNICE", "-----------------------------" + response.body());
+                      //  Log.e("RESPONCE UNICE", "-----------------------------" + response.body());
 
                         if (response.body() == null) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(UnivAndInstRegActivity.this, R.style.AlertDialogTheme);
@@ -570,7 +569,7 @@ public class UnivAndInstRegActivity extends AppCompatActivity implements View.On
                 @Override
                 public void onResponse(Call<Info> call, Response<Info> response) {
                     try {
-                        Log.e("RESPONCE UNICE", "--------EMAIL---------------------" + response.body());
+                      //  Log.e("RESPONCE UNICE", "--------EMAIL---------------------" + response.body());
 
                         if (response.body() == null) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(UnivAndInstRegActivity.this, R.style.AlertDialogTheme);
@@ -662,7 +661,7 @@ public class UnivAndInstRegActivity extends AppCompatActivity implements View.On
     private void getRegistration(Reg registration) {
 
         if (Constants.isOnline(getApplicationContext())) {
-            Log.e("PARAMETER : ", "---------------- REGISTRATION : " + registration);
+           // Log.e("PARAMETER : ", "---------------- REGISTRATION : " + registration);
 
             final CommonDialog commonDialog = new CommonDialog(UnivAndInstRegActivity.this, "Loading", "Please Wait...");
             commonDialog.show();

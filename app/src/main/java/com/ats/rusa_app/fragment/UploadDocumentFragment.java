@@ -736,7 +736,6 @@ public class UploadDocumentFragment extends Fragment implements View.OnClickList
                                             startActivity(intent);
                                             getActivity().finish();
 
-
                                 }else{
 
                                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);

@@ -108,7 +108,11 @@ public class ChangePasswordFragment extends Fragment implements View.OnClickList
                 isValidPrevPass=true;
             }
 
-            if(!strNewPass.equals(strConfPass))
+            if(strNewPass.isEmpty())
+            {
+                edNewPass.setError("Enter New Password");
+                edNewPass.requestFocus();
+            }else  if(!strNewPass.equals(strConfPass))
             {
                 edNewPass.setError("New Password and Confirme password Not Match");
 
@@ -116,6 +120,15 @@ public class ChangePasswordFragment extends Fragment implements View.OnClickList
                 edNewPass.setError(null);
                 isValidNewPass=true;
             }
+
+//            if(!strNewPass.equals(strConfPass))
+//            {
+//                edNewPass.setError("New Password and Confirme password Not Match");
+//
+//            }else{
+//                edNewPass.setError(null);
+//                isValidNewPass=true;
+//            }
             if (isValidPrevPass && isValidNewPass)
             {
                 MessageDigest md = null;

@@ -8,7 +8,6 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,7 +84,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
         try {
             loginUser = dbHelper.getLoginData();
-            Log.e("HOME_ACTIVITY : ", "--------USER EDIT-------" + loginUser);
+           // Log.e("HOME_ACTIVITY : ", "--------USER EDIT-------" + loginUser);
 
         }catch (Exception e)
         {
