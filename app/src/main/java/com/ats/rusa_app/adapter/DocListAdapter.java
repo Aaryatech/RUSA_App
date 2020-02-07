@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.ats.rusa_app.R;
 import com.ats.rusa_app.constants.Constants;
 import com.ats.rusa_app.model.DocUpload;
 import com.ats.rusa_app.util.ConnectivityDialog;
+import com.ats.rusa_app.util.CustomSharedPreference;
 
 import java.util.ArrayList;
 
@@ -51,7 +53,15 @@ public class DocListAdapter extends RecyclerView.Adapter<DocListAdapter.MyViewHo
                     new ConnectivityDialog(context).show();
 
                 } else {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("" + Constants.DOC_URL + model.getFileName()));
+
+//                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("" + Constants.DOC_URL + model.getFileName()));
+//                    context.startActivity(browserIntent);
+                    String token = CustomSharedPreference.getString(context, CustomSharedPreference.KEY_LOGIN_TOKEN) ;
+
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("" + Constants.DOC_URL +"?token="+token+"&docId="+model.getDocId()+"&userId="+model.getRegId()));
+
+                    Log.e("URL","------------IMAGE----------------------------"+Constants.DOC_URL +"?token="+token+"&docId="+model.getDocId()+"&userId="+model.getRegId());
+
                     context.startActivity(browserIntent);
                 }
             }
