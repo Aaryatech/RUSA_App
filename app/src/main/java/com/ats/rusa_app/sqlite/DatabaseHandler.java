@@ -165,7 +165,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             contentValues.put(USER_TYPE, login.getUserType());
             contentValues.put(USER_EMAILS, login.getEmails());
             contentValues.put(USER_ALTER_EMAIL, login.getAlternateEmail());
-            contentValues.put(USER_PASS, login.getUserPassword());
+            contentValues.put(USER_PASS, "");
             contentValues.put(USER_NAME, login.getName());
             contentValues.put(USER_AISHE_CODE, login.getAisheCode());
             contentValues.put(USER_CLG_NAME, login.getCollegeName());
@@ -189,7 +189,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             contentValues.put(USER_EXVAR2, login.getExVar2());
             contentValues.put(USER_EMIAL_CODE, login.getEmailCode());
             contentValues.put(USER_EMAIL_VERIFIED, login.getEmailVerified());
-            contentValues.put(USER_SMS_CODE, login.getSmsCode());
+            contentValues.put(USER_SMS_CODE, "");
             contentValues.put(USER_SMS_VERIFICATION, login.getSmsVerified());
             contentValues.put(USER_EDIT_BY_ADMIN_ID, login.getEditByAdminuserId());
             contentValues.put(USER_MSG, login.getMsg());
